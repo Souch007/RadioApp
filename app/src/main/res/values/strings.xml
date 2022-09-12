@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Radio</string>
+    <string name="title_radio">Radio</string>
+    <string name="title_podcast">Podcasts</string>
+    <string name="title_favourites">Favourites</string>
+    <string name="title_search">Search</string>
+
+</resources>

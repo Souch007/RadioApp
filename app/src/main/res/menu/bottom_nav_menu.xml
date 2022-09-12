@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_radio"
+        android:icon="@drawable/ic_baseline_radio_24"
+        android:title="@string/title_radio" />
+
+    <item
+        android:id="@+id/navigation_podcast"
+        android:icon="@drawable/ic_podcast"
+        android:title="@string/title_podcast" />
+
+    <item
+        android:id="@+id/navigation_favourites"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
+        android:title="@string/title_favourites" />
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/title_search" />
+</menu>
