@@ -1,5 +1,6 @@
 package com.coderoids.radio
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.coderoids.radio.databinding.ActivityMainBinding
+import com.coderoids.radio.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +40,12 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+        }
+
+        binding.ivSettings.setOnClickListener {
+                Intent(this@MainActivity,SettingsActivity::class.java).apply {
+                    startActivity(this)
+                }
         }
 
     }

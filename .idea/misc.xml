@@ -5,16 +5,22 @@
       <map>
         <entry key="app/src/main/res/drawable/bottom_nav_items.xml" value="0.178" />
         <entry key="app/src/main/res/drawable/bottom_navigation_selector.xml" value="0.178" />
+        <entry key="app/src/main/res/drawable/ic_baseline_alarm_24.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.178" />
         <entry key="app/src/main/res/drawable/ic_baseline_radio_24.xml" value="0.178" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.178" />
+        <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/ic_podcast.xml" value="0.178" />
         <entry key="app/src/main/res/drawable/search_bg.xml" value="0.153" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/adapter_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_favourites.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_podcast.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_radio.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_settings.xml" value="0.22" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.17604166666666668" />
       </map>
     </option>

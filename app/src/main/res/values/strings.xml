@@ -6,5 +6,7 @@
     <string name="title_search">Search</string>
     <string name="hint_search">Search station,song,podcast</string>
     <string name="desccontent">imagesearch</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_welcome">Welcome To Radio \n Nice to have you here</string>
 
 </resources>
