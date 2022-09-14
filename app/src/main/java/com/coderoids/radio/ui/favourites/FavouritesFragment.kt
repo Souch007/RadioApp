@@ -24,14 +24,9 @@ class FavouritesFragment : Fragment() {
     ): View {
         val notificationsViewModel =
             ViewModelProvider(this).get(FavouritesViewModel::class.java)
-
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

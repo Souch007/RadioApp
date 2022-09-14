@@ -4,5 +4,7 @@
     <string name="title_podcast">Podcasts</string>
     <string name="title_favourites">Favourites</string>
     <string name="title_search">Search</string>
+    <string name="hint_search">Search station,song,podcast</string>
+    <string name="desccontent">imagesearch</string>
 
 </resources>

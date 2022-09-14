@@ -15,21 +15,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_radio, R.id.navigation_podcast, R.id.navigation_favourites
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+       navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_radio -> {
+                    binding.tvRadio.text = "Radio"
+                }
+                R.id.navigation_podcast -> {
+                    binding.tvRadio.text = "Podcast"
+
+                }
+                R.id.navigation_favourites -> {
+                    binding.tvRadio.text = "Favourites"
+                }
+                R.id.navigation_search -> {
+                    binding.tvRadio.text = "Search"
+
+                }
+            }
+        }
+
     }
 }
