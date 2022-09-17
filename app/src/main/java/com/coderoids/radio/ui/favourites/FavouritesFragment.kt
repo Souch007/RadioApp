@@ -6,32 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import com.coderoids.radio.R
+import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentFavouritesBinding
+import com.coderoids.radio.databinding.FragmentRadioBinding
+import com.coderoids.radio.ui.radio.RadioViewModel
 
-class FavouritesFragment : Fragment() {
+class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.fragment_favourites) {
+    val favouritesViewModel : FavouritesViewModel by activityViewModels()
 
-    private var _binding: FragmentFavouritesBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(FavouritesViewModel::class.java)
-        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
+    override fun FragmentFavouritesBinding.initialize() {
+        binding.lifecycleOwner =this@FavouritesFragment
+        binding.favViewModel = favouritesViewModel
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

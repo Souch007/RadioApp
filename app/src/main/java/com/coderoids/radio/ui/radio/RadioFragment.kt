@@ -1,40 +1,28 @@
 package com.coderoids.radio.ui.radio
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import com.coderoids.radio.R
+import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
+import com.coderoids.radio.request.Resource
+import com.coderoids.radio.request.repository.AppRepository
+import com.coderoids.radio.request.repository.BaseRepository
 
-class RadioFragment : Fragment() {
+class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
-    private var _binding: FragmentRadioBinding? = null
+    val radioViewModel :RadioViewModel by activityViewModels()
+    override fun FragmentRadioBinding.initialize() {
+        binding.lifecycleOwner =this@RadioFragment
+        binding.radioDataBinding =radioViewModel
+        radioViewModel.getRadioListing()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(RadioViewModel::class.java)
-
-        _binding = FragmentRadioBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        radioViewModel.radioListing.observe(this@RadioFragment) {
+            val data = (it as Resource.Success).value.data
+            radioViewModel.radioListArray.value = data
+            binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
         }
-        return root
+
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

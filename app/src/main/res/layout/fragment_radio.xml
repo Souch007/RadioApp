@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+        <variable
+            name="radioDataBinding"
+            type="com.coderoids.radio.ui.radio.RadioViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+    </data>
+<ScrollView
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -12,12 +24,17 @@
     tools:context=".ui.radio.RadioFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/all_radio_stations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        app:setAdapter="@{adapter}"
+        app:submitList="@{radioDataBinding.radioListingArray}"
+        tools:listitem="@layout/radio_row"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <View
         android:id="@+id/ads_view"
@@ -132,3 +149,4 @@
         app:layout_constraintTop_toBottomOf="@+id/countries" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
+</layout>

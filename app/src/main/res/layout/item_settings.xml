@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_2sdp"
                 android:text="heading"
-                android:textColor="@color/orange"
+                android:textColor="@color/Chocolate"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold"
