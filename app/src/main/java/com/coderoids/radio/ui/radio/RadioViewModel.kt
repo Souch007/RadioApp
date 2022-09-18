@@ -17,15 +17,39 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio {
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
+    //_________________________________ Radio______________________//
     val _radioListing = MutableLiveData<Resource<RadioData>>()
-    val radioListArray = MutableLiveData<List<Data>>()
-
-    val radioListingArray: LiveData<List<Data>> = radioListArray
     val radioListing: LiveData<Resource<RadioData>> = _radioListing
+    val radioListArray = MutableLiveData<List<Data>>()
+    val radioListingArray: LiveData<List<Data>> = radioListArray
+
+    //_________________________________ Radio Pop and Rock______________________//
+    val _radioPopListing = MutableLiveData<Resource<RadioData>>()
+    val radioPopListing: LiveData<Resource<RadioData>> = _radioPopListing
+    val _radioPopListArray = MutableLiveData<List<Data>>()
+    val radioPopListingArray: LiveData<List<Data>> = _radioPopListArray
+
+    //_________________________________ Radio News and Culture______________________//
+    val _radioNewsListing = MutableLiveData<Resource<RadioData>>()
+    val radioNewsListing: LiveData<Resource<RadioData>> = _radioNewsListing
+    val _radioNewsListArray = MutableLiveData<List<Data>>()
+    val radioNewsListingArray: LiveData<List<Data>> = _radioNewsListArray
 
     fun getRadioListing(){
         viewModelScope.launch {
             _radioListing.value = appRepository.getRadioListing()
+        }
+    }
+
+    fun getRadioPopListing(){
+        viewModelScope.launch {
+            _radioPopListing.value = appRepository.getPopRockRadioListing()
+        }
+    }
+
+    fun getRadioNewsListing(){
+        viewModelScope.launch {
+            _radioNewsListing.value = appRepository.getRadioNewsListing()
         }
     }
 

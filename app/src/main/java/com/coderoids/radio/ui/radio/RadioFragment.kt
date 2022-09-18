@@ -15,11 +15,27 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         binding.lifecycleOwner =this@RadioFragment
         binding.radioDataBinding =radioViewModel
         radioViewModel.getRadioListing()
+        radioViewModel.getRadioPopListing()
+        radioViewModel.getRadioNewsListing()
 
         radioViewModel.radioListing.observe(this@RadioFragment) {
             val data = (it as Resource.Success).value.data
             radioViewModel.radioListArray.value = data
             binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+        }
+
+        radioViewModel.radioPopListing.observe(this@RadioFragment){
+            val data = (it as Resource.Success).value.data
+            radioViewModel._radioPopListArray.value = data
+            binding.popadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+
+        }
+
+        radioViewModel.radioNewsListing.observe(this@RadioFragment){
+            val data = (it as Resource.Success).value.data
+            radioViewModel._radioNewsListArray.value = data
+            binding.newsadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+
         }
 
 

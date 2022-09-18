@@ -12,29 +12,60 @@
         <variable
             name="adapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+
+        <variable
+            name="popadapter"
+            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+
+        <variable
+            name="newsadapter"
+            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 <ScrollView
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:orientation="vertical"
     tools:context=".ui.radio.RadioFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <TextView
+        android:id="@+id/tv_local_stations"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Local Stations"
+        android:textStyle="bold"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_all_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:text="All"
+        android:textColor="@color/SteelBlue"
+        app:layout_constraintBottom_toTopOf="@+id/all_radio_stations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/all_radio_stations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/tv_local_stations"
         app:setAdapter="@{adapter}"
         app:submitList="@{radioDataBinding.radioListingArray}"
-        tools:listitem="@layout/radio_row"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        tools:listitem="@layout/radio_row" />
 
     <View
         android:id="@+id/ads_view"
@@ -44,21 +75,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/most_listened_pop_rock"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_pop_rock"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/_5sdp"
+        android:text="Most Listened Pop and rock"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ads_view" />
 
+    <TextView
+        android:id="@+id/tv_all_tag_pop_rock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:text="All"
+        android:textColor="@color/SteelBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ads_view" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/most_listened_pop_rock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:setAdapter="@{popadapter}"
+        app:submitList="@{radioDataBinding.radioPopListingArray}"
+        tools:listitem="@layout/radio_row"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pop_rock" />
+
+
+    <TextView
+        android:id="@+id/tv_news"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:text="Favoured news ad culture stations"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
+
+    <TextView
+        android:id="@+id/tv_all_tag_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:text="All"
+        android:textColor="@color/SteelBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/featured_news_culture_stations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        app:setAdapter="@{newsadapter}"
+        app:submitList="@{radioDataBinding.radioNewsListingArray}"
+        tools:listitem="@layout/radio_row"
+       />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/top_100_radio_listing"
@@ -66,7 +147,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
+        app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
 
     <RelativeLayout
         android:id="@+id/podcast_view"
