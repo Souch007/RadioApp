@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <data>
-
         <variable
             name="feeds"
             type="com.coderoids.radio.ui.podcast.data.Feed" />
-
         <variable
             name="listener"
             type="com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast" />
@@ -15,35 +13,37 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/_8sdp"
+        android:elevation="@dimen/_16sdp"
         android:layout_margin="@dimen/_4sdp">
 
         <LinearLayout
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_135sdp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_120sdp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_100sdp"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/ic_podcast"
+                android:src="@drawable/logo"
                 app:setImage="@{feeds.image}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="match_parent"
                 android:text="@{feeds.title}"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textAlignment="center"
+                android:textStyle="normal"
+                android:textSize="@dimen/_12sdp"
+                android:gravity="start|center"
+                android:padding="@dimen/_2sdp"
+                android:textAlignment="textStart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

@@ -7,6 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.interfaces.ListAdapterItem
@@ -39,6 +41,9 @@ fun manageState(progressBar: ProgressBar, state: Boolean) {
 fun setImage(imageView: ImageView, image: String) {
     Glide.with(imageView.context)
         .load(image)
+        .error(R.drawable.logo)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .priority(Priority.HIGH)
         .into(imageView)
 }
 
