@@ -35,24 +35,6 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio {
     val _radioNewsListArray = MutableLiveData<List<Data>>()
     val radioNewsListingArray: LiveData<List<Data>> = _radioNewsListArray
 
-    fun getRadioListing(){
-        viewModelScope.launch {
-            _radioListing.value = appRepository.getRadioListing()
-        }
-    }
-
-    fun getRadioPopListing(){
-        viewModelScope.launch {
-            _radioPopListing.value = appRepository.getPopRockRadioListing()
-        }
-    }
-
-    fun getRadioNewsListing(){
-        viewModelScope.launch {
-            _radioNewsListing.value = appRepository.getRadioNewsListing()
-        }
-    }
-
     override fun onRadioClicked(data: Data) {
 
     }

@@ -2,6 +2,7 @@ package com.coderoids.radio.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.request.repository.BaseRepository
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
@@ -18,6 +19,9 @@ class ViewModelFactory(
         if (modelClass.isAssignableFrom(PodcastViewModel::class.java)) {
             return PodcastViewModel(
                 repository as AppRepository
+            ) as T
+        }else if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(
             ) as T
         }
         else if (modelClass.isAssignableFrom(FavouritesViewModel::class.java))

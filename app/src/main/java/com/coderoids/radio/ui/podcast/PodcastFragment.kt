@@ -19,7 +19,9 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
 
     override fun FragmentPodcastBinding.initialize() {
         binding.podcastDataBinding = podcastViewModel
-        podcastViewModel.getPodcastListing()
+        if(podcastViewModel.podcastListArray.value !=  null && podcastViewModel.podcastListArray.value!!.size >0){
+            binding.adapter = PodcastFragmentAdapter(listOf(),podcastViewModel)
+        }
 
         podcastViewModel.podcastListingLive.observe(this@PodcastFragment){
             val data = (it as Resource.Success).value.feeds

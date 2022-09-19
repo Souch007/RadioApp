@@ -49,7 +49,9 @@
         android:layout_marginEnd="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
         android:text="All"
-        android:textColor="@color/SteelBlue"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold"
+        android:textColor="@color/Gold"
         app:layout_constraintBottom_toTopOf="@+id/all_radio_stations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +95,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"
         android:text="All"
-        android:textColor="@color/SteelBlue"
+        android:textSize="@dimen/_13sdp"
+        android:textColor="@color/Gold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ads_view" />
     <androidx.recyclerview.widget.RecyclerView
@@ -126,7 +129,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"
         android:text="All"
-        android:textColor="@color/SteelBlue"
+        android:textSize="@dimen/_13sdp"
+        android:textColor="@color/Gold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
     <androidx.recyclerview.widget.RecyclerView

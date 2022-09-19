@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var favouritesViewModel: FavouritesViewModel
     private lateinit var podcastViewModel: PodcastViewModel
     private lateinit var searchViewModel: SearchViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +36,20 @@ class MainActivity : AppCompatActivity() {
         initializeViewModel()
     }
 
+    private fun callApis() {
+        mainViewModel.getRadioListing(radioViewModel)
+        mainViewModel.getPodCastListing(podcastViewModel)
+    }
+
     private fun initializeViewModel() {
         val factory = getViewModelFactory()
         radioViewModel = ViewModelProvider(this@MainActivity, factory).get(RadioViewModel::class.java)
+        podcastViewModel = ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
         searchViewModel = ViewModelProvider(this@MainActivity, factory).get(SearchViewModel::class.java)
         favouritesViewModel = ViewModelProvider(this@MainActivity, factory).get(FavouritesViewModel::class.java)
-        podcastViewModel = ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
+        mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
         Handler(Looper.getMainLooper()).postDelayed({
+            callApis()
             setUpUI()
         }, 200)
     }

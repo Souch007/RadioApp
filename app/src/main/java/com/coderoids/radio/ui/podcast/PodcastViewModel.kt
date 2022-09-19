@@ -21,11 +21,7 @@ class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() ,
     val podcastListArray: LiveData<List<Feed>> = _podcastListArray
     //____________Pod cast
 
-    fun getPodcastListing(){
-        viewModelScope.launch {
-            _podcastListingMutable.value = appRepository.getPodCastListing()
-        }
-    }
+
 
     override fun onPodCastClicked(data: Feed) {
         TODO("Not yet implemented")

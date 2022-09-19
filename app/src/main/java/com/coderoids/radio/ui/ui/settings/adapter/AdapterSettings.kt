@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.coderoids.radio.R
@@ -16,7 +17,7 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         var heading = view.findViewById<TextView>(R.id.tv_heading)
         var subHeading = view.findViewById<TextView>(R.id.tv_sub_heading)
         var description = view.findViewById<TextView>(R.id.tv_description_wifi)
-        var switch = view.findViewById<Switch>(R.id.swich_state_wifi)
+        var switch = view.findViewById<SwitchCompat>(R.id.swich_state_wifi)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHodler {
