@@ -14,6 +14,7 @@
         android:textAlignment="textStart"
         android:textSize="@dimen/_10sdp"
         android:padding="@dimen/_2sdp"
+        android:textColor="@color/Gold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

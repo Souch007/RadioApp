@@ -14,4 +14,8 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     suspend fun getRadioNewsListing() = safeApiCall {
         appApis.getRadioNewsStations()
     }
+
+    suspend fun getPodCastListing() = safeApiCall {
+        appApis.getPodCastStations()
+    }
 }

@@ -6,14 +6,99 @@
 
     <data>
         <variable
-            name="podcastViewModel"
+            name="podcastDataBinding"
             type="com.coderoids.radio.ui.podcast.PodcastViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+
+        <variable
+            name="playlistadapter"
+            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.podcast.PodcastFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            tools:context=".ui.radio.RadioFragment">
+
+            <TextView
+                android:id="@+id/tv_trending_podcasts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Trending podcasts"
+                android:textStyle="bold"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_all_podcast_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="All"
+                android:textColor="@color/SteelBlue"
+                app:layout_constraintBottom_toTopOf="@+id/trending_podcast_stations"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trending_podcast_stations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_trending_podcasts"
+                app:setAdapter="@{adapter}"
+                app:submitList="@{podcastDataBinding.podcastListArray}"
+                tools:listitem="@layout/radio_row" />
+
+            <TextView
+                android:id="@+id/tv_pop_rock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="Podcast Playlists"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trending_podcast_stations" />
+
+            <TextView
+                android:id="@+id/tv_all_tag_podcast_playlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="All"
+                android:textColor="@color/SteelBlue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trending_podcast_stations" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_play_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:setAdapter="@{playlistadapter}"
+                app:submitList="@{podcastDataBinding.podcastListArray}"
+                tools:listitem="@layout/radio_row"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_pop_rock" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </layout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

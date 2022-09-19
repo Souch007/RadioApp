@@ -67,10 +67,12 @@
         app:submitList="@{radioDataBinding.radioListingArray}"
         tools:listitem="@layout/radio_row" />
 
-    <View
+    <ImageView
         android:id="@+id/ads_view"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp"
+        android:src="@drawable/temp_ads"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />

@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
-        android:padding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
@@ -51,6 +50,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/search_view"
             app:layout_constraintEnd_toEndOf="parent"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +73,28 @@
                 android:hint="@string/hint_search"
                 android:importantForAutofill="no"
                 android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/prime_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/back_prime"
+            android:layout_margin="@dimen/_3sdp"
+            app:layout_constraintTop_toBottomOf="@+id/search_view">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_6sdp"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="Get radio without video ads"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
