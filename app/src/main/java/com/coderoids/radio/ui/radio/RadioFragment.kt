@@ -5,8 +5,7 @@ import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
 import com.coderoids.radio.request.Resource
-import com.coderoids.radio.request.repository.AppRepository
-import com.coderoids.radio.request.repository.BaseRepository
+
 
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
