@@ -15,6 +15,7 @@
     android:layout_height="wrap_content"
     android:elevation="@dimen/_8sdp"
     android:layout_margin="@dimen/_4sdp"
+    android:onClick="@{() -> listener.onRadioClicked(data)}"
     >
 
     <LinearLayout

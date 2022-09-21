@@ -65,17 +65,19 @@
                 android:src="@drawable/ic_baseline_search_24"
                 android:contentDescription="@string/desccontent"
                 app:tint="@color/black" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_3sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
+                android:background="@color/white"
                 android:hint="@string/hint_search"
                 android:importantForAutofill="no"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
