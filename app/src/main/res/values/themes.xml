@@ -40,5 +40,16 @@
 
     <style name="Theme.Radio.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="textTitle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/amiko_regular</item>
+        <item name="maxLines">1</item>
+    </style>
+
+   <style name="textHeading" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/amiko_bold</item>
+        <item name="maxLines">1</item>
+    </style>
+
+
 
 </resources>

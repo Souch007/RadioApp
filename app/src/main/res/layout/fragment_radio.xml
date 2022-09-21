@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="radioDataBinding"
             type="com.coderoids.radio.ui.radio.RadioViewModel" />
@@ -21,228 +22,240 @@
             name="newsadapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        tools:context=".ui.radio.RadioFragment">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/tv_local_stations"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="Local Stations"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_all_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/all"
-            android:textColor="@color/Gold"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/all_radio_stations"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/all_radio_stations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_local_stations"
-            app:setAdapter="@{adapter}"
-            app:submitList="@{radioDataBinding.radioListingArray}"
-            tools:listitem="@layout/radio_row" />
-
-        <ImageView
-            android:id="@+id/ads_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/temp_ads"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
+            android:layout_height="0dp"
+            android:orientation="vertical"
 
-        <TextView
-            android:id="@+id/tv_pop_rock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_11sdp"
-            android:text="Most Listened Pop and rock"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ads_view" />
+            tools:context=".ui.radio.RadioFragment">
 
-        <TextView
-            android:id="@+id/tv_all_tag_pop_rock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/all"
-            android:textColor="@color/Gold"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ads_view" />
+            <TextView
+                android:id="@+id/tv_local_stations"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Local Stations"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/most_listened_pop_rock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_pop_rock"
-            app:setAdapter="@{popadapter}"
-            app:submitList="@{radioDataBinding.radioPopListingArray}"
-            tools:listitem="@layout/radio_row" />
+            <TextView
+                android:id="@+id/tv_all_tag"
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/all"
+                android:textColor="@color/Gold"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_local_stations"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/all_radio_stations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_local_stations"
+                app:setAdapter="@{adapter}"
+                app:submitList="@{radioDataBinding.radioListingArray}"
+                tools:listitem="@layout/radio_row" />
+
+            <ImageView
+                android:id="@+id/ads_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/temp_ads"
+                android:paddingBottom="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
+
+            <TextView
+                android:id="@+id/tv_pop_rock"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Most Listened Pop and rock"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ads_view" />
+
+            <TextView
+                android:id="@+id/tv_all_tag_pop_rock"
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/all"
+                android:textColor="@color/Gold"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_pop_rock"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/most_listened_pop_rock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_pop_rock"
+                app:setAdapter="@{popadapter}"
+                app:submitList="@{radioDataBinding.radioPopListingArray}"
+                tools:listitem="@layout/radio_row" />
 
 
-        <TextView
-            android:id="@+id/tv_news"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="Favoured news ad culture stations"
-            android:textStyle="bold"
-            android:textSize="@dimen/_11sdp"
+            <TextView
+                android:id="@+id/tv_news"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Favoured news ad culture stations"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
+            <TextView
+                android:id="@+id/tv_all_tag_news"
 
-        <TextView
-            android:id="@+id/tv_all_tag_news"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/all"
-            android:textColor="@color/Gold"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/most_listened_pop_rock" />
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/all"
+                android:textColor="@color/Gold"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_news"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/featured_news_culture_stations"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
-            app:setAdapter="@{newsadapter}"
-            app:submitList="@{radioDataBinding.radioNewsListingArray}"
-            tools:listitem="@layout/radio_row" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/featured_news_culture_stations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
+                app:setAdapter="@{newsadapter}"
+                app:submitList="@{radioDataBinding.radioNewsListingArray}"
+                tools:listitem="@layout/radio_row" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/top_100_radio_listing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/top_100_radio_listing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
 
-        <RelativeLayout
-            android:id="@+id/podcast_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
+            <RelativeLayout
+                android:id="@+id/podcast_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/editors_pick_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/podcast_view" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/editors_pick_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/podcast_view" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/best_of"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editors_pick_view" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/best_of"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editors_pick_view" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/atmospheric"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/best_of" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/atmospheric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/best_of" />
 
-        <View
-            android:id="@+id/ads_view_2"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/atmospheric" />
+            <View
+                android:id="@+id/ads_view_2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/atmospheric" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/topics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ads_view_2" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ads_view_2" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/genres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topics" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topics" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cities"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/genres" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/genres" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/countries"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cities" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/countries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cities" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/languages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countries" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/countries" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

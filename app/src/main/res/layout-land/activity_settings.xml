@@ -41,8 +41,7 @@
             android:text="@string/title_welcome"
             android:textColor="@color/white"
             android:textAlignment="center"
-            style="@style/textHeading"
-            android:textSize="@dimen/_11sdp"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,21 +52,9 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/Black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout">
-
-        <View
-            android:id="@+id/cenet_view"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:alpha="0.5"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_alaram"
@@ -75,21 +62,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:drawableLeft="@drawable/ic_baseline_alarm_24"
-            android:drawablePadding="@dimen/_2sdp"
             android:gravity="center"
-            android:text="Alarm Clock"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_10sdp"
+            android:text="Alarm"
+            app:layout_constraintEnd_toStartOf="@+id/cenet_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/cenet_midview"
-            android:layout_width="1.5dp"
-            android:layout_height="0dp"
-            android:alpha="0.5"
-            android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/cenet_bottomview"
+            android:id="@+id/cenet_view"
+            android:layout_width="3dp"
+            android:layout_height="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -102,24 +84,9 @@
             android:backgroundTint="@color/black"
             android:drawableLeft="@drawable/ic_sleep_24"
             android:text="Sleep Timer"
-            android:textAllCaps="false"
-            android:gravity="start|center"
-            android:textSize="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cenet_midview"
+            app:layout_constraintStart_toEndOf="@+id/cenet_view"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/cenet_bottomview"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:alpha="0.5"
-            android:background="@color/white"
-android:layout_marginBottom="@dimen/_2sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_alaram"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="-16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
@@ -130,7 +97,6 @@ android:layout_marginBottom="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        android:name="com.coderoids.radio.ui.ui.settings.SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        android:name="com.coderoids.radio.ui.ui.settings.SettingsFragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
