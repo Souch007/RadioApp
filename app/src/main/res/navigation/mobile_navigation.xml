@@ -9,7 +9,11 @@
         android:id="@+id/navigation_radio"
         android:name="com.coderoids.radio.ui.radio.RadioFragment"
         android:label="@string/title_radio"
-        tools:layout="@layout/fragment_radio" />
+        tools:layout="@layout/fragment_radio" >
+        <action
+            android:id="@+id/action_navigation_radio_to_navigation_radio_player"
+            app:destination="@id/navigation_radio_player" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_podcast"
@@ -28,4 +32,10 @@
         android:name="com.coderoids.radio.ui.favourites.FavouritesFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_favourites" />
+
+    <fragment
+        android:id="@+id/navigation_radio_player"
+        android:name="com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment"
+        android:label="@string/radio_player"
+        tools:layout="@layout/fragment_radio_player" />
 </navigation>

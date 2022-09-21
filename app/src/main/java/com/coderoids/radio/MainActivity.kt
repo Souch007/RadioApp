@@ -34,6 +34,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
+        Observers()
+    }
+
+    private fun Observers() {
+        radioViewModel.radioClickEvent.observe(this){
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
+            navController.navigate(R.id.navigation_radio_player);
+        }
     }
 
     private fun callApis() {
@@ -61,20 +69,10 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_radio -> {
-                    binding.tvRadio.text = "Radio"
-                }
-                R.id.navigation_podcast -> {
-                    binding.tvRadio.text = "Podcast"
-
-                }
-                R.id.navigation_favourites -> {
-                    binding.tvRadio.text = "Favourites"
-                }
-                R.id.navigation_search -> {
-                    binding.tvRadio.text = "Search"
-
-                }
+                R.id.navigation_radio -> binding.tvRadio.text = "Radio"
+                R.id.navigation_podcast -> binding.tvRadio.text = "Podcast"
+                R.id.navigation_favourites -> binding.tvRadio.text = "Favourites"
+                R.id.navigation_search -> binding.tvRadio.text = "Search"
             }
         }
 
