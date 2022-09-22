@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun Observers() {
         radioViewModel.radioClickEvent.observe(this){
+            binding.settingsBarLayout.visibility = View.GONE
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
         }
@@ -69,10 +71,15 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_radio -> binding.tvRadio.text = "Radio"
+
+                R.id.navigation_radio -> {
+                    binding.settingsBarLayout.visibility = View.VISIBLE
+                    binding.tvRadio.text = "Radio"
+                }
                 R.id.navigation_podcast -> binding.tvRadio.text = "Podcast"
                 R.id.navigation_favourites -> binding.tvRadio.text = "Favourites"
                 R.id.navigation_search -> binding.tvRadio.text = "Search"
+
             }
         }
 
