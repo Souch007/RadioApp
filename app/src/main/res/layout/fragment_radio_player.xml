@@ -74,16 +74,20 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:src="@drawable/ic_podcast"
+                    app:setImage="@{radioViewModel.radioClickEvent.favicon}"
                     android:id="@+id/iv_channel_logo"/>
 
                 <TextView
+                    android:id="@+id/location_channel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
                     android:layout_toEndOf="@+id/iv_channel_logo"
-                    android:textColor="@color/white"
-                    android:layout_margin="@dimen/_15sdp"
-                    android:id="@+id/location_channel"
-                    android:text="Channel Locaiton"/>
+                    android:text="@{radioViewModel.radioClickEvent.country}"
+                    android:textColor="@color/white" />
 
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
