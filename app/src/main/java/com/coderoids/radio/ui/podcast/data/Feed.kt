@@ -11,7 +11,7 @@ data class Feed(
     val dead: Int,
     val description: String,
     val generator: String,
-    override val id: Long,
+    override val id: String,
     val image: String,
     val imageUrlHash: Long,
     val itunesId: Int,

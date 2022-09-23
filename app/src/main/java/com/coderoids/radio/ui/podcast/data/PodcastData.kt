@@ -8,5 +8,5 @@ data class PodcastData(
     val feeds: List<Feed>,
     val query: String,
     val status: String,
-    override val id: Long
+    override val id: String
 )  : ListAdapterItem, java.io.Serializable

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="data"
-            type="com.coderoids.radio.ui.radio.data.Data" />
+            name="radioLists"
+            type="com.coderoids.radio.ui.radio.data.temp.RadioLists" />
 
         <variable
             name="listener"
@@ -20,7 +20,7 @@
     android:layout_margin="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_5sdp"
     app:cardElevation="@dimen/_3sdp"
-    android:onClick="@{() -> listener.onRadioClicked(data)}"
+    android:onClick="@{() -> listener.onRadioClicked(radioLists)}"
     >
         <LinearLayout
             android:layout_width="@dimen/_90sdp"
@@ -38,7 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setImage="@{data.favicon}" />
+                app:setImage="@{radioLists.favicon}" />
 
 
             <TextView
@@ -49,7 +49,7 @@
                 android:ellipsize="end"
                 android:padding="@dimen/_2sdp"
                 android:maxLines="1"
-                android:text="@{data.name}"
+                android:text="@{radioLists.name}"
                 style="@style/textTitle"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_7sdp"

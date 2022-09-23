@@ -22,21 +22,6 @@ class MainViewModel : ViewModel(){
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
             radioViewModel._radioListing.value = appRepository.getRadioListing()
-            getRadioPopListing(radioViewModel)
-        }
-    }
-
-    fun getRadioPopListing(radioViewModel: RadioViewModel){
-        viewModelScope.launch {
-            radioViewModel._radioPopListing.value = appRepository.getPopRockRadioListing()
-            getRadioNewsListing(radioViewModel)
-
-        }
-    }
-
-    fun getRadioNewsListing(radioViewModel: RadioViewModel){
-        viewModelScope.launch {
-            radioViewModel._radioNewsListing.value = appRepository.getRadioNewsListing()
         }
     }
 

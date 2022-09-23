@@ -3,22 +3,22 @@ package com.coderoids.radio.ui.radio.adapter
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.databinding.RadioRowBinding
-import com.coderoids.radio.ui.radio.data.Data
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
 
 class RadioFragmentAdapter(
-    private val list: List<Data>,
+    private val list: List<RadioLists>,
     private val OnClickListnerRadio: OnClickListnerRadio
-) : BaseAdapter<RadioRowBinding, Data>(list) {
+) : BaseAdapter<RadioRowBinding, RadioLists>(list) {
     override val layoutId: Int = R.layout.radio_row
 
-    override fun bind(binding: RadioRowBinding, item: Data) {
+    override fun bind(binding: RadioRowBinding, item: RadioLists) {
         binding.apply {
-            data = item
+            radioLists = item
             listener = OnClickListnerRadio
             executePendingBindings()
         }
     }
 }
 interface OnClickListnerRadio {
-    fun onRadioClicked(data: Data)
+    fun onRadioClicked(data: RadioLists)
 }

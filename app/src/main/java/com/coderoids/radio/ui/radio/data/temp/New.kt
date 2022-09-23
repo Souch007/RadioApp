@@ -1,11 +1,11 @@
-package com.coderoids.radio.ui.radio.data
+package com.coderoids.radio.ui.radio.data.temp
 
 
-import com.coderoids.radio.interfaces.ListAdapterItem
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import androidx.annotation.Keep
 
-data class Data(
+@Keep
+data class New(
     @SerializedName("bitrate")
     val bitrate: Int,
     @SerializedName("changeuuid")
@@ -27,19 +27,21 @@ data class Data(
     @SerializedName("favicon")
     val favicon: String,
     @SerializedName("geo_lat")
-    val geoLat: Any,
+    val geoLat: Double,
     @SerializedName("geo_long")
-    val geoLong: Any,
+    val geoLong: Double,
     @SerializedName("has_extended_info")
     val hasExtendedInfo: Boolean,
     @SerializedName("hls")
     val hls: Int,
     @SerializedName("homepage")
     val homepage: String,
+    @SerializedName("_id")
+    val id: String,
     @SerializedName("iso_3166_2")
     val iso31662: Any,
     @SerializedName("language")
-    val language: String,
+    val language: List<String>,
     @SerializedName("languagecodes")
     val languagecodes: String,
     @SerializedName("lastchangetime")
@@ -71,12 +73,11 @@ data class Data(
     @SerializedName("stationuuid")
     val stationuuid: String,
     @SerializedName("tags")
-    val tags: String,
+    val tags: List<String>,
     @SerializedName("url")
     val url: String,
     @SerializedName("url_resolved")
     val urlResolved: String,
     @SerializedName("votes")
-    val votes: Int,
-    override val id: Long = 0
-) : ListAdapterItem , Serializable
+    val votes: Int
+)
