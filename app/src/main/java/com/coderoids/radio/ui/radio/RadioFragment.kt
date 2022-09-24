@@ -34,9 +34,6 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
                 }
             }
-
-
-
         }
     }
 
