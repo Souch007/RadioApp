@@ -5,19 +5,15 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
-
         <variable
             name="radioDataBinding"
             type="com.coderoids.radio.ui.radio.RadioViewModel" />
-
         <variable
             name="adapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
-
         <variable
             name="popadapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
-
         <variable
             name="newsadapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
@@ -40,8 +36,8 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_15sdp"
                 android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Local Stations"
                 android:textSize="@dimen/_11sdp"
@@ -81,9 +77,9 @@
                 android:id="@+id/ads_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_250sdp"
+                android:paddingBottom="@dimen/_10sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/temp_ads"
-                android:paddingBottom="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
@@ -93,8 +89,8 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_15sdp"
                 android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Most Listened Pop and rock"
                 android:textSize="@dimen/_11sdp"
@@ -177,13 +173,63 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/podcast_view"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_100sdp"
+                android:layout_height="@dimen/_300sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/featured_news_culture_stations" />
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/top_100_radio_listing">
+
+                <TextView
+                    style="@style/textHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="Listen to the best shows"
+                    android:textSize="@dimen/_11sdp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    android:orientation="vertical"
+                    tools:context="com.tbuonomo.dotsindicatorsample.viewpager.ViewPagerActivity">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_270sdp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_above="@+id/dots_indicator"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                        android:id="@+id/dots_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:dotsColor="@color/White"
+                        app:dotsCornerRadius="8dp"
+                        app:dotsSize="16dp"
+                        app:dotsSpacing="4dp"
+                        app:dotsWidthFactor="2.5"
+                        android:padding="@dimen/_10sdp"
+                        app:progressMode="false"
+                        app:selectedDotColor="@color/Blue" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/editors_pick_view"

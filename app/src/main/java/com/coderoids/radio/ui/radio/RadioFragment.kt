@@ -6,6 +6,8 @@ import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
 import com.coderoids.radio.request.Resource
+import com.coderoids.radio.ui.radio.adapter.DotIndicatorAdapter
+import com.coderoids.radio.util.ZoomOutPageTransformer
 
 
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
@@ -34,6 +36,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
                 }
             }
+        }
+        with(viewPager){
+            adapter = DotIndicatorAdapter()
+            setPageTransformer(true, ZoomOutPageTransformer())
+            dotsIndicator.attachTo(this)
         }
     }
 
