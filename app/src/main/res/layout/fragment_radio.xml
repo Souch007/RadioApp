@@ -17,6 +17,11 @@
         <variable
             name="newsadapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+
+        <variable
+            name="classicalAdapter"
+            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+
     </data>
 
     <ScrollView
@@ -140,7 +145,6 @@
 
             <TextView
                 android:id="@+id/tv_all_tag_news"
-
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,10 +180,10 @@
             <LinearLayout
                 android:id="@+id/podcast_view"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_300sdp"
+                android:layout_height="@dimen/_220sdp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/top_100_radio_listing">
 
                 <TextView
@@ -190,24 +194,23 @@
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="Listen to the best shows"
-                    android:textSize="@dimen/_11sdp"/>
+                    android:textSize="@dimen/_11sdp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/black"
+                    android:layout_height="@dimen/_180sdp"
+                    android:background="@drawable/back_prime"
                     android:orientation="vertical"
                     tools:context="com.tbuonomo.dotsindicatorsample.viewpager.ViewPagerActivity">
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/view_pager"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_270sdp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="@dimen/_180sdp"
+                        android:layout_above="@+id/dots_indicator"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_above="@+id/dots_indicator"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -218,26 +221,57 @@
                         android:layout_centerInParent="true"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
+                        android:padding="@dimen/_5sdp"
                         app:dotsColor="@color/White"
                         app:dotsCornerRadius="8dp"
                         app:dotsSize="16dp"
                         app:dotsSpacing="4dp"
                         app:dotsWidthFactor="2.5"
-                        android:padding="@dimen/_10sdp"
                         app:progressMode="false"
-                        app:selectedDotColor="@color/Blue" />
+                        app:selectedDotColor="@color/Black" />
 
                 </RelativeLayout>
-
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_classical"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Classical"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/podcast_view" />
+
+            <TextView
+                android:id="@+id/tv_all_tag_tv_classical"
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/all"
+                android:textColor="@color/Gold"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_classical"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/editors_pick_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/podcast_view" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_classical"
+                app:setAdapter="@{classicalAdapter}"
+                app:submitList="@{radioDataBinding.radioClassicallistingArry}"
+                tools:listitem="@layout/radio_row" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/best_of"

@@ -100,7 +100,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/_8sdp"
-
                     android:text="Get radio without video ads"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"

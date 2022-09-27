@@ -3,22 +3,43 @@ package com.coderoids.radio.ui.radio.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.R
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
+import com.makeramen.roundedimageview.RoundedImageView
 
-class DotIndicatorAdapter : PagerAdapter() {
+class DotIndicatorAdapter(var publicRadio: List<RadioLists>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val item = LayoutInflater.from(container.context).inflate(
             R.layout.material_page, container,
             false
         )
+        var textPodcastName =  item.findViewById<TextView>(R.id.podcast_title_r)
+        var imageItemPodcast =  item.findViewById<RoundedImageView>(R.id.item_image)
+        var podcastLocation =  item.findViewById<TextView>(R.id.podcast_location_r)
+        textPodcastName.text = publicRadio.get(position).name
+        podcastLocation.text = publicRadio.get(position).country
+        Glide.with(container.context)
+            .load(publicRadio.get(position).favicon)
+            .error(R.drawable.logo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH)
+            .into(imageItemPodcast)
         container.addView(item)
         return item
     }
 
     override fun getCount(): Int {
-        return 5
+        if(publicRadio.size >= 5)
+            return 5;
+        else
+            return publicRadio.size;
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

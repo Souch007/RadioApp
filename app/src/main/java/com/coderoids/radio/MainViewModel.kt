@@ -30,4 +30,10 @@ class MainViewModel : ViewModel(){
             podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing()
         }
     }
+
+    fun getLanguages(radioViewModel: RadioViewModel){
+        viewModelScope.launch {
+            appRepository.getLanguages()
+        }
+    }
 }

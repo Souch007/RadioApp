@@ -31,7 +31,9 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio {
     val _radioNewsListArray = MutableLiveData<List<RadioLists>>()
     val radioNewsListingArray: LiveData<List<RadioLists>> = _radioNewsListArray
 
-
+    //_________________________________Radio News and Culture______________________//
+    val _radioClassicallistingArry = MutableLiveData<List<RadioLists>>()
+    val radioClassicallistingArry: LiveData<List<RadioLists>> = _radioClassicallistingArry
 
 
 

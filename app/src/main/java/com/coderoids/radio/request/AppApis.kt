@@ -10,4 +10,7 @@ suspend fun getRadioStations() : RadioResponse
 
 @GET(AppConstants.PODCAST_LISTING)
 suspend  fun getPodCastStations() : PodcastData
+
+@GET(AppConstants.PODCAST_LISTING)
+suspend  fun getPodCastStations() : PodcastData
 }

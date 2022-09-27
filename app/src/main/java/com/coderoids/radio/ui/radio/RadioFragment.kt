@@ -1,7 +1,6 @@
 package com.coderoids.radio.ui.radio
 
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.navOptions
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
@@ -24,11 +23,19 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
 
                 radioViewModel._radioPopListArray.value = data.pop
-
                 binding.popadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
 
                 radioViewModel._radioNewsListArray.value = data.news
                 binding.newsadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+
+                radioViewModel._radioClassicallistingArry.value = data.classical
+                binding.classicalAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+
+                with(viewPager){
+                    adapter = DotIndicatorAdapter(data.publicRadio)
+                    setPageTransformer(true, ZoomOutPageTransformer())
+                    dotsIndicator.attachTo(this)
+                }
             } catch (ex : java.lang.Exception){
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
@@ -37,11 +44,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 }
             }
         }
-        with(viewPager){
-            adapter = DotIndicatorAdapter()
-            setPageTransformer(true, ZoomOutPageTransformer())
-            dotsIndicator.attachTo(this)
-        }
+
     }
 
 }
