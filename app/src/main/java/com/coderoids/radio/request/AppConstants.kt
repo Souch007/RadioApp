@@ -7,5 +7,4 @@ object AppConstants {
     const val GET_LANGUAGES = "/getAllLanguages/";
     const val GET_ALL_COUNTRIES = "/getAllLanguages";
     const val GET_ALL_GENRES = "/getAllGenres";
-
 }
