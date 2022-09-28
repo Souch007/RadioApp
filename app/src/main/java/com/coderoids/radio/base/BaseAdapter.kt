@@ -15,6 +15,8 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
 
     abstract fun bind(binding: BINDING, item: T)
 
+    abstract fun getItemsCount(data: List<T>) : Int
+
     fun updateData(list: List<T>) {
         this.data = list
         notifyDataSetChanged()
@@ -35,5 +37,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
         bind(holder.binder, data[position])
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int {
+        return getItemsCount(data)
+    }
 }

@@ -5,6 +5,6 @@ object AppConstants {
     const val FETCH_RADIO = "getRadioListing/";
     const val PODCAST_LISTING = "podcast-api/";
     const val GET_LANGUAGES = "/getAllLanguages/";
-    const val GET_ALL_COUNTRIES = "/getAllLanguages";
+    const val GET_ALL_COUNTRIES = "/getAllCountries";
     const val GET_ALL_GENRES = "/getAllGenres";
 }

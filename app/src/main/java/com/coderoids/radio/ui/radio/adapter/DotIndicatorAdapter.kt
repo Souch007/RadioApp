@@ -16,10 +16,7 @@ import com.makeramen.roundedimageview.RoundedImageView
 class DotIndicatorAdapter(var publicRadio: List<RadioLists>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val item = LayoutInflater.from(container.context).inflate(
-            R.layout.material_page, container,
-            false
-        )
+        val item = LayoutInflater.from(container.context).inflate(R.layout.material_page, container, false)
         var textPodcastName =  item.findViewById<TextView>(R.id.podcast_title_r)
         var imageItemPodcast =  item.findViewById<RoundedImageView>(R.id.item_image)
         var podcastLocation =  item.findViewById<TextView>(R.id.podcast_location_r)

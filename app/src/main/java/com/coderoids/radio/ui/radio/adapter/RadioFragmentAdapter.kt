@@ -4,6 +4,7 @@ import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.databinding.RadioRowBinding
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
+import com.coderoids.radio.ui.radio.lanuages.Data
 
 class RadioFragmentAdapter(
     private val list: List<RadioLists>,
@@ -17,6 +18,10 @@ class RadioFragmentAdapter(
             listener = OnClickListnerRadio
             executePendingBindings()
         }
+    }
+
+    override fun getItemsCount(data: List<RadioLists>): Int {
+        return data.size;
     }
 }
 interface OnClickListnerRadio {

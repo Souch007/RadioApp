@@ -1,7 +1,10 @@
 package com.coderoids.radio.request
 
 import com.coderoids.radio.ui.podcast.data.PodcastData
+import com.coderoids.radio.ui.radio.genres.Genres
+import com.coderoids.radio.ui.radio.countries.Countries
 import com.coderoids.radio.ui.radio.data.temp.RadioResponse
+import com.coderoids.radio.ui.radio.lanuages.Lanuages
 import retrofit2.http.GET
 
 interface AppApis {
@@ -12,5 +15,11 @@ suspend fun getRadioStations() : RadioResponse
 suspend  fun getPodCastStations() : PodcastData
 
 @GET(AppConstants.GET_LANGUAGES)
-suspend  fun getLanguages() : PodcastData
+suspend  fun getLanguages() : Lanuages
+
+@GET(AppConstants.GET_ALL_COUNTRIES)
+suspend  fun getCountries() : Countries
+
+@GET(AppConstants.GET_ALL_GENRES)
+suspend  fun getAllGenres() : Genres
 }

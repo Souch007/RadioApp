@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
     private fun callApis() {
         mainViewModel.getRadioListing(radioViewModel)
         mainViewModel.getPodCastListing(podcastViewModel)
+        mainViewModel.getLanguages(radioViewModel)
+        mainViewModel.getCountires(radioViewModel)
+        mainViewModel.getAllGenres(radioViewModel)
     }
 
     private fun initializeViewModel() {
@@ -71,14 +74,20 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-
                 R.id.navigation_radio -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
                     binding.tvRadio.text = "Radio"
                 }
-                R.id.navigation_podcast -> binding.tvRadio.text = "Podcast"
-                R.id.navigation_favourites -> binding.tvRadio.text = "Favourites"
-                R.id.navigation_search -> binding.tvRadio.text = "Search"
+                R.id.navigation_podcast -> {
+                    binding.settingsBarLayout.visibility = View.VISIBLE
+                    binding.tvRadio.text = "Podcast"
+                }
+                R.id.navigation_favourites -> {
+                    binding.settingsBarLayout.visibility = View.VISIBLE
+                    binding.tvRadio.text = "Favourites"}
+                R.id.navigation_search ->{
+                    binding.settingsBarLayout.visibility = View.VISIBLE
+                    binding.tvRadio.text = "Search"}
 
             }
         }

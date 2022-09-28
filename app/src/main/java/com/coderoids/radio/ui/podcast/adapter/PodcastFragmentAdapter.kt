@@ -6,6 +6,7 @@ import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.databinding.PodcastRowBinding
 import com.coderoids.radio.databinding.RadioRowBinding
 import com.coderoids.radio.ui.podcast.data.Feed
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileExistsException
 
 class PodcastFragmentAdapter(
@@ -21,6 +22,11 @@ class PodcastFragmentAdapter(
             executePendingBindings()
         }
     }
+
+    override fun getItemsCount(data: List<Feed>): Int {
+        return data.size;
+    }
+
 }
 interface OnClickListenerPodcast {
     fun onPodCastClicked(data: Feed)

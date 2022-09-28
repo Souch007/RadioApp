@@ -7,11 +7,18 @@ import com.coderoids.radio.request.AppApis
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.Resource
 import com.coderoids.radio.request.repository.AppRepository
+import com.coderoids.radio.ui.radio.genres.Genres
+import com.coderoids.radio.ui.radio.adapter.OnClickGeneresListener
+import com.coderoids.radio.ui.radio.adapter.OnClickListenerCountires
+import com.coderoids.radio.ui.radio.adapter.OnClickListenerLanguages
 import com.coderoids.radio.ui.radio.adapter.OnClickListnerRadio
+import com.coderoids.radio.ui.radio.countries.Countries
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.radio.data.temp.RadioResponse
+import com.coderoids.radio.ui.radio.lanuages.Data
+import com.coderoids.radio.ui.radio.lanuages.Lanuages
 
-class RadioViewModel() : ViewModel() , OnClickListnerRadio {
+class RadioViewModel() : ViewModel() , OnClickListnerRadio , OnClickListenerLanguages,OnClickListenerCountires , OnClickGeneresListener{
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
@@ -35,13 +42,44 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio {
     val _radioClassicallistingArry = MutableLiveData<List<RadioLists>>()
     val radioClassicallistingArry: LiveData<List<RadioLists>> = _radioClassicallistingArry
 
+    //_____________________ Languages ______________________________//
+
+    val _languageListingMutable = MutableLiveData<Resource<Lanuages>>()
+    val languagesListingLive : LiveData<Resource<Lanuages>> = _languageListingMutable
+
+    val _langListArray = MutableLiveData<List<Data>>()
+    val langListArray : LiveData<List<Data>> = _langListArray
+
+    //______________Countries____________________//
+
+    val _countriesListingMutable = MutableLiveData<Resource<Countries>>()
+    val countriesListingLive : LiveData<Resource<Countries>> = _countriesListingMutable
+
+    val _countriesListArray = MutableLiveData<List<com.coderoids.radio.ui.radio.countries.Data>>()
+    val countriesListArray : LiveData<List<com.coderoids.radio.ui.radio.countries.Data>> = _countriesListArray
 
 
-    //_________________Player Listner_____________//
+    //______________Geners____________________//
+
+    val _genresListinMutable = MutableLiveData<Resource<Genres>>()
+    val _genresListinLive: LiveData<Resource<Genres>> = _genresListinMutable
+
+    val _genresListArray = MutableLiveData<List<com.coderoids.radio.ui.radio.genres.Data>>()
+    val genresListArray : LiveData<List<com.coderoids.radio.ui.radio.genres.Data>> = _genresListArray
+    //_________________Player Listener_____________//
     val _radioClickEvent = MutableLiveData<RadioLists>()
     val radioClickEvent: LiveData<RadioLists> = _radioClickEvent
 
     override fun onRadioClicked(data: RadioLists) {
         _radioClickEvent.value = data
+    }
+
+    override fun onLanguageClicked(data: Data) {
+    }
+
+    override fun OnCountrlySelected(data: com.coderoids.radio.ui.radio.countries.Data) {
+    }
+
+    override fun OnClickGenres(data: com.coderoids.radio.ui.radio.genres.Data) {
     }
 }

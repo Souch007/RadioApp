@@ -14,4 +14,12 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
    suspend fun getLanguages() = safeApiCall {
         appApis.getLanguages()
     }
+
+    suspend fun getCountries() = safeApiCall {
+        appApis.getCountries()
+    }
+
+    suspend fun getAllGenres() = safeApiCall {
+        appApis.getAllGenres()
+    }
 }

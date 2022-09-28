@@ -33,7 +33,19 @@ class MainViewModel : ViewModel(){
 
     fun getLanguages(radioViewModel: RadioViewModel){
         viewModelScope.launch {
-            appRepository.getLanguages()
+            radioViewModel._languageListingMutable.value  = appRepository.getLanguages()
+        }
+    }
+
+    fun getCountires(radioViewModel: RadioViewModel){
+        viewModelScope.launch {
+            radioViewModel._countriesListingMutable.value  = appRepository.getCountries()
+        }
+    }
+
+    fun getAllGenres(radioViewModel: RadioViewModel){
+        viewModelScope.launch {
+            radioViewModel._genresListinMutable.value  = appRepository.getAllGenres()
         }
     }
 }

@@ -8,6 +8,8 @@ import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast
 import com.coderoids.radio.ui.podcast.data.Feed
 import com.coderoids.radio.ui.podcast.data.PodcastData
+import com.coderoids.radio.ui.radio.lanuages.Data
+import com.coderoids.radio.ui.radio.lanuages.Lanuages
 
 class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() , OnClickListenerPodcast{
 
@@ -15,6 +17,8 @@ class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() ,
     val podcastListingLive: LiveData<Resource<PodcastData>> = _podcastListingMutable
     val _podcastListArray = MutableLiveData<List<Feed>>()
     val podcastListArray: LiveData<List<Feed>> = _podcastListArray
+
+
     //____________Pod cast
 
 
