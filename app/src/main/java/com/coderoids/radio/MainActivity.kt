@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.aemerse.slider.ImageCarousel
+import com.aemerse.slider.model.CarouselItem
 import com.coderoids.radio.base.ViewModelFactory
 import com.coderoids.radio.databinding.ActivityMainBinding
 import com.coderoids.radio.request.AppApis
@@ -21,6 +22,8 @@ import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +39,78 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
+
+        binding.slidingLayout.addPanelSlideListener(
+            object : SlidingUpPanelLayout.PanelSlideListener {
+                override fun onPanelSlide(panel: View, slideOffset: Float) {
+
+                }
+
+                override fun onPanelStateChanged(
+                    panel: View?,
+                    previousState: SlidingUpPanelLayout.PanelState?,
+                    newState: SlidingUpPanelLayout.PanelState?
+                ) {
+                    if(newState!!.name == "EXPANDED"){
+                        binding.header.visibility = View.GONE
+                    } else {
+                        binding.header.visibility = View.VISIBLE
+                    }
+                }
+            }
+        )
+        val carousel: ImageCarousel = findViewById(R.id.carousel)
+
+// Register lifecycle. For activity this will be lifecycle/getLifecycle() and for fragment it will be viewLifecycleOwner/getViewLifecycleOwner().
+        carousel.registerLifecycle(lifecycle)
+
+        val list = mutableListOf<CarouselItem>()
+
+// Image URL with caption
+        list.add(
+            CarouselItem(
+                imageUrl = "https://images.unsplash.com/photo-1532581291347-9c39cf10a73c?w=1080",
+                caption = "Photo by Aaron Wu on Unsplash"
+            )
+        )
+
+// Just image URL
+        list.add(
+            CarouselItem(
+                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080"
+            )
+        )
+
+// Image URL with header
+        val headers = mutableMapOf<String, String>()
+        headers["header_key"] = "header_value"
+
+        list.add(
+            CarouselItem(
+                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080",
+                headers = headers
+            )
+        )
+
+// Image drawable with caption
+        list.add(
+            CarouselItem(
+                imageDrawable = R.drawable.ic_baseline_radio_24,
+                caption = "Photo by Kimiya Oveisi on Unsplash"
+            )
+        )
+
+// Just image drawable
+        list.add(
+            CarouselItem(
+                imageDrawable = R.drawable.ic_baseline_favorite_border_24
+            )
+        )
+
+// ...
+
+        carousel.setData(list)
+
     }
 
     private fun Observers() {

@@ -2,6 +2,7 @@ package com.coderoids.radio.ui.radio.radioplayer
 
 import android.media.MediaPlayer
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
@@ -26,10 +27,12 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         exoPlayer = ExoPlayer.Builder(requireContext()).build().also { exoPlayer->
             val url = binding.radioplayerbinding!!.radioClickEvent.value?.urlResolved
             binding.playButton.player = exoPlayer
+            binding.playButton.showTimeoutMs = -1
             val mediaItem = MediaItem.fromUri(url!!)
             exoPlayer.setMediaItem(mediaItem)
             binding.playButton.setOnClickListener {
                 exoPlayer.play()
+                binding.playButton.show()
             }
             binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
         }

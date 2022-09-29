@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.aemerse.slider.ImageCarousel
+        android:id="@+id/carousel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_centerInParent="true"
+        app:autoPlay="false"
+        app:autoPlayDelay="3000"
+        app:autoWidthFixing="true"
+        app:bottomShadowAlpha="0.6"
+        app:bottomShadowHeight="64dp"
+        app:captionMargin="0dp"
+        app:captionTextSize="14sp"
+        app:carouselBackground="#00000000"
+        app:carouselGravity="CENTER"
+        app:carouselPadding="0dp"
+        app:carouselPaddingBottom="0dp"
+        app:carouselPaddingEnd="0dp"
+        app:carouselPaddingStart="0dp"
+        app:carouselPaddingTop="0dp"
+        app:carouselType="BLOCK"
+        app:imagePlaceholder="@drawable/ic_baseline_arrow_outward_24"
+        app:imageScaleType="centerCrop"
+        app:indicatorMargin="0dp"
+        app:infiniteCarousel="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:nextButtonId="@id/btn_next"
+        app:nextButtonLayout="@layout/next_button_layout"
+        app:nextButtonMargin="4dp"
+        app:previousButtonId="@id/btn_previous"
+        app:previousButtonLayout="@layout/previous_button_layout"
+        app:previousButtonMargin="4dp"
+        app:scaleOnScroll="false"
+        app:scalingFactor="0.15"
+        app:showBottomShadow="true"
+        app:showCaption="true"
+        app:showIndicator="true"
+        app:showNavigationButtons="true"
+        app:showTopShadow="true"
+        app:topShadowAlpha="0.6"
+        app:topShadowHeight="32dp"
+        app:touchToPause="true"
+        tools:ignore="MissingClass" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_below="@+id/carousel"
+        android:background="@color/black"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/ic_podcast"
+            android:id="@+id/iv_channel_logo"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/iv_channel_logo"
+            >
+
+
+            <ImageView
+                android:id="@+id/fav_ic"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_baseline_favorite_border_24"
+                app:tint="@color/white" />
+
+            <com.google.android.exoplayer2.ui.PlayerControlView
+                android:id="@+id/play_button"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_20sdp"
+                app:tint="@color/white" />
+            <!--                <ImageView-->
+            <!--                    android:layout_width="@dimen/_45sdp"-->
+            <!--                    android:layout_height="@dimen/_45sdp"-->
+            <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
+            <!--                    android:layout_below="@+id/location_channel"-->
+            <!--                    android:layout_toEndOf="@+id/fav_ic"-->
+            <!--                    android:layout_marginStart="@dimen/_20sdp"-->
+            <!--                    android:id="@+id/play_button"-->
+            <!--                    app:tint="@color/white" />-->
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/ic_baseline_drag_indicator_24"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                app:tint="@color/white"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
 
@@ -16,96 +17,304 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/settings_bar_layout"
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/title_settings"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_baseline_settings_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/tv_Radio"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/title_radio"
-                style="@style/textHeading"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_13sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            sothree:umanoDragView="@+id/dragView"
+            sothree:umanoOverlay="true">
 
             <LinearLayout
-                android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/search_bg"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_Radio">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settings_bar_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/desccontent"
-                    android:padding="@dimen/_10sdp"
-                    android:src="@drawable/ic_baseline_search_24"
-                    app:tint="@color/black" />
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
+                    <ImageView
+                        android:id="@+id/iv_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/title_settings"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_baseline_settings_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_Radio"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/title_radio"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/search_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/search_bg"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_Radio">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/desccontent"
+                            android:padding="@dimen/_10sdp"
+                            android:src="@drawable/ic_baseline_search_24"
+                            app:tint="@color/black" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_3sdp"
+                            android:background="@color/white"
+                            android:hint="@string/hint_search"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/prime_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_3sdp"
+                        android:background="@drawable/back_prime"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/search_view">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/_8sdp"
+                            android:text="Get radio without video ads"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <fragment
+                    android:id="@+id/nav_host_fragment_activity_main"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_3sdp"
-                    android:background="@color/white"
-                    android:hint="@string/hint_search"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:textSize="@dimen/_10sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black" />
+                    app:defaultNavHost="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
+                    app:navGraph="@navigation/mobile_navigation" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/prime_layout"
+                android:id="@+id/dragView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_3sdp"
-                android:background="@drawable/back_prime"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_view">
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="false"
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/_8sdp"
-                    android:text="Get radio without video ads"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    />
+                    android:background="@color/black"
+                    android:orientation="horizontal"
+                    android:id="@+id/head">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/header">
+
+                        <ImageView
+                            android:id="@+id/fav_ic"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/_30sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:src="@drawable/ic_baseline_favorite_border_24"
+                            app:tint="@color/white" />
+
+                        <com.google.android.exoplayer2.ui.PlayerControlView
+                            android:id="@+id/play_button"
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            app:show_timeout="-1"
+                            app:tint="@color/white" />
+                        <!--                <ImageView-->
+                        <!--                    android:layout_width="@dimen/_45sdp"-->
+                        <!--                    android:layout_height="@dimen/_45sdp"-->
+                        <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
+                        <!--                    android:layout_below="@+id/location_channel"-->
+                        <!--                    android:layout_toEndOf="@+id/fav_ic"-->
+                        <!--                    android:layout_marginStart="@dimen/_20sdp"-->
+                        <!--                    android:id="@+id/play_button"-->
+                        <!--                    app:tint="@color/white" />-->
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_30sdp"
+                            android:src="@drawable/ic_baseline_drag_indicator_24"
+                            app:tint="@color/white" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black">
+                    <com.aemerse.slider.ImageCarousel
+                        android:id="@+id/carousel"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_300sdp"
+                        android:layout_centerInParent="true"
+                        app:autoPlay="false"
+                        app:autoPlayDelay="3000"
+                        app:autoWidthFixing="true"
+                        app:bottomShadowAlpha="0.6"
+                        app:bottomShadowHeight="64dp"
+                        app:captionMargin="0dp"
+                        app:captionTextSize="14sp"
+                        app:carouselBackground="#00000000"
+                        app:carouselGravity="CENTER"
+                        app:carouselPadding="0dp"
+                        app:carouselPaddingBottom="0dp"
+                        app:carouselPaddingEnd="0dp"
+                        app:carouselPaddingStart="0dp"
+                        app:carouselPaddingTop="0dp"
+                        app:carouselType="BLOCK"
+                        app:imagePlaceholder="@drawable/ic_baseline_arrow_outward_24"
+                        app:imageScaleType="centerCrop"
+                        app:indicatorMargin="0dp"
+                        app:infiniteCarousel="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:nextButtonId="@id/btn_next"
+                        app:nextButtonLayout="@layout/next_button_layout"
+                        app:nextButtonMargin="4dp"
+                        app:previousButtonId="@id/btn_previous"
+                        app:previousButtonLayout="@layout/previous_button_layout"
+                        app:previousButtonMargin="4dp"
+                        app:scaleOnScroll="false"
+                        app:scalingFactor="0.15"
+                        app:showBottomShadow="true"
+                        app:showCaption="true"
+                        app:showIndicator="true"
+                        app:showNavigationButtons="true"
+                        app:showTopShadow="true"
+                        app:topShadowAlpha="0.6"
+                        app:topShadowHeight="32dp"
+                        app:touchToPause="true"
+                        tools:ignore="MissingClass" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_below="@+id/carousel"
+                        android:background="@color/black"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:src="@drawable/ic_podcast"
+                            android:id="@+id/iv_channel_logo"/>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_toEndOf="@+id/iv_channel_logo"
+                            >
+
+
+                            <ImageView
+                                android:id="@+id/fav_ic_carousel"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="@dimen/_30sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:src="@drawable/ic_baseline_favorite_border_24"
+                                app:tint="@color/white" />
+
+                            <com.google.android.exoplayer2.ui.PlayerControlView
+                                android:id="@+id/play_button_carousel"
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                app:tint="@color/white" />
+                            <!--                <ImageView-->
+                            <!--                    android:layout_width="@dimen/_45sdp"-->
+                            <!--                    android:layout_height="@dimen/_45sdp"-->
+                            <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
+                            <!--                    android:layout_below="@+id/location_channel"-->
+                            <!--                    android:layout_toEndOf="@+id/fav_ic"-->
+                            <!--                    android:layout_marginStart="@dimen/_20sdp"-->
+                            <!--                    android:id="@+id/play_button"-->
+                            <!--                    app:tint="@color/white" />-->
+
+                            <ImageView
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:src="@drawable/ic_baseline_drag_indicator_24"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_30sdp"
+                                app:tint="@color/white"/>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
@@ -121,18 +330,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu" />
-
-        <fragment
-            android:id="@+id/nav_host_fragment_activity_main"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@id/nav_view"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
-            app:navGraph="@navigation/mobile_navigation" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

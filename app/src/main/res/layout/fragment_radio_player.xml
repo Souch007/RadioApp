@@ -81,22 +81,21 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/iv_channel_logo"
                     >
-                    <TextView
-                        android:id="@+id/location_channel"
+                    <com.airbnb.lottie.LottieAnimationView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_15sdp"
-                        android:text="@{radioplayerbinding.radioClickEvent.country}"
-                        android:textColor="@color/white" />
+                        android:layout_height="@dimen/_50sdp"
+                        android:id="@+id/animation_view"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/animation"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        app:lottie_loop="true"/>
 
                     <ImageView
                         android:id="@+id/fav_ic"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_below="@+id/location_channel"
+                        android:layout_below="@+id/animation_view"
                         android:layout_alignParentStart="true"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/_30sdp"
@@ -108,7 +107,7 @@
                         android:id="@+id/play_button"
                         android:layout_width="@dimen/_45sdp"
                         android:layout_height="@dimen/_45sdp"
-                        android:layout_below="@+id/location_channel"
+                        android:layout_below="@+id/animation_view"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/_20sdp"
                         app:tint="@color/white" />
@@ -126,13 +125,15 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:src="@drawable/ic_baseline_drag_indicator_24"
-                        android:layout_below="@+id/location_channel"
+                        android:layout_below="@+id/animation_view"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_30sdp"
                         app:tint="@color/white"/>
+
                 </RelativeLayout>
+
             </RelativeLayout>
 
 
