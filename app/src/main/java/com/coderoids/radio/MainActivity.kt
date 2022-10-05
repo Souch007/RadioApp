@@ -119,6 +119,18 @@ class MainActivity : AppCompatActivity() {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
         }
+
+//        if(mainViewModel.isPlayerVisible.value != null && mainViewModel.isPlayerVisible.value == true){
+//            binding.dragView.visibility = View.VISIBLE
+//        } else
+//            binding.dragView.visibility = View.GONE
+//
+//        mainViewModel.isPlayerVisible.observe(this@MainActivity){
+//            if(it == true){
+//                binding.dragView.visibility = View.VISIBLE
+//            } else
+//                binding.dragView.visibility = View.GONE
+//        }
     }
 
     private fun callApis() {

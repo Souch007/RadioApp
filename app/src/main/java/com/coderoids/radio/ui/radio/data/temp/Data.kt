@@ -24,6 +24,8 @@ data class Data(
     val radio: List<RadioLists>,
     @SerializedName("rock")
     val rock: List<RadioLists>,
+    @SerializedName("podcasts")
+    val podcasts: List<podcastsItem>,
     @SerializedName("talk")
     val talk: List<RadioLists>
 )

@@ -33,7 +33,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 binding.classicalAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
 
                 with(viewPager){
-                    adapter = DotIndicatorAdapter(data.publicRadio)
+                    adapter = DotIndicatorAdapter(data.podcasts)
                     setPageTransformer(true, ZoomOutPageTransformer())
                     dotsIndicator.attachTo(this)
                 }

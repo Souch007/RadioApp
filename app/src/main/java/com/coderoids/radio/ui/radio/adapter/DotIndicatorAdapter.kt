@@ -11,19 +11,20 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.R
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
+import com.coderoids.radio.ui.radio.data.temp.podcastsItem
 import com.makeramen.roundedimageview.RoundedImageView
 
-class DotIndicatorAdapter(var publicRadio: List<RadioLists>) : PagerAdapter() {
+class DotIndicatorAdapter(var publicRadio: List<podcastsItem>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val item = LayoutInflater.from(container.context).inflate(R.layout.material_page, container, false)
         var textPodcastName =  item.findViewById<TextView>(R.id.podcast_title_r)
         var imageItemPodcast =  item.findViewById<RoundedImageView>(R.id.item_image)
         var podcastLocation =  item.findViewById<TextView>(R.id.podcast_location_r)
-        textPodcastName.text = publicRadio.get(position).name
-        podcastLocation.text = publicRadio.get(position).country
+        textPodcastName.text = publicRadio.get(position).title
+        podcastLocation.text = publicRadio.get(position).author
         Glide.with(container.context)
-            .load(publicRadio.get(position).favicon)
+            .load(publicRadio.get(position).image)
             .error(R.drawable.logo)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH)

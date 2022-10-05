@@ -8,20 +8,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.navGraphViewModels
+import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioPlayerBinding
 import com.coderoids.radio.ui.radio.RadioViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 
-class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fragment_radio_player){
+class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fragment_radio_player),Player.Listener{
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var radioViewModel: RadioViewModel
+    private lateinit var mainActivityViewModel : MainViewModel
+
     override fun FragmentRadioPlayerBinding.initialize() {
         binding.lifecycleOwner =this@RadioPlayerFragment
         activity.let {
             radioViewModel = ViewModelProvider(it!!).get(RadioViewModel::class.java)
+            mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
             binding.radioplayerbinding = radioViewModel
         }
         exoPlayer = ExoPlayer.Builder(requireContext()).build().also { exoPlayer->
@@ -30,11 +35,22 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
             binding.playButton.showTimeoutMs = -1
             val mediaItem = MediaItem.fromUri(url!!)
             exoPlayer.setMediaItem(mediaItem)
-            binding.playButton.setOnClickListener {
-                exoPlayer.play()
-                binding.playButton.show()
-            }
+            exoPlayer.addListener(this@RadioPlayerFragment)
             binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
         }
+        binding.ivBack.setOnClickListener {
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_activity_main)
+            navController.navigate(R.id.navigation_radio);
+        }
+    }
+
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+        super.onIsPlayingChanged(isPlaying)
+        if(isPlaying){
+            mainActivityViewModel._isPlayerVisible.value = true
+        } else {
+            mainActivityViewModel._isPlayerVisible.value = false
+        }
+
     }
 }

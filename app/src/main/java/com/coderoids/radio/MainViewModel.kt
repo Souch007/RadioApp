@@ -2,6 +2,8 @@ package com.coderoids.radio
 
 import android.util.Log
 import android.util.Log.INFO
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.coderoids.radio.request.AppApis
@@ -18,6 +20,8 @@ class MainViewModel : ViewModel(){
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
 
+    val _isPlayerVisible = MutableLiveData<Boolean>()
+    val isPlayerVisible : LiveData<Boolean> = _isPlayerVisible
 
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
