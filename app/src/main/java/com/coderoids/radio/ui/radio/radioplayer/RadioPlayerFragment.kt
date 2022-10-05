@@ -39,16 +39,17 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
             binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
         }
         binding.ivBack.setOnClickListener {
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_activity_main)
-            navController.navigate(R.id.navigation_radio);
+            mainActivityViewModel._isPlayerFragVisible.value = false
         }
     }
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
         if(isPlaying){
+            binding.animationView.visibility = View.VISIBLE
             mainActivityViewModel._isPlayerVisible.value = true
         } else {
+            binding.animationView.visibility = View.GONE
             mainActivityViewModel._isPlayerVisible.value = false
         }
 

@@ -115,11 +115,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun Observers() {
         radioViewModel.radioClickEvent.observe(this){
-            binding.settingsBarLayout.visibility = View.GONE
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
+            binding.settingsBarLayout.visibility = View.GONE
         }
 
+        mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
+            if(!it) {
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_radio);
+                binding.settingsBarLayout.visibility = View.VISIBLE
+
+            }
+        }
 //        if(mainViewModel.isPlayerVisible.value != null && mainViewModel.isPlayerVisible.value == true){
 //            binding.dragView.visibility = View.VISIBLE
 //        } else

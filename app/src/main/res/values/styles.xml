@@ -2,7 +2,12 @@
 <resources>
 
     <style name="Color1SwitchStyle">
-        <item name="colorControlActivated">@color/Gold</item>
-        <item name="colorControlHighlight">@color/Gold</item>
+        <item name="colorControlActivated">@color/OrangeRed</item>
+        <item name="colorControlHighlight">@color/OrangeRed</item>
+    </style>
+
+        <style name="roundedImageViewRounded">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSize">50%</item>
     </style>
 </resources>

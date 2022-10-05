@@ -23,6 +23,9 @@ class MainViewModel : ViewModel(){
     val _isPlayerVisible = MutableLiveData<Boolean>()
     val isPlayerVisible : LiveData<Boolean> = _isPlayerVisible
 
+    val _isPlayerFragVisible = MutableLiveData<Boolean>()
+    val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible
+
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
             radioViewModel._radioListing.value = appRepository.getRadioListing()

@@ -47,6 +47,17 @@ fun setImage(imageView: ImageView, image: String) {
         .into(imageView)
 }
 
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter("setImage")
+fun setImage(imageView: ShapeableImageView, image: String) {
+    Glide.with(imageView.context)
+        .load(image)
+        .error(R.drawable.logo)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .priority(Priority.HIGH)
+        .into(imageView)
+}
+
 @BindingAdapter("setFavouriteCondition")
 fun setFavouriteCondition(imageView: ShapeableImageView, isFavourite: Boolean) {
     if (isFavourite) {

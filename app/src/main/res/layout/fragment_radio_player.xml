@@ -32,7 +32,7 @@
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@drawable/back_nav_grad"
             android:padding="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,47 +70,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_channel_name">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
-                    android:src="@drawable/ic_podcast"
+                    android:src="@drawable/logo"
+                    app:strokeWidth="1dp"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                     app:setImage="@{radioplayerbinding.radioClickEvent.favicon}"
                     android:id="@+id/iv_channel_logo"/>
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_toEndOf="@+id/iv_channel_logo"
                     >
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
-                        android:id="@+id/animation_view"
-                        app:lottie_autoPlay="true"
-                        app:lottie_rawRes="@raw/animation"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        app:lottie_loop="true"/>
 
-                    <ImageView
-                        android:id="@+id/fav_ic"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:layout_below="@+id/animation_view"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:src="@drawable/ic_baseline_favorite_border_24"
-                        app:tint="@color/white" />
+
 
                     <com.google.android.exoplayer2.ui.PlayerControlView
                         android:id="@+id/play_button"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_45sdp"
-                        android:layout_below="@+id/animation_view"
-                        android:layout_centerInParent="true"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        app:tint="@color/white" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:controller_layout_id="@layout/exo_custom"
+                         />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_50sdp"
+                            android:id="@+id/animation_view"
+                            app:lottie_autoPlay="true"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:visibility="gone"
+                            android:layout_below="@+id/play_button"
+                            app:lottie_loop="true"/>
+                    </LinearLayout>
+
                     <!--                <ImageView-->
                     <!--                    android:layout_width="@dimen/_45sdp"-->
                     <!--                    android:layout_height="@dimen/_45sdp"-->
@@ -121,18 +119,9 @@
                     <!--                    android:id="@+id/play_button"-->
                     <!--                    app:tint="@color/white" />-->
 
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/ic_baseline_drag_indicator_24"
-                        android:layout_below="@+id/animation_view"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_30sdp"
-                        app:tint="@color/white"/>
 
-                </RelativeLayout>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
