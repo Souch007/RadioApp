@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
-        binding.dragView.visibility = View.GONE
+        binding.dragView.visibility = View.INVISIBLE
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
                 override fun onPanelSlide(panel: View, slideOffset: Float) {
@@ -172,4 +172,5 @@ class MainActivity : AppCompatActivity() {
         val remoteDataSource = RemoteDataSource()
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
     }
+
 }

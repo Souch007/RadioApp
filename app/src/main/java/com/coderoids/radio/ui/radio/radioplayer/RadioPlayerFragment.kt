@@ -50,6 +50,7 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         }
         binding.ivBack.setOnClickListener {
             mainActivityViewModel._isPlayerFragVisible.value = false
+
         }
     }
 
@@ -57,4 +58,5 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         super.onIsPlayingChanged(isPlaying)
         mainActivityViewModel._isPlayerVisible.value = isPlaying
     }
+
 }
