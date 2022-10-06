@@ -47,9 +47,12 @@
                 android:padding="@dimen/_2sdp"
                 android:text="@{feeds.title}"
                 style="@style/textTitle"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_7sdp"
                 android:textStyle="normal"
+                android:lines="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

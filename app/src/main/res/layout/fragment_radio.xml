@@ -53,13 +53,13 @@
 
             <TextView
                 android:id="@+id/tv_local_stations"
-                style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Local Stations"
+                style="@style/textHeading"
                 android:textSize="@dimen/_11sdp"
                 app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -214,7 +214,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_180sdp"
-                    android:background="@drawable/back_prime"
+                    android:background="@color/Black"
                     android:orientation="vertical"
                     tools:context="com.tbuonomo.dotsindicatorsample.viewpager.ViewPagerActivity">
 
@@ -270,7 +270,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_classical"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -318,7 +318,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_genres"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -358,7 +358,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_countries"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -398,7 +398,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_languages"
                 app:layout_constraintEnd_toEndOf="parent" />

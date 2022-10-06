@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
-        binding.dragView.visibility = View.INVISIBLE
+        binding.slidingLayout.panelHeight = 0
+
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
                 override fun onPanelSlide(panel: View, slideOffset: Float) {
@@ -110,6 +111,8 @@ class MainActivity : AppCompatActivity() {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_radio);
                 binding.settingsBarLayout.visibility = View.VISIBLE
+                binding.slidingLayout.panelHeight = 200
+
             }
         }
 
@@ -172,5 +175,4 @@ class MainActivity : AppCompatActivity() {
         val remoteDataSource = RemoteDataSource()
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
     }
-
 }

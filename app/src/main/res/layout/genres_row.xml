@@ -16,7 +16,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_margin="@dimen/_4sdp"
+        android:layout_margin="@dimen/_6sdp"
         android:elevation="@dimen/_8sdp"
         app:cardCornerRadius="@dimen/_5sdp"
         android:outlineAmbientShadowColor="@color/Salmon"
