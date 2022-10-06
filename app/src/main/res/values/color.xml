@@ -28,7 +28,7 @@
     <color name="Coral">#FF7F50</color>
     <color name="HotPink">#FF69B4</color>
     <color name="Tomato">#FF6347</color>
-    <color name="OrangeRed">#FF4500</color>
+    <color name="OrangeRed">#FF7B5B</color>
     <color name="DeepPink">#FF1493</color>
     <color name="Fuchsia">#FF00FF</color>
     <color name="Magenta">#FF00FF</color>
@@ -143,6 +143,7 @@
     <color name="MediumBlue">#0000CD</color>
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
-    <color name="black">#000000</color>
+    <color name="black">#111111</color>
     <color name="Black">#000000</color>
+    <color name="brown">#8D4130</color>
 </resources>

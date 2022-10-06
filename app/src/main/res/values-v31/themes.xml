@@ -8,7 +8,7 @@
         <item name="colorOnPrimary">@color/White</item>
         <item name="colorOnSecondary">@color/Black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/DarkOrange</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="backgroundColor">@color/white</item>
         <item name="android:textColor">@color/black</item>

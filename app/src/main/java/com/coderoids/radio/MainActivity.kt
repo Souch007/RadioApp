@@ -42,10 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
-                override fun onPanelSlide(panel: View, slideOffset: Float) {
-
-                }
-
+                override fun onPanelSlide(panel: View, slideOffset: Float) {}
                 override fun onPanelStateChanged(
                     panel: View?,
                     previousState: SlidingUpPanelLayout.PanelState?,
@@ -116,14 +113,14 @@ class MainActivity : AppCompatActivity() {
     private fun Observers() {
         radioViewModel.radioClickEvent.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            navController.navigate(R.id.navigation_radio_player);
+            navController.navigate(R.id.navigation_radio_player)
             binding.settingsBarLayout.visibility = View.GONE
         }
 
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
             if(!it) {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navController.navigate(R.id.navigation_radio);
+                navController.navigate(R.id.navigation_radio)
                 binding.settingsBarLayout.visibility = View.VISIBLE
 
             }

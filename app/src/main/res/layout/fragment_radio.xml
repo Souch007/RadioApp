@@ -74,7 +74,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_local_stations"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -125,7 +125,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_pop_rock"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -166,7 +166,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:textColor="@color/Gold"
+                android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_news"
                 app:layout_constraintEnd_toEndOf="parent" />
