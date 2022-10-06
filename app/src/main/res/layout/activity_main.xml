@@ -14,13 +14,15 @@
         <variable
             name="mainViewModel"
             type="com.coderoids.radio.MainViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent">
+
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
@@ -162,44 +164,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:id="@+id/fav_ic"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="@dimen/_30sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:src="@drawable/ic_baseline_favorite_border_24"
-                            app:tint="@color/white" />
-
                         <com.google.android.exoplayer2.ui.PlayerControlView
-                            android:id="@+id/play_button"
-                            android:layout_width="@dimen/_45sdp"
-                            android:layout_height="@dimen/_45sdp"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="@dimen/_20sdp"
+                            android:id="@+id/play_button_carousel_"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             app:show_timeout="-1"
-                            app:tint="@color/white" />
-                        <!--                <ImageView-->
-                        <!--                    android:layout_width="@dimen/_45sdp"-->
-                        <!--                    android:layout_height="@dimen/_45sdp"-->
-                        <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
-                        <!--                    android:layout_below="@+id/location_channel"-->
-                        <!--                    android:layout_toEndOf="@+id/fav_ic"-->
-                        <!--                    android:layout_marginStart="@dimen/_20sdp"-->
-                        <!--                    android:id="@+id/play_button"-->
-                        <!--                    app:tint="@color/white" />-->
-
-                        <ImageView
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_30sdp"
-                            android:src="@drawable/ic_baseline_drag_indicator_24"
-                            app:tint="@color/white" />
+                            app:controller_layout_id="@layout/exo_custom"
+                            />
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -276,44 +248,13 @@
                             android:layout_centerInParent="true"
                             android:layout_toEndOf="@+id/iv_channel_logo">
 
-
-                            <ImageView
-                                android:id="@+id/fav_ic_carousel"
-                                android:layout_width="@dimen/_25sdp"
-                                android:layout_height="@dimen/_25sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="@dimen/_30sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:src="@drawable/ic_baseline_favorite_border_24"
-                                app:tint="@color/white" />
-
                             <com.google.android.exoplayer2.ui.PlayerControlView
-                                android:id="@+id/play_button_carousel"
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="@dimen/_45sdp"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="@dimen/_20sdp"
-                                app:tint="@color/white" />
-                            <!--                <ImageView-->
-                            <!--                    android:layout_width="@dimen/_45sdp"-->
-                            <!--                    android:layout_height="@dimen/_45sdp"-->
-                            <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
-                            <!--                    android:layout_below="@+id/location_channel"-->
-                            <!--                    android:layout_toEndOf="@+id/fav_ic"-->
-                            <!--                    android:layout_marginStart="@dimen/_20sdp"-->
-                            <!--                    android:id="@+id/play_button"-->
-                            <!--                    app:tint="@color/white" />-->
-
-                            <ImageView
-                                android:layout_width="@dimen/_25sdp"
-                                android:layout_height="@dimen/_25sdp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginEnd="@dimen/_30sdp"
-                                android:src="@drawable/ic_baseline_drag_indicator_24"
-                                app:tint="@color/white" />
+                                android:id="@+id/play_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                app:controller_layout_id="@layout/exo_custom"
+                                />
 
                         </RelativeLayout>
 

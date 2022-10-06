@@ -16,7 +16,6 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner =this@RadioFragment
         binding.radioDataBinding =radioViewModel
-
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data

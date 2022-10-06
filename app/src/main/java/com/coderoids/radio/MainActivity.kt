@@ -112,6 +112,8 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.navigation_radio);
                 binding.settingsBarLayout.visibility = View.VISIBLE
                 binding.slidingLayout.panelHeight = 200
+                binding.playButtonCarousel.player = mainViewModel.exoPlayer
+                binding.playButtonCarousel.showTimeoutMs = -1
 
             }
         }

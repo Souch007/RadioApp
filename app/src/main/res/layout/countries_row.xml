@@ -15,9 +15,13 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40sdp"
+        android:elevation="@dimen/_8sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
         app:cardBackgroundColor="@color/black"
         android:layout_margin="@dimen/_5sdp"
+        android:outlineAmbientShadowColor="@color/Salmon"
+        android:outlineSpotShadowColor="@color/Salmon"
         app:cardElevation="@dimen/_20sdp" >
 
         <!--        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"-->
@@ -25,26 +29,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
+            android:padding="@dimen/_2sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/textTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:padding="@dimen/_5sdp"
-                android:maxLines="1"
                 android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="@dimen/_5sdp"
                 android:text="@{languageList.name}"
-                style="@style/textTitle"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="normal"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent" />
             <View
                 android:layout_width="match_parent"

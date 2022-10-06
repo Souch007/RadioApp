@@ -15,17 +15,21 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="0dp"
-       >
+        android:layout_height="@dimen/_40sdp"
+        android:elevation="@dimen/_8sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardBackgroundColor="@color/black"
+        android:layout_margin="@dimen/_5sdp"
+        android:outlineAmbientShadowColor="@color/Salmon"
+        android:outlineSpotShadowColor="@color/Salmon"
+        app:cardElevation="@dimen/_20sdp">
 
         <!--        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_languages"
             android:orientation="vertical"
-android:padding="@dimen/_2sdp"
+            android:padding="@dimen/_2sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -50,11 +54,10 @@ android:padding="@dimen/_2sdp"
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:alpha=".2"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_below="@id/textView"
-                android:background="@color/black"
-                />
+                android:layout_marginTop="@dimen/_2sdp"
+                android:alpha=".2"
+                android:background="@color/black" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -100,6 +100,7 @@
                 android:paddingBottom="@dimen/_10sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/temp_ads"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
@@ -367,13 +368,13 @@
                 android:id="@+id/countries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_countries"
                 app:setAdapter="@{countriesAdapter}"
                 app:submitList="@{radioDataBinding.countriesListArray}"
+                app:spanCount="3"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/languages_row" />
 
             <TextView
@@ -408,12 +409,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_languages"
                 app:setAdapter="@{languagesAdapter}"
                 app:submitList="@{radioDataBinding.langListArray}"
+                app:spanCount="3"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/languages_row" />
 
 
