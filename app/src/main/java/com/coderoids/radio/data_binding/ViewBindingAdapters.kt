@@ -2,6 +2,7 @@ package com.coderoids.radio.data_binding
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
@@ -65,5 +66,15 @@ fun setFavouriteCondition(imageView: ShapeableImageView, isFavourite: Boolean) {
     } else {
         imageView.setImageResource(R.drawable.ic_baseline_favorite_border_24)
     }
+
+}
+
+@BindingAdapter("setPlayerVisibility")
+fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean){
+    if(isVisibile)
+    linearLayout.visibility = View.VISIBLE
+    else
+        linearLayout.visibility = View.GONE
+
 
 }

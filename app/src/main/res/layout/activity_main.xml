@@ -10,6 +10,10 @@
         <variable
             name="mainActivity"
             type="com.coderoids.radio.MainActivity" />
+
+        <variable
+            name="mainViewModel"
+            type="com.coderoids.radio.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,6 +11,7 @@ import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import okhttp3.internal.platform.Platform.Companion.INFO
 import java.util.logging.Level.INFO
@@ -25,6 +26,8 @@ class MainViewModel : ViewModel(){
 
     val _isPlayerFragVisible = MutableLiveData<Boolean>()
     val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible
+    public var exoPlayer: ExoPlayer? = null
+
 
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
