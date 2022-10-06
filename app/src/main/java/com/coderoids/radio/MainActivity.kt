@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -39,13 +40,11 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
-
+        binding.dragView.visibility = View.GONE
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
                 override fun onPanelSlide(panel: View, slideOffset: Float) {
-
                 }
-
                 override fun onPanelStateChanged(
                     panel: View?,
                     previousState: SlidingUpPanelLayout.PanelState?,
@@ -60,28 +59,19 @@ class MainActivity : AppCompatActivity() {
             }
         )
         val carousel: ImageCarousel = findViewById(R.id.carousel)
-
-// Register lifecycle. For activity this will be lifecycle/getLifecycle() and for fragment it will be viewLifecycleOwner/getViewLifecycleOwner().
         carousel.registerLifecycle(lifecycle)
-
         val list = mutableListOf<CarouselItem>()
-
-// Image URL with caption
         list.add(
             CarouselItem(
                 imageUrl = "https://images.unsplash.com/photo-1532581291347-9c39cf10a73c?w=1080",
                 caption = "Photo by Aaron Wu on Unsplash"
             )
         )
-
-// Just image URL
         list.add(
             CarouselItem(
                 imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080"
             )
         )
-
-// Image URL with header
         val headers = mutableMapOf<String, String>()
         headers["header_key"] = "header_value"
 
@@ -92,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-// Image drawable with caption
         list.add(
             CarouselItem(
                 imageDrawable = R.drawable.ic_baseline_radio_24,
@@ -100,15 +89,11 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-// Just image drawable
         list.add(
             CarouselItem(
                 imageDrawable = R.drawable.ic_baseline_favorite_border_24
             )
         )
-
-// ...
-
         carousel.setData(list)
 
     }
@@ -125,20 +110,9 @@ class MainActivity : AppCompatActivity() {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_radio);
                 binding.settingsBarLayout.visibility = View.VISIBLE
-
             }
         }
-//        if(mainViewModel.isPlayerVisible.value != null && mainViewModel.isPlayerVisible.value == true){
-//            binding.dragView.visibility = View.VISIBLE
-//        } else
-//            binding.dragView.visibility = View.GONE
-//
-//        mainViewModel.isPlayerVisible.observe(this@MainActivity){
-//            if(it == true){
-//                binding.dragView.visibility = View.VISIBLE
-//            } else
-//                binding.dragView.visibility = View.GONE
-//        }
+
     }
 
     private fun callApis() {
