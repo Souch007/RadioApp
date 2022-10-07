@@ -35,16 +35,16 @@
 
             <TextView
                 android:id="@+id/textView"
-                style="@style/textTitle"
+                style="@style/textsubheading"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:ellipsize="end"
                 android:maxLines="1"
+
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:text="@{genresList.name}"
-
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"

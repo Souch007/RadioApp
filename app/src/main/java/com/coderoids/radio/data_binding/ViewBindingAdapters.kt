@@ -13,11 +13,23 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.interfaces.ListAdapterItem
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.imageview.ShapeableImageView
 
 @BindingAdapter("setAdapter")
 fun setAdapter(
     recyclerView: RecyclerView,
+    adapter: BaseAdapter<ViewDataBinding, ListAdapterItem>?
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}
+@BindingAdapter("setAdapter")
+fun setAdapter(
+    recyclerView: ShimmerRecyclerView,
     adapter: BaseAdapter<ViewDataBinding, ListAdapterItem>?
 ) {
     adapter?.let {
@@ -77,4 +89,9 @@ fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean){
         linearLayout.visibility = View.GONE
 
 
+}
+
+@BindingAdapter("setPlayer")
+fun setPlayer(playerControlView: PlayerControlView, exoPlayer: ExoPlayer?){
+        playerControlView.player = exoPlayer;
 }

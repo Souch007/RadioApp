@@ -31,4 +31,10 @@
         <item name="android:fontFamily">@font/amiko</item>
         <item name="android:windowSplashScreenBackground">@color/black</item>
     </style>
+
+    <style name="textsubheading" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

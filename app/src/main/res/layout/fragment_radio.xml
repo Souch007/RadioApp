@@ -51,20 +51,49 @@
             android:orientation="vertical"
             tools:context=".ui.radio.RadioFragment">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="radial">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <TextView
                 android:id="@+id/tv_local_stations"
+                style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Local Stations"
-                style="@style/textHeading"
                 android:textSize="@dimen/_11sdp"
                 app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/shimmerLayout" />
 
             <TextView
                 android:id="@+id/tv_all_tag"
@@ -93,6 +122,7 @@
                 app:submitList="@{radioDataBinding.radioListingArray}"
                 tools:listitem="@layout/radio_row" />
 
+
             <ImageView
                 android:id="@+id/ads_view"
                 android:layout_width="match_parent"
@@ -100,6 +130,7 @@
                 android:paddingBottom="@dimen/_10sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/temp_ads"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/all_radio_stations" />
@@ -183,6 +214,7 @@
                 app:setAdapter="@{newsadapter}"
                 app:submitList="@{radioDataBinding.radioNewsListingArray}"
                 tools:listitem="@layout/radio_row" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/top_100_radio_listing"
@@ -291,7 +323,7 @@
             <View
                 android:id="@+id/ads_view_2"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editors_pick_view" />
@@ -302,7 +334,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
-                android:paddingTop="@dimen/_15sdp"
+                android:paddingTop="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Genres"
                 android:textSize="@dimen/_11sdp"
@@ -367,12 +399,12 @@
                 android:id="@+id/countries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_countries"
                 app:setAdapter="@{countriesAdapter}"
+                app:spanCount="3"
                 app:submitList="@{radioDataBinding.countriesListArray}"
                 tools:listitem="@layout/languages_row" />
 
@@ -408,11 +440,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_languages"
                 app:setAdapter="@{languagesAdapter}"
+                app:spanCount="3"
                 app:submitList="@{radioDataBinding.langListArray}"
                 tools:listitem="@layout/languages_row" />
 

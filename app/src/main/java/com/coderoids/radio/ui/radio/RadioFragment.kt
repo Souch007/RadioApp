@@ -1,5 +1,6 @@
 package com.coderoids.radio.ui.radio
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
@@ -12,66 +13,87 @@ import org.json.JSONException
 
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
-    val radioViewModel :RadioViewModel by activityViewModels()
+    val radioViewModel: RadioViewModel by activityViewModels()
     override fun FragmentRadioBinding.initialize() {
-        binding.lifecycleOwner =this@RadioFragment
-        binding.radioDataBinding =radioViewModel
-
+        binding.lifecycleOwner = this@RadioFragment
+        binding.radioDataBinding = radioViewModel
+        binding.shimmerLayout.stopShimmer()
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
+
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
-                binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+                binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+                    listOf(),
+                    radioViewModel
+                )
 
                 radioViewModel._radioPopListArray.value = data.pop
-                binding.popadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+                binding.popadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+                    listOf(),
+                    radioViewModel
+                )
 
                 radioViewModel._radioNewsListArray.value = data.news
-                binding.newsadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+                binding.newsadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+                    listOf(),
+                    radioViewModel
+                )
 
                 radioViewModel._radioClassicallistingArry.value = data.classical
-                binding.classicalAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(listOf(),radioViewModel)
+                binding.classicalAdapter =
+                    com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+                        listOf(),
+                        radioViewModel
+                    )
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
 
-                with(viewPager){
+                with(viewPager) {
                     adapter = DotIndicatorAdapter(data.podcasts)
                     setPageTransformer(true, ZoomOutPageTransformer())
                     dotsIndicator.attachTo(this)
                 }
-            } catch (ex : java.lang.Exception){
+            } catch (ex: java.lang.Exception) {
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
-                if(failure == 400 && responseBody == null){
+                if (failure == 400 && responseBody == null) {
 
                 }
             }
         }
 
-        radioViewModel.languagesListingLive.observe(this@RadioFragment){
+        radioViewModel.languagesListingLive.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._langListArray.value = data
-                binding.languagesAdapter = com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(),radioViewModel)
-            } catch (exception : JSONException){
+                binding.languagesAdapter =
+                    com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(), radioViewModel)
+            } catch (exception: JSONException) {
                 exception.printStackTrace()
             }
         }
 
-        radioViewModel.countriesListingLive.observe(this@RadioFragment){
+        radioViewModel.countriesListingLive.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._countriesListArray.value = data
-                binding.countriesAdapter = com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(),radioViewModel)
-            } catch (exception : JSONException){
+                binding.countriesAdapter =
+                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), radioViewModel)
+            } catch (exception: JSONException) {
                 exception.printStackTrace()
             }
         }
 
-        radioViewModel._genresListinLive.observe(this@RadioFragment){
+        radioViewModel._genresListinLive.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._genresListArray.value = data
-                binding.genresAdapter = com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(),radioViewModel)
-            } catch (exception : JSONException){
+                binding.genresAdapter =
+                    com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(), radioViewModel)
+            } catch (exception: JSONException) {
                 exception.printStackTrace()
             }
         }
