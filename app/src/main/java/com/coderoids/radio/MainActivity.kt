@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                 binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
                 binding.playButtonCarousel.showTimeoutMs = -1
+                binding.playBtn.player = mainViewModel.exoPlayer
 
             }
         }
