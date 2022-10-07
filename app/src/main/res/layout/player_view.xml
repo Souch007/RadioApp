@@ -60,19 +60,11 @@
         android:gravity="center"
         >
 
-        <ImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/ic_podcast"
-            android:id="@+id/iv_channel_logo"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/iv_channel_logo"
             >
-
-
             <ImageView
                 android:id="@+id/fav_ic"
                 android:layout_width="@dimen/_25sdp"

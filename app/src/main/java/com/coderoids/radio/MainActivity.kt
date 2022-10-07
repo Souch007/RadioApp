@@ -22,6 +22,7 @@ import com.coderoids.radio.ui.SettingsActivity
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment
 import com.coderoids.radio.ui.search.SearchViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
-        binding.slidingLayout.panelHeight = 0
+        binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
 
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
@@ -59,6 +60,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         )
+        binding.slideUp.setOnClickListener {
+            binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+        }
+
+        binding.crossSlider.setOnClickListener {
+            binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+        }
+
         val carousel: ImageCarousel = findViewById(R.id.carousel)
         carousel.registerLifecycle(lifecycle)
         val list = mutableListOf<CarouselItem>()
@@ -111,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_radio);
                 binding.settingsBarLayout.visibility = View.VISIBLE
-                binding.slidingLayout.panelHeight = 200
+                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
                 binding.playButtonCarousel.showTimeoutMs = -1
 
@@ -148,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_radio -> {
+                R.id.navigation_radio  -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
                     binding.tvRadio.text = "Radio"
                 }
@@ -161,7 +170,12 @@ class MainActivity : AppCompatActivity() {
                     binding.tvRadio.text = "Favourites"}
                 R.id.navigation_search ->{
                     binding.settingsBarLayout.visibility = View.VISIBLE
-                    binding.tvRadio.text = "Search"}
+                    binding.tvRadio.text = "Search"
+                }
+                R.id.navigation_radio_player -> {
+                    binding.settingsBarLayout.visibility = View.GONE
+
+                }
 
             }
         }

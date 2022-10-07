@@ -163,15 +163,46 @@
                         android:id="@+id/header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/slideUp"
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="@dimen/_30sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:src="@drawable/ic_baseline_arrow_outward_24"
+                                app:tint="@color/white" />
 
-                        <com.google.android.exoplayer2.ui.PlayerControlView
-                            android:id="@+id/play_button_carousel_"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            app:show_timeout="-1"
-                            app:controller_layout_id="@layout/exo_custom"
-                            />
+                            <com.google.android.exoplayer2.ui.PlayerControlView
+                                android:id="@+id/play_button_carousel_"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                app:show_timeout="-1"
+                                app:controller_layout_id="@layout/exo_custom"
+                                />
+                            <!--                <ImageView-->
+                            <!--                    android:layout_width="@dimen/_45sdp"-->
+                            <!--                    android:layout_height="@dimen/_45sdp"-->
+                            <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
+                            <!--                    android:layout_below="@+id/location_channel"-->
+                            <!--                    android:layout_toEndOf="@+id/fav_ic"-->
+                            <!--                    android:layout_marginStart="@dimen/_20sdp"-->
+                            <!--                    android:id="@+id/play_button"-->
+                            <!--                    app:tint="@color/white" />-->
+
+                            <ImageView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:id="@+id/cross_slider"
+                                android:src="@drawable/ic_cross_white"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_30sdp"
+                                android:layout_centerInParent="true"
+                                app:tint="@color/white"/>
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -180,7 +211,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/black">
-
+                    <ImageView
+                        android:id="@+id/slidedown"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/ic_down_arrow"
+                        app:tint="@color/white" />
                     <com.aemerse.slider.ImageCarousel
                         android:id="@+id/carousel"
                         android:layout_width="match_parent"
