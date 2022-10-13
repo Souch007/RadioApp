@@ -19,14 +19,28 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
 
     override fun FragmentPodcastBinding.initialize() {
         binding.podcastDataBinding = podcastViewModel
-        if(podcastViewModel.podcastListArray.value !=  null && podcastViewModel.podcastListArray.value!!.size >0){
-            binding.adapter = PodcastFragmentAdapter(listOf(),podcastViewModel)
-        }
+//        if(podcastViewModel.podcastListArray.value !=  null && podcastViewModel.podcastListArray.value!!.size >0){
+//            binding.adapter = PodcastFragmentAdapter(listOf(),podcastViewModel)
+//        }
 
         podcastViewModel.podcastListingLive.observe(this@PodcastFragment){
-            val data = (it as Resource.Success).value.feeds
-            podcastViewModel._podcastListArray.value = data
-            binding.adapter = PodcastFragmentAdapter(listOf(),podcastViewModel)
+            if(it != null) {
+                val _data = (it as Resource.Success).value.data
+                podcastViewModel._newsArrayM.value = _data.news
+                binding.newsadapter = PodcastFragmentAdapter(listOf(), podcastViewModel)
+
+                podcastViewModel._fitnessM.value = _data.fitness
+                binding.societyadapter = PodcastFragmentAdapter(listOf(), podcastViewModel)
+
+                podcastViewModel._businessM.value = _data.business
+                binding.businessadapter = PodcastFragmentAdapter(listOf(), podcastViewModel)
+
+                podcastViewModel._cultureM.value = _data.culture
+                binding.culturaladpter = PodcastFragmentAdapter(listOf(), podcastViewModel)
+
+                podcastViewModel._educationM.value = _data.education
+                binding.educationaladapter = PodcastFragmentAdapter(listOf(), podcastViewModel)
+            }
         }
 
     }

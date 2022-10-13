@@ -1,6 +1,6 @@
 package com.coderoids.radio.request
 
-import com.coderoids.radio.ui.podcast.data.PodcastData
+import com.coderoids.radio.ui.podcast.poddata.PodResponce
 import com.coderoids.radio.ui.radio.genres.Genres
 import com.coderoids.radio.ui.radio.countries.Countries
 import com.coderoids.radio.ui.radio.data.temp.RadioResponse
@@ -12,7 +12,7 @@ interface AppApis {
 suspend fun getRadioStations() : RadioResponse
 
 @GET(AppConstants.PODCAST_LISTING)
-suspend  fun getPodCastStations() : PodcastData
+suspend  fun getPodCastStations() : PodResponce
 
 @GET(AppConstants.GET_LANGUAGES)
 suspend  fun getLanguages() : Lanuages

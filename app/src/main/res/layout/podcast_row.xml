@@ -6,7 +6,7 @@
 
         <variable
             name="feeds"
-            type="com.coderoids.radio.ui.podcast.data.Feed" />
+            type="com.coderoids.radio.ui.podcast.poddata.PodListData" />
 
         <variable
             name="listener"

@@ -11,7 +11,7 @@ data class podcastsItem(
     @SerializedName("author")
     val author: String,
     @SerializedName("categories")
-    val categories: Categories,
+    val categories: Array<String>,
     @SerializedName("description")
     val description: String,
     @SerializedName("_id")
