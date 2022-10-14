@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +21,6 @@ import com.coderoids.radio.ui.SettingsActivity
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
-import com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment
 import com.coderoids.radio.ui.search.SearchViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -66,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.crossSlider.setOnClickListener {
             binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            mainViewModel._isPlayerVisible.value = false
         }
 
         val carousel: ImageCarousel = findViewById(R.id.carousel)
@@ -109,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observers() {
-        radioViewModel.radioClickEvent.observe(this){
+        mainViewModel.radioSelectedChannel.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
             binding.settingsBarLayout.visibility = View.GONE
@@ -125,6 +124,13 @@ class MainActivity : AppCompatActivity() {
                 binding.playButtonCarousel.showTimeoutMs = -1
                 binding.playBtn.player = mainViewModel.exoPlayer
 
+            }
+        }
+
+        mainViewModel._isPlayerVisible.observe(this@MainActivity){
+            if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
+                binding.playButtonCarousel.player!!.stop()
+                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
             }
         }
 

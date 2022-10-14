@@ -2,6 +2,8 @@ package com.coderoids.radio.ui.radio
 
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
@@ -14,37 +16,41 @@ import org.json.JSONException
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
     val radioViewModel: RadioViewModel by activityViewModels()
+    private lateinit var mainActivityViewModel : MainViewModel
+
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
+        activity.let {
+            mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
+        }
         binding.shimmerLayout.stopShimmer()
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
-
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
                 binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    radioViewModel
+                    mainActivityViewModel
                 )
 
                 radioViewModel._radioPopListArray.value = data.pop
                 binding.popadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    radioViewModel
+                    mainActivityViewModel
                 )
 
                 radioViewModel._radioNewsListArray.value = data.news
                 binding.newsadapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    radioViewModel
+                    mainActivityViewModel
                 )
 
                 radioViewModel._radioClassicallistingArry.value = data.classical
                 binding.classicalAdapter =
                     com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
                         listOf(),
-                        radioViewModel
+                        mainActivityViewModel
                     )
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
@@ -55,6 +61,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                     dotsIndicator.attachTo(this)
                 }
             } catch (ex: java.lang.Exception) {
+
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
                 val failure = (it as Resource.Failure).errorCode

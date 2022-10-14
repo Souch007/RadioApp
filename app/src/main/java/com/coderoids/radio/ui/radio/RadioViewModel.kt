@@ -67,11 +67,11 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio , OnClickListenerLang
     val _genresListArray = MutableLiveData<List<com.coderoids.radio.ui.radio.genres.Data>>()
     val genresListArray : LiveData<List<com.coderoids.radio.ui.radio.genres.Data>> = _genresListArray
     //_________________Player Listener_____________//
-    val _radioClickEvent = MutableLiveData<RadioLists>()
-    val radioClickEvent: LiveData<RadioLists> = _radioClickEvent
+
+
+
 
     override fun onRadioClicked(data: RadioLists) {
-        _radioClickEvent.value = data
     }
 
     override fun onLanguageClicked(data: Data) {

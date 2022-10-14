@@ -11,12 +11,14 @@ import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.coderoids.radio.ui.radio.adapter.OnClickListnerRadio
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import okhttp3.internal.platform.Platform.Companion.INFO
 import java.util.logging.Level.INFO
 
-class MainViewModel : ViewModel(){
+class MainViewModel : ViewModel() , OnClickListnerRadio {
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
@@ -27,6 +29,12 @@ class MainViewModel : ViewModel(){
     val _isPlayerFragVisible = MutableLiveData<Boolean>()
     val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible
     public var exoPlayer: ExoPlayer? = null
+
+    var _currentPlayingChannel = MutableLiveData<RadioLists>()
+    val currentPlayingChannel: LiveData<RadioLists> = _currentPlayingChannel
+
+    val _radioSelectedChannel = MutableLiveData<RadioLists>()
+    val radioSelectedChannel: LiveData<RadioLists> = _radioSelectedChannel
 
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
@@ -56,5 +64,11 @@ class MainViewModel : ViewModel(){
         viewModelScope.launch {
             radioViewModel._genresListinMutable.value  = appRepository.getAllGenres()
         }
+    }
+    override fun onRadioClicked(data: RadioLists) {
+        _radioSelectedChannel.value = data
+        _isPlayerVisible.value = false
+         exoPlayer = null
+
     }
 }

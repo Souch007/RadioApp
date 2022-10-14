@@ -11,6 +11,10 @@
             type="com.coderoids.radio.ui.radio.RadioViewModel" />
 
         <variable
+            name="mainviewmodel"
+            type="com.coderoids.radio.MainViewModel" />
+
+        <variable
             name="adapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
@@ -76,7 +80,7 @@
                     android:src="@drawable/logo"
                     app:strokeWidth="1dp"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:setImage="@{radioplayerbinding.radioClickEvent.favicon}"
+                    app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
                     android:id="@+id/iv_channel_logo"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,7 +133,7 @@
             android:id="@+id/channel_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{radioplayerbinding.radioClickEvent.country}"
+            android:text="@{mainviewmodel.radioSelectedChannel.country}"
             android:textColor="@color/black"
             android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"

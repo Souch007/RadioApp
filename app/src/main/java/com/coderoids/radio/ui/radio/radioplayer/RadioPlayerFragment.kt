@@ -1,15 +1,6 @@
 package com.coderoids.radio.ui.radio.radioplayer
 
-import android.media.MediaPlayer
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.navGraphViewModels
-import com.coderoids.radio.MainActivity
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
@@ -29,11 +20,16 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
             radioViewModel = ViewModelProvider(it!!).get(RadioViewModel::class.java)
             mainActivityViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             binding.radioplayerbinding = radioViewModel
+            binding.mainviewmodel = mainActivityViewModel
         }
-        if(mainActivityViewModel.exoPlayer == null) {
+        val selectedUUid : String= mainActivityViewModel._radioSelectedChannel.value!!.id
+        var currentPlayingUUid : String = "0"
+        if(mainActivityViewModel._currentPlayingChannel.value != null)
+            currentPlayingUUid = mainActivityViewModel._currentPlayingChannel.value!!.id
+        if(mainActivityViewModel.exoPlayer == null || !selectedUUid.matches(currentPlayingUUid.toRegex())) {
             mainActivityViewModel.exoPlayer =
                 ExoPlayer.Builder(requireContext()).build().also { exoPlayer ->
-                    val url = binding.radioplayerbinding!!.radioClickEvent.value?.urlResolved
+                    val url = mainActivityViewModel.radioSelectedChannel.value?.urlResolved
                     binding.playButton.player = exoPlayer
                     binding.playButton.showTimeoutMs = -1
                     val mediaItem = MediaItem.fromUri(url!!)
@@ -56,7 +52,9 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
+        mainActivityViewModel._currentPlayingChannel = mainActivityViewModel._radioSelectedChannel
         mainActivityViewModel._isPlayerVisible.value = isPlaying
+
     }
 
 }
