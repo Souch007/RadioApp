@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            tools:context=".ui.radio.RadioFragment">
+            >
 
             <TextView
                 android:id="@+id/tv_trending_podcasts"

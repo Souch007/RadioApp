@@ -29,7 +29,7 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         if(mainActivityViewModel.exoPlayer == null || !selectedUUid.matches(currentPlayingUUid.toRegex())) {
             mainActivityViewModel.exoPlayer =
                 ExoPlayer.Builder(requireContext()).build().also { exoPlayer ->
-                    val url = mainActivityViewModel.radioSelectedChannel.value?.urlResolved
+                    val url = mainActivityViewModel.radioSelectedChannel.value?.url
                     binding.playButton.player = exoPlayer
                     binding.playButton.showTimeoutMs = -1
                     val mediaItem = MediaItem.fromUri(url!!)
@@ -53,7 +53,7 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
         mainActivityViewModel._currentPlayingChannel = mainActivityViewModel._radioSelectedChannel
-        mainActivityViewModel._isPlayerVisible.value = isPlaying
+        mainActivityViewModel._isStationActive.value = isPlaying
 
     }
 

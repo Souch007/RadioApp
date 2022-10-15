@@ -22,4 +22,16 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     suspend fun getAllGenres() = safeApiCall {
         appApis.getAllGenres()
     }
+
+    suspend fun getFrequentSearchTags() = safeApiCall{
+        appApis.getFrequentSearches()
+    }
+
+    suspend fun searchPodcasts(searchedQuery : String) = safeApiCall{
+        appApis.searchPodcast(searchedQuery)
+    }
+
+    suspend fun searchedStation(searchedQuery: String) = safeApiCall{
+        appApis.searchStations(searchedQuery)
+    }
 }

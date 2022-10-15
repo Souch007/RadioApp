@@ -11,7 +11,7 @@ import com.coderoids.radio.ui.podcast.poddata.PodResponce
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 
 
-class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() , OnClickListenerPodcast{
+class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() {
 
     val _podcastListingMutable = MutableLiveData<Resource<PodResponce>>()
     val podcastListingLive: LiveData<Resource<PodResponce>> = _podcastListingMutable
@@ -39,9 +39,5 @@ class PodcastViewModel(private val appRepository: AppRepository) : ViewModel() ,
     val _educationM = MutableLiveData<List<PodListData>>()
     val educationM: LiveData<List<PodListData>> = _educationM
 
-
-    override fun onPodCastClicked(data: PodListData) {
-        TODO("Not yet implemented")
-    }
 
 }

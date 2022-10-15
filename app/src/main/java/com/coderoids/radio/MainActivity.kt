@@ -4,14 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.aemerse.slider.ImageCarousel
-import com.aemerse.slider.model.CarouselItem
 import com.coderoids.radio.base.ViewModelFactory
 import com.coderoids.radio.databinding.ActivityMainBinding
 import com.coderoids.radio.request.AppApis
@@ -21,9 +23,11 @@ import com.coderoids.radio.ui.SettingsActivity
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,46 +68,27 @@ class MainActivity : AppCompatActivity() {
 
         binding.crossSlider.setOnClickListener {
             binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-            mainViewModel._isPlayerVisible.value = false
+            mainViewModel._isNewStationSelected.value = false
         }
 
-        val carousel: ImageCarousel = findViewById(R.id.carousel)
-        carousel.registerLifecycle(lifecycle)
-        val list = mutableListOf<CarouselItem>()
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1532581291347-9c39cf10a73c?w=1080",
-                caption = "Photo by Aaron Wu on Unsplash"
-            )
-        )
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080"
-            )
-        )
-        val headers = mutableMapOf<String, String>()
-        headers["header_key"] = "header_value"
+        searchWatcherListener()
 
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080",
-                headers = headers
-            )
-        )
+    }
 
-        list.add(
-            CarouselItem(
-                imageDrawable = R.drawable.ic_baseline_radio_24,
-                caption = "Photo by Kimiya Oveisi on Unsplash"
-            )
-        )
+    private fun searchWatcherListener() {
+        binding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                var searchedString = binding.searchEditText.text.toString()
+                if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
+                    mainViewModel.getSearchQueryResult(searchedString, searchViewModel)
+                }
+                return@OnEditorActionListener true
+            }
+            false
+        })
+    }
 
-        list.add(
-            CarouselItem(
-                imageDrawable = R.drawable.ic_baseline_favorite_border_24
-            )
-        )
-        carousel.setData(list)
+    override fun onBackPressed() {
 
     }
 
@@ -123,17 +108,25 @@ class MainActivity : AppCompatActivity() {
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
                 binding.playButtonCarousel.showTimeoutMs = -1
                 binding.playBtn.player = mainViewModel.exoPlayer
-
             }
         }
 
-        mainViewModel._isPlayerVisible.observe(this@MainActivity){
+        mainViewModel._isNewStationSelected.observe(this@MainActivity){
             if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
                 binding.playButtonCarousel.player!!.stop()
                 binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
             }
         }
 
+        mainViewModel._suggesteStations.observe(this@MainActivity){
+            var data =  it as List<RadioLists>
+            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+                data,
+                mainViewModel
+            )
+            binding.currentRadioInfo.text = mainViewModel.radioSelectedChannel.value?.name
+
+        }
     }
 
     private fun callApis() {
@@ -142,6 +135,9 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
+        mainViewModel.getFrequentSearchesTags(searchViewModel)
+        mainViewModel.getSearchQueryResult("",searchViewModel)
+
     }
 
     private fun initializeViewModel() {

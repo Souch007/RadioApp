@@ -5,12 +5,12 @@
     <data>
 
         <variable
-            name="feeds"
-            type="com.coderoids.radio.ui.podcast.poddata.PodListData" />
+            name="searchstation"
+            type="com.coderoids.radio.ui.search.searchedstationresponce.Data" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast" />
+            type="com.coderoids.radio.ui.search.adapters.StationSearchListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -19,12 +19,12 @@
         android:elevation="@dimen/_8sdp"
         android:layout_margin="@dimen/_4sdp"
         app:cardCornerRadius="@dimen/_5sdp"
-        android:onClick="@{() -> listener.onPodCastClicked(feeds)}"
-        app:cardElevation="@dimen/_3sdp">
-
+        app:cardElevation="@dimen/_3sdp"
+        android:onClick="@{() -> listener.onStationSearchListener(searchstation)}"
+        >
         <LinearLayout
             android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_110sdp"
+            android:layout_height="@dimen/_115sdp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,22 +38,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setImage="@{feeds.image}" />
+                app:setImage="@{searchstation.favicon}" />
+
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="match_parent"
                 android:gravity="start|center"
-                android:padding="@dimen/_2sdp"
-                android:text="@{feeds.title}"
-                style="@style/textTitle"
                 android:ellipsize="end"
+                android:padding="@dimen/_2sdp"
                 android:maxLines="1"
+                android:text="@{searchstation.name}"
+                style="@style/textTitle"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_7sdp"
                 android:textStyle="normal"
                 android:lines="1"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

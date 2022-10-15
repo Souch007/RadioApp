@@ -52,6 +52,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         listOf(),
                         mainActivityViewModel
                     )
+                mainActivityViewModel._suggesteStations.value = data.music
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
 

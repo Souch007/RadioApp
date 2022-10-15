@@ -14,6 +14,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.favourites.FavouritesFragment">
 
+    <TextView
+        style="@style/textHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="You have not added any favourites yet"
+        android:textAlignment="center"
+        android:textSize="@dimen/_25sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

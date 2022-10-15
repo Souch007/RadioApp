@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.coderoids.radio.ui.favourites.FavouritesFragment"
+        android:name="com.coderoids.radio.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_favourites" />
 
