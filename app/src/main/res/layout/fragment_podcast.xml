@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="Trending News"
                 android:paddingLeft="@dimen/_10sdp"
-                android:paddingTop="@dimen/_15sdp"
+                android:paddingTop="@dimen/_20sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 style="@style/textHeading"
                 android:textSize="@dimen/_11sdp"
@@ -81,6 +81,8 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:paddingBottom="@dimen/_10sdp"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_trending_podcasts"
                 app:setAdapter="@{newsadapter}"
@@ -128,6 +130,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fitness"
                 app:setAdapter="@{societyadapter}"
+                android:paddingBottom="@dimen/_10sdp"
+
                 app:submitList="@{podcastDataBinding.fitnessLM}"
                 tools:listitem="@layout/radio_row" />
 
@@ -171,6 +175,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_bussiness"
                 app:setAdapter="@{businessadapter}"
+                android:paddingBottom="@dimen/_10sdp"
+
                 app:submitList="@{podcastDataBinding.businessLM}"
                 tools:listitem="@layout/radio_row" />
 
@@ -214,6 +220,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_culture"
                 app:setAdapter="@{culturaladpter}"
+                android:paddingBottom="@dimen/_10sdp"
+
                 app:submitList="@{podcastDataBinding.cultureLM}"
                 tools:listitem="@layout/radio_row" />
 
@@ -257,6 +265,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_education"
                 app:setAdapter="@{educationaladapter}"
+                android:paddingBottom="@dimen/_10sdp"
+
                 app:submitList="@{podcastDataBinding.educationM}"
                 tools:listitem="@layout/radio_row" />
 
