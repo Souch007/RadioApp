@@ -28,6 +28,7 @@
         android:layout_height="match_parent">
 
 
+
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
@@ -313,7 +314,33 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu" />
+        <LinearLayout
+            android:id="@+id/progress_holder"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:orientation="vertical"
+            android:background="@color/dim_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <ProgressBar
+                android:id="@+id/pg_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/white"
+                android:padding="@dimen/_5sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pg_loading"
+                android:padding="@dimen/_10sdp"
+                android:text="Loading..."
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

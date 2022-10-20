@@ -22,6 +22,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
     override fun FragmentSearchBinding.initialize() {
         binding.fragmentSearchViewModel = _fragmentSearchViewModel
+
         _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
             val data = (it as Resource.Success).value.data
             _fragmentSearchViewModel._frequestSearchList.value = data
@@ -43,7 +44,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             val data = (it as Resource.Success).value.data
             _fragmentSearchViewModel._searchListStations.value = data
             binding.stationsearchadapter = StationSearchedAdapter(listOf(),_fragmentSearchViewModel)
-
         }
     }
 }

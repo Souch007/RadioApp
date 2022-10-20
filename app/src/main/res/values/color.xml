@@ -145,5 +145,6 @@
     <color name="Navy">#000080</color>
     <color name="black">#111111</color>
     <color name="Black">#000000</color>
+    <color name="dim_black">#8A000000</color>
     <color name="brown">#8D4130</color>
 </resources>

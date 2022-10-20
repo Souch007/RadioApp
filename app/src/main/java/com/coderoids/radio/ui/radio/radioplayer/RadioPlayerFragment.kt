@@ -1,5 +1,8 @@
 package com.coderoids.radio.ui.radio.radioplayer
 
+import android.content.res.ColorStateList
+import android.view.View
+import android.widget.CompoundButton
 import androidx.lifecycle.ViewModelProvider
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
@@ -46,7 +49,15 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         }
         binding.ivBack.setOnClickListener {
             mainActivityViewModel._isPlayerFragVisible.value = false
+        }
 
+
+        binding.favIv.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                mainActivityViewModel.addChannelToFavourites(mainActivityViewModel.radioSelectedChannel.value!!)
+            } else  {
+                mainActivityViewModel.removeChannelFromFavourites(mainActivityViewModel._radioSelectedChannel.value!!)
+            }
         }
     }
 
@@ -54,6 +65,10 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         super.onIsPlayingChanged(isPlaying)
         mainActivityViewModel._currentPlayingChannel = mainActivityViewModel._radioSelectedChannel
         mainActivityViewModel._isStationActive.value = isPlaying
+        if(isPlaying)
+            binding.animationView.visibility = View.VISIBLE
+        else
+            binding.animationView.visibility = View.GONE
 
     }
 

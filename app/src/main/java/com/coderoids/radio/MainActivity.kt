@@ -1,5 +1,6 @@
 package com.coderoids.radio
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -8,9 +9,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -72,15 +75,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         searchWatcherListener()
+        hideProgressBar()
+    }
 
+    private fun hideProgressBar() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.progressHolder.visibility = View.GONE
+        }, 5000)
     }
 
     private fun searchWatcherListener() {
         binding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.progressHolder.visibility = View.VISIBLE
+                hideProgressBar()
+                mainViewModel._state.value = true
                 var searchedString = binding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
                     mainViewModel.getSearchQueryResult(searchedString, searchViewModel)
+                    binding.navView.selectedItemId = R.id.navigation_search
+                    binding.searchEditText.setText("")
+                    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
                 }
                 return@OnEditorActionListener true
             }
@@ -93,6 +109,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observers() {
+
         mainViewModel.radioSelectedChannel.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="playing"
+            type="com.coderoids.radio.PlayingChannelData" />
+
+        <variable
+            name="listener"
+            type="com.coderoids.radio.ui.favourites.adapters.OnFavouriteClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_8sdp"
+        android:layout_margin="@dimen/_4sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_3sdp"
+        android:onClick="@{() -> listener.onFavChannelClicked(playing)}"
+        >
+        <LinearLayout
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_115sdp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:src="@drawable/logo"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setImage="@{playing.favicon}" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:ellipsize="end"
+                android:padding="@dimen/_2sdp"
+                android:maxLines="1"
+                android:text="@{playing.name}"
+                style="@style/textTitle"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/_7sdp"
+                android:textStyle="normal"
+                android:lines="1"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

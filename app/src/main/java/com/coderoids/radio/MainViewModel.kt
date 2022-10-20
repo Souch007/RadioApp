@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.coderoids.radio.request.AppApis
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
+import com.coderoids.radio.ui.favourites.adapters.OnFavouriteClickListener
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast
 import com.coderoids.radio.ui.podcast.poddata.PodListData
@@ -20,10 +21,13 @@ import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import java.util.logging.Level.INFO
 
-class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast{
+class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener{
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
+
+    val _state = MutableLiveData<Boolean>()
+    val state : LiveData<Boolean> get() = _state
 
     val _isNewStationSelected = MutableLiveData<Boolean>()
     val isNewStationSelected : LiveData<Boolean> = _isNewStationSelected
@@ -44,6 +48,11 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _suggesteStations = MutableLiveData<List<RadioLists>>()
     val suggestedStations : LiveData<List<RadioLists>> = _suggesteStations
 
+    val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
+    var favouritesRadioArray =  ArrayList<PlayingChannelData>()
+    val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
+
+    var previousDest : Int = 0
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
             radioViewModel._radioListing.value = appRepository.getRadioListing()
@@ -102,5 +111,31 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
         _radioSelectedChannel.value = playingChannelData
         _isNewStationSelected.value = false
         exoPlayer = null
+    }
+
+    fun removeChannelFromFavourites(value: PlayingChannelData) {
+      for(i in favouritesRadioArray.indices){
+          var data = favouritesRadioArray.get(i);
+          if (data.id == value.id){
+              favouritesRadioArray.removeAt(i);
+          }
+      }
+    }
+
+    fun addChannelToFavourites(value: PlayingChannelData) {
+        var isChannelAlreadyAdded = false
+        for(i in favouritesRadioArray.indices) {
+            var data = favouritesRadioArray.get(i);
+            if (data.id == value.id) {
+                isChannelAlreadyAdded = true
+                break;
+            }
+        }
+        if(!isChannelAlreadyAdded)
+            favouritesRadioArray.add(value)
+    }
+
+    override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
+
     }
 }

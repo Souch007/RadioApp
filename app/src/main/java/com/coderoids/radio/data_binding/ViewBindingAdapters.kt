@@ -102,5 +102,12 @@ fun setVisibilityLinear(linearLayout: LinearLayout, string: String){
         linearLayout.visibility = View.GONE
     } else
         linearLayout.visibility = View.VISIBLE
+}
 
+@BindingAdapter("setVisibilityLinear")
+fun setVisibilityLinear(linearLayout: LinearLayout, visibility: Boolean){
+    if(!visibility){
+        linearLayout.visibility = View.GONE
+    } else
+        linearLayout.visibility = View.VISIBLE
 }
