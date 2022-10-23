@@ -17,11 +17,13 @@ import com.coderoids.radio.ui.radio.RadioViewModel
 import com.coderoids.radio.ui.radio.adapter.OnClickListnerRadio
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.coderoids.radio.ui.seeall.adapter.OnClickListenerSeeAll
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import java.util.logging.Level.INFO
 
-class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener{
+class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener ,
+    OnClickListenerSeeAll {
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
@@ -51,7 +53,13 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
-
+    //---------------------------------------------------------------------//
+    var _selectedSeeAllListRadio = MutableLiveData<List<RadioLists>>()
+    val selectedSeeAllListRadio: LiveData<List<RadioLists>> = _selectedSeeAllListRadio
+    val selectedSeeAllListPodcast = ArrayList<PodListData>()
+    val _radioSeeAllSelected = MutableLiveData<String>()
+    val radioSeeAllSelected: LiveData<String> = _radioSeeAllSelected
+    //------------------------------------------------------------------//
     var previousDest : Int = 0
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
@@ -138,4 +146,9 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
 
     }
+
+    override fun onSeeAllClick(data: RadioLists) {
+
+    }
+
 }

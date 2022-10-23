@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+        <variable
+            name="seeallviewmodel"
+            type="com.coderoids.radio.ui.seeall.SeeAllViewModel" />
+
+        <variable
+            name="mainViewModel"
+            type="com.coderoids.radio.MainViewModel" />
+
+        <variable
+            name="seeallaadapter"
+            type="com.coderoids.radio.ui.seeall.adapter.SeeAllAdapter" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.favourites.FavouritesFragment">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settings_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_nav_grad"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/title_settings"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_baseline_keyboard_backspace_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_channel_name"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/title_radio"
+                android:gravity="center|start"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/radio_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
+            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
+            app:setAdapter="@{seeallaadapter}"
+            tools:listitem="@layout/see_all_row" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/podcast_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/see_all_row"
+            android:visibility="gone"
+            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

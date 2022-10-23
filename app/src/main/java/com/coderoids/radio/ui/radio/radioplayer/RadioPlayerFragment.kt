@@ -65,10 +65,17 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
         super.onIsPlayingChanged(isPlaying)
         mainActivityViewModel._currentPlayingChannel = mainActivityViewModel._radioSelectedChannel
         mainActivityViewModel._isStationActive.value = isPlaying
-        if(isPlaying)
-            binding.animationView.visibility = View.VISIBLE
-        else
-            binding.animationView.visibility = View.GONE
+        try {
+            if(binding != null && binding.animationView != null) {
+                if (isPlaying)
+                    binding.animationView.visibility = View.VISIBLE
+                else
+                    binding.animationView.visibility = View.GONE
+            }
+        } catch (ex : Exception){
+            ex.printStackTrace()
+        }
+
 
     }
 

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_radio_to_navigation_radio_player"
             app:destination="@id/navigation_radio_player" />
+        <action
+            android:id="@+id/action_navigation_radio_to_navigation_see_all"
+            app:destination="@id/navigation_see_all" />
     </fragment>
 
     <fragment
@@ -23,6 +26,9 @@
         <action
             android:id="@+id/action_navigation_podcast_to_navigation_search"
             app:destination="@id/navigation_search" />
+        <action
+            android:id="@+id/action_navigation_podcast_to_navigation_see_all"
+            app:destination="@id/navigation_see_all" />
     </fragment>
 
     <fragment
@@ -50,4 +56,14 @@
         android:name="com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment"
         android:label="@string/radio_player"
         tools:layout="@layout/fragment_radio_player" />
+
+    <fragment
+        android:id="@+id/navigation_see_all"
+        android:name="com.coderoids.radio.ui.seeall.SeeAllFragment"
+        android:label="@string/see_all"
+        tools:layout="@layout/fragment_see_all" >
+        <action
+            android:id="@+id/action_navigation_see_all_to_navigation_podcast"
+            app:destination="@id/navigation_podcast" />
+    </fragment>
 </navigation>

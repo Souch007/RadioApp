@@ -1,8 +1,10 @@
 package com.coderoids.radio.ui.radio
 
+import android.content.Intent
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
@@ -105,7 +107,24 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 exception.printStackTrace()
             }
         }
+        binding.tvAllTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel.radioListArray.value
+            mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+        }
+        binding.tvAllTagPopRock.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioPopListArray.value
+            mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+        }
 
+        binding.tvAllTagNews.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioNewsListArray.value
+            mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+        }
+
+        binding.tvAllTagTvClassical.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioClassicallistingArry.value
+            mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+        }
     }
 
 }

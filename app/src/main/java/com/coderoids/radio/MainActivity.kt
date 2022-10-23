@@ -28,6 +28,7 @@ import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.coderoids.radio.ui.seeall.SeeAllViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var podcastViewModel: PodcastViewModel
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var seeAllViewModel: SeeAllViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +118,19 @@ class MainActivity : AppCompatActivity() {
             binding.settingsBarLayout.visibility = View.GONE
         }
 
+        mainViewModel._radioSeeAllSelected.observe(this){
+            if(it == "CLOSE"){
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_radio);
+                binding.settingsBarLayout.visibility = View.VISIBLE
+            } else {
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_see_all);
+                binding.settingsBarLayout.visibility = View.GONE
+            }
+
+        }
+
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
             if(!it) {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -136,11 +151,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainViewModel._suggesteStations.observe(this@MainActivity){
-            var data =  it as List<RadioLists>
-            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
-                data,
-                mainViewModel
-            )
+//            var data =  it as List<RadioLists>
+//            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+//                data,
+//                mainViewModel
+//            )
             binding.currentRadioInfo.text = mainViewModel.radioSelectedChannel.value?.name
 
         }
@@ -163,6 +178,7 @@ class MainActivity : AppCompatActivity() {
         podcastViewModel = ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
         searchViewModel = ViewModelProvider(this@MainActivity, factory).get(SearchViewModel::class.java)
         favouritesViewModel = ViewModelProvider(this@MainActivity, factory).get(FavouritesViewModel::class.java)
+        seeAllViewModel = ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
         mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
         Handler(Looper.getMainLooper()).postDelayed({
             callApis()
@@ -196,7 +212,6 @@ class MainActivity : AppCompatActivity() {
                     binding.settingsBarLayout.visibility = View.GONE
 
                 }
-
             }
         }
 
