@@ -14,16 +14,26 @@ import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast
 import com.coderoids.radio.ui.podcast.poddata.PodListData
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.coderoids.radio.ui.radio.adapter.OnClickGeneresListener
+import com.coderoids.radio.ui.radio.adapter.OnClickListenerCountires
+import com.coderoids.radio.ui.radio.adapter.OnClickListenerLanguages
 import com.coderoids.radio.ui.radio.adapter.OnClickListnerRadio
+import com.coderoids.radio.ui.radio.countries.Data
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.coderoids.radio.ui.search.adapters.OnSearchTagListener
+import com.coderoids.radio.ui.search.adapters.PodSearchOnClickListener
+import com.coderoids.radio.ui.search.adapters.StationSearchListener
 import com.coderoids.radio.ui.seeall.adapter.OnClickListenerSeeAll
+import com.coderoids.radio.ui.seeall.adapter.OnClickListerPODSeeAll
 import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import java.util.logging.Level.INFO
 
 class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener ,
-    OnClickListenerSeeAll {
+    OnClickListenerSeeAll , OnClickListerPODSeeAll , OnClickListenerLanguages,
+    OnClickListenerCountires, OnClickGeneresListener  , OnSearchTagListener ,
+    PodSearchOnClickListener , StationSearchListener {
 
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
@@ -56,10 +66,15 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     //---------------------------------------------------------------------//
     var _selectedSeeAllListRadio = MutableLiveData<List<RadioLists>>()
     val selectedSeeAllListRadio: LiveData<List<RadioLists>> = _selectedSeeAllListRadio
-    val selectedSeeAllListPodcast = ArrayList<PodListData>()
+    val _selectedSeeAllPodcasts = MutableLiveData<List<PodListData>>()
+    val selectedSeeAllPodcasts: LiveData<List<PodListData>> = _selectedSeeAllPodcasts
     val _radioSeeAllSelected = MutableLiveData<String>()
-    val radioSeeAllSelected: LiveData<String> = _radioSeeAllSelected
     //------------------------------------------------------------------//
+    val _queriedSearched = MutableLiveData<String>()
+
+
+
+
     var previousDest : Int = 0
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
@@ -144,11 +159,48 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     }
 
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
-
+        _radioSelectedChannel.value = playingChannelData
+        _isNewStationSelected.value = false
+        exoPlayer = null
     }
 
     override fun onSeeAllClick(data: RadioLists) {
+        onRadioClicked(data)
+    }
 
+    override fun onPodClicked(data: PodListData) {
+        onPodCastClicked(data)
+    }
+
+    override fun OnCountrlySelected(data: Data) {
+        _queriedSearched.value = data.name
+    }
+
+    override fun OnClickGenres(data: com.coderoids.radio.ui.radio.genres.Data) {
+        _queriedSearched.value = data.name
+
+    }
+
+    override fun onLanguageClicked(data: com.coderoids.radio.ui.radio.lanuages.Data) {
+        _queriedSearched.value = data.name
+    }
+
+    override fun onSearchTagClicked(data: com.coderoids.radio.ui.search.frequentsearch.Data) {
+        _queriedSearched.value = data.q
+    }
+
+    override fun onPodCastSearchedListener(data: com.coderoids.radio.ui.search.searchedpodresponce.Data) {
+        var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
+        _radioSelectedChannel.value = playingChannelData
+        _isNewStationSelected.value = false
+        exoPlayer = null
+    }
+
+    override fun onStationSearchListener(data: com.coderoids.radio.ui.search.searchedstationresponce.Data) {
+        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
+        _radioSelectedChannel.value = playingChannelData
+        _isNewStationSelected.value = false
+        exoPlayer = null
     }
 
 }

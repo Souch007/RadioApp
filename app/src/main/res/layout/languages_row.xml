@@ -22,6 +22,7 @@
         android:outlineSpotShadowColor="@color/Salmon"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="@dimen/_5sdp"
+        android:onClick="@{() -> listener.onLanguageClicked(languageList)}"
         app:cardElevation="@dimen/_20sdp">
 
         <!--        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"-->

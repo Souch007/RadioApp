@@ -27,14 +27,24 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
         binding.mainViewModel = mainActivityViewModel
 
         mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment){
+            binding.radioRv.visibility = View.VISIBLE
+            binding.podcastRv.visibility = View.GONE
             binding.seeallaadapter = com.coderoids.radio.ui.seeall.adapter.SeeAllAdapter(
+                it,
+                mainActivityViewModel
+            )
+        }
+
+        mainActivityViewModel._selectedSeeAllPodcasts.observe(this@SeeAllFragment){
+            binding.podcastRv.visibility = View.VISIBLE
+            binding.radioRv.visibility = View.GONE
+            binding.seeallpodadapter = com.coderoids.radio.ui.seeall.adapter.SeeAllPodAdapter(
                 it,
                 mainActivityViewModel
             )
         }
         binding.ivBack.setOnClickListener {
             mainActivityViewModel._radioSeeAllSelected.value = "CLOSE"
-
         }
 
     }

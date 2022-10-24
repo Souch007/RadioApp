@@ -47,6 +47,29 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
             }
         }
 
+        binding.tvAllPodcastTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value = podcastViewModel._newsArrayM.value
+            mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
+        }
+        binding.tvAllFitnessTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value =  podcastViewModel._fitnessM.value
+            mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
+        }
+        binding.tvAllBusinessTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value = podcastViewModel._businessM.value
+            mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
+        }
+        binding.tvAllCultureTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value = podcastViewModel._cultureM.value
+            mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
+        }
+
+        binding.tvAllEducationalTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value = podcastViewModel._educationM.value
+            mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
+        }
+
+
     }
 
 }

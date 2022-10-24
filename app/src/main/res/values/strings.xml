@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Radio</string>
-    <string name="title_radio">Radio</string>
+    <string name="app_name">Net Cast</string>
+    <string name="title_radio">Net Cast</string>
     <string name="title_podcast">Podcasts</string>
     <string name="title_favourites">Favourites</string>
     <string name="title_search">Search</string>
-    <string name="radio_player">Radio Player</string>
+    <string name="radio_player">Net Cast Player</string>
     <string name="see_all">See All</string>
     <string name="hint_search">Search station,song,podcast</string>
     <string name="desccontent">imagesearch</string>

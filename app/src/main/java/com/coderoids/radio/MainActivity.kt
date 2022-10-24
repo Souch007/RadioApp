@@ -81,9 +81,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideProgressBar() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.progressHolder.visibility = View.GONE
-        }, 5000)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            binding.progressHolder.visibility = View.GONE
+//        }, 5000)
     }
 
     private fun searchWatcherListener() {
@@ -111,6 +111,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observers() {
+
+        mainViewModel._queriedSearched.observe(this){
+            mainViewModel.getSearchQueryResult(it,searchViewModel)
+            binding.navView.selectedItemId = R.id.navigation_search
+        }
 
         mainViewModel.radioSelectedChannel.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)

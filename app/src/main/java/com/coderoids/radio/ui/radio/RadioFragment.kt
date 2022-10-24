@@ -80,7 +80,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel._langListArray.value = data
                 binding.languagesAdapter =
-                    com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(), radioViewModel)
+                    com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(), mainActivityViewModel)
             } catch (exception: JSONException) {
                 exception.printStackTrace()
             }
@@ -91,7 +91,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel._countriesListArray.value = data
                 binding.countriesAdapter =
-                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), radioViewModel)
+                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), mainActivityViewModel)
             } catch (exception: JSONException) {
                 exception.printStackTrace()
             }
@@ -101,8 +101,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._genresListArray.value = data
-                binding.genresAdapter =
-                    com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(), radioViewModel)
+                binding.genresAdapter = com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(), mainActivityViewModel)
             } catch (exception: JSONException) {
                 exception.printStackTrace()
             }

@@ -22,6 +22,7 @@
         android:outlineAmbientShadowColor="@color/Salmon"
         android:outlineSpotShadowColor="@color/Salmon"
         app:cardBackgroundColor="@color/Black"
+        android:onClick="@{() -> listener.OnClickGenres(genresList)}"
         app:cardElevation="@dimen/_20sdp">
 
         <!--        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"-->
