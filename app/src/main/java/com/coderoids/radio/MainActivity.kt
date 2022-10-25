@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
             if(!it) {
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navController.navigate(R.id.navigation_radio);
+                navController.navigate(R.id.navigation_radio)
                 binding.settingsBarLayout.visibility = View.VISIBLE
                 binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
