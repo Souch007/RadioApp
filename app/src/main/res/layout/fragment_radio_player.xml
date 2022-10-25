@@ -21,8 +21,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"
@@ -32,18 +32,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_120sdp"
                 android:alpha="0.2"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                 app:strokeWidth="1dp" />
+
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
@@ -60,15 +62,14 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:gravity="center|start"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/title_radio"
-                android:gravity="center|start"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_back"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
 
             <RelativeLayout
@@ -93,27 +94,30 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/iv_channel_logo"
                     android:orientation="vertical">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
-                    <com.google.android.exoplayer2.ui.PlayerControlView
-                        android:id="@+id/play_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        app:controller_layout_id="@layout/exo_custom" />
-                        <CheckBox
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.exoplayer2.ui.PlayerControlView
+                            android:id="@+id/play_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:gravity="center"
-                            android:buttonTint="@color/Red"
+                            android:layout_gravity="center"
+                            app:controller_layout_id="@layout/exo_custom" />
+
+                        <CheckBox
+                            android:id="@+id/fav_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
                             android:layout_toEndOf="@+id/play_button"
                             android:button="@drawable/checkbox_selector"
-                            android:id="@+id/fav_iv"
-                             />
+                            android:buttonTint="@color/Red"
+                            android:gravity="center"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5" />
 
                     </RelativeLayout>
                     <LinearLayout
@@ -128,9 +132,9 @@
                             android:layout_marginStart="@dimen/_20sdp"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:visibility="gone"
-                            app:lottie_rawRes="@raw/animation"
                             app:lottie_autoPlay="true"
-                            app:lottie_loop="true" />
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/animation" />
                     </LinearLayout>
 
                     <!--                <ImageView-->
@@ -154,9 +158,9 @@
             android:id="@+id/channel_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
             android:text="@{mainviewmodel.radioSelectedChannel.country}"
             android:textColor="@color/black"
-            android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout" />
@@ -165,14 +169,14 @@
             android:id="@+id/channel_website"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_arrow_outward_24"
+            android:drawableTint="@color/black"
             android:padding="@dimen/_10sdp"
             android:text="Go To Website"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:drawableEnd="@drawable/ic_baseline_arrow_outward_24"
-            android:drawableTint="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/channel_description" />
 
         <TextView
@@ -198,7 +202,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:padding="@dimen/_5sdp"
             android:text="@string/all"
-            android:textColor="@color/Gold"
+            android:textColor="@color/OrangeRed"
             android:textSize="@dimen/_9sdp"
             app:layout_constraintBaseline_toBaselineOf="@+id/tv_player_radio_more"
             app:layout_constraintEnd_toEndOf="parent" />
