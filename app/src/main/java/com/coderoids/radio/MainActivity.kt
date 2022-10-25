@@ -1,20 +1,20 @@
 package com.coderoids.radio
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.coderoids.radio.base.ViewModelFactory
@@ -26,11 +26,13 @@ import com.coderoids.radio.ui.SettingsActivity
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
-import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
 import com.coderoids.radio.ui.seeall.SeeAllViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,13 +44,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var seeAllViewModel: SeeAllViewModel
-
+    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var sharedPredEditor : SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         initializeViewModel()
         Observers()
         binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+
 
         binding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
@@ -111,16 +118,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observers() {
-
+        if(mainViewModel.favouritesRadioArray.size == 0){
+            val gson = Gson()
+            val json = sharedPreferences.getString("FavChannels", null)
+            if(json != null) {
+                val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
+                mainViewModel.favouritesRadioArray = gson.fromJson(json, type)
+            }
+        }
         mainViewModel._queriedSearched.observe(this){
             mainViewModel.getSearchQueryResult(it,searchViewModel)
             binding.navView.selectedItemId = R.id.navigation_search
+        }
+
+        mainViewModel._isFavUpdated.observe(this){
+            val gson = Gson();
+            val json = gson.toJson(mainViewModel.favouritesRadioArray)
+            sharedPredEditor.putString("FavChannels", json).apply()
         }
 
         mainViewModel.radioSelectedChannel.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
             binding.settingsBarLayout.visibility = View.GONE
+            mainViewModel.valueTypeFrag = it.type
         }
 
         mainViewModel._radioSeeAllSelected.observe(this){
@@ -138,8 +159,12 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
             if(!it) {
+                var type = mainViewModel._radioSelectedChannel.value!!.type
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navController.navigate(R.id.navigation_radio)
+                if(type.matches("PODCAST".toRegex())){
+                    navController.navigate(R.id.navigation_podcast)
+                } else
+                    navController.navigate(R.id.navigation_radio)
                 binding.settingsBarLayout.visibility = View.VISIBLE
                 binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
@@ -149,9 +174,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainViewModel._isNewStationSelected.observe(this@MainActivity){
-            if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
-                binding.playButtonCarousel.player!!.stop()
-                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            try {
+                if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
+                    if(binding.playButtonCarousel.player!!.isPlaying)
+                        binding.playButtonCarousel.player!!.stop()
+                    binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+                }
+            } catch (ex : java.lang.Exception){
+                ex.printStackTrace()
             }
         }
 
@@ -197,25 +227,54 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+//            val currentFragId = mainViewModel.currentFragmentId
+//            currentFragId
+//            if(mainViewModel.valueTypeFrag.matches("PODCAST".toRegex())){
+//                mainViewModel.valueTypeFrag = ""
+//                if (destination.id == R.id.navigation_radio) {
+//                    navController.clearBackStack(R.id.navigation_radio_player)
+//                    navController.navigate(R.id.navigation_radio)
+//                }
+//                else {
+//                    navController.navigate(R.id.navigation_podcast)
+//                }
+//
+//                return@addOnDestinationChangedListener
+//            } else if(mainViewModel.valueTypeFrag.matches("RADIO".toRegex())){
+//                mainViewModel.valueTypeFrag = ""
+//                if (destination.id == R.id.navigation_podcast) {
+//                    navController.clearBackStack(R.id.navigation_radio_player)
+//                    navController.navigate(R.id.navigation_podcast)
+//                }
+//                else {
+//                    navController.navigate(R.id.navigation_radio)
+//                }
+//                return@addOnDestinationChangedListener
+//            }
+
             when (destination.id) {
                 R.id.navigation_radio  -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
+                    navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Radio"
                 }
                 R.id.navigation_podcast -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
+                    navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Podcast"
                 }
                 R.id.navigation_favourites -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
+                    navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Favourites"}
                 R.id.navigation_search ->{
                     binding.settingsBarLayout.visibility = View.VISIBLE
+                    navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Search"
                 }
                 R.id.navigation_radio_player -> {
+                    navView.visibility = View.GONE
                     binding.settingsBarLayout.visibility = View.GONE
-
                 }
             }
         }

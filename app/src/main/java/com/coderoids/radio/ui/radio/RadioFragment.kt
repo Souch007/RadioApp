@@ -27,6 +27,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
         binding.shimmerLayout.stopShimmer()
+        mainActivityViewModel.currentFragmentId = "Radio"
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data

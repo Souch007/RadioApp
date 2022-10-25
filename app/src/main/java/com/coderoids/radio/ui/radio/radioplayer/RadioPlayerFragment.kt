@@ -25,6 +25,8 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
             binding.radioplayerbinding = radioViewModel
             binding.mainviewmodel = mainActivityViewModel
         }
+        mainActivityViewModel.currentFragmentId = "RadioPlayer"
+
         val selectedUUid : String= mainActivityViewModel._radioSelectedChannel.value!!.id
         var currentPlayingUUid : String = "0"
         if(mainActivityViewModel._currentPlayingChannel.value != null)

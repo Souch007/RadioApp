@@ -27,6 +27,8 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
+        mainActivityViewModel.currentFragmentId = "Podcast"
+
         podcastViewModel.podcastListingLive.observe(this@PodcastFragment){
             if(it != null) {
                 val _data = (it as Resource.Success).value.data

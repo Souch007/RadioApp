@@ -1,5 +1,6 @@
 package com.coderoids.radio
 
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Log.INFO
 import androidx.lifecycle.LiveData
@@ -63,6 +64,8 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
+    var _isFavUpdated = MutableLiveData<Boolean>()
+
     //---------------------------------------------------------------------//
     var _selectedSeeAllListRadio = MutableLiveData<List<RadioLists>>()
     val selectedSeeAllListRadio: LiveData<List<RadioLists>> = _selectedSeeAllListRadio
@@ -71,7 +74,8 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _radioSeeAllSelected = MutableLiveData<String>()
     //------------------------------------------------------------------//
     val _queriedSearched = MutableLiveData<String>()
-
+    var valueTypeFrag : String = ""
+    var currentFragmentId : String = "Radio"
 
 
 
@@ -143,6 +147,7 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
               favouritesRadioArray.removeAt(i);
           }
       }
+        _isFavUpdated.value = true
     }
 
     fun addChannelToFavourites(value: PlayingChannelData) {
@@ -156,6 +161,7 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
         }
         if(!isChannelAlreadyAdded)
             favouritesRadioArray.add(value)
+        _isFavUpdated.value = true
     }
 
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
@@ -190,14 +196,14 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     }
 
     override fun onPodCastSearchedListener(data: com.coderoids.radio.ui.search.searchedpodresponce.Data) {
-        var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
+        val playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
         _radioSelectedChannel.value = playingChannelData
         _isNewStationSelected.value = false
         exoPlayer = null
     }
 
     override fun onStationSearchListener(data: com.coderoids.radio.ui.search.searchedstationresponce.Data) {
-        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
+        val playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
         _radioSelectedChannel.value = playingChannelData
         _isNewStationSelected.value = false
         exoPlayer = null
