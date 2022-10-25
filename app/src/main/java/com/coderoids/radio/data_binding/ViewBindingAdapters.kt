@@ -95,3 +95,19 @@ fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean){
 fun setPlayer(playerControlView: PlayerControlView, exoPlayer: ExoPlayer?){
         playerControlView.player = exoPlayer;
 }
+
+@BindingAdapter("setVisibilityLinear")
+fun setVisibilityLinear(linearLayout: LinearLayout, string: String){
+    if(string.matches("".toRegex())){
+        linearLayout.visibility = View.GONE
+    } else
+        linearLayout.visibility = View.VISIBLE
+}
+
+@BindingAdapter("setVisibilityLinear")
+fun setVisibilityLinear(linearLayout: LinearLayout, visibility: Boolean){
+    if(!visibility){
+        linearLayout.visibility = View.GONE
+    } else
+        linearLayout.visibility = View.VISIBLE
+}

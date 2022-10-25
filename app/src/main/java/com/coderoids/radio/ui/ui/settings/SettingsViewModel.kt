@@ -38,16 +38,6 @@ class SettingsViewModel : ViewModel() {
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 
-        settingsData = SettingsData("","Autoplay",
-            "The next episode from the current context is played back automatically",true,true)
-        settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList
-
-        settingsData = SettingsData("","Skip silent parts of Podcasts",
-            "The function hides pauses in podcasts",true,false)
-        settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList
-
         settingsData = SettingsData("","Step back and forward in player", "15 seconds",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList

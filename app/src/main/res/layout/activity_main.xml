@@ -15,6 +15,10 @@
             name="mainViewModel"
             type="com.coderoids.radio.MainViewModel" />
 
+        <variable
+            name="mainViewModelAdapter"
+            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+
         <import type="android.view.View" />
     </data>
 
@@ -22,6 +26,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -106,6 +111,8 @@
                             android:textColor="@color/black"
                             android:textColorHint="@color/black"
                             android:textSize="@dimen/_10sdp"
+                            android:imeOptions="actionSearch"
+                            android:id="@+id/search_edit_text"
                             tools:ignore="TouchTargetSizeCheck" />
                     </LinearLayout>
 
@@ -182,15 +189,7 @@
                                 app:show_timeout="-1"
                                 app:controller_layout_id="@layout/exo_custom"
                                 />
-                            <!--                <ImageView-->
-                            <!--                    android:layout_width="@dimen/_45sdp"-->
-                            <!--                    android:layout_height="@dimen/_45sdp"-->
-                            <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
-                            <!--                    android:layout_below="@+id/location_channel"-->
-                            <!--                    android:layout_toEndOf="@+id/fav_ic"-->
-                            <!--                    android:layout_marginStart="@dimen/_20sdp"-->
-                            <!--                    android:id="@+id/play_button"-->
-                            <!--                    app:tint="@color/white" />-->
+
 
                             <ImageView
                                 android:layout_width="@dimen/_15sdp"
@@ -221,94 +220,76 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:src="@drawable/ic_down_arrow"
                         app:tint="@color/white" />
-                    <com.aemerse.slider.ImageCarousel
-                        android:id="@+id/carousel"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_300sdp"
-                        android:layout_centerInParent="true"
-                        app:autoPlay="false"
-                        app:autoPlayDelay="3000"
-                        app:autoWidthFixing="true"
-                        app:bottomShadowAlpha="0.6"
-                        app:bottomShadowHeight="64dp"
-                        app:captionMargin="0dp"
-                        app:captionTextSize="14sp"
-                        app:carouselBackground="#00000000"
-                        app:carouselGravity="CENTER"
-                        app:carouselPadding="0dp"
-                        app:carouselPaddingBottom="0dp"
-                        app:carouselPaddingEnd="0dp"
-                        app:carouselPaddingStart="0dp"
-                        app:carouselPaddingTop="0dp"
-                        app:carouselType="BLOCK"
-                        app:imagePlaceholder="@drawable/ic_baseline_arrow_outward_24"
-                        app:imageScaleType="centerCrop"
-                        app:indicatorMargin="0dp"
-                        app:infiniteCarousel="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:nextButtonId="@id/btn_next"
-                        app:nextButtonLayout="@layout/next_button_layout"
-                        app:nextButtonMargin="4dp"
-                        app:previousButtonId="@id/btn_previous"
-                        app:previousButtonLayout="@layout/previous_button_layout"
-                        app:previousButtonMargin="4dp"
-                        app:scaleOnScroll="false"
-                        app:scalingFactor="0.15"
-                        app:showBottomShadow="true"
-                        app:showCaption="true"
-                        app:showIndicator="true"
-                        app:showNavigationButtons="true"
-                        app:showTopShadow="true"
-                        app:topShadowAlpha="0.6"
-                        app:topShadowHeight="32dp"
-                        app:touchToPause="true"
-                        tools:ignore="MissingClass" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/carousel"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/slidedown"
                         android:background="@color/black"
-                        android:gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:gravity="center">
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animation_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_400sdp"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:visibility="visible"
+                            app:lottie_autoPlay="true"
+                            app:lottie_rawRes="@raw/cdanim"
+                            android:layout_marginTop="@dimen/_30sdp"
+                            app:lottie_loop="true"
+                            />
+                        <!-- -->
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            >
+                            android:gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="vertical">
 
-                            <com.google.android.exoplayer2.ui.PlayerControlView
-                                android:id="@+id/play_btn"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                app:show_timeout="-1"
-                                app:controller_layout_id="@layout/exo_custom"
-                                />
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginEnd="@dimen/_30sdp"
+                                    android:layout_toStartOf="@+id/play_btn"
+                                    android:src="@drawable/ic_baseline_favorite_border_24" />
+
+                                <com.google.android.exoplayer2.ui.PlayerControlView
+                                    android:id="@+id/play_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    app:controller_layout_id="@layout/exo_custom"
+                                    app:show_timeout="-1" />
+                            </RelativeLayout>
 
                             <TextView
+                                android:id="@+id/current_radio_info"
+                                style="@style/textHeading"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Playing : FM - 101"
-                                android:textColor="@color/white"
-                                style="@style/textHeading"
                                 android:layout_below="@+id/play_btn"
                                 android:layout_centerInParent="true"
-                                android:id="@+id/current_radio_info"/>
+                                android:text=""
+                                android:maxLines="2"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:textAlignment="center"
+                                android:textColor="@color/white" />
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                     </RelativeLayout>
 
                 </RelativeLayout>
             </LinearLayout>
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
@@ -326,7 +307,34 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu" />
+        <LinearLayout
+            android:id="@+id/progress_holder"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:orientation="vertical"
+            android:background="@color/dim_black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <ProgressBar
+                android:id="@+id/pg_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/white"
+                android:padding="@dimen/_5sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pg_loading"
+                android:padding="@dimen/_10sdp"
+                android:text="Loading..."
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

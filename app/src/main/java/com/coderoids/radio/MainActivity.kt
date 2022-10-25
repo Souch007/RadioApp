@@ -1,18 +1,22 @@
 package com.coderoids.radio
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.widget.LinearLayout
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.aemerse.slider.ImageCarousel
-import com.aemerse.slider.model.CarouselItem
 import com.coderoids.radio.base.ViewModelFactory
 import com.coderoids.radio.databinding.ActivityMainBinding
 import com.coderoids.radio.request.AppApis
@@ -22,10 +26,12 @@ import com.coderoids.radio.ui.SettingsActivity
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
-import com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment
+import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.coderoids.radio.ui.seeall.SeeAllViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var podcastViewModel: PodcastViewModel
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var seeAllViewModel: SeeAllViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,53 +73,67 @@ class MainActivity : AppCompatActivity() {
 
         binding.crossSlider.setOnClickListener {
             binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            mainViewModel._isNewStationSelected.value = false
         }
 
-        val carousel: ImageCarousel = findViewById(R.id.carousel)
-        carousel.registerLifecycle(lifecycle)
-        val list = mutableListOf<CarouselItem>()
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1532581291347-9c39cf10a73c?w=1080",
-                caption = "Photo by Aaron Wu on Unsplash"
-            )
-        )
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080"
-            )
-        )
-        val headers = mutableMapOf<String, String>()
-        headers["header_key"] = "header_value"
+        searchWatcherListener()
+        hideProgressBar()
+    }
 
-        list.add(
-            CarouselItem(
-                imageUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1080",
-                headers = headers
-            )
-        )
+    private fun hideProgressBar() {
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            binding.progressHolder.visibility = View.GONE
+//        }, 5000)
+    }
 
-        list.add(
-            CarouselItem(
-                imageDrawable = R.drawable.ic_baseline_radio_24,
-                caption = "Photo by Kimiya Oveisi on Unsplash"
-            )
-        )
+    private fun searchWatcherListener() {
+        binding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.progressHolder.visibility = View.VISIBLE
+                hideProgressBar()
+                mainViewModel._state.value = true
+                var searchedString = binding.searchEditText.text.toString()
+                if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
+                    mainViewModel.getSearchQueryResult(searchedString, searchViewModel)
+                    binding.navView.selectedItemId = R.id.navigation_search
+                    binding.searchEditText.setText("")
+                    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+                }
+                return@OnEditorActionListener true
+            }
+            false
+        })
+    }
 
-        list.add(
-            CarouselItem(
-                imageDrawable = R.drawable.ic_baseline_favorite_border_24
-            )
-        )
-        carousel.setData(list)
+    override fun onBackPressed() {
 
     }
 
     private fun Observers() {
-        radioViewModel.radioClickEvent.observe(this){
+
+        mainViewModel._queriedSearched.observe(this){
+            mainViewModel.getSearchQueryResult(it,searchViewModel)
+            binding.navView.selectedItemId = R.id.navigation_search
+        }
+
+        mainViewModel.radioSelectedChannel.observe(this){
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
             binding.settingsBarLayout.visibility = View.GONE
+        }
+
+        mainViewModel._radioSeeAllSelected.observe(this){
+            if(it == "CLOSE"){
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_radio);
+                binding.settingsBarLayout.visibility = View.VISIBLE
+            } else {
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_see_all);
+                binding.settingsBarLayout.visibility = View.GONE
+            }
+
         }
 
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
@@ -124,10 +145,25 @@ class MainActivity : AppCompatActivity() {
                 binding.playButtonCarousel.player = mainViewModel.exoPlayer
                 binding.playButtonCarousel.showTimeoutMs = -1
                 binding.playBtn.player = mainViewModel.exoPlayer
-
             }
         }
 
+        mainViewModel._isNewStationSelected.observe(this@MainActivity){
+            if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
+                binding.playButtonCarousel.player!!.stop()
+                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            }
+        }
+
+        mainViewModel._suggesteStations.observe(this@MainActivity){
+//            var data =  it as List<RadioLists>
+//            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
+//                data,
+//                mainViewModel
+//            )
+            binding.currentRadioInfo.text = mainViewModel.radioSelectedChannel.value?.name
+
+        }
     }
 
     private fun callApis() {
@@ -136,6 +172,9 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
+        mainViewModel.getFrequentSearchesTags(searchViewModel)
+        mainViewModel.getSearchQueryResult("",searchViewModel)
+
     }
 
     private fun initializeViewModel() {
@@ -144,6 +183,7 @@ class MainActivity : AppCompatActivity() {
         podcastViewModel = ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
         searchViewModel = ViewModelProvider(this@MainActivity, factory).get(SearchViewModel::class.java)
         favouritesViewModel = ViewModelProvider(this@MainActivity, factory).get(FavouritesViewModel::class.java)
+        seeAllViewModel = ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
         mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
         Handler(Looper.getMainLooper()).postDelayed({
             callApis()
@@ -177,7 +217,6 @@ class MainActivity : AppCompatActivity() {
                     binding.settingsBarLayout.visibility = View.GONE
 
                 }
-
             }
         }
 

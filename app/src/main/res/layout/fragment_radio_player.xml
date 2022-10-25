@@ -11,23 +11,18 @@
             type="com.coderoids.radio.ui.radio.RadioViewModel" />
 
         <variable
+            name="mainviewmodel"
+            type="com.coderoids.radio.MainViewModel" />
+
+        <variable
             name="adapter"
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/iv_settings_"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/title_settings"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
+        android:layout_height="match_parent"
+       >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"
@@ -37,7 +32,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:alpha="0.2"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
+                app:strokeWidth="1dp" />
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
@@ -63,47 +69,68 @@
                 app:layout_constraintStart_toEndOf="@+id/iv_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+
             <RelativeLayout
+                android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_115sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_channel_name">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_channel_logo"
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:src="@drawable/logo"
-                    app:strokeWidth="1dp"
+                    app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:setImage="@{radioplayerbinding.radioClickEvent.favicon}"
-                    android:id="@+id/iv_channel_logo"/>
+                    app:strokeWidth="1dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_toEndOf="@+id/iv_channel_logo"
-                    >
-                    <com.google.android.exoplayer2.ui.PlayerControlView
-                        android:id="@+id/play_button"
+                    android:orientation="vertical">
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        >
+                    <com.google.android.exoplayer2.ui.PlayerControlView
+                        android:id="@+id/play_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        app:controller_layout_id="@layout/exo_custom"
-                         />
+                        app:controller_layout_id="@layout/exo_custom" />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:buttonTint="@color/Red"
+                            android:layout_toEndOf="@+id/play_button"
+                            android:button="@drawable/checkbox_selector"
+                            android:id="@+id/fav_iv"
+                             />
+
+                    </RelativeLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp">
+
                         <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animation_view"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_50sdp"
-                            android:id="@+id/animation_view"
-                            app:lottie_autoPlay="true"
+                            android:layout_below="@+id/play_button"
                             android:layout_marginStart="@dimen/_20sdp"
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:visibility="gone"
-                            android:layout_below="@+id/play_button"
-                            app:lottie_loop="true"/>
+                            app:lottie_rawRes="@raw/animation"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true" />
                     </LinearLayout>
 
                     <!--                <ImageView-->
@@ -117,11 +144,9 @@
                     <!--                    app:tint="@color/white" />-->
 
 
-
                 </LinearLayout>
 
             </RelativeLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -129,7 +154,7 @@
             android:id="@+id/channel_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{radioplayerbinding.radioClickEvent.country}"
+            android:text="@{mainviewmodel.radioSelectedChannel.country}"
             android:textColor="@color/black"
             android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"

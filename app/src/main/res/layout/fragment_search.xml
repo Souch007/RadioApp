@@ -8,16 +8,95 @@
         <variable
             name="fragmentSearchViewModel"
             type="com.coderoids.radio.ui.search.SearchViewModel" />
+
+        <variable
+            name="tagsadapter"
+            type="com.coderoids.radio.ui.search.adapters.SearchTagsAdapter" />
+        <variable
+            name="podsearchadapter"
+            type="com.coderoids.radio.ui.search.adapters.PodcastSearchedAdapter" />
+        <variable
+            name="stationsearchadapter"
+            type="com.coderoids.radio.ui.search.adapters.StationSearchedAdapter" />
     </data>
-<FrameLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchFragment">
 
-<TextClock
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/tag_frequent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="Frequent Searches"
+        style="@style/textHeading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/frequent_searches_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/tag_frequent"
+        app:setAdapter="@{tagsadapter}"
+        app:spanCount="3"
+        app:submitList="@{fragmentSearchViewModel.frequentSearchList}"
+        tools:listitem="@layout/tags_row" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tag_podcast"
+        style="@style/textHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="Podcast"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frequent_searches_tags" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_results_podcasts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag_podcast"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:setAdapter="@{podsearchadapter}"
+        app:submitList="@{fragmentSearchViewModel.searchListPodcast}"
+        tools:listitem="@layout/podcast_search_row"/>
+    <TextView
+        android:id="@+id/tag_channels"
+        style="@style/textHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="Channels"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_results_podcasts" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_results_stations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag_channels"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:setAdapter="@{stationsearchadapter}"
+        app:submitList="@{fragmentSearchViewModel.searchListStations}"
+        tools:listitem="@layout/station_search_row"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

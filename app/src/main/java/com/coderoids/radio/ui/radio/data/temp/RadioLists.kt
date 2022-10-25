@@ -78,5 +78,5 @@ data class RadioLists(
     @SerializedName("url_resolved")
     val urlResolved: String,
     @SerializedName("votes")
-    val votes: Int
+    val votes: Int,
 ) : ListAdapterItem, Serializable

@@ -9,6 +9,7 @@ import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
 import com.coderoids.radio.ui.search.SearchViewModel
+import com.coderoids.radio.ui.seeall.SeeAllViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(
@@ -30,6 +31,8 @@ class ViewModelFactory(
             return SearchViewModel(repository as AppRepository ) as T
         else if (modelClass.isAssignableFrom(RadioViewModel::class.java))
             return RadioViewModel() as T
+        else if (modelClass.isAssignableFrom(SeeAllViewModel::class.java))
+            return SeeAllViewModel() as T
         else throw IllegalArgumentException("ViewModel Class Not Found")
     }
 }

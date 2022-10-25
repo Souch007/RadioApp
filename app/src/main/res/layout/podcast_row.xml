@@ -6,7 +6,7 @@
 
         <variable
             name="feeds"
-            type="com.coderoids.radio.ui.podcast.data.Feed" />
+            type="com.coderoids.radio.ui.podcast.poddata.PodListData" />
 
         <variable
             name="listener"
@@ -19,6 +19,7 @@
         android:elevation="@dimen/_8sdp"
         android:layout_margin="@dimen/_4sdp"
         app:cardCornerRadius="@dimen/_5sdp"
+        android:onClick="@{() -> listener.onPodCastClicked(feeds)}"
         app:cardElevation="@dimen/_3sdp">
 
         <LinearLayout
