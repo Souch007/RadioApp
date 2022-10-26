@@ -1,10 +1,8 @@
 package com.coderoids.radio.ui.radio
 
-import android.content.Intent
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
@@ -60,7 +58,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 binding.shimmerLayout.visibility = View.GONE
 
                 with(viewPager) {
-                    adapter = DotIndicatorAdapter(data.podcasts)
+                    adapter = DotIndicatorAdapter(data.podcasts,mainActivityViewModel)
                     setPageTransformer(true, ZoomOutPageTransformer())
                     dotsIndicator.attachTo(this)
                 }
@@ -125,6 +123,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
+
     }
 
 }

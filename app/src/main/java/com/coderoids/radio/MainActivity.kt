@@ -179,6 +179,10 @@ class MainActivity : AppCompatActivity() {
                 }, 3000)
             }
         }
+        mainViewModel.navigateToPodcast.observe(this@MainActivity){
+            if(it)
+                binding.navView.selectedItemId = R.id.navigation_podcast
+        }
 
         mainViewModel._isNewStationSelected.observe(this@MainActivity) {
             try {

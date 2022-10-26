@@ -76,7 +76,7 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _queriedSearched = MutableLiveData<String>()
     var valueTypeFrag : String = ""
     var currentFragmentId : String = "Radio"
-
+    val navigateToPodcast = MutableLiveData<Boolean>()
 
 
     var previousDest : Int = 0

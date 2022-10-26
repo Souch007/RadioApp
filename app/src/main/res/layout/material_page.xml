@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_180sdp"
     android:orientation="vertical"
+    android:id="@+id/holder_"
     >
 
     <com.makeramen.roundedimageview.RoundedImageView
