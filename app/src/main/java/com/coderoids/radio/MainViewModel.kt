@@ -128,16 +128,24 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     override fun onRadioClicked(data: RadioLists) {
         var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
         _radioSelectedChannel.value = playingChannelData
-        _isNewStationSelected.value = false
-         exoPlayer = null
+        if(_currentPlayingChannel.value != null && _currentPlayingChannel.value!!.id == data.id)
+            _isNewStationSelected.value = false
+        else {
+            _isNewStationSelected.value = true
+            exoPlayer = null
+        }
 
     }
 
     override fun onPodCastClicked(data: PodListData) {
         var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
         _radioSelectedChannel.value = playingChannelData
-        _isNewStationSelected.value = false
-        exoPlayer = null
+        if(_currentPlayingChannel.value != null && _currentPlayingChannel.value!!.id == data.id)
+            _isNewStationSelected.value = false
+        else {
+            _isNewStationSelected.value = true
+            exoPlayer = null
+        }
     }
 
     fun removeChannelFromFavourites(value: PlayingChannelData) {

@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.crossSlider.setOnClickListener {
             binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-            mainViewModel._isNewStationSelected.value = false
+            mainViewModel._isNewStationSelected.value = true
         }
 
         searchWatcherListener()
@@ -169,34 +169,28 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.navigation_podcast)
                 } else
                     navController.navigate(R.id.navigation_radio)
-                binding.settingsBarLayout.visibility = View.VISIBLE
-                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                binding.playButtonCarousel.player = mainViewModel.exoPlayer
-                binding.playButtonCarousel.showTimeoutMs = -1
-                binding.playBtn.player = mainViewModel.exoPlayer
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.settingsBarLayout.visibility = View.VISIBLE
+                    binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+                    binding.playButtonCarousel.player = mainViewModel.exoPlayer
+                    binding.playButtonCarousel.showTimeoutMs = -1
+                    binding.playBtn.player = mainViewModel.exoPlayer
+                }, 3000)
             }
         }
 
         mainViewModel._isNewStationSelected.observe(this@MainActivity) {
             try {
-                if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null) {
+                if (it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null) {
                     if (binding.playButtonCarousel.player!!.isPlaying)
                         binding.playButtonCarousel.player!!.stop()
-                    binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
                 }
+                binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+
             } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
             }
-        }
-
-        mainViewModel._suggesteStations.observe(this@MainActivity) {
-//            var data =  it as List<RadioLists>
-//            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
-//                data,
-//                mainViewModel
-//            )
-            binding.currentRadioInfo.text = mainViewModel.radioSelectedChannel.value?.name
-
         }
     }
 
@@ -286,7 +280,13 @@ class MainActivity : AppCompatActivity() {
                     navView.visibility = View.GONE
                     binding.settingsBarLayout.visibility = View.GONE
                 }
+                R.id.navigation_see_all -> {
+                    navView.visibility = View.GONE
+                    binding.settingsBarLayout.visibility = View.GONE
+                }
             }
+
+
         }
 
         binding.ivSettings.setOnClickListener {
