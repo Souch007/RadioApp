@@ -14,7 +14,6 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.coderoids.radio.base.ViewModelFactory
@@ -32,7 +31,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,14 +42,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var seeAllViewModel: SeeAllViewModel
-    private lateinit var sharedPreferences : SharedPreferences
-    private lateinit var sharedPredEditor : SharedPreferences.Editor
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPredEditor: SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
 
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initializeViewModel()
         Observers()
         binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
@@ -61,12 +59,13 @@ class MainActivity : AppCompatActivity() {
             object : SlidingUpPanelLayout.PanelSlideListener {
                 override fun onPanelSlide(panel: View, slideOffset: Float) {
                 }
+
                 override fun onPanelStateChanged(
                     panel: View?,
                     previousState: SlidingUpPanelLayout.PanelState?,
                     newState: SlidingUpPanelLayout.PanelState?
                 ) {
-                    if(newState!!.name == "EXPANDED"){
+                    if (newState!!.name == "EXPANDED") {
                         binding.header.visibility = View.GONE
                     } else {
                         binding.header.visibility = View.VISIBLE
@@ -104,7 +103,8 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.getSearchQueryResult(searchedString, searchViewModel)
                     binding.navView.selectedItemId = R.id.navigation_search
                     binding.searchEditText.setText("")
-                    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val inputMethodManager =
+                        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
                 }
                 return@OnEditorActionListener true
@@ -118,50 +118,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observers() {
-        if(mainViewModel.favouritesRadioArray.size == 0){
+        if (mainViewModel.favouritesRadioArray.size == 0) {
             val gson = Gson()
             val json = sharedPreferences.getString("FavChannels", null)
-            if(json != null) {
+            if (json != null) {
                 val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
                 mainViewModel.favouritesRadioArray = gson.fromJson(json, type)
             }
         }
-        mainViewModel._queriedSearched.observe(this){
-            mainViewModel.getSearchQueryResult(it,searchViewModel)
+        mainViewModel._queriedSearched.observe(this) {
+            mainViewModel.getSearchQueryResult(it, searchViewModel)
             binding.navView.selectedItemId = R.id.navigation_search
         }
 
-        mainViewModel._isFavUpdated.observe(this){
+        mainViewModel._isFavUpdated.observe(this) {
             val gson = Gson();
             val json = gson.toJson(mainViewModel.favouritesRadioArray)
             sharedPredEditor.putString("FavChannels", json).apply()
         }
 
-        mainViewModel.radioSelectedChannel.observe(this){
+        mainViewModel.radioSelectedChannel.observe(this) {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
             binding.settingsBarLayout.visibility = View.GONE
             mainViewModel.valueTypeFrag = it.type
         }
 
-        mainViewModel._radioSeeAllSelected.observe(this){
-            if(it == "CLOSE"){
-                val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navController.navigate(R.id.navigation_radio);
+        mainViewModel._radioSeeAllSelected.observe(this) {
+           val navController = findNavController(R.id.nav_host_fragment_activity_main)
+            if (it == "CLOSE") {
+                navController.navigate(R.id.navigation_radio)
+                binding.settingsBarLayout.visibility = View.VISIBLE
+            } else if (it == "CLOSE_PODCAST") {
+//                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_podcast)
                 binding.settingsBarLayout.visibility = View.VISIBLE
             } else {
-                val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navController.navigate(R.id.navigation_see_all);
+//                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_see_all)
                 binding.settingsBarLayout.visibility = View.GONE
             }
 
         }
 
-        mainViewModel.isPlayerFragVisible.observe(this@MainActivity){
-            if(!it) {
+        mainViewModel.isPlayerFragVisible.observe(this@MainActivity) {
+            if (!it) {
                 var type = mainViewModel._radioSelectedChannel.value!!.type
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                if(type.matches("PODCAST".toRegex())){
+                if (type.matches("PODCAST".toRegex())) {
                     navController.navigate(R.id.navigation_podcast)
                 } else
                     navController.navigate(R.id.navigation_radio)
@@ -173,19 +177,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainViewModel._isNewStationSelected.observe(this@MainActivity){
+        mainViewModel._isNewStationSelected.observe(this@MainActivity) {
             try {
-                if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null){
-                    if(binding.playButtonCarousel.player!!.isPlaying)
+                if (!it && binding.playButtonCarousel != null && mainViewModel.exoPlayer != null) {
+                    if (binding.playButtonCarousel.player!!.isPlaying)
                         binding.playButtonCarousel.player!!.stop()
                     binding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
                 }
-            } catch (ex : java.lang.Exception){
+            } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
             }
         }
 
-        mainViewModel._suggesteStations.observe(this@MainActivity){
+        mainViewModel._suggesteStations.observe(this@MainActivity) {
 //            var data =  it as List<RadioLists>
 //            binding.mainViewModelAdapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
 //                data,
@@ -203,17 +207,22 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
         mainViewModel.getFrequentSearchesTags(searchViewModel)
-        mainViewModel.getSearchQueryResult("",searchViewModel)
+        mainViewModel.getSearchQueryResult("", searchViewModel)
 
     }
 
     private fun initializeViewModel() {
         val factory = getViewModelFactory()
-        radioViewModel = ViewModelProvider(this@MainActivity, factory).get(RadioViewModel::class.java)
-        podcastViewModel = ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
-        searchViewModel = ViewModelProvider(this@MainActivity, factory).get(SearchViewModel::class.java)
-        favouritesViewModel = ViewModelProvider(this@MainActivity, factory).get(FavouritesViewModel::class.java)
-        seeAllViewModel = ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
+        radioViewModel =
+            ViewModelProvider(this@MainActivity, factory).get(RadioViewModel::class.java)
+        podcastViewModel =
+            ViewModelProvider(this@MainActivity, factory).get(PodcastViewModel::class.java)
+        searchViewModel =
+            ViewModelProvider(this@MainActivity, factory).get(SearchViewModel::class.java)
+        favouritesViewModel =
+            ViewModelProvider(this@MainActivity, factory).get(FavouritesViewModel::class.java)
+        seeAllViewModel =
+            ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
         mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
         Handler(Looper.getMainLooper()).postDelayed({
             callApis()
@@ -253,7 +262,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 
             when (destination.id) {
-                R.id.navigation_radio  -> {
+                R.id.navigation_radio -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Radio"
@@ -266,8 +275,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_favourites -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
-                    binding.tvRadio.text = "Favourites"}
-                R.id.navigation_search ->{
+                    binding.tvRadio.text = "Favourites"
+                }
+                R.id.navigation_search -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
                     binding.tvRadio.text = "Search"
@@ -280,7 +290,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ivSettings.setOnClickListener {
-            Intent(this@MainActivity,SettingsActivity::class.java).apply {
+            Intent(this@MainActivity, SettingsActivity::class.java).apply {
                 startActivity(this)
             }
         }

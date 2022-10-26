@@ -14,9 +14,9 @@ import com.coderoids.radio.databinding.FragmentSeeAllBinding
 import com.coderoids.radio.ui.radio.RadioViewModel
 
 
-class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see_all){
+class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see_all) {
     val seeAllViewModel: SeeAllViewModel by activityViewModels()
-    private lateinit var mainActivityViewModel : MainViewModel
+    private lateinit var mainActivityViewModel: MainViewModel
 
     override fun FragmentSeeAllBinding.initialize() {
         binding.lifecycleOwner = this@SeeAllFragment
@@ -26,7 +26,7 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
         }
         binding.mainViewModel = mainActivityViewModel
 
-        mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment){
+        mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment) {
             binding.radioRv.visibility = View.VISIBLE
             binding.podcastRv.visibility = View.GONE
             binding.seeallaadapter = com.coderoids.radio.ui.seeall.adapter.SeeAllAdapter(
@@ -35,7 +35,7 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             )
         }
 
-        mainActivityViewModel._selectedSeeAllPodcasts.observe(this@SeeAllFragment){
+        mainActivityViewModel._selectedSeeAllPodcasts.observe(this@SeeAllFragment) {
             binding.podcastRv.visibility = View.VISIBLE
             binding.radioRv.visibility = View.GONE
             binding.seeallpodadapter = com.coderoids.radio.ui.seeall.adapter.SeeAllPodAdapter(
@@ -44,7 +44,10 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             )
         }
         binding.ivBack.setOnClickListener {
-            mainActivityViewModel._radioSeeAllSelected.value = "CLOSE"
+            if (mainActivityViewModel._radioSeeAllSelected.value == "PODCAST")
+                mainActivityViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
+            else
+                mainActivityViewModel._radioSeeAllSelected.value = "CLOSE"
         }
 
     }
