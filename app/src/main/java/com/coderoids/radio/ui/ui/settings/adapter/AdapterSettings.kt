@@ -13,6 +13,7 @@ import com.coderoids.radio.ui.ui.settings.SettingsData
 import org.json.JSONArray
 
 class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<SettingsData>>?) : RecyclerView.Adapter<AdapterSettings.MyViewHodler>(){
+    private var listener: ((Int,View) -> Unit)? = null
     inner class MyViewHodler(view: View) : RecyclerView.ViewHolder(view){
         var heading = view.findViewById<TextView>(R.id.tv_heading)
         var subHeading = view.findViewById<TextView>(R.id.tv_sub_heading)
@@ -20,6 +21,9 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         var switch = view.findViewById<SwitchCompat>(R.id.swich_state_wifi)
     }
 
+    fun itemClickListener(l: (Int,View) -> Unit) {
+        listener = l
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHodler {
         return MyViewHodler(LayoutInflater.from(parent.context).inflate(R.layout.item_settings, parent, false))
     }
@@ -50,9 +54,20 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         } else {
             holder.switch.visibility = View.GONE
         }
+        holder.subHeading.setOnClickListener {view->
+            listener?.let {
+                it(position,view)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return mSettingsList!!.value!!.size;
+    }
+
+    fun changemodetext(mode:String) {
+        this.mSettingsList?.value?.get(0)?.description=mode
+        notifyDataSetChanged()
+
     }
 }
