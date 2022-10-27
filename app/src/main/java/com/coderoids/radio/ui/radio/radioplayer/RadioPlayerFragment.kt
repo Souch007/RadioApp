@@ -4,6 +4,8 @@ import android.content.res.ColorStateList
 import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.coderoids.radio.MainActivity
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
 import com.coderoids.radio.base.BaseFragment
@@ -49,9 +51,10 @@ class RadioPlayerFragment : BaseFragment<FragmentRadioPlayerBinding>(R.layout.fr
             binding.playButton.player = mainActivityViewModel.exoPlayer
             binding.playButton.showTimeoutMs = -1
         }
-        binding.ivBack.setOnClickListener {
-            mainActivityViewModel._isPlayerFragVisible.value = false
-        }
+
+         binding.ivBack.setOnClickListener {
+             mainActivityViewModel._isPlayerFragVisible.value = false
+         }
 
 
         binding.favIv.setOnCheckedChangeListener { buttonView, isChecked ->

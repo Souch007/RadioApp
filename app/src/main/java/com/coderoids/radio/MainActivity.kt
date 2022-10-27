@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
@@ -139,7 +140,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.radioSelectedChannel.observe(this) {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            navController.navigate(R.id.navigation_radio_player);
+            navController.navigate(R.id.navigation_radio_player)
             mainViewModel.valueTypeFrag = it.type
         }
 
@@ -157,6 +158,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isPlayerFragVisible.observe(this@MainActivity) {
             if (!it) {
+                binding.settingsBarLayout.visibility = View.VISIBLE
                 var type = mainViewModel._radioSelectedChannel.value!!.type
                 val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 if (type.matches("PODCAST".toRegex())) {
@@ -273,4 +275,14 @@ class MainActivity : AppCompatActivity() {
         val remoteDataSource = RemoteDataSource()
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
     }
+
+   /* fun changetoolbaricon(image:Int){
+        binding.ivSettings.setImageResource(image)
+    }
+
+    fun toolbarimageclick(clicklistner:OnClickListener){
+        binding.ivSettings.setOnClickListener {
+            clicklistner.onClick(it)
+        }
+    }*/
 }

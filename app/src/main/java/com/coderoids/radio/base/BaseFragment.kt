@@ -25,4 +25,5 @@ open class BaseFragment < T: ViewDataBinding>(@LayoutRes private val layoutResou
         _binding = null
     }
 
+
 }
