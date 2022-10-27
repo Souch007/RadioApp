@@ -140,7 +140,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.radioSelectedChannel.observe(this) {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             navController.navigate(R.id.navigation_radio_player);
-            binding.settingsBarLayout.visibility = View.GONE
             mainViewModel.valueTypeFrag = it.type
         }
 
@@ -148,15 +147,10 @@ class MainActivity : AppCompatActivity() {
            val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
                 navController.navigate(R.id.navigation_radio)
-                binding.settingsBarLayout.visibility = View.VISIBLE
             } else if (it == "CLOSE_PODCAST") {
-//                val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_podcast)
-                binding.settingsBarLayout.visibility = View.VISIBLE
             } else {
-//                val navController = findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_see_all)
-                binding.settingsBarLayout.visibility = View.GONE
             }
 
         }
@@ -176,7 +170,7 @@ class MainActivity : AppCompatActivity() {
                     binding.playButtonCarousel.player = mainViewModel.exoPlayer
                     binding.playButtonCarousel.showTimeoutMs = -1
                     binding.playBtn.player = mainViewModel.exoPlayer
-                }, 3000)
+                }, 1000)
             }
         }
         mainViewModel.navigateToPodcast.observe(this@MainActivity){
@@ -234,31 +228,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-//            val currentFragId = mainViewModel.currentFragmentId
-//            currentFragId
-//            if(mainViewModel.valueTypeFrag.matches("PODCAST".toRegex())){
-//                mainViewModel.valueTypeFrag = ""
-//                if (destination.id == R.id.navigation_radio) {
-//                    navController.clearBackStack(R.id.navigation_radio_player)
-//                    navController.navigate(R.id.navigation_radio)
-//                }
-//                else {
-//                    navController.navigate(R.id.navigation_podcast)
-//                }
-//
-//                return@addOnDestinationChangedListener
-//            } else if(mainViewModel.valueTypeFrag.matches("RADIO".toRegex())){
-//                mainViewModel.valueTypeFrag = ""
-//                if (destination.id == R.id.navigation_podcast) {
-//                    navController.clearBackStack(R.id.navigation_radio_player)
-//                    navController.navigate(R.id.navigation_podcast)
-//                }
-//                else {
-//                    navController.navigate(R.id.navigation_radio)
-//                }
-//                return@addOnDestinationChangedListener
-//            }
-
             when (destination.id) {
                 R.id.navigation_radio -> {
                     binding.settingsBarLayout.visibility = View.VISIBLE
