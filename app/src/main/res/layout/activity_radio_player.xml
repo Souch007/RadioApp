@@ -7,12 +7,12 @@
     <data>
 
         <variable
-            name="radioplayerbinding"
-            type="com.coderoids.radio.ui.radio.RadioViewModel" />
+            name="radioplayerb"
+            type="com.coderoids.radio.ui.radioplayermanager.RadioPlayerActivity" />
 
         <variable
-            name="mainviewmodel"
-            type="com.coderoids.radio.MainViewModel" />
+            name="radioplayervm"
+            type="com.coderoids.radio.ui.radioplayermanager.RadioPlayerAVM" />
 
         <variable
             name="adapter"
@@ -38,11 +38,11 @@
                 android:layout_height="@dimen/_120sdp"
                 android:alpha="0.2"
                 android:scaleType="centerCrop"
+                android:id="@+id/back_blur"
                 app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                 app:strokeWidth="1dp" />
 
@@ -85,7 +85,6 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:src="@drawable/logo"
-                    app:setImage="@{mainviewmodel.radioSelectedChannel.favicon}"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                     app:strokeWidth="1dp" />
 
@@ -105,6 +104,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_gravity="center"
+                            app:show_timeout="-1"
                             app:controller_layout_id="@layout/exo_custom" />
 
                         <CheckBox
@@ -134,7 +134,7 @@
                             android:visibility="gone"
                             app:lottie_autoPlay="true"
                             app:lottie_loop="true"
-                             />
+                            />
                     </LinearLayout>
 
                     <!--                <ImageView-->
@@ -159,7 +159,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
-            android:text="@{mainviewmodel.radioSelectedChannel.country}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +217,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_player_radio_more"
             app:setAdapter="@{adapter}"
-            app:submitList="@{radioplayerbinding.radioListingArray}"
+            app:submitList="@{radioplayervm.suggestedRadioList}"
             tools:listitem="@layout/radio_row" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

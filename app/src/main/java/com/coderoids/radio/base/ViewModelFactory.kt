@@ -8,6 +8,7 @@ import com.coderoids.radio.request.repository.BaseRepository
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
 import com.coderoids.radio.ui.podcast.PodcastViewModel
 import com.coderoids.radio.ui.radio.RadioViewModel
+import com.coderoids.radio.ui.radioplayermanager.RadioPlayerAVM
 import com.coderoids.radio.ui.search.SearchViewModel
 import com.coderoids.radio.ui.seeall.SeeAllViewModel
 
@@ -21,7 +22,7 @@ class ViewModelFactory(
             return PodcastViewModel(
                 repository as AppRepository
             ) as T
-        }else if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(
             ) as T
         }
@@ -33,6 +34,8 @@ class ViewModelFactory(
             return RadioViewModel() as T
         else if (modelClass.isAssignableFrom(SeeAllViewModel::class.java))
             return SeeAllViewModel() as T
+        else if (modelClass.isAssignableFrom(RadioPlayerAVM::class.java))
+            return RadioPlayerAVM() as T
         else throw IllegalArgumentException("ViewModel Class Not Found")
     }
 }

@@ -16,6 +16,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".TestActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".RadioPlayerActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SeeAllActivty"
             android:exported="false">
             <meta-data
@@ -35,9 +49,12 @@
             android:name=".ui.SettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.Settings" />
-
         <activity
-            android:name=".ui.SeeAllActivty"
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Settings" />
+        <activity
+            android:name=".ui.radioplayermanager.RadioPlayerActivity"
             android:exported="false"
             android:theme="@style/Theme.Settings" />
         <activity

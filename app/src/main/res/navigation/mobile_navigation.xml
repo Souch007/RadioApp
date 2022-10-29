@@ -11,9 +11,6 @@
         android:label="@string/title_radio"
         tools:layout="@layout/fragment_radio" >
         <action
-            android:id="@+id/action_navigation_radio_to_navigation_radio_player"
-            app:destination="@id/navigation_radio_player" />
-        <action
             android:id="@+id/action_navigation_radio_to_navigation_see_all"
             app:destination="@id/navigation_see_all" />
     </fragment>
@@ -50,12 +47,6 @@
             android:id="@+id/action_navigation_search_to_navigation_podcast"
             app:destination="@id/navigation_podcast" />
     </fragment>
-
-    <fragment
-        android:id="@+id/navigation_radio_player"
-        android:name="com.coderoids.radio.ui.radio.radioplayer.RadioPlayerFragment"
-        android:label="@string/radio_player"
-        tools:layout="@layout/fragment_radio_player" />
 
     <fragment
         android:id="@+id/navigation_see_all"

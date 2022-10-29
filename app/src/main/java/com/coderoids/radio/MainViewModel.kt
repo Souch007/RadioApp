@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.coderoids.radio.base.AppSingelton
+import com.coderoids.radio.base.BaseViewModel
 import com.coderoids.radio.request.AppApis
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
@@ -31,26 +33,18 @@ import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 import java.util.logging.Level.INFO
 
-class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener ,
+class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPodcast , OnFavouriteClickListener ,
     OnClickListenerSeeAll , OnClickListerPODSeeAll , OnClickListenerLanguages,
     OnClickListenerCountires, OnClickGeneresListener  , OnSearchTagListener ,
     PodSearchOnClickListener , StationSearchListener {
-
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
 
     val _state = MutableLiveData<Boolean>()
     val state : LiveData<Boolean> get() = _state
 
-    val _isNewStationSelected = MutableLiveData<Boolean>()
-    val isNewStationSelected : LiveData<Boolean> = _isNewStationSelected
-
     val _isStationActive = MutableLiveData<Boolean>()
     val isStationActive : LiveData<Boolean> = _isStationActive
-
-    val _isPlayerFragVisible = MutableLiveData<Boolean>()
-    val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible
-    public var exoPlayer: ExoPlayer? = null
 
     var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
     val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel
@@ -64,7 +58,6 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
-    var _isFavUpdated = MutableLiveData<Boolean>()
 
     //---------------------------------------------------------------------//
     var _selectedSeeAllListRadio = MutableLiveData<List<RadioLists>>()
@@ -78,8 +71,8 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
     var currentFragmentId : String = "Radio"
     val navigateToPodcast = MutableLiveData<Boolean>()
 
+    //----------------------------------//
 
-    var previousDest : Int = 0
     fun getRadioListing(radioViewModel: RadioViewModel) {
         viewModelScope.launch {
             radioViewModel._radioListing.value = appRepository.getRadioListing()
@@ -127,55 +120,32 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
 
     override fun onRadioClicked(data: RadioLists) {
         var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
-        _radioSelectedChannel.value = playingChannelData
-        if(_currentPlayingChannel.value != null && _currentPlayingChannel.value!!.id == data.id)
-            _isNewStationSelected.value = false
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
+            AppSingelton._isNewStationSelected.value = false
         else {
-            _isNewStationSelected.value = true
-            exoPlayer = null
+            AppSingelton._isNewStationSelected.value = true
+            AppSingelton.exoPlayer = null
         }
 
     }
 
     override fun onPodCastClicked(data: PodListData) {
         var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
-        _radioSelectedChannel.value = playingChannelData
-        if(_currentPlayingChannel.value != null && _currentPlayingChannel.value!!.id == data.id)
-            _isNewStationSelected.value = false
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
+            AppSingelton._isNewStationSelected.value = false
         else {
-            _isNewStationSelected.value = true
-            exoPlayer = null
+            AppSingelton._isNewStationSelected.value = true
+            AppSingelton.exoPlayer = null
         }
     }
 
-    fun removeChannelFromFavourites(value: PlayingChannelData) {
-      for(i in favouritesRadioArray.indices){
-          var data = favouritesRadioArray.get(i);
-          if (data.id == value.id){
-              favouritesRadioArray.removeAt(i);
-          }
-      }
-        _isFavUpdated.value = true
-    }
-
-    fun addChannelToFavourites(value: PlayingChannelData) {
-        var isChannelAlreadyAdded = false
-        for(i in favouritesRadioArray.indices) {
-            var data = favouritesRadioArray.get(i);
-            if (data.id == value.id) {
-                isChannelAlreadyAdded = true
-                break;
-            }
-        }
-        if(!isChannelAlreadyAdded)
-            favouritesRadioArray.add(value)
-        _isFavUpdated.value = true
-    }
 
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
-        _radioSelectedChannel.value = playingChannelData
-        _isNewStationSelected.value = false
-        exoPlayer = null
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        AppSingelton.exoPlayer = null
     }
 
     override fun onSeeAllClick(data: RadioLists) {
@@ -205,16 +175,16 @@ class MainViewModel : ViewModel() , OnClickListnerRadio , OnClickListenerPodcast
 
     override fun onPodCastSearchedListener(data: com.coderoids.radio.ui.search.searchedpodresponce.Data) {
         val playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
-        _radioSelectedChannel.value = playingChannelData
-        _isNewStationSelected.value = false
-        exoPlayer = null
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        AppSingelton.exoPlayer = null
     }
 
     override fun onStationSearchListener(data: com.coderoids.radio.ui.search.searchedstationresponce.Data) {
         val playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
-        _radioSelectedChannel.value = playingChannelData
-        _isNewStationSelected.value = false
-        exoPlayer = null
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        AppSingelton.exoPlayer = null
     }
 
 }
