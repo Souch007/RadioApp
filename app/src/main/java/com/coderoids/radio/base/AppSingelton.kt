@@ -29,5 +29,4 @@ object AppSingelton {
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
     var _isFavUpdated = MutableLiveData<Boolean>()
     var currentActivity = "";
-
 }

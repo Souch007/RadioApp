@@ -37,18 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/back_blur"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_120sdp"
-                android:alpha="0.2"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:strokeWidth="1dp" />
+
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -75,7 +64,18 @@
                 app:layout_constraintStart_toEndOf="@+id/iv_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
+            <CheckBox
+                android:id="@+id/fav_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@drawable/checkbox_selector"
+                android:buttonTint="@color/Red"
+                android:gravity="center"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                app:layout_constraintEnd_toEndOf="@+id/tv_channel_name"
+                app:layout_constraintTop_toTopOf="parent" />
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
@@ -101,56 +101,40 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <com.google.android.exoplayer2.ui.PlayerControlView
-                            android:id="@+id/play_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            app:controller_layout_id="@layout/exo_custom"
-                            app:show_timeout="-1" />
-
-                        <CheckBox
-                            android:id="@+id/fav_iv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_toEndOf="@+id/play_button"
-                            android:button="@drawable/checkbox_selector"
-                            android:buttonTint="@color/Red"
-                            android:gravity="center"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5" />
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp">
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/animation_view"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/back_blur"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_below="@+id/play_button"
-                            android:layout_marginStart="@dimen/_20sdp"
-                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:layout_height="match_parent"
+                            android:alpha="0.2"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                            app:strokeWidth="1dp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/episode"
+                            android:textColor="@color/white"
+                            android:padding="@dimen/_5sdp"
+                            style="@style/textHeading"/>
+                        <com.google.android.exoplayer2.ui.PlayerView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_60sdp"
+                            app:unplayed_color="@color/white"
+                            app:played_color="@color/Red"
+                            android:id="@+id/player_view"
+                            app:hide_during_ads="true"
+                            android:layout_alignParentBottom="true"
+                            app:show_timeout="0"/>
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
                             android:visibility="gone"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true" />
-                    </LinearLayout>
-
-                    <!--                <ImageView-->
-                    <!--                    android:layout_width="@dimen/_45sdp"-->
-                    <!--                    android:layout_height="@dimen/_45sdp"-->
-                    <!--                    android:src="@drawable/ic_baseline_play_circle_filled_24"-->
-                    <!--                    android:layout_below="@+id/location_channel"-->
-                    <!--                    android:layout_toEndOf="@+id/fav_ic"-->
-                    <!--                    android:layout_marginStart="@dimen/_20sdp"-->
-                    <!--                    android:id="@+id/play_button"-->
-                    <!--                    app:tint="@color/white" />-->
-
+                            android:id="@+id/podcast_loader"/>
+                    </RelativeLayout>
 
                 </LinearLayout>
 

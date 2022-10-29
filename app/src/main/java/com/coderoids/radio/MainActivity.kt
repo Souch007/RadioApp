@@ -191,7 +191,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         mainViewModel.getAllGenres(radioViewModel)
         mainViewModel.getFrequentSearchesTags(searchViewModel)
         mainViewModel.getSearchQueryResult("", searchViewModel)
-
     }
 
     private fun initializeViewModel() {
@@ -245,8 +244,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                     dataBinding.settingsBarLayout.visibility = View.GONE
                 }
             }
-
-
         }
 
         dataBinding.ivSettings.setOnClickListener {
@@ -267,4 +264,9 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         get() = BR.mainViewModel
     override val viewModelClass: Class<MainViewModel>
         get() = MainViewModel::class.java
+
+    override fun onResume() {
+        super.onResume()
+        AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
+    }
 }
