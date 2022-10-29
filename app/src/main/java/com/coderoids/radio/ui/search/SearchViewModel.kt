@@ -34,6 +34,7 @@ class SearchViewModel(appRepository: AppRepository) : ViewModel() , OnSearchTagL
     val _searchListStations = MutableLiveData<List<com.coderoids.radio.ui.search.searchedstationresponce.Data>>()
     val searchListStations :LiveData<List<com.coderoids.radio.ui.search.searchedstationresponce.Data>> = _searchListStations
     override fun onSearchTagClicked(data: Data) {
+
     }
 
     override fun onPodCastSearchedListener(data: com.coderoids.radio.ui.search.searchedpodresponce.Data) {

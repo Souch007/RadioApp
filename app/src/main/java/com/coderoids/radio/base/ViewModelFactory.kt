@@ -35,7 +35,7 @@ class ViewModelFactory(
         else if (modelClass.isAssignableFrom(SeeAllViewModel::class.java))
             return SeeAllViewModel() as T
         else if (modelClass.isAssignableFrom(RadioPlayerAVM::class.java))
-            return RadioPlayerAVM() as T
+            return RadioPlayerAVM(repository as AppRepository) as T
         else throw IllegalArgumentException("ViewModel Class Not Found")
     }
 }

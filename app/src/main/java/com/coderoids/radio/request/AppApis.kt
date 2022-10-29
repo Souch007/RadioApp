@@ -5,6 +5,7 @@ import com.coderoids.radio.ui.radio.genres.Genres
 import com.coderoids.radio.ui.radio.countries.Countries
 import com.coderoids.radio.ui.radio.data.temp.RadioResponse
 import com.coderoids.radio.ui.radio.lanuages.Lanuages
+import com.coderoids.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import com.coderoids.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.coderoids.radio.ui.search.searchedpodresponce.SearchedReponcePod
 import com.coderoids.radio.ui.search.searchedstationresponce.SearchedResponceStation
@@ -36,4 +37,7 @@ suspend  fun searchPodcast(@Query("q") productId: String) : SearchedReponcePod
 
 @GET(AppConstants.SEARCH+"?type=channels&")
 suspend  fun searchStations(@Query("q") productId: String) : SearchedResponceStation
+
+@GET(AppConstants.PODCAST_EPISODES+"{idPodacast}")
+suspend  fun getPodcastEpisodes(@Path("idPodacast")idPodcast: String): PodEpisodesData
 }

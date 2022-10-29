@@ -8,6 +8,7 @@ data class PlayingChannelData(
     val favicon: String,
     val name: String,
     override val id : String,
+    val idPodcast : String,
     val country : String,
     val type: String,
     ) : ListAdapterItem, Serializable

@@ -19,6 +19,7 @@ import com.coderoids.radio.base.BaseActivity
 import com.coderoids.radio.base.ViewModelFactory
 import com.coderoids.radio.databinding.ActivityMainBinding
 import com.coderoids.radio.request.AppApis
+import com.coderoids.radio.request.AppConstants
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.SettingsActivity
@@ -50,7 +51,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-
+        AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
 
         dataBinding.slidingLayout.addPanelSlideListener(
             object : SlidingUpPanelLayout.PanelSlideListener {
@@ -84,9 +85,9 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     }
 
     private fun hideProgressBar() {
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            binding.progressHolder.visibility = View.GONE
-//        }, 5000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            dataBinding.progressHolder.visibility = View.GONE
+        }, 5000)
     }
 
     private fun searchWatcherListener() {
@@ -124,13 +125,16 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
             }
         }
         mainViewModel._queriedSearched.observe(this) {
+            dataBinding.searchEditText.setText(it)
             mainViewModel.getSearchQueryResult(it, searchViewModel)
             dataBinding.navView.selectedItemId = R.id.navigation_search
         }
 
         AppSingelton.radioSelectedChannel.observe(this) {
-            Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
-                startActivity(this)
+            if(!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
+                Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
+                    startActivity(this)
+                }
             }
 //            val navController = findNavController(R.id.nav_host_fragment_activity_main)
 //            navController.navigate(R.id.navigation_radio_player);

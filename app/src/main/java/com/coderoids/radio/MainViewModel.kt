@@ -119,7 +119,7 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
 
 
     override fun onRadioClicked(data: RadioLists) {
-        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
+        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,"",data.country,"RADIO")
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
             AppSingelton._isNewStationSelected.value = false
@@ -131,7 +131,7 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
     }
 
     override fun onPodCastClicked(data: PodListData) {
-        var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
+        var playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data._id.toString(),data.author,"PODCAST")
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
             AppSingelton._isNewStationSelected.value = false
@@ -174,14 +174,14 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
     }
 
     override fun onPodCastSearchedListener(data: com.coderoids.radio.ui.search.searchedpodresponce.Data) {
-        val playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data.author,"PODCAST")
+        val playingChannelData = PlayingChannelData(data.url,data.image,data.title,data.id,data._id.toString(),data.author,"PODCAST")
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
         AppSingelton.exoPlayer = null
     }
 
     override fun onStationSearchListener(data: com.coderoids.radio.ui.search.searchedstationresponce.Data) {
-        val playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,data.country,"RADIO")
+        val playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,"",data.country,"RADIO")
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
         AppSingelton.exoPlayer = null

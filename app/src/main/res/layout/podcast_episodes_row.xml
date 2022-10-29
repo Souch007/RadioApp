@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="episodeData"
+            type="com.coderoids.radio.ui.radioplayermanager.episodedata.Data" />
+
+        <variable
+            name="listener"
+            type="com.coderoids.radio.ui.radioplayermanager.adapter.OnEpisodeClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_8sdp"
+        android:layout_margin="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardElevation="@dimen/_5sdp"
+        android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:orientation="horizontal"
+            android:elevation="@dimen/_8sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/logo"
+                android:layout_margin="@dimen/_5sdp"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setImage="@{episodeData.feedImage}" />
+            <!--  <View
+                  android:layout_width="@dimen/_1sdp"
+                  android:background="@color/grey"
+                  android:alpha="0.5"
+                  android:layout_height="@dimen/_90sdp"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/channel_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center"
+                    android:ellipsize="end"
+                    android:padding="@dimen/_2sdp"
+                    android:maxLines="1"
+                    style="@style/textHeading"
+                    android:text="@{episodeData.title}"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="normal"
+                    android:lines="1"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center"
+                    android:ellipsize="end"
+                    android:padding="@dimen/_2sdp"
+                    android:maxLines="1"
+                    style="@style/textTitle"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="normal"
+                    android:lines="1"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
