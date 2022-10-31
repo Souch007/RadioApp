@@ -271,6 +271,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun getViewModelFactory(): ViewModelFactory {
         val remoteDataSource = RemoteDataSource()
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
