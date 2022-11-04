@@ -230,6 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_220sdp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top_100_radio_listing">

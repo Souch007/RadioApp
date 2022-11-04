@@ -125,7 +125,9 @@
                             app:unplayed_color="@color/white"
                             app:played_color="@color/Red"
                             android:id="@+id/player_view"
-                            app:hide_during_ads="true"
+                            app:hide_during_ads="false"
+                            app:hide_on_touch="false"
+                            app:auto_show="true"
                             android:layout_alignParentBottom="true"
                             app:show_timeout="0"/>
                         <ProgressBar
