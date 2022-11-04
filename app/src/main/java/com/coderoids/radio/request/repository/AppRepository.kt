@@ -34,4 +34,8 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     suspend fun searchedStation(searchedQuery: String) = safeApiCall{
         appApis.searchStations(searchedQuery)
     }
+
+    suspend fun getPodcastEpisodes(idPodcast: String) = safeApiCall {
+        appApis.getPodcastEpisodes(idPodcast,)
+    }
 }

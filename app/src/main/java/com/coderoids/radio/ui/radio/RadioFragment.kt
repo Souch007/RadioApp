@@ -5,6 +5,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
+import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
 import com.coderoids.radio.request.Resource
@@ -30,6 +31,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
+                AppSingelton.suggestedRadioList = data.publicRadio
                 binding.adapter = com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
                     mainActivityViewModel

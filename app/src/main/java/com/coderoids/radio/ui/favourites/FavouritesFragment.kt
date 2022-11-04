@@ -11,9 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.coderoids.radio.MainViewModel
 import com.coderoids.radio.R
+import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentFavouritesBinding
 import com.coderoids.radio.databinding.FragmentRadioBinding
+import com.coderoids.radio.request.AppConstants
 import com.coderoids.radio.ui.favourites.adapters.FavouriteAdapter
 import com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter
 import com.coderoids.radio.ui.radio.RadioViewModel
@@ -28,6 +30,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
+        mainActivityViewModel.favouritesRadioArray = AppSingelton.favouritesRadioArray
         binding.mainViewModel = mainActivityViewModel
 
         if(mainActivityViewModel.favouritesRadioArray.size >0){

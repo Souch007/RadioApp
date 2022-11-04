@@ -236,6 +236,7 @@
                             android:visibility="visible"
                             app:lottie_autoPlay="true"
                             app:lottie_rawRes="@raw/cdanim"
+
                             android:layout_marginTop="@dimen/_30sdp"
                             app:lottie_loop="true"
                             />
