@@ -2,6 +2,7 @@ package com.coderoids.radio.ui.radioplayermanager
 
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -36,6 +37,7 @@ class RadioPlayerActivity() :
         exoPlayerManager("Normal")
         //
         uiControls()
+
     }
 
     private fun uiControls() {
@@ -91,10 +93,14 @@ class RadioPlayerActivity() :
                     val mediaItem = MediaItem.fromUri(url!!)
                     exoPlayer.setMediaItem(mediaItem)
                     exoPlayer.addListener(this)
-                    dataBinding.playerView.controllerAutoShow = true
                 }
-        } else {
+        }
+        else {
             dataBinding.playerView.player = AppSingelton.exoPlayer
+            dataBinding.playerView.performClick()
+            if(!dataBinding.playerView.isControllerVisible){
+
+            }
         }
     }
 
@@ -153,6 +159,8 @@ class RadioPlayerActivity() :
 
     private fun _checkMediaType() {
         //Checking the Type of MEDIA
+        if(AppSingelton.exoPlayer != null)
+            Log.d("tag",AppSingelton.exoPlayer!!.audioSessionId.toString())
         podcastType = AppSingelton.radioSelectedChannel.value!!.type
         if (podcastType.matches("PODCAST".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE

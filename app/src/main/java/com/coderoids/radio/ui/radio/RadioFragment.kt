@@ -59,11 +59,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
 
-                with(viewPager) {
-                    adapter = DotIndicatorAdapter(data.podcasts,mainActivityViewModel)
-                    setPageTransformer(true, ZoomOutPageTransformer())
-                    dotsIndicator.attachTo(this)
-                }
+//                with(viewPager) {
+//                    adapter = DotIndicatorAdapter(data.podcasts,mainActivityViewModel)
+//                    setPageTransformer(true, ZoomOutPageTransformer())
+//                    dotsIndicator.attachTo(this)
+//                }
             } catch (ex: java.lang.Exception) {
 
                 binding.shimmerLayout.stopShimmer()

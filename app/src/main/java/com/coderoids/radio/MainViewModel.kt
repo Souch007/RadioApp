@@ -125,6 +125,8 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
             AppSingelton._isNewStationSelected.value = false
         else {
             AppSingelton._isNewStationSelected.value = true
+            if(AppSingelton.exoPlayer != null)
+                AppSingelton.exoPlayer!!.release()
             AppSingelton.exoPlayer = null
         }
 
@@ -137,6 +139,8 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
             AppSingelton._isNewStationSelected.value = false
         else {
             AppSingelton._isNewStationSelected.value = true
+            if(AppSingelton.exoPlayer != null)
+                AppSingelton.exoPlayer!!.release()
             AppSingelton.exoPlayer = null
         }
     }
@@ -145,6 +149,8 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
+        if(AppSingelton.exoPlayer != null)
+            AppSingelton.exoPlayer!!.release()
         AppSingelton.exoPlayer = null
     }
 

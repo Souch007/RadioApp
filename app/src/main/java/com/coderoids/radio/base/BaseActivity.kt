@@ -16,7 +16,7 @@ import com.coderoids.radio.ui.radio.RadioViewModel
 import com.google.android.exoplayer2.Player
 import com.google.gson.Gson
 
-abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatActivity() , Player.Listener{
+abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatActivity() , Player.Listener {
     protected lateinit var viewModel:VM
     protected lateinit var dataBinding:VDB
 
@@ -59,6 +59,5 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
         AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
         AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
     }
-
 }
 
