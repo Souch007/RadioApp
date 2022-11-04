@@ -133,6 +133,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_8sdp"
+                            android:visibility="gone"
                             android:text="Get radio without video ads"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12sdp" />
@@ -169,39 +170,32 @@
                     <RelativeLayout
                         android:id="@+id/header"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                            <ImageView
-                                android:id="@+id/slideUp"
-                                android:layout_width="@dimen/_15sdp"
-                                android:layout_height="@dimen/_15sdp"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="@dimen/_30sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:src="@drawable/ic_baseline_arrow_outward_24"
-                                app:tint="@color/white" />
-
-                            <com.google.android.exoplayer2.ui.PlayerControlView
-                                android:id="@+id/play_button_carousel_"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                app:show_timeout="-1"
-                                app:controller_layout_id="@layout/exo_custom"
-                                />
-
-
-                            <ImageView
-                                android:layout_width="@dimen/_15sdp"
-                                android:layout_height="@dimen/_15sdp"
-                                android:id="@+id/cross_slider"
-                                android:src="@drawable/ic_cross_white"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginStart="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginEnd="@dimen/_30sdp"
-                                android:layout_centerInParent="true"
-                                app:tint="@color/white"/>
+                        android:layout_height="wrap_content"
+                        android:background="@color/Black">
+                        <com.google.android.exoplayer2.ui.PlayerView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_50sdp"
+                            app:unplayed_color="@color/white"
+                            app:played_color="@color/Red"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@+id/cross_slider"
+                            android:id="@+id/play_button_carousel_"
+                            app:hide_during_ads="false"
+                            app:hide_on_touch="false"
+                            app:auto_show="true"
+                            android:layout_centerInParent="true"
+                            app:show_timeout="0"/>
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:id="@+id/cross_slider"
+                            android:src="@drawable/ic_cross_white"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_30sdp"
+                            android:layout_centerInParent="true"
+                            app:tint="@color/white"/>
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -235,8 +229,6 @@
                             android:layout_marginEnd="@dimen/_20sdp"
                             android:visibility="visible"
                             app:lottie_autoPlay="true"
-                            app:lottie_rawRes="@raw/cdanim"
-
                             android:layout_marginTop="@dimen/_30sdp"
                             app:lottie_loop="true"
                             />
@@ -260,15 +252,18 @@
                                     android:layout_marginEnd="@dimen/_30sdp"
                                     android:layout_toStartOf="@+id/play_btn"
                                     android:src="@drawable/ic_baseline_favorite_border_24" />
-
-                                <com.google.android.exoplayer2.ui.PlayerControlView
-                                    android:id="@+id/play_btn"
+                                <com.google.android.exoplayer2.ui.PlayerView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    app:unplayed_color="@color/white"
+                                    app:played_color="@color/Red"
+                                    android:layout_alignParentStart="true"
+                                    android:id="@+id/play_btn"
+                                    app:hide_during_ads="false"
+                                    app:hide_on_touch="false"
+                                    app:auto_show="true"
                                     android:layout_centerInParent="true"
-                                    android:layout_gravity="center"
-                                    app:controller_layout_id="@layout/exo_custom"
-                                    app:show_timeout="-1" />
+                                    app:show_timeout="0"/>
                             </RelativeLayout>
 
                             <TextView

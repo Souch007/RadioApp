@@ -97,7 +97,8 @@ class RadioPlayerActivity() :
         }
         else {
             dataBinding.playerView.player = AppSingelton.exoPlayer
-            dataBinding.playerView.performClick()
+            //dataBinding.playerView.performClick()
+            dataBinding.playerView.showController()
             if(!dataBinding.playerView.isControllerVisible){
 
             }

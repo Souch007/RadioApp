@@ -14,6 +14,9 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseActivity
 import com.coderoids.radio.base.ViewModelFactory
@@ -46,8 +49,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
@@ -71,9 +72,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 }
             }
         )
-        dataBinding.slideUp.setOnClickListener {
-            dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-        }
 
         dataBinding.crossSlider.setOnClickListener {
             dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
@@ -159,8 +157,13 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                     dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
-                    dataBinding.playButtonCarousel.showTimeoutMs = -1
                     dataBinding.playBtn.player = AppSingelton.exoPlayer
+                    dataBinding.playBtn.showController()
+                    dataBinding.playButtonCarousel.showController()
+                    dataBinding.playButtonCarousel.setShowPreviousButton(false)
+                    dataBinding.playButtonCarousel.setShowNextButton(false)
+                    dataBinding.playBtn.setShowPreviousButton(false)
+                    dataBinding.playBtn.setShowNextButton(false)
                 }, 1000)
             }
         }
