@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_80sdp"
-            app:unplayed_color="@color/white"
-            app:played_color="@color/Red"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/cross_slider"
-            android:id="@+id/play_button_carousel_"
-            app:hide_during_ads="false"
-            app:hide_on_touch="false"
-            app:auto_show="true"
-            android:layout_centerInParent="true"
-            app:show_timeout="0"/>
+
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:id="@+id/cross_slider"
-            android:src="@drawable/ic_cross_white"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_30sdp"
+            android:id="@+id/slideUp"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
-            app:tint="@color/white"/>
+            android:layout_marginStart="@dimen/_30sdp"
+            android:src="@drawable/logo"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/slideUp"
+            android:padding="@dimen/_5sdp"
+            android:text="Teededeer"
+            style="@style/textHeading"
+            android:id="@+id/playing_name"
+            android:layout_toStartOf="@+id/play_button_carousel_"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/slideUp"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/playing_name_r"
+            android:layout_below="@+id/playing_name"
+            android:text="Teededeer"
+            style="@style/textHeading"
+            android:layout_toStartOf="@+id/play_button_carousel_"/>
+        <com.google.android.exoplayer2.ui.PlayerControlView
+            android:id="@+id/play_button_carousel_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:show_timeout="-1"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            app:controller_layout_id="@layout/exo_custom"
+            />
+
+
+
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

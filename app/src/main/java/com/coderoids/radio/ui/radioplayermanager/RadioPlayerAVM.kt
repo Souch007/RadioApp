@@ -23,6 +23,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnCli
     val podEpisodeArray: LiveData<List<Data>> = _podEpisodeArray
 
     val _episodeSelected = MutableLiveData<Data>()
+    val _episodeDownloadSelected = MutableLiveData<Data>()
+
     override fun onRadioClicked(data: RadioLists) {
         TODO("Not yet implemented")
     }
@@ -35,5 +37,9 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnCli
 
     override fun onEpisodeClicked(data: Data) {
         _episodeSelected.value = data;
+    }
+
+    override fun onEpisodeDownloadClicked(data: Data) {
+        _episodeDownloadSelected.value = data
     }
 }

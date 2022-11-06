@@ -3,6 +3,7 @@ package com.coderoids.radio.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.coderoids.radio.MainViewModel
+import com.coderoids.radio.download.DownloadViewModel
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.request.repository.BaseRepository
 import com.coderoids.radio.ui.favourites.FavouritesViewModel
@@ -36,6 +37,8 @@ class ViewModelFactory(
             return SeeAllViewModel() as T
         else if (modelClass.isAssignableFrom(RadioPlayerAVM::class.java))
             return RadioPlayerAVM(repository as AppRepository) as T
+        else if (modelClass.isAssignableFrom(DownloadViewModel::class.java))
+            return DownloadViewModel(repository as AppRepository) as T
         else throw IllegalArgumentException("ViewModel Class Not Found")
     }
 }

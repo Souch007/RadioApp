@@ -29,4 +29,5 @@ class PodEpisodesAdapter(private val list: List<Data>,
 
 interface OnEpisodeClickListener {
     fun onEpisodeClicked(data: Data)
+    fun onEpisodeDownloadClicked(data: Data)
 }

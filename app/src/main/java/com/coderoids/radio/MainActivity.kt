@@ -73,10 +73,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
             }
         )
 
-        dataBinding.crossSlider.setOnClickListener {
-            dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-            AppSingelton._isNewStationSelected.value = true
-        }
+
 
         searchWatcherListener()
         hideProgressBar()
@@ -110,7 +107,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     }
 
     override fun onBackPressed() {
-
     }
 
     private fun Observers() {
@@ -157,13 +153,28 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                     dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
+                    dataBinding.playButtonCarousel.showTimeoutMs = -1
                     dataBinding.playBtn.player = AppSingelton.exoPlayer
                     dataBinding.playBtn.showController()
-                    dataBinding.playButtonCarousel.showController()
-                    dataBinding.playButtonCarousel.setShowPreviousButton(false)
-                    dataBinding.playButtonCarousel.setShowNextButton(false)
                     dataBinding.playBtn.setShowPreviousButton(false)
                     dataBinding.playBtn.setShowNextButton(false)
+                    if(AppSingelton._currentPlayingChannel.value != null){
+                        dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                        Glide.with(this)
+                            .load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                            .error(R.drawable.logo)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .priority(Priority.HIGH)
+                            .into(dataBinding.slideUp)
+
+                        Glide.with(this)
+                            .load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                            .error(R.drawable.logo)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .priority(Priority.HIGH)
+                            .into(dataBinding.slideUpIv)
+                        dataBinding.currentRadioInfo.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                    }
                 }, 1000)
             }
         }
