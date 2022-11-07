@@ -159,7 +159,8 @@ class RadioPlayerActivity() :
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity){
             try{
-                var data = it;
+                val data = it;
+                AppSingelton.downloadingEpisodeData = it;
                 val snackbar = Snackbar
                     .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
                     .setAction("Go To Downloads ?") {

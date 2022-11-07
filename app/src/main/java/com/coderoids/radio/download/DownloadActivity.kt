@@ -2,6 +2,9 @@ package com.coderoids.radio.download
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.BR
 import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
@@ -13,7 +16,22 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSingelton.currentActivity = AppConstants.DownloadActivity
+        if(AppSingelton.downloadingEpisodeData != null){
+            Glide.with(this)
+                .load(AppSingelton.downloadingEpisodeData!!.image)
+                .error(R.drawable.logo)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .into(dataBinding.ivChannelPod)
+            dataBinding.channelName.setText(AppSingelton.downloadingEpisodeData!!.title)
+        }
+        observers()
+    }
 
+    private fun observers() {
+        AppSingelton._progressPublish.observe(this@DownloadActivity){
+            dataBinding.downloadEpisode.setText(it.toString())
+        }
     }
 
 

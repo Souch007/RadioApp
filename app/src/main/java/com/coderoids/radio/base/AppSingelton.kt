@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.coderoids.radio.PlayingChannelData
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
 import com.google.android.exoplayer2.ExoPlayer
+import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 
 object AppSingelton {
+    @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
 
     //-------------------Player Variables---------------------------------//
@@ -29,4 +31,10 @@ object AppSingelton {
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
     var _isFavUpdated = MutableLiveData<Boolean>()
     var currentActivity = "";
+
+    //--------------- Download -------------------------------//
+   public var downloadingEpisodeData: Data? = null
+    var _progressPublish = MutableLiveData<Int>()
+    var progressPublish : LiveData<Int> = _progressPublish
+
 }
