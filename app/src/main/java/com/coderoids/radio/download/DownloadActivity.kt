@@ -1,5 +1,6 @@
 package com.coderoids.radio.download
 
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -10,9 +11,16 @@ import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseActivity
 import com.coderoids.radio.databinding.ActivityDownloadBinding
+import com.coderoids.radio.download.adapter.DownloadEpisodeAdapter
 import com.coderoids.radio.request.AppConstants
+import com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.net.URL
 
 class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>() {
+    private var objectAnimator : ObjectAnimator? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSingelton.currentActivity = AppConstants.DownloadActivity
@@ -26,12 +34,41 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
             dataBinding.channelName.setText(AppSingelton.downloadingEpisodeData!!.title)
         }
         observers()
+        manageOfflineData()
+        dataBinding.ivBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun manageOfflineData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            var listOfEpisodes = getOfflineData()
+            viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
+        }
     }
 
     private fun observers() {
         AppSingelton._progressPublish.observe(this@DownloadActivity){
-            dataBinding.downloadEpisode.setText(it.toString())
+            dataBinding.tvDownlaodTag.setText("Downloading " + it.toString() +" %")
+            dataBinding.progressBar.setProgress(it)
+            if(it== 100){
+                dataBinding.tvDownlaodTag.setText("Downloaded")
+            }
         }
+
+        AppSingelton._onDownloadCompletion.observe(this@DownloadActivity){
+            insertOfflineData(data = it)
+            manageOfflineData()
+
+        }
+
+        viewModel._listDownloadedEpisodes.observe(this@DownloadActivity){
+            dataBinding.adapter = DownloadEpisodeAdapter(it, viewModel)
+        }
+    }
+
+    override fun onBackPressed() {
+
     }
 
 

@@ -53,6 +53,12 @@ class RadioPlayerActivity() :
         requestPermission()
     }
 
+    override fun onResume() {
+        super.onResume()
+        AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
+
+    }
+
     private fun uiControls() {
         dataBinding.ivBack.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
@@ -79,6 +85,10 @@ class RadioPlayerActivity() :
                 viewModel.removeChannelFromFavourites(AppSingelton.radioSelectedChannel.value!!)
             }
         }
+
+    }
+
+    override fun onBackPressed() {
 
     }
 
@@ -161,23 +171,14 @@ class RadioPlayerActivity() :
             try{
                 val data = it;
                 AppSingelton.downloadingEpisodeData = it;
-                val snackbar = Snackbar
-                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
-                    .setAction("Go To Downloads ?") {
-                        DownloadFile(data.enclosureUrl).execute()
-                        startActivity(Intent(this@RadioPlayerActivity,DownloadActivity::class.java))
-                    }
-                snackbar.show()
-//                    dataUrl = it.enclosureUrl
-//                    var uri = Uri.parse(dataUrl)
-//                    val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-//                    val request = DownloadManager.Request(uri)
-//                    request.setTitle("Downlaod Podcast")
-//                    request.setDescription("Android Audio download using DownloadManager.");
-//                    var relativePath = Environment.getExternalStorageDirectory().getPath() + "DownloadPodcastM"
-//                    request.setDestinationInExternalFilesDir(this,relativePath,"podcast.mp3")
-//                    var _id =  downloadManager.enqueue(request)
-
+                DownloadFile(data).execute()
+                startActivity(Intent(this@RadioPlayerActivity,DownloadActivity::class.java))
+//                val snackbar = Snackbar
+//                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
+//                    .setAction("Go To Downloads ?") {
+//
+//                    }
+//                snackbar.show()
             } catch (ex : Exception){
                 ex.printStackTrace()
             }

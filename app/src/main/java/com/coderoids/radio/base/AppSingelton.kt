@@ -10,13 +10,14 @@ import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 object AppSingelton {
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
-
+    public var _playingStarted = MutableLiveData<Boolean>()
     //-------------------Player Variables---------------------------------//
     public var exoPlayer: ExoPlayer? = null
     public val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
     public val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel
     var  _radioSelectedChannelId : String = "";
     var _currenPlayingChannelId : String = "";
+
     var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
     val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel
 
@@ -28,6 +29,7 @@ object AppSingelton {
     //------------------------Favourites-------------------------//
     val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
+
     val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
     var _isFavUpdated = MutableLiveData<Boolean>()
     var currentActivity = "";
@@ -36,5 +38,12 @@ object AppSingelton {
    public var downloadingEpisodeData: Data? = null
     var _progressPublish = MutableLiveData<Int>()
     var progressPublish : LiveData<Int> = _progressPublish
+
+    var _onDownloadCompletion = MutableLiveData<Data>()
+    var onDownloadCompletion : LiveData<Data> = _onDownloadCompletion
+
+    var downloadedIds : String = ""
+    var currentDownloading : String = ""
+    //-----------------------------------------------------//
 
 }

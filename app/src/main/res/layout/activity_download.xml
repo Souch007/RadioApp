@@ -17,9 +17,9 @@
 <!--            name="podepisodeadapter"-->
 <!--            type="com.coderoids.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter" />-->
 
-<!--        <variable-->
-<!--            name="adapter"-->
-<!--            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />-->
+        <variable
+            name="adapter"
+            type="com.coderoids.radio.download.adapter.DownloadEpisodeAdapter" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -146,12 +146,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
                         android:id="@+id/download_episode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:text="Downloading" />
+                       >
+
+                        <ProgressBar
+                            android:id="@+id/progress_bar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:indeterminate="false"
+                            android:progressDrawable="@drawable/progress_bar_style"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/tv_downlaod_tag"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_downlaod_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:padding="18dp"
+                            android:text="Download Podcast"
+                            android:textColor="@android:color/holo_blue_bright"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -174,12 +202,15 @@
         android:id="@+id/download_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/_10sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:spanCount="3"
         app:layout_constraintTop_toBottomOf="@+id/title_download"
-        tools:listitem="@layout/radio_row" />
+        app:setAdapter="@{adapter}"
+        app:submitList="@{downloadVM.listDownloadedEpisodes}"
+        tools:listitem="@layout/download_row"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

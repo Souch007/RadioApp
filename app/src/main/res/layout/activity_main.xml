@@ -122,18 +122,25 @@
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:gravity="center"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/search_view">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="gone"
-                            android:text="Get radio without video ads"
+                            android:visibility="visible"
+                            android:text="Offline Channels Available"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12sdp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_arrow_outward_24"></ImageView>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -184,7 +191,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toEndOf="@+id/slideUp"
                             android:padding="@dimen/_5sdp"
-                            android:text="Teededeer     /n dasdsada"
+                            android:text=""
                             android:id="@+id/playing_channel_name"
                             android:textColor="@color/white"
                             style="@style/textHeading"

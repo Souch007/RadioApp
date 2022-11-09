@@ -23,9 +23,10 @@
             type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:id="@+id/rp_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -220,42 +221,43 @@
                 tools:listitem="@layout/radio_row" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/pod_episodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/pod_episodes"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/channel_website"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/channel_website">
 
             <TextView
                 android:id="@+id/tv_podcast_episodes"
                 style="@style/textHeading"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Episodes"
                 android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/podcast_episodes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_podcast_episodes"
-            app:setAdapter="@{podepisodeadapter}"
-            app:submitList="@{radioplayervm.podEpisodeArray}"
-            tools:listitem="@layout/podcast_episodes_row" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/podcast_episodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_podcast_episodes"
+                app:setAdapter="@{podepisodeadapter}"
+                app:submitList="@{radioplayervm.podEpisodeArray}"
+                tools:listitem="@layout/podcast_episodes_row" />
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

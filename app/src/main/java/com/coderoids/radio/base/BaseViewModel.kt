@@ -10,6 +10,7 @@ import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.podcast.poddata.PodListData
 import com.coderoids.radio.ui.radio.adapter.OnClickListnerRadio
 import com.coderoids.radio.ui.radio.data.temp.RadioLists
+import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 
 abstract class BaseViewModel() : ViewModel() {
@@ -38,7 +39,5 @@ abstract class BaseViewModel() : ViewModel() {
             AppSingelton.favouritesRadioArray.add(value)
         AppSingelton._isFavUpdated.value = true
     }
-
-
 
 }

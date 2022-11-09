@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="episodeData"
             type="com.coderoids.radio.ui.radioplayermanager.episodedata.Data" />
@@ -12,94 +14,125 @@
             type="com.coderoids.radio.ui.radioplayermanager.adapter.OnEpisodeClickListener" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/_8sdp"
-        android:layout_margin="@dimen/_5sdp"
-        app:cardCornerRadius="@dimen/_4sdp"
-        app:cardElevation="@dimen/_5sdp"
-        android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
-        >
-        <LinearLayout
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_margin="@dimen/_5sdp"
             android:elevation="@dimen/_8sdp"
+            android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
+            app:cardCornerRadius="@dimen/_4sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:src="@drawable/logo"
-                android:layout_margin="@dimen/_5sdp"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_8sdp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:setImage="@{episodeData.feedImage}" />
-            <!--  <View
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:src="@drawable/logo"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:setImage="@{episodeData.feedImage}" />
+                <!--  <View
                   android:layout_width="@dimen/_1sdp"
                   android:background="@color/grey"
                   android:alpha="0.5"
                   android:layout_height="@dimen/_90sdp"/>-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/channel_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:ellipsize="end"
-                    android:padding="@dimen/_2sdp"
-                    android:maxLines="1"
-                    style="@style/textHeading"
-                    android:text="@{episodeData.title}"
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="normal"
-                    android:lines="1"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:ellipsize="end"
-                    android:padding="@dimen/_2sdp"
-                    android:maxLines="1"
-                    style="@style/textTitle"
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="normal"
-                    android:lines="1"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/download_episode"
-                        android:text="Download"
-                        android:onClick="@{() -> listener.onEpisodeDownloadClicked(episodeData)}"
-                        android:padding="@dimen/_5sdp"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
 
+                    <TextView
+                        android:id="@+id/channel_name"
+                        style="@style/textHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@{episodeData.title}"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="normal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        style="@style/textTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:padding="@dimen/_2sdp"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="normal"
+                        app:setTextHtml="@{episodeData.description}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50sdp"
+                                android:onClick="@{() -> listener.onEpisodeDownloadClicked(episodeData)}">
+
+                                <TextView
+                                    android:id="@+id/tv_downlaod_tag"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:padding="18dp"
+                                    android:text="Download Podcast..."
+                                    android:textColor="@android:color/holo_blue_bright"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </layout>
+
+
+    <!--</LinearLayout>-->
