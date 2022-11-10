@@ -127,30 +127,45 @@
 
 <!--                                if download is done replace it with ic_done-->
                                 <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/ic_downlaod"
                                     android:layout_width="@dimen/_25sdp"
                                     android:layout_height="@dimen/_25sdp"
+                                    android:layout_marginStart="@dimen/_10sdp"
                                     android:src="@drawable/ic_download"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.0"
-                                     android:layout_marginStart="@dimen/_10sdp"
                                     app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_25sdp"
+                                    android:src="@drawable/ic_done"
+                                    android:id="@+id/ic_done"
+                                    android:visibility="gone"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    android:layout_marginStart="@dimen/_12sdp"
+                                    app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
                                     android:id="@+id/tv_downlaod_tag"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:padding="18dp"
-                                    android:text="Download Podcast..."
-                                    android:textColor="@android:color/holo_blue_bright"
-                                    android:textSize="16sp"
+                                    android:text="Downloading"
+                                    style="@style/textHeading"
+                                    android:textColor="@color/Orange"
+                                    android:textSize="11sp"
                                     android:textStyle="bold"
                                     android:visibility="gone"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>

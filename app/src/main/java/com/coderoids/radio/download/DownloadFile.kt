@@ -49,7 +49,6 @@ class DownloadFile(var data: Data) :
         val current = values[0]
         if (current != null) {
             if (current % 5 == 0) {
-                Log.d("Downloading", current.toString() + "")
                 AppSingelton._progressPublish.value = current
                 if(current == 100){
                     data.fileURI = relativePath;

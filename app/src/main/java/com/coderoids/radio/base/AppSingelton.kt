@@ -27,10 +27,10 @@ object AppSingelton {
     val _isNewStationSelected = MutableLiveData<Boolean>()
     val isNewStationSelected : LiveData<Boolean> = _isNewStationSelected
     //------------------------Favourites-------------------------//
-    val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
+    var recentlyPlayedArray =  ArrayList<PlayingChannelData>()
+    var isNewItemAdded =  MutableLiveData<Boolean>()
 
-    val favouritesRadio : LiveData<List<PlayingChannelData>> = _favouritesRadio
     var _isFavUpdated = MutableLiveData<Boolean>()
     var currentActivity = "";
 

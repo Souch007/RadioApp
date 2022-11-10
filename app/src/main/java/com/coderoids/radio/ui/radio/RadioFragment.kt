@@ -9,6 +9,7 @@ import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseFragment
 import com.coderoids.radio.databinding.FragmentRadioBinding
 import com.coderoids.radio.request.Resource
+import com.coderoids.radio.ui.favourites.adapters.FavouriteAdapter
 import com.coderoids.radio.ui.radio.adapter.DotIndicatorAdapter
 import com.coderoids.radio.util.ZoomOutPageTransformer
 import org.json.JSONException
@@ -27,6 +28,21 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         }
         binding.shimmerLayout.stopShimmer()
         mainActivityViewModel.currentFragmentId = "Radio"
+        AppSingelton.isNewItemAdded.observe(this@RadioFragment){
+            if(it){
+                if(AppSingelton.recentlyPlayedArray.size >0){
+                    binding.tvRecentlyPlayed.visibility = View.VISIBLE
+                    binding.recentlyPlayed.visibility = View.VISIBLE
+                    val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+                    binding.recentlyPlayed.adapter = recentlyPlayedAdapter
+                } else {
+                    binding.tvRecentlyPlayed.visibility = View.GONE
+                    binding.recentlyPlayed.visibility = View.GONE
+                }
+            }
+        }
+
+
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
                 val data = (it as Resource.Success).value.data

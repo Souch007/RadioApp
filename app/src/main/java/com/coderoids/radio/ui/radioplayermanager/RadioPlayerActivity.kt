@@ -1,6 +1,7 @@
 package com.coderoids.radio.ui.radioplayermanager
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -53,10 +54,13 @@ class RadioPlayerActivity() :
         requestPermission()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-
+        if(dataBinding.podepisodeadapter != null){
+            dataBinding.podepisodeadapter!!.notifyDataSetChanged()
+        }
     }
 
     private fun uiControls() {

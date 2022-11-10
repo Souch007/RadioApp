@@ -91,7 +91,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 if(listOffline.size > 0){
                     dataBinding.primeLayout.visibility = View.VISIBLE
                 } else
-                    dataBinding.primeLayout.visibility = View.GONE
+                    dataBinding.primeLayout.visibility = View.INVISIBLE
             }
             for (i in listOffline){
                 var data = i;
@@ -146,6 +146,9 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 AppSingelton.favouritesRadioArray = gson.fromJson(json, type)
             }
         }
+
+        manageRecentlyPlayed()
+
         mainViewModel._queriedSearched.observe(this) {
             dataBinding.searchEditText.setText(it)
             mainViewModel.getSearchQueryResult(it, searchViewModel)
@@ -203,6 +206,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                         dataBinding.playBtn.showController()
                         dataBinding.playBtn.setShowPreviousButton(false)
                         dataBinding.playBtn.setShowNextButton(false)
+                        AppSingelton.isNewItemAdded.value = true
                     }
                 }, 1000)
             }

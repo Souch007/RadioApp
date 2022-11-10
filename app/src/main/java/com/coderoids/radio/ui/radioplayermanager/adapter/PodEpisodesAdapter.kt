@@ -1,6 +1,7 @@
 package com.coderoids.radio.ui.radioplayermanager.adapter
 
 import android.animation.ObjectAnimator
+import android.view.View
 import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseAdapter
@@ -22,15 +23,27 @@ class PodEpisodesAdapter(private val list: List<Data>,
         }
         if(AppSingelton.downloadedIds.contains(item._id.toString().toRegex())){
             binding.tvDownlaodTag.text = "Offline Available"
+            binding.icDone.visibility = View.VISIBLE
+            binding.icDownlaod.visibility = View.GONE
+            binding.tvDownlaodTag.visibility = View.GONE
+
         }
 
         if(AppSingelton.currentDownloading.matches(item._id.toString().toRegex())){
             binding.tvDownlaodTag.text = "Downloading..."
+            binding.tvDownlaodTag.visibility = View.VISIBLE
+            binding.icDone.visibility = View.GONE
+            binding.icDownlaod.visibility = View.GONE
+
         }
 
     }
     override fun getItemsCount(data: List<Data>): Int {
             return data.size;
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }
 

@@ -80,7 +80,32 @@
                     <include layout="@layout/shimmer_loadingview"></include>
                 </LinearLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
-
+            <TextView
+                android:id="@+id/tv_recently_played"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Recently Played"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shimmerLayout"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recently_played"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_recently_played"
+                tools:listitem="@layout/podcast_search_row" />
             <TextView
                 android:id="@+id/tv_local_stations"
                 style="@style/textHeading"
@@ -94,7 +119,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/shimmerLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/recently_played" />
 
             <TextView
                 android:id="@+id/tv_all_tag"

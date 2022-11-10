@@ -3,21 +3,22 @@ package com.coderoids.radio.base
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.coderoids.radio.PlayingChannelData
 import com.coderoids.radio.db.AppDatabase
 import com.coderoids.radio.request.AppApis
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
-import com.coderoids.radio.ui.radio.RadioViewModel
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPredEditor: SharedPreferences.Editor
     var appDatabase : AppDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this,layoutRes)
@@ -54,6 +56,7 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
             val json = gson.toJson(AppSingelton.favouritesRadioArray)
             sharedPredEditor.putString("FavChannels", json).apply()
         }
+
     }
 
     fun initializeDB(context: Context) : AppDatabase {
@@ -83,6 +86,43 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
         AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
         AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
         AppSingelton._playingStarted.value = isPlaying
+        addToRecentlyPlayedList(AppSingelton._currentPlayingChannel)
+    }
+
+    private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
+        val gson = Gson();
+        var recentlyPlayedChannelsArray =  ArrayList<PlayingChannelData>()
+
+        val json = sharedPreferences.getString("RecentlyPlayed", null)
+        if (json != null) {
+            val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
+            recentlyPlayedChannelsArray = gson.fromJson(json, type)
+        }
+        var isAlreadyAdded = false
+        for(i in recentlyPlayedChannelsArray){
+            if(i.id.matches(_currentPlayingChannel.value!!.id.toRegex())) {
+                isAlreadyAdded = true
+                break;
+            }
+        }
+        if(!isAlreadyAdded)
+            recentlyPlayedChannelsArray.add(_currentPlayingChannel.value!!)
+        val gson2 = Gson();
+        val dataArray = gson2.toJson(recentlyPlayedChannelsArray)
+        sharedPredEditor.putString("RecentlyPlayed", dataArray).apply()
+        manageRecentlyPlayed()
+    }
+
+    fun manageRecentlyPlayed(){
+        if (AppSingelton.recentlyPlayedArray.size == 0) {
+            val gson = Gson()
+            val json = sharedPreferences.getString("RecentlyPlayed", null)
+            if (json != null) {
+                val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
+                AppSingelton.recentlyPlayedArray = gson.fromJson(json, type)
+                AppSingelton.isNewItemAdded.value = true
+            }
+        }
     }
 }
 
