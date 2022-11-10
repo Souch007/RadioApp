@@ -1,6 +1,8 @@
 package com.coderoids.radio.ui.radioplayermanager.adapter
 
+import android.animation.ObjectAnimator
 import com.coderoids.radio.R
+import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseAdapter
 import com.coderoids.radio.databinding.PodcastEpisodesRowBinding
 import com.coderoids.radio.databinding.RadioRowBinding
@@ -18,15 +20,21 @@ class PodEpisodesAdapter(private val list: List<Data>,
             listener = _onEpisodeListener
             executePendingBindings()
         }
+        if(AppSingelton.downloadedIds.contains(item._id.toString().toRegex())){
+            binding.tvDownlaodTag.text = "Offline Available"
+        }
+
+        if(AppSingelton.currentDownloading.matches(item._id.toString().toRegex())){
+            binding.tvDownlaodTag.text = "Downloading..."
+        }
+
     }
     override fun getItemsCount(data: List<Data>): Int {
-   /*     if(data.size >5)
-            return 5
-        else*/
-            return data.size
+            return data.size;
     }
 }
 
 interface OnEpisodeClickListener {
     fun onEpisodeClicked(data: Data)
+    fun onEpisodeDownloadClicked(data: Data)
 }

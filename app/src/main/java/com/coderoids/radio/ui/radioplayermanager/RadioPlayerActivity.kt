@@ -1,6 +1,13 @@
 package com.coderoids.radio.ui.radioplayermanager
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -13,17 +20,23 @@ import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseActivity
 import com.coderoids.radio.databinding.ActivityRadioPlayerBinding
+import com.coderoids.radio.download.DownloadActivity
+import com.coderoids.radio.download.DownloadFile
 import com.coderoids.radio.request.AppConstants
 import com.coderoids.radio.request.Resource
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.material.snackbar.Snackbar
+
 
 class RadioPlayerActivity() :
     BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>() {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
     lateinit var radioPlayerAVM: RadioPlayerAVM
+    var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
+    var dataUrl = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
@@ -37,6 +50,12 @@ class RadioPlayerActivity() :
         exoPlayerManager("Normal")
         //
         uiControls()
+        requestPermission()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
 
     }
 
@@ -69,6 +88,10 @@ class RadioPlayerActivity() :
 
     }
 
+    override fun onBackPressed() {
+
+    }
+
     private fun exoPlayerManager(type: String) {
         if (type.matches("Episode".toRegex())) {
             dataBinding.playerView.player?.stop()
@@ -97,7 +120,8 @@ class RadioPlayerActivity() :
         }
         else {
             dataBinding.playerView.player = AppSingelton.exoPlayer
-            dataBinding.playerView.performClick()
+            //dataBinding.playerView.performClick()
+            dataBinding.playerView.showController()
             if(!dataBinding.playerView.isControllerVisible){
 
             }
@@ -141,6 +165,65 @@ class RadioPlayerActivity() :
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
+        }
+
+        viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity){
+            try{
+                val data = it;
+                AppSingelton.downloadingEpisodeData = it;
+                DownloadFile(data).execute()
+                startActivity(Intent(this@RadioPlayerActivity,DownloadActivity::class.java))
+//                val snackbar = Snackbar
+//                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
+//                    .setAction("Go To Downloads ?") {
+//
+//                    }
+//                snackbar.show()
+            } catch (ex : Exception){
+                ex.printStackTrace()
+            }
+        }
+    }
+
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                ), STORAGE_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                // check whether storage pe rmission granted or not.
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            !Environment.isExternalStorageManager()
+                        } else {
+                            TODO("VERSION.SDK_INT < R")
+                        }
+                    ) {
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+                        val uri: Uri = Uri.fromParts("package", this.packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
+                    } else {
+
+                    }
+                }
+            }
+            else -> {}
         }
     }
 

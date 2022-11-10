@@ -82,7 +82,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._langListArray.value = data
                 binding.languagesAdapter =
                     com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(), mainActivityViewModel)
-            } catch (exception: JSONException) {
+            } catch (exception:  java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
@@ -93,7 +93,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._countriesListArray.value = data
                 binding.countriesAdapter =
                     com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), mainActivityViewModel)
-            } catch (exception: JSONException) {
+            } catch (exception:  java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
@@ -103,8 +103,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel._genresListArray.value = data
                 binding.genresAdapter = com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(), mainActivityViewModel)
-            } catch (exception: JSONException) {
-                exception.printStackTrace()
+            } catch (ex: java.lang.Exception) {
+                ex.printStackTrace()
             }
         }
         binding.tvAllTag.setOnClickListener {

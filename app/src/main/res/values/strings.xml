@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Net Cast</string>
-    <string name="title_radio">Net Cast</string>
+    <string name="app_name"> Cast</string>
+    <string name="title_radio">NetCast</string>
+    <string name="title_download">Download</string>
     <string name="title_podcast">Podcasts</string>
     <string name="title_favourites">Favourites</string>
     <string name="title_search">Search</string>
@@ -22,5 +23,6 @@
     <string name="all">See All</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exo_download_notification_channel_name" />
 
 </resources>

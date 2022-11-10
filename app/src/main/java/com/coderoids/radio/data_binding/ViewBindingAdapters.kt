@@ -1,9 +1,12 @@
 package com.coderoids.radio.data_binding
 
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -110,4 +113,9 @@ fun setVisibilityLinear(linearLayout: LinearLayout, visibility: Boolean){
         linearLayout.visibility = View.GONE
     } else
         linearLayout.visibility = View.VISIBLE
+}
+
+@BindingAdapter("setTextHtml")
+fun setTextHTML(textView : TextView, text : String){
+        textView.setText(HtmlCompat.fromHtml(text?:"", HtmlCompat.FROM_HTML_MODE_COMPACT))
 }
