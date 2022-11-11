@@ -2,8 +2,11 @@ package com.coderoids.radio.ui.radioplayermanager
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +15,8 @@ import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -28,7 +33,9 @@ import com.coderoids.radio.request.Resource
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import kotlin.math.log
 
 
 class RadioPlayerActivity() :
@@ -52,6 +59,7 @@ class RadioPlayerActivity() :
         //
         uiControls()
         requestPermission()
+        initListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -94,6 +102,59 @@ class RadioPlayerActivity() :
 
     override fun onBackPressed() {
 
+    }
+
+    private fun initListener() {
+        val playerNotificationManager: PlayerNotificationManager
+        val notificationId = 1234
+        val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
+            override fun getCurrentSubText(player: Player): CharSequence? {
+                return "Sub text"
+            }
+
+            override fun getCurrentContentTitle(player: Player): String {
+                return "Title"
+            }
+
+            override fun createCurrentContentIntent(player: Player): PendingIntent? {
+                return null
+            }
+
+            override fun getCurrentContentText(player: Player): String {
+                return "ContentText"
+            }
+
+            override fun getCurrentLargeIcon(
+                player: Player,
+                callback: PlayerNotificationManager.BitmapCallback
+            ): Bitmap? {
+                return null
+            }
+        }
+
+        playerNotificationManager =PlayerNotificationManager.Builder(
+            this,
+            notificationId, "My_channel_id")
+            .setChannelNameResourceId(R.string.app_name)
+            .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
+            .setMediaDescriptionAdapter(mediaDescriptionAdapter)
+            .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
+                override fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean) {
+                    Log.d("TAG", "onNotificationPosted: ")
+                }
+
+                override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {}
+            })
+            .build()
+
+
+
+        playerNotificationManager.setPriority(NotificationCompat.PRIORITY_MAX)
+        playerNotificationManager.setUsePlayPauseActions(true)
+        playerNotificationManager.setSmallIcon(R.drawable.logo)
+        playerNotificationManager.setColorized(true)
+        playerNotificationManager.setColor(0xFFBDBDBD.toInt())
+        playerNotificationManager.setPlayer(AppSingelton.exoPlayer)
     }
 
     private fun exoPlayerManager(type: String) {
@@ -203,7 +264,7 @@ class RadioPlayerActivity() :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<String?>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
