@@ -2,8 +2,11 @@ package com.coderoids.radio.ui.radioplayermanager
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +17,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -30,8 +34,10 @@ import com.coderoids.radio.request.Resource
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import java.io.File
+import kotlin.math.log
 
 
 class RadioPlayerActivity() :
@@ -61,6 +67,7 @@ class RadioPlayerActivity() :
         //
         uiControls()
         requestPermission()
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -108,6 +115,7 @@ class RadioPlayerActivity() :
     override fun onBackPressed() {
 
     }
+
 
     private fun exoPlayerManager(type: String) {
         if (type.matches("Episode".toRegex())) {
@@ -239,7 +247,7 @@ class RadioPlayerActivity() :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<String?>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
