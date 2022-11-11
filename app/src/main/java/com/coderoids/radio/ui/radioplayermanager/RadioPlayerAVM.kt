@@ -3,6 +3,7 @@ package com.coderoids.radio.ui.radioplayermanager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.coderoids.radio.PlayingChannelData
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseViewModel
 import com.coderoids.radio.request.Resource
@@ -24,10 +25,21 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnCli
     val podEpisodeArray: LiveData<List<Data>> = _podEpisodeArray
 
     val _episodeSelected = MutableLiveData<Data>()
+    val _radioClicked = MutableLiveData<RadioLists>()
     val _episodeDownloadSelected = MutableLiveData<Data>()
 
     override fun onRadioClicked(data: RadioLists) {
-        TODO("Not yet implemented")
+        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,"",data.country,"RADIO")
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
+            AppSingelton._isNewStationSelected.value = false
+        else {
+            AppSingelton._isNewStationSelected.value = true
+            if(AppSingelton.exoPlayer != null)
+                AppSingelton.exoPlayer!!.release()
+            AppSingelton.exoPlayer = null
+        }
+        _radioClicked.value = data
     }
 
     fun getPodcastEpisodes(idPodcast : String){

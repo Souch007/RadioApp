@@ -129,7 +129,6 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
                 AppSingelton.exoPlayer!!.release()
             AppSingelton.exoPlayer = null
         }
-
     }
 
     override fun onPodCastClicked(data: PodListData) {

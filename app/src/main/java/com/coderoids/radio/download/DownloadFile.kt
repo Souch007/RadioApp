@@ -47,7 +47,7 @@ class DownloadFile(var data: Data) :
     override fun onProgressUpdate(vararg values: Int?) {
         super.onProgressUpdate(*values)
         val current = values[0]
-        if (current != null) {
+        if (current != null && current >= 0) {
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
                 if(current == 100){

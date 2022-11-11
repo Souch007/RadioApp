@@ -12,6 +12,8 @@ import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,6 +31,7 @@ import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
 
 
 class RadioPlayerActivity() :
@@ -38,8 +41,14 @@ class RadioPlayerActivity() :
     lateinit var radioPlayerAVM: RadioPlayerAVM
     var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
     var dataUrl = ""
+    var isActivityLoaded = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createActivity()
+        isActivityLoaded = true
+    }
+
+    private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
         viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
@@ -57,9 +66,13 @@ class RadioPlayerActivity() :
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        if(dataBinding.podepisodeadapter != null){
-            dataBinding.podepisodeadapter!!.notifyDataSetChanged()
+        if(AppSingelton._radioSelectedChannel.value!!.type == "Offline" && !isActivityLoaded){
+            createActivity()
+        } else {
+            AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
+            if (dataBinding.podepisodeadapter != null) {
+                dataBinding.podepisodeadapter!!.notifyDataSetChanged()
+            }
         }
     }
 
@@ -113,20 +126,34 @@ class RadioPlayerActivity() :
         if (AppSingelton.exoPlayer == null
             || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())
         ) {
-            AppSingelton.exoPlayer =
-                ExoPlayer.Builder(this).build().also { exoPlayer ->
-                    val url = AppSingelton.radioSelectedChannel.value?.url
-                    dataBinding.playerView.player = exoPlayer
-                    val mediaItem = MediaItem.fromUri(url!!)
-                    exoPlayer.setMediaItem(mediaItem)
-                    exoPlayer.addListener(this)
-                }
-        }
-        else {
+            if (AppSingelton._radioSelectedChannel.value!!.type.matches("Offline".toRegex())) {
+                AppSingelton.exoPlayer =
+                    ExoPlayer.Builder(this).build().also { exoPlayer ->
+                        var file = File(AppSingelton._radioSelectedChannel.value!!.url)
+                        if(file.exists()) {
+                            dataBinding.playerView.player = exoPlayer
+                            val mediaItem = MediaItem.fromUri(file.toUri())
+                            exoPlayer.setMediaItem(mediaItem)
+                            exoPlayer.addListener(this)
+                        }
+                    }
+                Toast.makeText(this@RadioPlayerActivity,"offlineRequestRecieved" , Toast.LENGTH_SHORT).show()
+            } else {
+                AppSingelton.exoPlayer =
+                    ExoPlayer.Builder(this).build().also { exoPlayer ->
+                        val url = AppSingelton.radioSelectedChannel.value?.url
+                        dataBinding.playerView.player = exoPlayer
+                        val mediaItem = MediaItem.fromUri(url!!)
+                        exoPlayer.setMediaItem(mediaItem)
+                        exoPlayer.addListener(this)
+                    }
+            }
+
+        } else {
             dataBinding.playerView.player = AppSingelton.exoPlayer
             //dataBinding.playerView.performClick()
             dataBinding.playerView.showController()
-            if(!dataBinding.playerView.isControllerVisible){
+            if (!dataBinding.playerView.isControllerVisible) {
 
             }
         }
@@ -183,6 +210,15 @@ class RadioPlayerActivity() :
 //
 //                    }
 //                snackbar.show()
+            } catch (ex : Exception){
+                ex.printStackTrace()
+            }
+        }
+
+        viewModel._radioClicked.observe(this@RadioPlayerActivity){
+            try{
+                exoPlayerManager("Normal")
+                uiControls()
             } catch (ex : Exception){
                 ex.printStackTrace()
             }
@@ -253,6 +289,9 @@ class RadioPlayerActivity() :
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
             checkPodCastEpisodes()
+        } else if(podcastType.matches("Offline".toRegex())){
+            dataBinding.podEpisodes.visibility = View.GONE
+            dataBinding.radioSuggestion.visibility = View.GONE
         } else {
             dataBinding.podEpisodes.visibility = View.GONE
             dataBinding.radioSuggestion.visibility = View.VISIBLE

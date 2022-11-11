@@ -1,27 +1,40 @@
 package com.coderoids.radio.base
 
+import android.R.attr.description
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat.stopForeground
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.media.MediaSessionManager
 import com.coderoids.radio.PlayingChannelData
+import com.coderoids.radio.base.adapter.PlayerNotificationAdapter
 import com.coderoids.radio.db.AppDatabase
 import com.coderoids.radio.request.AppApis
 import com.coderoids.radio.request.RemoteDataSource
 import com.coderoids.radio.request.repository.AppRepository
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.offline.DownloadService.startForeground
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+
 
 abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatActivity() , Player.Listener {
     protected lateinit var viewModel:VM
@@ -36,7 +49,6 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPredEditor: SharedPreferences.Editor
     var appDatabase : AppDatabase? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this,layoutRes)
@@ -58,6 +70,7 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
         }
 
     }
+
 
     fun initializeDB(context: Context) : AppDatabase {
         return AppDatabase.getDatabaseClient(context)
@@ -113,15 +126,13 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
         manageRecentlyPlayed()
     }
 
-    fun manageRecentlyPlayed(){
-        if (AppSingelton.recentlyPlayedArray.size == 0) {
-            val gson = Gson()
-            val json = sharedPreferences.getString("RecentlyPlayed", null)
-            if (json != null) {
-                val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
-                AppSingelton.recentlyPlayedArray = gson.fromJson(json, type)
-                AppSingelton.isNewItemAdded.value = true
-            }
+    fun manageRecentlyPlayed() {
+        val gson = Gson()
+        val json = sharedPreferences.getString("RecentlyPlayed", null)
+        if (json != null) {
+            val type = object : TypeToken<ArrayList<PlayingChannelData?>?>() {}.getType()
+            AppSingelton.recentlyPlayedArray = gson.fromJson(json, type)
+            AppSingelton.isNewItemAdded.value = true
         }
     }
 }

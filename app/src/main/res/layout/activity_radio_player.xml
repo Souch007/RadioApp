@@ -208,6 +208,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
+                android:visibility="invisible"
                 android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_player_radio_more"

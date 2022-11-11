@@ -3,10 +3,12 @@ package com.coderoids.radio.download
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.BR
+import com.coderoids.radio.PlayingChannelData
 import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseActivity
@@ -32,6 +34,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
                 .priority(Priority.HIGH)
                 .into(dataBinding.ivChannelPod)
             dataBinding.channelName.setText(AppSingelton.downloadingEpisodeData!!.title)
+        } else {
+            dataBinding.cardDownload.visibility = View.GONE
         }
         observers()
         manageOfflineData()
@@ -53,6 +57,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
             dataBinding.progressBar.setProgress(it)
             if(it== 100){
                 dataBinding.tvDownlaodTag.setText("Downloaded")
+                dataBinding.cardDownload.visibility = View.GONE
+                dataBinding.adapter!!.notifyDataSetChanged()
             }
         }
 
@@ -64,6 +70,20 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
 
         viewModel._listDownloadedEpisodes.observe(this@DownloadActivity){
             dataBinding.adapter = DownloadEpisodeAdapter(it, viewModel)
+        }
+
+        viewModel.onDownloadPlayListner.observe(this@DownloadActivity){
+                val playingChannelData = PlayingChannelData(
+                    it.fileURI,
+                    it.feedImage,
+                    it.title,
+                    it._id.toString(),
+                    it.feedId.toString(),
+                    it.description,
+                    "Offline"
+                )
+                AppSingelton._radioSelectedChannel.value = playingChannelData
+            finish()
         }
     }
 

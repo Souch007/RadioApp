@@ -12,7 +12,11 @@ class DownloadViewModel(var appRepository: AppRepository) : BaseViewModel() ,
     OnClickEpisodeDownload {
     var _listDownloadedEpisodes = MutableLiveData<List<Data>>()
     var listDownloadedEpisodes : LiveData<List<Data>> = _listDownloadedEpisodes
+
+    var onDownloadPlayListner = MutableLiveData<Data>()
+
     override fun onDownloadedEpisodeClicked(data: Data) {
+        onDownloadPlayListner.value = data
     }
 
 }
