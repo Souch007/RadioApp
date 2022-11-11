@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.text.Html
 import android.transition.Transition
 import android.util.Log
 
@@ -199,7 +201,11 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
             }
 
             override fun getCurrentContentText(player: Player): String {
-                return _currentPlayingChannel!!.country
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Html.fromHtml(_currentPlayingChannel!!.country,Html.FROM_HTML_MODE_COMPACT).toString()
+                } else {
+                    Html.fromHtml(_currentPlayingChannel!!.country).toString()
+                }
             }
 
             override fun getCurrentLargeIcon(

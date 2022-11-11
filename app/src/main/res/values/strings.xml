@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"> Cast</string>
+    <string name="app_name">netcast</string>
     <string name="title_radio">NetCast</string>
     <string name="title_download">Download</string>
     <string name="title_podcast">Podcasts</string>
