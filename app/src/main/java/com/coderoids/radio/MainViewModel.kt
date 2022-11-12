@@ -82,6 +82,7 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
     fun getPodCastListing(podcastViewModel: PodcastViewModel) {
         viewModelScope.launch {
             podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing()
+
         }
     }
 
@@ -111,8 +112,13 @@ class MainViewModel : BaseViewModel() , OnClickListnerRadio , OnClickListenerPod
 
     fun getSearchQueryResult(searchQuery : String , searchViewModel: SearchViewModel){
         viewModelScope.launch {
-            searchViewModel._searchResultsPodcast.value = appRepository.searchPodcasts(searchQuery)
-            searchViewModel._searchResultsStations.value = appRepository.searchedStation(searchQuery)
+            try {
+                searchViewModel._searchResultsPodcast.value = appRepository.searchPodcasts(searchQuery)
+                searchViewModel._searchResultsStations.value = appRepository.searchedStation(searchQuery)
+            } catch (ex : Exception){
+                ex.printStackTrace()
+            }
+
         }
     }
 

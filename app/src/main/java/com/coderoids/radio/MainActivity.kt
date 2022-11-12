@@ -161,9 +161,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                     startActivity(this)
                 }
             }
-//            val navController = findNavController(R.id.nav_host_fragment_activity_main)
-//            navController.navigate(R.id.navigation_radio_player);
-//            mainViewModel.valueTypeFrag = it.type
         }
 
         mainViewModel._radioSeeAllSelected.observe(this) {

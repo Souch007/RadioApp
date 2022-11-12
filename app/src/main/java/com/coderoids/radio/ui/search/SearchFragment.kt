@@ -29,26 +29,55 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
         _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
-            val data = (it as Resource.Success).value.data
-            _fragmentSearchViewModel._frequestSearchList.value = data
-            binding.tagsadapter = com.coderoids.radio.ui.search.adapters.SearchTagsAdapter(
-                listOf(),
-                mainActivityViewModel
-            )
+            try {
+                val data = (it as Resource.Success).value.data
+                _fragmentSearchViewModel._frequestSearchList.value = data
+                binding.tagsadapter = com.coderoids.radio.ui.search.adapters.SearchTagsAdapter(
+                    listOf(),
+                    mainActivityViewModel
+                )
+            } catch (ex : Exception){
+                ex.printStackTrace()
+                val failure = (it as Resource.Failure).errorCode
+                val responseBody = (it as Resource.Failure).errorResponseBody
+                if (failure == 400 && responseBody == null) {
+
+                }
+            }
         }
 
         _fragmentSearchViewModel.searchResultsPodcast.observe(this@SearchFragment){
-            val data = (it as Resource.Success).value.data
-            _fragmentSearchViewModel._searchListPodcast.value = data
-            // binding.countriesAdapter =
-            //                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), radioViewModel)
-            binding.podsearchadapter = PodcastSearchedAdapter(listOf(),mainActivityViewModel)
+            try {
+                val data = (it as Resource.Success).value.data
+                _fragmentSearchViewModel._searchListPodcast.value = data
+                // binding.countriesAdapter =
+                //                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), radioViewModel)
+                binding.podsearchadapter = PodcastSearchedAdapter(listOf(),mainActivityViewModel)
+            } catch (ex : Exception){
+                ex.printStackTrace()
+                val failure = (it as Resource.Failure).errorCode
+                val responseBody = (it as Resource.Failure).errorResponseBody
+                if (failure == 400 && responseBody == null) {
+
+                }
+            }
+
         }
 
         _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment){
-            val data = (it as Resource.Success).value.data
-            _fragmentSearchViewModel._searchListStations.value = data
-            binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
+            try {
+                val data = (it as Resource.Success).value.data
+                _fragmentSearchViewModel._searchListStations.value = data
+                binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
+            } catch (ex : Exception){
+                ex.printStackTrace()
+                val failure = (it as Resource.Failure).errorCode
+                val responseBody = (it as Resource.Failure).errorResponseBody
+                if (failure == 400 && responseBody == null) {
+
+                }
+            }
+
         }
     }
 }

@@ -28,17 +28,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         }
         binding.shimmerLayout.stopShimmer()
         mainActivityViewModel.currentFragmentId = "Radio"
+        manageRecentlyViewd()
         AppSingelton.isNewItemAdded.observe(this@RadioFragment){
             if(it){
-                if(AppSingelton.recentlyPlayedArray.size >0){
-                    binding.tvRecentlyPlayed.visibility = View.VISIBLE
-                    binding.recentlyPlayed.visibility = View.VISIBLE
-                    val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
-                    binding.recentlyPlayed.adapter = recentlyPlayedAdapter
-                } else {
-                    binding.tvRecentlyPlayed.visibility = View.GONE
-                    binding.recentlyPlayed.visibility = View.GONE
-                }
+                manageRecentlyViewd()
             }
         }
 
@@ -87,7 +80,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
                 if (failure == 400 && responseBody == null) {
-
+                    binding.parentView.visibility = View.GONE
+                    binding.emptyView.visibility = View.VISIBLE
                 }
             }
         }
@@ -142,6 +136,18 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
 
+    }
+
+    private fun manageRecentlyViewd() {
+        if(AppSingelton.recentlyPlayedArray.size >0){
+            binding.tvRecentlyPlayed.visibility = View.VISIBLE
+            binding.recentlyPlayed.visibility = View.VISIBLE
+            val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+            binding.recentlyPlayed.adapter = recentlyPlayedAdapter
+        } else {
+            binding.tvRecentlyPlayed.visibility = View.GONE
+            binding.recentlyPlayed.visibility = View.GONE
+        }
     }
 
 }
