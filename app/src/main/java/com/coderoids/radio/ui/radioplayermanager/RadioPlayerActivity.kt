@@ -2,8 +2,11 @@ package com.coderoids.radio.ui.radioplayermanager
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +15,9 @@ import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -28,7 +34,13 @@ import com.coderoids.radio.request.Resource
 import com.coderoids.radio.ui.radioplayermanager.episodedata.Data
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import kotlin.math.log
 
 
 class RadioPlayerActivity() :
@@ -38,8 +50,14 @@ class RadioPlayerActivity() :
     lateinit var radioPlayerAVM: RadioPlayerAVM
     var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
     var dataUrl = ""
+    var isActivityLoaded = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createActivity()
+        isActivityLoaded = true
+    }
+
+    private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
         viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
@@ -52,14 +70,21 @@ class RadioPlayerActivity() :
         //
         uiControls()
         requestPermission()
+        CoroutineScope(Dispatchers.IO).launch {
+            getOfflineData()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        if(dataBinding.podepisodeadapter != null){
-            dataBinding.podepisodeadapter!!.notifyDataSetChanged()
+        if(AppSingelton._radioSelectedChannel.value!!.type == "Offline" && !isActivityLoaded){
+            createActivity()
+        } else {
+            AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
+            if (dataBinding.podepisodeadapter != null) {
+                dataBinding.podepisodeadapter!!.notifyDataSetChanged()
+            }
         }
     }
 
@@ -96,6 +121,7 @@ class RadioPlayerActivity() :
 
     }
 
+
     private fun exoPlayerManager(type: String) {
         if (type.matches("Episode".toRegex())) {
             dataBinding.playerView.player?.stop()
@@ -113,20 +139,34 @@ class RadioPlayerActivity() :
         if (AppSingelton.exoPlayer == null
             || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())
         ) {
-            AppSingelton.exoPlayer =
-                ExoPlayer.Builder(this).build().also { exoPlayer ->
-                    val url = AppSingelton.radioSelectedChannel.value?.url
-                    dataBinding.playerView.player = exoPlayer
-                    val mediaItem = MediaItem.fromUri(url!!)
-                    exoPlayer.setMediaItem(mediaItem)
-                    exoPlayer.addListener(this)
-                }
-        }
-        else {
+            if (AppSingelton._radioSelectedChannel.value!!.type.matches("Offline".toRegex())) {
+                AppSingelton.exoPlayer =
+                    ExoPlayer.Builder(this).build().also { exoPlayer ->
+                        var file = File(AppSingelton._radioSelectedChannel.value!!.url)
+                        if(file.exists()) {
+                            dataBinding.playerView.player = exoPlayer
+                            val mediaItem = MediaItem.fromUri(file.toUri())
+                            exoPlayer.setMediaItem(mediaItem)
+                            exoPlayer.addListener(this)
+                        }
+                    }
+              Log.d("Offline" , "Request Recieved")
+            } else {
+                AppSingelton.exoPlayer =
+                    ExoPlayer.Builder(this).build().also { exoPlayer ->
+                        val url = AppSingelton.radioSelectedChannel.value?.url
+                        dataBinding.playerView.player = exoPlayer
+                        val mediaItem = MediaItem.fromUri(url!!)
+                        exoPlayer.setMediaItem(mediaItem)
+                        exoPlayer.addListener(this)
+                    }
+            }
+
+        } else {
             dataBinding.playerView.player = AppSingelton.exoPlayer
             //dataBinding.playerView.performClick()
             dataBinding.playerView.showController()
-            if(!dataBinding.playerView.isControllerVisible){
+            if (!dataBinding.playerView.isControllerVisible) {
 
             }
         }
@@ -173,6 +213,7 @@ class RadioPlayerActivity() :
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity){
             try{
+                if(AppSingelton.currentDownloading.matches("".toRegex())){
                 val data = it;
                 AppSingelton.downloadingEpisodeData = it;
                 DownloadFile(data).execute()
@@ -183,6 +224,18 @@ class RadioPlayerActivity() :
 //
 //                    }
 //                snackbar.show()
+                } else {
+                    Toast.makeText(this,"Please wait another download is in progress...",Toast.LENGTH_SHORT).show()
+                }
+            } catch (ex : Exception){
+                ex.printStackTrace()
+            }
+        }
+
+        viewModel._radioClicked.observe(this@RadioPlayerActivity){
+            try{
+                exoPlayerManager("Normal")
+                uiControls()
             } catch (ex : Exception){
                 ex.printStackTrace()
             }
@@ -203,7 +256,7 @@ class RadioPlayerActivity() :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<String?>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -249,10 +302,13 @@ class RadioPlayerActivity() :
         if(AppSingelton.exoPlayer != null)
             Log.d("tag",AppSingelton.exoPlayer!!.audioSessionId.toString())
         podcastType = AppSingelton.radioSelectedChannel.value!!.type
-        if (podcastType.matches("PODCAST".toRegex())) {
+        if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
             checkPodCastEpisodes()
+        } else if(podcastType.matches("Offline".toRegex())){
+            dataBinding.podEpisodes.visibility = View.GONE
+            dataBinding.radioSuggestion.visibility = View.GONE
         } else {
             dataBinding.podEpisodes.visibility = View.GONE
             dataBinding.radioSuggestion.visibility = View.VISIBLE

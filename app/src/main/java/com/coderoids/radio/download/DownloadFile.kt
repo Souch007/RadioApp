@@ -31,7 +31,6 @@ class DownloadFile(var data: Data) :
             var total: Long = 0
             while (input.read(data).also { count = it } != -1) {
                 total += count.toLong()
-                // publishing the progress....
                 publishProgress((total * 100 / lenghtOfFile).toInt())
                 output.write(data, 0, count)
             }
@@ -40,6 +39,7 @@ class DownloadFile(var data: Data) :
             input.close()
         } catch (e: Exception) {
             e.printStackTrace()
+            AppSingelton.currentDownloading = ""
         }
         return null
     }
@@ -47,17 +47,17 @@ class DownloadFile(var data: Data) :
     override fun onProgressUpdate(vararg values: Int?) {
         super.onProgressUpdate(*values)
         val current = values[0]
-        if (current != null) {
+        if (current != null && current >= 0) {
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
                 if(current == 100){
                     data.fileURI = relativePath;
-                    AppSingelton._onDownloadCompletion.value = data
                     if(AppSingelton.downloadedIds.matches("".toRegex())){
                         AppSingelton.downloadedIds = data._id.toString()
                     } else if(!AppSingelton.downloadedIds.contains(data._id.toString()+""))
                         AppSingelton.downloadedIds = AppSingelton.downloadedIds + ","+ data._id.toString()
                     AppSingelton.currentDownloading = ""
+                    AppSingelton._onDownloadCompletion.value = data
                 }
             }
         }

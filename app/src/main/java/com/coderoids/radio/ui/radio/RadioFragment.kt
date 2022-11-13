@@ -18,7 +18,7 @@ import org.json.JSONException
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
     val radioViewModel: RadioViewModel by activityViewModels()
-    private lateinit var mainActivityViewModel : MainViewModel
+    private lateinit var mainActivityViewModel: MainViewModel
 
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
@@ -29,8 +29,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         binding.shimmerLayout.stopShimmer()
         mainActivityViewModel.currentFragmentId = "Radio"
         manageRecentlyViewd()
-        AppSingelton.isNewItemAdded.observe(this@RadioFragment){
-            if(it){
+        AppSingelton.isNewItemAdded.observe(this@RadioFragment) {
+            if (it) {
                 manageRecentlyViewd()
             }
         }
@@ -91,8 +91,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel._langListArray.value = data
                 binding.languagesAdapter =
-                    com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(listOf(), mainActivityViewModel)
-            } catch (exception:  java.lang.Exception) {
+                    com.coderoids.radio.ui.radio.adapter.LanguagesAdapter(
+                        listOf(),
+                        mainActivityViewModel
+                    )
+            } catch (exception: java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
@@ -102,8 +105,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel._countriesListArray.value = data
                 binding.countriesAdapter =
-                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), mainActivityViewModel)
-            } catch (exception:  java.lang.Exception) {
+                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(
+                        listOf(),
+                        mainActivityViewModel
+                    )
+            } catch (exception: java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
@@ -112,37 +118,45 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._genresListArray.value = data
-                binding.genresAdapter = com.coderoids.radio.ui.radio.adapter.GenresAdapter(listOf(), mainActivityViewModel)
+                binding.genresAdapter = com.coderoids.radio.ui.radio.adapter.GenresAdapter(
+                    listOf(),
+                    mainActivityViewModel
+                )
             } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
             }
         }
         binding.tvAllTag.setOnClickListener {
-            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel.radioListArray.value
+            mainActivityViewModel._selectedSeeAllListRadio.value =
+                radioViewModel.radioListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
         binding.tvAllTagPopRock.setOnClickListener {
-            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioPopListArray.value
+            mainActivityViewModel._selectedSeeAllListRadio.value =
+                radioViewModel._radioPopListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
 
         binding.tvAllTagNews.setOnClickListener {
-            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioNewsListArray.value
+            mainActivityViewModel._selectedSeeAllListRadio.value =
+                radioViewModel._radioNewsListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
 
         binding.tvAllTagTvClassical.setOnClickListener {
-            mainActivityViewModel._selectedSeeAllListRadio.value = radioViewModel._radioClassicallistingArry.value
+            mainActivityViewModel._selectedSeeAllListRadio.value =
+                radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
 
     }
 
     private fun manageRecentlyViewd() {
-        if(AppSingelton.recentlyPlayedArray.size >0){
+        if (AppSingelton.recentlyPlayedArray.size > 0) {
             binding.tvRecentlyPlayed.visibility = View.VISIBLE
             binding.recentlyPlayed.visibility = View.VISIBLE
-            val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+            val recentlyPlayedAdapter =
+                FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
             binding.recentlyPlayed.adapter = recentlyPlayedAdapter
         } else {
             binding.tvRecentlyPlayed.visibility = View.GONE
@@ -150,4 +164,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val recentlyPlayedAdapter =
+            FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+        binding.recentlyPlayed.adapter = recentlyPlayedAdapter
+    }
 }

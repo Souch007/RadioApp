@@ -3,10 +3,15 @@ package com.coderoids.radio.download
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Html
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.coderoids.radio.BR
+import com.coderoids.radio.PlayingChannelData
 import com.coderoids.radio.R
 import com.coderoids.radio.base.AppSingelton
 import com.coderoids.radio.base.BaseActivity
@@ -24,46 +29,74 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSingelton.currentActivity = AppConstants.DownloadActivity
-        if(AppSingelton.downloadingEpisodeData != null){
-            Glide.with(this)
-                .load(AppSingelton.downloadingEpisodeData!!.image)
-                .error(R.drawable.logo)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .priority(Priority.HIGH)
-                .into(dataBinding.ivChannelPod)
-            dataBinding.channelName.setText(AppSingelton.downloadingEpisodeData!!.title)
-        }
         observers()
         manageOfflineData()
+
+
         dataBinding.ivBack.setOnClickListener {
             finish()
         }
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(AppSingelton.downloadingEpisodeData != null){
+                Glide.with(this)
+                    .load(AppSingelton.downloadingEpisodeData!!.image)
+                    .error(R.drawable.logo)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .into(dataBinding.ivChannelPod)
+                dataBinding.channelName.setText(AppSingelton.downloadingEpisodeData!!.title)
+                dataBinding.location.setText(Html.fromHtml((AppSingelton.downloadingEpisodeData!!.description)))
+                dataBinding.cardDownload.visibility = View.VISIBLE
+            } else {
+                dataBinding.cardDownload.visibility = View.GONE
+            }
+        }, 3000)
+
     }
 
     private fun manageOfflineData() {
         CoroutineScope(Dispatchers.IO).launch {
-            var listOfEpisodes = getOfflineData()
+            val listOfEpisodes = getOfflineData()
             viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
         }
     }
 
     private fun observers() {
         AppSingelton._progressPublish.observe(this@DownloadActivity){
-            dataBinding.tvDownlaodTag.setText("Downloading " + it.toString() +" %")
-            dataBinding.progressBar.setProgress(it)
-            if(it== 100){
-                dataBinding.tvDownlaodTag.setText("Downloaded")
+            if(it != null) {
+                dataBinding.tvDownlaodTag.setText("Downloading " + it.toString() + " %")
+                dataBinding.progressBar.setProgress(it)
+                if (it == 100) {
+                    AppSingelton._progressPublish.value = null
+                    dataBinding.tvDownlaodTag.setText("Downloaded")
+                    dataBinding.cardDownload.visibility = View.GONE
+                }
             }
         }
 
         AppSingelton._onDownloadCompletion.observe(this@DownloadActivity){
             insertOfflineData(data = it)
-            manageOfflineData()
-
+            Handler(Looper.getMainLooper()).postDelayed({
+                manageOfflineData()
+            }, 3000)
         }
 
         viewModel._listDownloadedEpisodes.observe(this@DownloadActivity){
             dataBinding.adapter = DownloadEpisodeAdapter(it, viewModel)
+        }
+
+        viewModel.onDownloadPlayListner.observe(this@DownloadActivity){
+                val playingChannelData = PlayingChannelData(
+                    it.fileURI,
+                    it.feedImage,
+                    it.title,
+                    it._id.toString(),
+                    it.feedId.toString(),
+                    it.description,
+                    "Offline"
+                )
+                AppSingelton._radioSelectedChannel.value = playingChannelData
+            finish()
         }
     }
 

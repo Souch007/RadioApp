@@ -3,6 +3,7 @@ package com.coderoids.radio.request
 import com.coderoids.radio.download.DownloadActivity
 
 object AppConstants {
+    const val NOTIFICATION_ID: Int = 5709
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"
     const val MAIN_ACTIVITY : String  = "MainActivity"
     const val DownloadActivity : String  = "DownloadActivity"

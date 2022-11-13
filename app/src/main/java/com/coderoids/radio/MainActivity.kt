@@ -75,9 +75,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 }
             }
         )
-
-
-
         searchWatcherListener()
         hideProgressBar()
         checkOfflineChannels()
@@ -92,13 +89,6 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                     dataBinding.primeLayout.visibility = View.VISIBLE
                 } else
                     dataBinding.primeLayout.visibility = View.INVISIBLE
-            }
-            for (i in listOffline){
-                var data = i;
-                if(AppSingelton.downloadedIds.matches("".toRegex())){
-                    AppSingelton.downloadedIds = data._id.toString()
-                } else if(!AppSingelton.downloadedIds.contains(data._id.toString()+""))
-                    AppSingelton.downloadedIds = AppSingelton.downloadedIds + ","+ data._id.toString()
             }
 
         dataBinding.primeLayout.setOnClickListener {
@@ -177,35 +167,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
         AppSingelton._playingStarted.observe(this@MainActivity) {
             if (it) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if(AppSingelton._currentPlayingChannel.value != null
-                        && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())){
-                        dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
-                        Glide.with(this)
-                            .load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                            .error(R.drawable.logo)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .priority(Priority.HIGH)
-                            .into(dataBinding.slideUp)
-
-                        Glide.with(this)
-                            .load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                            .error(R.drawable.logo)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .priority(Priority.HIGH)
-                            .into(dataBinding.slideUpIv)
-                        dataBinding.currentRadioInfo.setText(AppSingelton._currentPlayingChannel.value!!.name)
-                        dataBinding.settingsBarLayout.visibility = View.VISIBLE
-                        dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                        dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
-                        dataBinding.playButtonCarousel.showTimeoutMs = -1
-                        dataBinding.playBtn.player = AppSingelton.exoPlayer
-                        dataBinding.playBtn.showController()
-                        dataBinding.playBtn.setShowPreviousButton(false)
-                        dataBinding.playBtn.setShowNextButton(false)
-                        AppSingelton.isNewItemAdded.value = true
-                    }
-                }, 1000)
+               showSlideUpPanel()
             }
         }
         mainViewModel.navigateToPodcast.observe(this@MainActivity){
@@ -225,6 +187,38 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 ex.printStackTrace()
             }
         }
+    }
+
+    private fun showSlideUpPanel() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(AppSingelton._currentPlayingChannel.value != null
+                && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())){
+                dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                Glide.with(this)
+                    .load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                    .error(R.drawable.logo)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .into(dataBinding.slideUp)
+
+                Glide.with(this)
+                    .load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                    .error(R.drawable.logo)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .into(dataBinding.slideUpIv)
+                dataBinding.currentRadioInfo.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                dataBinding.settingsBarLayout.visibility = View.VISIBLE
+                dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+                dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
+                dataBinding.playButtonCarousel.showTimeoutMs = -1
+                dataBinding.playBtn.player = AppSingelton.exoPlayer
+                dataBinding.playBtn.showController()
+                dataBinding.playBtn.setShowPreviousButton(false)
+                dataBinding.playBtn.setShowNextButton(false)
+                AppSingelton.isNewItemAdded.value = true
+            }
+        }, 1000)
     }
 
     private fun callApis() {
@@ -312,5 +306,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     override fun onResume() {
         super.onResume()
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
+        showSlideUpPanel()
+        checkOfflineChannels()
     }
 }
