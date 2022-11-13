@@ -71,7 +71,7 @@
                 android:id="@+id/parent_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-              >
+                >
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmerLayout"
@@ -98,7 +98,7 @@
 
                         <include layout="@layout/shimmer_loadingview"></include>
 
-                    <include layout="@layout/shimmer_loadingview"></include>
+                     <include layout="@layout/shimmer_loadingview"></include>
                 </LinearLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
                 <TextView

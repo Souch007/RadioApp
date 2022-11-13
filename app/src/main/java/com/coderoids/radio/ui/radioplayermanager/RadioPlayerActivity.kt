@@ -240,6 +240,15 @@ class RadioPlayerActivity() :
                 ex.printStackTrace()
             }
         }
+
+        viewModel._radioClicked.observe(this@RadioPlayerActivity){
+            try{
+                exoPlayerManager("Normal")
+                uiControls()
+            } catch (ex : Exception){
+                ex.printStackTrace()
+            }
+        }
     }
 
     private fun requestPermission() {

@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>() {
-    private var objectAnimator : ObjectAnimator? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSingelton.currentActivity = AppConstants.DownloadActivity
