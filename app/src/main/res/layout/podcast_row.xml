@@ -6,11 +6,11 @@
 
         <variable
             name="feeds"
-            type="com.coderoids.radio.ui.podcast.poddata.PodListData" />
+            type="com.netcast.radio.ui.podcast.poddata.PodListData" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.podcast.adapter.OnClickListenerPodcast" />
+            type="com.netcast.radio.ui.podcast.adapter.OnClickListenerPodcast" />
     </data>
 
     <androidx.cardview.widget.CardView

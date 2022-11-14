@@ -8,11 +8,11 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.coderoids.radio"
+        applicationId "com.netcast.radio"
         minSdk 21
         targetSdk 33
-        versionCode 3
-        versionName "1.02"
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,7 +33,7 @@ android {
     buildFeatures {
         dataBinding true
     }
-    namespace 'com.coderoids.radio'
+    namespace 'com.netcast.radio'
 }
 
 dependencies {

@@ -6,11 +6,11 @@
 
         <variable
             name="genresList"
-            type="com.coderoids.radio.ui.radio.genres.Data" />
+            type="com.netcast.radio.ui.radio.genres.Data" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.radio.adapter.OnClickGeneresListener" />
+            type="com.netcast.radio.ui.radio.adapter.OnClickGeneresListener" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -7,17 +7,17 @@
     <data>
         <variable
             name="fragmentSearchViewModel"
-            type="com.coderoids.radio.ui.search.SearchViewModel" />
+            type="com.netcast.radio.ui.search.SearchViewModel" />
 
         <variable
             name="tagsadapter"
-            type="com.coderoids.radio.ui.search.adapters.SearchTagsAdapter" />
+            type="com.netcast.radio.ui.search.adapters.SearchTagsAdapter" />
         <variable
             name="podsearchadapter"
-            type="com.coderoids.radio.ui.search.adapters.PodcastSearchedAdapter" />
+            type="com.netcast.radio.ui.search.adapters.PodcastSearchedAdapter" />
         <variable
             name="stationsearchadapter"
-            type="com.coderoids.radio.ui.search.adapters.StationSearchedAdapter" />
+            type="com.netcast.radio.ui.search.adapters.StationSearchedAdapter" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

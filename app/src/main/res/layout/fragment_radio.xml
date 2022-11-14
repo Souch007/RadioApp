@@ -8,35 +8,35 @@
 
         <variable
             name="radioDataBinding"
-            type="com.coderoids.radio.ui.radio.RadioViewModel" />
+            type="com.netcast.radio.ui.radio.RadioViewModel" />
 
         <variable
             name="adapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="popadapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="newsadapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="classicalAdapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="languagesAdapter"
-            type="com.coderoids.radio.ui.radio.adapter.LanguagesAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.LanguagesAdapter" />
 
         <variable
             name="countriesAdapter"
-            type="com.coderoids.radio.ui.radio.adapter.CountriesAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.CountriesAdapter" />
 
         <variable
             name="genresAdapter"
-            type="com.coderoids.radio.ui.radio.adapter.GenresAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.GenresAdapter" />
 
     </data>
 
@@ -77,7 +77,7 @@
                     android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

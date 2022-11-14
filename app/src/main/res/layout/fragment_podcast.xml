@@ -8,31 +8,31 @@
 
         <variable
             name="podcastDataBinding"
-            type="com.coderoids.radio.ui.podcast.PodcastViewModel" />
+            type="com.netcast.radio.ui.podcast.PodcastViewModel" />
 
         <variable
             name="newsadapter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="societyadapter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="businessadapter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="culturaladpter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="educationaladapter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="playlistadapter"
-            type="com.coderoids.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
 
     </data>
 

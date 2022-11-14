@@ -7,19 +7,19 @@
     <data>
         <variable
             name="seeallviewmodel"
-            type="com.coderoids.radio.ui.seeall.SeeAllViewModel" />
+            type="com.netcast.radio.ui.seeall.SeeAllViewModel" />
 
         <variable
             name="mainViewModel"
-            type="com.coderoids.radio.MainViewModel" />
+            type="com.netcast.radio.MainViewModel" />
 
         <variable
             name="seeallaadapter"
-            type="com.coderoids.radio.ui.seeall.adapter.SeeAllAdapter" />
+            type="com.netcast.radio.ui.seeall.adapter.SeeAllAdapter" />
 
         <variable
             name="seeallpodadapter"
-            type="com.coderoids.radio.ui.seeall.adapter.SeeAllPodAdapter" />
+            type="com.netcast.radio.ui.seeall.adapter.SeeAllPodAdapter" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

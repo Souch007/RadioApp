@@ -8,15 +8,15 @@
     <data>
         <variable
             name="mainActivity"
-            type="com.coderoids.radio.MainActivity" />
+            type="com.netcast.radio.MainActivity" />
 
         <variable
             name="mainViewModel"
-            type="com.coderoids.radio.MainViewModel" />
+            type="com.netcast.radio.MainViewModel" />
 
         <variable
             name="mainViewModelAdapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
 
         <import type="android.view.View" />
     </data>

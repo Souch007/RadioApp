@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_radio"
-        android:name="com.coderoids.radio.ui.radio.RadioFragment"
+        android:name="com.netcast.radio.ui.radio.RadioFragment"
         android:label="@string/title_radio"
         tools:layout="@layout/fragment_radio" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_podcast"
-        android:name="com.coderoids.radio.ui.podcast.PodcastFragment"
+        android:name="com.netcast.radio.ui.podcast.PodcastFragment"
         android:label="@string/title_podcast"
         tools:layout="@layout/fragment_podcast" >
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/navigation_favourites"
-        android:name="com.coderoids.radio.ui.favourites.FavouritesFragment"
+        android:name="com.netcast.radio.ui.favourites.FavouritesFragment"
         android:label="@string/title_favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.coderoids.radio.ui.search.SearchFragment"
+        android:name="com.netcast.radio.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/navigation_see_all"
-        android:name="com.coderoids.radio.ui.seeall.SeeAllFragment"
+        android:name="com.netcast.radio.ui.seeall.SeeAllFragment"
         android:label="@string/see_all"
         tools:layout="@layout/fragment_see_all" >
         <action

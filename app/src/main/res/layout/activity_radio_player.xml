@@ -8,19 +8,19 @@
 
         <variable
             name="radioplayerb"
-            type="com.coderoids.radio.ui.radioplayermanager.RadioPlayerActivity" />
+            type="com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity" />
 
         <variable
             name="radioplayervm"
-            type="com.coderoids.radio.ui.radioplayermanager.RadioPlayerAVM" />
+            type="com.netcast.radio.ui.radioplayermanager.RadioPlayerAVM" />
 
         <variable
             name="podepisodeadapter"
-            type="com.coderoids.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter" />
+            type="com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter" />
 
         <variable
             name="adapter"
-            type="com.coderoids.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

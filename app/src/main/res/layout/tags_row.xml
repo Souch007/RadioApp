@@ -6,11 +6,11 @@
 
         <variable
             name="tagsdata"
-            type="com.coderoids.radio.ui.search.frequentsearch.Data" />
+            type="com.netcast.radio.ui.search.frequentsearch.Data" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.search.adapters.OnSearchTagListener" />
+            type="com.netcast.radio.ui.search.adapters.OnSearchTagListener" />
     </data>
 
 

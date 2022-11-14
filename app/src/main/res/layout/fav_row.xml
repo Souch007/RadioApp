@@ -6,11 +6,11 @@
 
         <variable
             name="playing"
-            type="com.coderoids.radio.PlayingChannelData" />
+            type="com.netcast.radio.PlayingChannelData" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.favourites.adapters.OnFavouriteClickListener" />
+            type="com.netcast.radio.ui.favourites.adapters.OnFavouriteClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

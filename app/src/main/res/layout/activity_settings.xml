@@ -8,7 +8,7 @@
 
         <variable
             name="settingView"
-            type="com.coderoids.radio.ui.SettingsActivity" />
+            type="com.netcast.radio.ui.SettingsActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +77,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/settings_container"
-            android:name="com.coderoids.radio.ui.ui.settings.SettingsFragment"
+            android:name="com.netcast.radio.ui.ui.settings.SettingsFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

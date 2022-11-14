@@ -6,11 +6,11 @@
 
         <variable
             name="languageList"
-            type="com.coderoids.radio.ui.radio.countries.Data" />
+            type="com.netcast.radio.ui.radio.countries.Data" />
 
         <variable
             name="listener"
-            type="com.coderoids.radio.ui.radio.adapter.OnClickListenerCountires" />
+            type="com.netcast.radio.ui.radio.adapter.OnClickListenerCountires" />
     </data>
 
     <androidx.cardview.widget.CardView

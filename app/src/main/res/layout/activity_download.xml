@@ -7,11 +7,11 @@
 
         <variable
             name="downloadBinding"
-            type="com.coderoids.radio.download.DownloadActivity" />
+            type="com.netcast.radio.download.DownloadActivity" />
 
         <variable
             name="downloadVM"
-            type="com.coderoids.radio.download.DownloadViewModel" />
+            type="com.netcast.radio.download.DownloadViewModel" />
 
 <!--        <variable-->
 <!--            name="podepisodeadapter"-->
@@ -19,7 +19,7 @@
 
         <variable
             name="adapter"
-            type="com.coderoids.radio.download.adapter.DownloadEpisodeAdapter" />
+            type="com.netcast.radio.download.adapter.DownloadEpisodeAdapter" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,7 +171,7 @@
                             android:gravity="center"
                             android:text="Loading..."
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
+                            android:textSize="@dimen/_10sdp"
                             android:padding="@dimen/_5sdp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -191,8 +191,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Play Offline Podcasts"
-        style="@style/textTitle"
-        android:textSize="@dimen/_20sdp"
+        style="@style/textHeading"
+        android:textSize="@dimen/_12sdp"
         android:padding="@dimen/_10sdp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

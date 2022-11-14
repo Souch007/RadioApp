@@ -7,15 +7,15 @@
     <data>
         <variable
             name="favViewModel"
-            type="com.coderoids.radio.ui.favourites.FavouritesViewModel" />
+            type="com.netcast.radio.ui.favourites.FavouritesViewModel" />
 
         <variable
             name="mainViewModel"
-            type="com.coderoids.radio.MainViewModel" />
+            type="com.netcast.radio.MainViewModel" />
 
         <variable
             name="favouritesAdapter"
-            type="com.coderoids.radio.ui.favourites.adapters.FavouriteAdapter" />
+            type="com.netcast.radio.ui.favourites.adapters.FavouriteAdapter" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
