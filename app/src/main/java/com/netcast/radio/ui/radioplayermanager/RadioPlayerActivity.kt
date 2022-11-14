@@ -328,8 +328,21 @@ class RadioPlayerActivity() :
                     Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT)
                         .show()
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (Environment.isExternalStorageManager()) {
+                        // perform action when allow permission success
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Allow permission for storage access!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+
             }
-        }
 //        when (requestCode) {
 //            STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
 //                // check whether storage pe rmission granted or not.
@@ -352,54 +365,54 @@ class RadioPlayerActivity() :
 //            }
 //            else -> {}
 //        }
-    }
-
-    private fun createPlayingChannelData(it: Data) {
-        var playingChannelData = PlayingChannelData(
-            it.enclosureUrl,
-            it.feedImage,
-            it.title,
-            it._id.toString(),
-            it.feedId.toString(),
-            it.description,
-            "Episodes"
-        )
-        AppSingelton._radioSelectedChannel.value = playingChannelData
-    }
-
-    private fun _checkMediaType() {
-        //Checking the Type of MEDIA
-        if (AppSingelton.exoPlayer != null)
-            Log.d("tag", AppSingelton.exoPlayer!!.audioSessionId.toString())
-        podcastType = AppSingelton.radioSelectedChannel.value!!.type
-        if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
-            dataBinding.podEpisodes.visibility = View.VISIBLE
-            dataBinding.radioSuggestion.visibility = View.GONE
-            checkPodCastEpisodes()
-        } else if (podcastType.matches("Offline".toRegex())) {
-            dataBinding.podEpisodes.visibility = View.GONE
-            dataBinding.radioSuggestion.visibility = View.GONE
-        } else {
-            dataBinding.podEpisodes.visibility = View.GONE
-            dataBinding.radioSuggestion.visibility = View.VISIBLE
-            dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                AppSingelton.suggestedRadioList!!,
-                viewModel
-            )
         }
-    }
 
-    private fun checkPodCastEpisodes() {
-        dataBinding.podcastLoader.visibility = View.VISIBLE
-        viewModel.getPodcastEpisodes(AppSingelton.radioSelectedChannel.value!!.idPodcast)
+        private fun createPlayingChannelData(it: Data) {
+            var playingChannelData = PlayingChannelData(
+                it.enclosureUrl,
+                it.feedImage,
+                it.title,
+                it._id.toString(),
+                it.feedId.toString(),
+                it.description,
+                "Episodes"
+            )
+            AppSingelton._radioSelectedChannel.value = playingChannelData
+        }
 
-    }
+        private fun _checkMediaType() {
+            //Checking the Type of MEDIA
+            if (AppSingelton.exoPlayer != null)
+                Log.d("tag", AppSingelton.exoPlayer!!.audioSessionId.toString())
+            podcastType = AppSingelton.radioSelectedChannel.value!!.type
+            if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
+                dataBinding.podEpisodes.visibility = View.VISIBLE
+                dataBinding.radioSuggestion.visibility = View.GONE
+                checkPodCastEpisodes()
+            } else if (podcastType.matches("Offline".toRegex())) {
+                dataBinding.podEpisodes.visibility = View.GONE
+                dataBinding.radioSuggestion.visibility = View.GONE
+            } else {
+                dataBinding.podEpisodes.visibility = View.GONE
+                dataBinding.radioSuggestion.visibility = View.VISIBLE
+                dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                    AppSingelton.suggestedRadioList!!,
+                    viewModel
+                )
+            }
+        }
 
-    override val layoutRes: Int
+        private fun checkPodCastEpisodes() {
+            dataBinding.podcastLoader.visibility = View.VISIBLE
+            viewModel.getPodcastEpisodes(AppSingelton.radioSelectedChannel.value!!.idPodcast)
+
+        }
+
+        override val layoutRes: Int
         get() = R.layout.activity_radio_player
-    override val bindingVariable: Int
+        override val bindingVariable: Int
         get() = BR.radioplayervm
-    override val viewModelClass: Class<RadioPlayerAVM>
+        override val viewModelClass: Class<RadioPlayerAVM>
         get() = RadioPlayerAVM::class.java
 
-}
+    }
