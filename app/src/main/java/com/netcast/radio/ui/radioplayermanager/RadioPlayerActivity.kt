@@ -55,13 +55,9 @@ class RadioPlayerActivity() :
     }
 
     private val permissions = arrayOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        WRITE_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_MEDIA_AUDIO,
-        Manifest.permission.READ_MEDIA_VIDEO,
-        Manifest.permission.READ_MEDIA_IMAGES,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.MANAGE_EXTERNAL_STORAGE
+        READ_EXTERNAL_STORAGE,
     )
 
     private fun createActivity() {
@@ -295,7 +291,7 @@ class RadioPlayerActivity() :
             //below android 11
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(WRITE_EXTERNAL_STORAGE),
+               permissions,
                 STORAGE_PERMISSION_REQUEST_CODE
             )
         }
@@ -343,6 +339,7 @@ class RadioPlayerActivity() :
 
 
             }
+        }
 //        when (requestCode) {
 //            STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
 //                // check whether storage pe rmission granted or not.
@@ -414,5 +411,6 @@ class RadioPlayerActivity() :
         get() = BR.radioplayervm
         override val viewModelClass: Class<RadioPlayerAVM>
         get() = RadioPlayerAVM::class.java
+
 
     }
