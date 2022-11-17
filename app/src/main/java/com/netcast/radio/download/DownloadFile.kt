@@ -23,8 +23,7 @@ class DownloadFile(var data: Data) :
             val lenghtOfFile = conexion.contentLength
             val input: InputStream = BufferedInputStream(_url.openStream())
             val fileName  = data._id.toString()+""+System.currentTimeMillis().toString()+".mp3"
-            relativePath =
-                Environment.getExternalStorageDirectory().path + "/${fileName}"
+            relativePath = Environment.getExternalStorageDirectory().path + "/${fileName}"
             val output: OutputStream = FileOutputStream(relativePath)
             val data = ByteArray(1024)
             var total: Long = 0
@@ -49,16 +48,19 @@ class DownloadFile(var data: Data) :
         if (current != null && current >= 0) {
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
-                if(current == 100){
+                if (current == 100) {
                     data.fileURI = relativePath;
-                    if(AppSingelton.downloadedIds.matches("".toRegex())){
+                    if (AppSingelton.downloadedIds.matches("".toRegex())) {
                         AppSingelton.downloadedIds = data._id.toString()
-                    } else if(!AppSingelton.downloadedIds.contains(data._id.toString()+""))
-                        AppSingelton.downloadedIds = AppSingelton.downloadedIds + ","+ data._id.toString()
+                    } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                        AppSingelton.downloadedIds =
+                            AppSingelton.downloadedIds + "," + data._id.toString()
                     AppSingelton.currentDownloading = ""
                     AppSingelton._onDownloadCompletion.value = data
                 }
             }
         }
     }
+
+
 }

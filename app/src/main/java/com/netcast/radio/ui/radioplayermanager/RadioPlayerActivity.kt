@@ -1,8 +1,7 @@
 package com.netcast.radio.ui.radioplayermanager
 
 import android.Manifest
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -21,8 +20,8 @@ import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
@@ -31,6 +30,7 @@ import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityRadioPlayerBinding
 import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.download.DownloadFile
+import com.netcast.radio.download.DownloadUsingMediaStore
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
@@ -45,9 +45,8 @@ class RadioPlayerActivity() :
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
     lateinit var radioPlayerAVM: RadioPlayerAVM
-    var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
-    var dataUrl = ""
-    var isActivityLoaded = false;
+    private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
+    private var isActivityLoaded = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createActivity()
@@ -56,8 +55,8 @@ class RadioPlayerActivity() :
 
     private val permissions = arrayOf(
         WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.MANAGE_EXTERNAL_STORAGE,
         READ_EXTERNAL_STORAGE,
+        READ_MEDIA_AUDIO
     )
 
     private fun createActivity() {
@@ -159,8 +158,17 @@ class RadioPlayerActivity() :
                     }
                 Log.d("Offline", "Request Recieved")
             } else {
+                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
+                val loadControl = DefaultLoadControl.Builder()
+                    .setAllocator(allocator)
+                    .setTargetBufferBytes(C.LENGTH_UNSET)
+                    .setBufferDurationsMs(10000, 120000, 1000, 1000)
+                    .setPrioritizeTimeOverSizeThresholds(true)
+                    .build()
+                val renderersFactory = DefaultRenderersFactory(this)
+
                 AppSingelton.exoPlayer =
-                    ExoPlayer.Builder(this).build().also { exoPlayer ->
+                    ExoPlayer.Builder(this,renderersFactory).setLoadControl(loadControl).setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                         val url = AppSingelton.radioSelectedChannel.value?.url
                         dataBinding.playerView.player = exoPlayer
                         val mediaItem = MediaItem.fromUri(url!!)
@@ -223,7 +231,8 @@ class RadioPlayerActivity() :
                 if (AppSingelton.currentDownloading.matches("".toRegex())) {
                     val data = it;
                     AppSingelton.downloadingEpisodeData = it;
-                    DownloadFile(data).execute()
+//                    DownloadFile(data).execute()
+                    DownloadUsingMediaStore(data,this).execute()
                     startActivity(Intent(this@RadioPlayerActivity, DownloadActivity::class.java))
 //                val snackbar = Snackbar
 //                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
@@ -270,43 +279,19 @@ class RadioPlayerActivity() :
                 ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
             val result1 =
                 ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
-            result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
+        return    result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
         }
     }
 
     private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.addCategory("android.intent.category.DEFAULT")
-                intent.data =
-                    Uri.parse(String.format("package:%s", applicationContext.packageName))
-                startActivityForResult(intent, 2296)
-            } catch (e: java.lang.Exception) {
-                val intent = Intent()
-                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                startActivityForResult(intent, 2296)
-            }
-        } else {
             //below android 11
             ActivityCompat.requestPermissions(
                 this,
                permissions,
                 STORAGE_PERMISSION_REQUEST_CODE
             )
-        }
+//        }
     }
-
-    /*   private fun requestPermission() {
-           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-               ActivityCompat.requestPermissions(
-                   this,
-                   permissions,
-                   STORAGE_PERMISSION_REQUEST_CODE
-               )
-           }
-       }*/
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -318,50 +303,16 @@ class RadioPlayerActivity() :
             STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty()) {
                 val READ_EXTERNAL_STORAGE = grantResults[0] === PackageManager.PERMISSION_GRANTED
                 val WRITE_EXTERNAL_STORAGE = grantResults[1] === PackageManager.PERMISSION_GRANTED
-                if (READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE) {
+                if (READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE ) {
                     // perform action when allow permission success
                 } else {
-                    Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT)
-                        .show()
+                    // Not granted
+                   /* Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT)
+                        .show()*/
                 }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (Environment.isExternalStorageManager()) {
-                        // perform action when allow permission success
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Allow permission for storage access!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-
             }
         }
-//        when (requestCode) {
-//            STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-//                // check whether storage pe rmission granted or not.
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//                            !Environment.isExternalStorageManager()
-//                        } else {
-//                            TODO("VERSION.SDK_INT < R")
-//                        }
-//                    ) {
-//                        val intent = Intent()
-//                        intent.action = Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
-//                        val uri: Uri = Uri.fromParts("package", this.packageName, null)
-//                        intent.data = uri
-//                        startActivity(intent)
-//                    } else {
-//
-//                    }
-//                }
-//            }
-//            else -> {}
-//        }
+
         }
 
         private fun createPlayingChannelData(it: Data) {

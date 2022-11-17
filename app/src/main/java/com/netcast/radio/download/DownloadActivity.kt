@@ -33,7 +33,7 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
         }
         Handler(Looper.getMainLooper()).postDelayed({
             if(AppSingelton.downloadingEpisodeData != null){
-                Glide.with(this)
+                Glide.with(applicationContext)
                     .load(AppSingelton.downloadingEpisodeData!!.image)
                     .error(R.drawable.logo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
