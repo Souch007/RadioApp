@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
 import com.netcast.radio.PlayingChannelData
@@ -154,6 +155,7 @@ class RadioPlayerActivity() :
                             val mediaItem = MediaItem.fromUri(file.toUri())
                             exoPlayer.setMediaItem(mediaItem)
                             exoPlayer.addListener(this)
+
                         }
                     }
                 Log.d("Offline", "Request Recieved")
@@ -173,6 +175,7 @@ class RadioPlayerActivity() :
                         dataBinding.playerView.player = exoPlayer
                         val mediaItem = MediaItem.fromUri(url!!)
                         exoPlayer.setMediaItem(mediaItem)
+                        exoPlayer.addAnalyticsListener(object :AnalyticsListener{})
                         exoPlayer.addListener(this)
                     }
             }

@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.util.Log
+import android.widget.Toast
 
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -42,9 +43,11 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutionException
 
 
-abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatActivity() , Player.Listener {
-    protected lateinit var viewModel:VM
-    protected lateinit var dataBinding:VDB
+abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
+    Player.Listener {
+    protected lateinit var viewModel: VM
+    protected lateinit var dataBinding: VDB
+
     @get:LayoutRes
     abstract val layoutRes: Int
     abstract val bindingVariable: Int
@@ -108,12 +111,12 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
             initializeDB(applicationContext)
         }
         var listOffline = appDatabase!!.appDap().getOfflineEpisodes()
-        for (i in listOffline){
+        for (i in listOffline) {
             var data = i;
-            if(AppSingelton.downloadedIds.matches("".toRegex())){
+            if (AppSingelton.downloadedIds.matches("".toRegex())) {
                 AppSingelton.downloadedIds = data._id.toString()
-            } else if(!AppSingelton.downloadedIds.contains(data._id.toString()+""))
-                AppSingelton.downloadedIds = AppSingelton.downloadedIds + ","+ data._id.toString()
+            } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                AppSingelton.downloadedIds = AppSingelton.downloadedIds + "," + data._id.toString()
         }
 
         return listOffline
@@ -126,6 +129,9 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
+        if (!isPlaying)
+            Toast.makeText(this, "Buffering", Toast.LENGTH_SHORT).show()
+
         AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
         AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
         AppSingelton._playingStarted.value = isPlaying
@@ -210,7 +216,8 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
 
             override fun getCurrentContentText(player: Player): String {
                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.fromHtml(_currentPlayingChannel!!.country,Html.FROM_HTML_MODE_COMPACT).toString()
+                    Html.fromHtml(_currentPlayingChannel!!.country, Html.FROM_HTML_MODE_COMPACT)
+                        .toString()
                 } else {
                     Html.fromHtml(_currentPlayingChannel!!.country).toString()
                 }
@@ -243,16 +250,25 @@ abstract class BaseActivity<VM: BaseViewModel, VDB:ViewDataBinding> : AppCompatA
 
         playerNotificationManager = PlayerNotificationManager.Builder(
             this,
-            notificationId, "My_channel_id")
+            notificationId, "My_channel_id"
+        )
             .setChannelNameResourceId(R.string.app_name)
             .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
             .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
-                override fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean) {
+                override fun onNotificationPosted(
+                    notificationId: Int,
+                    notification: Notification,
+                    ongoing: Boolean
+                ) {
                     Log.d("TAG", "onNotificationPosted: ")
                 }
 
-                override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {}
+                override fun onNotificationCancelled(
+                    notificationId: Int,
+                    dismissedByUser: Boolean
+                ) {
+                }
             })
             .build()
 
