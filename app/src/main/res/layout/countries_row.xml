@@ -11,6 +11,8 @@
         <variable
             name="listener"
             type="com.netcast.radio.ui.radio.adapter.OnClickListenerCountires" />
+
+    <import type="android.text.TextUtils"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -38,12 +40,12 @@
                 android:id="@+id/textView"
                 style="@style/textsubheading"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="@dimen/_5sdp"
-                android:text="@{languageList.name}"
+                android:text="@{languageList.name.substring(0, 1).toUpperCase() + languageList.name.substring(1)}"
 
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="normal"

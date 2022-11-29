@@ -21,7 +21,7 @@ class GenresAdapter (
 
     override fun getItemsCount(data: List<Data>): Int {
         if(data.size > 10)
-            return 9;
+            return 9
         else
             return data.size;
     }

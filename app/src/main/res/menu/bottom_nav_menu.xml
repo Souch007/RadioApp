@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_radio"
         android:icon="@drawable/ic_radio"
-        android:title="@string/title_radio" />
+        android:title="@string/radio" />
 
     <item
         android:id="@+id/navigation_podcast"
