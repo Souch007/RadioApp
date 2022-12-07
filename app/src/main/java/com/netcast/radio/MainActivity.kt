@@ -260,22 +260,22 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 R.id.navigation_radio -> {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
-                    dataBinding.tvRadio.text = "Radio"
+//                    dataBinding.tvRadio.text = "Radio"
                 }
                 R.id.navigation_podcast -> {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
-                    dataBinding.tvRadio.text = "Podcast"
+//                    dataBinding.tvRadio.text = "Podcast"
                 }
                 R.id.navigation_favourites -> {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
-                    dataBinding.tvRadio.text = "Favourites"
+//                    dataBinding.tvRadio.text = "Favourites"
                 }
                 R.id.navigation_search -> {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
-                    dataBinding.tvRadio.text = "Search"
+//                    dataBinding.tvRadio.text = "Search"
                 }
                 R.id.navigation_see_all -> {
                     navView.visibility = View.GONE

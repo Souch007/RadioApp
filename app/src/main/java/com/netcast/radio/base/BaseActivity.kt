@@ -272,7 +272,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             })
             .build()
 
-        playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_MAX)
+        playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
         playerNotificationManager!!.setUsePlayPauseActions(true)
         playerNotificationManager!!.setSmallIcon(R.drawable.logo)
         playerNotificationManager!!.setColorized(true)

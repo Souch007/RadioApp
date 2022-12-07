@@ -15,8 +15,9 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import kotlinx.coroutines.launch
 
-class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnClickListnerRadio,OnEpisodeClickListener {
-     var suggestedRadioList: List<RadioLists>? = null
+class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClickListnerRadio,
+    OnEpisodeClickListener {
+    var suggestedRadioList: List<RadioLists>? = null
 
     val _podEpisodesList = MutableLiveData<Resource<PodEpisodesData>>()
     val podEpisodesList: LiveData<Resource<PodEpisodesData>> = _podEpisodesList
@@ -29,20 +30,30 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnCli
     val _episodeDownloadSelected = MutableLiveData<Data>()
 
     override fun onRadioClicked(data: RadioLists) {
-        var playingChannelData = PlayingChannelData(data.url,data.favicon,data.name,data.id,"",data.country,"RADIO")
+        var playingChannelData = PlayingChannelData(
+            data.url,
+            data.favicon,
+            data.name,
+            data.id,
+            "",
+            data.country,
+            "RADIO"
+        )
         AppSingelton._radioSelectedChannel.value = playingChannelData
-        if(AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
+        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
             AppSingelton._isNewStationSelected.value = false
         else {
             AppSingelton._isNewStationSelected.value = true
-            if(AppSingelton.exoPlayer != null)
+            if (AppSingelton.exoPlayer != null) {
+                AppSingelton.exoPlayer!!.stop()
                 AppSingelton.exoPlayer!!.release()
+            }
             AppSingelton.exoPlayer = null
         }
         _radioClicked.value = data
     }
 
-    fun getPodcastEpisodes(idPodcast : String){
+    fun getPodcastEpisodes(idPodcast: String) {
         viewModelScope.launch {
             _podEpisodesList.value = appRepository.getPodcastEpisodes(idPodcast)
         }
@@ -53,10 +64,11 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel() , OnCli
     }
 
     override fun onEpisodeDownloadClicked(data: Data) {
-        if(!AppSingelton.downloadedIds.contains(data._id.toString().toRegex()) &&
-            !AppSingelton.currentDownloading.matches(data._id.toString().toRegex())){
+        if (!AppSingelton.downloadedIds.contains(data._id.toString().toRegex()) &&
+            !AppSingelton.currentDownloading.matches(data._id.toString().toRegex())
+        ) {
             _episodeDownloadSelected.value = data
         } else
-            _episodeSelected.value = data;
+            _episodeSelected.value = data
     }
 }
