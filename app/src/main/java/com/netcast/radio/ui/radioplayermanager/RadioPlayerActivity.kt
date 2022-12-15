@@ -1,15 +1,10 @@
 package com.netcast.radio.ui.radioplayermanager
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
+import android.os.*
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -25,12 +20,10 @@ import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
 import com.netcast.radio.PlayingChannelData
-import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityRadioPlayerBinding
 import com.netcast.radio.download.DownloadActivity
-import com.netcast.radio.download.DownloadFile
 import com.netcast.radio.download.DownloadUsingMediaStore
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
@@ -96,20 +89,21 @@ class RadioPlayerActivity() :
     }
 
     private fun uiControls() {
+        checkIfItemisInFav()
         dataBinding.ivBack.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
             finish()
         }
         Glide.with(dataBinding.ivChannelLogo.context)
             .load(AppSingelton.radioSelectedChannel.value!!.favicon)
-            .error(R.drawable.logo)
+            .error(com.netcast.radio.R.drawable.logo)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH)
             .into(dataBinding.ivChannelLogo)
 
         Glide.with(dataBinding.backBlur.context)
             .load(AppSingelton.radioSelectedChannel.value!!.favicon)
-            .error(R.drawable.logo)
+            .error(com.netcast.radio.R.drawable.logo)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH)
             .into(dataBinding.backBlur)
@@ -119,6 +113,18 @@ class RadioPlayerActivity() :
                 viewModel.addChannelToFavourites(AppSingelton.radioSelectedChannel.value!!)
             } else {
                 viewModel.removeChannelFromFavourites(AppSingelton.radioSelectedChannel.value!!)
+            }
+        }
+
+    }
+
+    private fun checkIfItemisInFav() {
+        if(AppSingelton.favouritesRadioArray != null){
+            AppSingelton.favouritesRadioArray.forEachIndexed { index, playingChannelData ->
+                val id = playingChannelData.id
+                if(id.matches( AppSingelton.radioSelectedChannel.value!!.id.toRegex())){
+                    dataBinding.favIv.isChecked = true
+                }
             }
         }
 
@@ -140,9 +146,20 @@ class RadioPlayerActivity() :
         handleChannel()
     }
 
+    private fun deletePodcast(id: Long){
+        val data=  getOfflineDataById(id)
+        val fileUr = data.fileURI
+        val fdelete: File = File(fileUr)
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                deletePodcastById(id)
+            }
+        }
+    }
+
     private fun handleChannel() {
         AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value!!.id
-        var currentPlayingUUid = AppSingelton._currenPlayingChannelId
+        val currentPlayingUUid = AppSingelton._currenPlayingChannelId
         if (AppSingelton.exoPlayer == null
             || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())
         ) {
@@ -201,11 +218,7 @@ class RadioPlayerActivity() :
                 val res = (it as Resource.Success).value
                 viewModel._podEpisodeArray.value = res.data
                 podcastEpisodeList = res.data
-                dataBinding.podepisodeadapter =
-                    com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter(
-                        podcastEpisodeList!!,
-                        viewModel
-                    )
+                refreshAdapter()
                 dataBinding.podcastLoader.visibility = View.GONE
                 if (!podcastEpisodeList!!.isNullOrEmpty()) {
                     dataBinding.playerView.visibility = View.VISIBLE
@@ -259,6 +272,17 @@ class RadioPlayerActivity() :
             }
         }
 
+        viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity){
+            try {
+               val id = it._id
+                CoroutineScope(Dispatchers.IO).launch {
+                    deletePodcast(id)
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        }
+
         viewModel._radioClicked.observe(this@RadioPlayerActivity) {
             try {
                 exoPlayerManager("Normal")
@@ -276,6 +300,14 @@ class RadioPlayerActivity() :
                 ex.printStackTrace()
             }
         }
+    }
+
+    private fun refreshAdapter() {
+        dataBinding.podepisodeadapter =
+            com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter(
+                podcastEpisodeList!!,
+                viewModel
+            )
     }
 
     private fun checkPermission(): Boolean {
@@ -323,7 +355,7 @@ class RadioPlayerActivity() :
     }
 
     private fun createPlayingChannelData(it: Data) {
-        var playingChannelData = PlayingChannelData(
+        val playingChannelData = PlayingChannelData(
             it.enclosureUrl,
             it.feedImage,
             it.title,
@@ -364,7 +396,7 @@ class RadioPlayerActivity() :
     }
 
     override val layoutRes: Int
-        get() = R.layout.activity_radio_player
+        get() = com.netcast.radio.R.layout.activity_radio_player
     override val bindingVariable: Int
         get() = BR.radioplayervm
     override val viewModelClass: Class<RadioPlayerAVM>

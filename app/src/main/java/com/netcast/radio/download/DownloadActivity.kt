@@ -52,7 +52,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
     private fun manageOfflineData() {
         CoroutineScope(Dispatchers.IO).launch {
             val listOfEpisodes = getOfflineData()
-            viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
+            if(listOfEpisodes != null && listOfEpisodes.size > 0)
+                viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
         }
     }
 

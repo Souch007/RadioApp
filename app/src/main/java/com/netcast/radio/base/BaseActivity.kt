@@ -40,6 +40,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.concurrent.ExecutionException
 
 
@@ -110,16 +111,37 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }
-        var listOffline = appDatabase!!.appDap().getOfflineEpisodes()
-        for (i in listOffline) {
-            var data = i;
-            if (AppSingelton.downloadedIds.matches("".toRegex())) {
-                AppSingelton.downloadedIds = data._id.toString()
-            } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
-                AppSingelton.downloadedIds = AppSingelton.downloadedIds + "," + data._id.toString()
+        val listOffline = appDatabase!!.appDap().getOfflineEpisodes()
+        listOffline.forEachIndexed { index, data ->
+            var data = data;
+            val fdelete: File = File(data.fileURI)
+            if(fdelete.exists()) {
+                if (AppSingelton.downloadedIds.matches("".toRegex())) {
+                    AppSingelton.downloadedIds = data._id.toString()
+                } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                    AppSingelton.downloadedIds =
+                        AppSingelton.downloadedIds + "," + data._id.toString()
+            }
         }
-
         return listOffline
+    }
+
+
+    fun getOfflineDataById(id:Long): Data {
+        if (appDatabase == null) {
+            initializeDB(applicationContext)
+        }
+        var data = appDatabase!!.appDap().getOfflineEpisodeById(id)
+        return data
+    }
+
+    fun deletePodcastById(id:Long) {
+        if (appDatabase == null) {
+            initializeDB(applicationContext)
+        }
+        var record = appDatabase!!.appDap().deleteOfflineEpisodeById(id)
+        AppSingelton.downloadedIds = "";
+        getOfflineData()
     }
 
     private fun getViewModelFactory(): ViewModelFactory {
