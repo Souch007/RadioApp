@@ -14,8 +14,8 @@
 
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_125sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_85sdp"
             android:layout_margin="@dimen/_5sdp"
             android:background="#B3B3B3"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,9 +23,8 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" />
 
         <com.google.android.material.imageview.ShapeableImageView
-
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_125sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_85sdp"
             android:layout_margin="@dimen/_5sdp"
             android:background="#B3B3B3"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +32,17 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_85sdp"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="#B3B3B3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" />
 
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_125sdp"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_85sdp"
             android:layout_margin="@dimen/_5sdp"
             android:background="#B3B3B3"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.netcast.radio.request
 
-import androidx.viewbinding.BuildConfig
+
+import com.netcast.radio.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

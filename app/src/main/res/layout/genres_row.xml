@@ -19,8 +19,8 @@
         android:layout_margin="@dimen/_6sdp"
         android:elevation="@dimen/_8sdp"
         app:cardCornerRadius="@dimen/_5sdp"
-        android:outlineAmbientShadowColor="@color/Salmon"
-        android:outlineSpotShadowColor="@color/Salmon"
+        android:outlineAmbientShadowColor="@color/DarkCyan"
+        android:outlineSpotShadowColor="@color/DarkCyan"
         app:cardBackgroundColor="@color/Black"
         android:onClick="@{() -> listener.OnClickGenres(genresList)}"
         app:cardElevation="@dimen/_20sdp">

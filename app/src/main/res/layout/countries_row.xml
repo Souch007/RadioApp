@@ -22,8 +22,8 @@
         app:cardCornerRadius="@dimen/_5sdp"
         app:cardBackgroundColor="@color/black"
         android:layout_margin="@dimen/_5sdp"
-        android:outlineAmbientShadowColor="@color/Salmon"
-        android:outlineSpotShadowColor="@color/Salmon"
+        android:outlineAmbientShadowColor="@color/DarkCyan"
+        android:outlineSpotShadowColor="@color/DarkCyan"
         android:onClick="@{() -> listener.OnCountrlySelected(languageList)}"
         app:cardElevation="@dimen/_20sdp" >
 

@@ -6,6 +6,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="mainActivity"
             type="com.netcast.radio.MainActivity" />
@@ -24,7 +25,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_bg">
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
@@ -43,11 +45,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <!--                    android:background="@drawable/back_nav_grad"-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/settings_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/back_nav_grad"
+                    android:background="@color/header"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -70,18 +73,18 @@
                         android:id="@+id/tv_Radio"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_30sdp"
+                        android:gravity="center"
                         android:text="@string/app_name"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
-                        android:gravity="center"
                         android:textStyle="bold"
 
                         app:fontFamily="@font/comfortaa_medium"
-                        app:layout_constraintVertical_bias="0.0"
                         app:layout_constraintBottom_toBottomOf="@+id/search_view"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
 
                     <ImageView
@@ -120,33 +123,34 @@
                             app:tint="@color/black" />
 
                         <EditText
+                            android:id="@+id/search_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_3sdp"
                             android:background="@color/white"
                             android:hint="@string/hint_search"
+                            android:imeOptions="actionSearch"
                             android:importantForAutofill="no"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/black"
                             android:textSize="@dimen/_10sdp"
-                            android:imeOptions="actionSearch"
-                            android:id="@+id/search_edit_text"
                             tools:ignore="TouchTargetSizeCheck" />
                     </LinearLayout>
 
+                    <!--                        android:background="@drawable/back_nav_grad"-->
                     <LinearLayout
                         android:id="@+id/prime_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_3sdp"
-                        android:background="@drawable/back_nav_grad"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:gravity="center"
-                        android:visibility="invisible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/search_view">
 
@@ -155,10 +159,10 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_8sdp"
-                            android:visibility="visible"
                             android:text="Offline Channels Available"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="visible" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -198,6 +202,7 @@
                         android:id="@+id/header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <ImageView
                             android:id="@+id/slideUp"
                             android:layout_width="@dimen/_45sdp"
@@ -205,34 +210,32 @@
                             android:layout_alignParentStart="true"
                             android:layout_centerInParent="true"
                             android:layout_marginStart="@dimen/_30sdp"
-                            android:src="@drawable/logo"
                             android:scaleType="fitCenter"
-                             />
+                            android:src="@drawable/logo" />
 
                         <TextView
+                            android:id="@+id/playing_channel_name"
+                            style="@style/textHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_toStartOf="@+id/play_button_carousel_"
                             android:layout_toEndOf="@+id/slideUp"
+                            android:maxLines="2"
                             android:padding="@dimen/_5sdp"
                             android:text=""
-                            android:id="@+id/playing_channel_name"
-                            android:textColor="@color/white"
-                            style="@style/textHeading"
-                            android:maxLines="2"
-                            android:layout_margin="@dimen/_5sdp"
-                            android:layout_toStartOf="@+id/play_button_carousel_"/>
+                            android:textColor="@color/white" />
 
 
                         <com.google.android.exoplayer2.ui.PlayerControlView
                             android:id="@+id/play_button_carousel_"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            app:show_timeout="-1"
-                            android:layout_marginEnd="@dimen/_20sdp"
                             android:layout_alignParentEnd="true"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_20sdp"
                             app:controller_layout_id="@layout/exo_custom"
-                            />
+                            app:show_timeout="-1" />
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -241,6 +244,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/black">
+
                     <ImageView
                         android:id="@+id/slidedown"
                         android:layout_width="@dimen/_15sdp"
@@ -258,6 +262,7 @@
                         android:layout_below="@+id/slidedown"
                         android:background="@color/black"
                         android:gravity="center">
+
                         <TextView
                             style="@style/textTitle"
                             android:layout_width="match_parent"
@@ -283,6 +288,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                             app:strokeWidth="1dp" />
+
                         <RelativeLayout
                             android:id="@+id/relativeLayout3"
                             android:layout_width="match_parent"
@@ -298,9 +304,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:maxLines="2"
-                                android:gravity="center"
                                 android:layout_margin="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:maxLines="2"
                                 android:text=""
                                 android:textAlignment="center"
                                 android:textColor="@color/white" />
@@ -311,9 +317,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
+                            android:background="@color/Black"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:background="@color/Black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent">
@@ -329,11 +335,11 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_centerInParent="true"
                                     android:layout_margin="@dimen/_5sdp"
+                                    android:background="@color/Black"
                                     app:auto_show="true"
                                     app:hide_during_ads="false"
                                     app:hide_on_touch="false"
                                     app:played_color="@color/Red"
-                                    android:background="@color/Black"
                                     app:show_timeout="0"
                                     app:unplayed_color="@color/white" />
                             </RelativeLayout>
@@ -343,28 +349,45 @@
             </LinearLayout>
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:background="@drawable/nav_bg"
-            android:backgroundTint="@color/black"
-            app:backgroundTint="@color/black"
-            app:itemIconTint="@drawable/bottom_navigation_selector"
-            app:itemTextColor="@drawable/bottom_navigation_selector"
-            app:labelVisibilityMode="labeled"
+            android:outlineAmbientShadowColor="#3BBFDA"
+            android:outlineSpotShadowColor="#3BBFDA"
+            app:cardBackgroundColor="#182C40"
+            app:cardElevation="@dimen/_55sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/bottom_nav_menu" />
+            app:layout_constraintRight_toRightOf="parent">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@color/black"
+                app:backgroundTint="@color/black"
+                app:elevation="0dp"
+                app:itemIconSize="@dimen/_15sdp"
+                app:itemIconTint="@drawable/bottom_navigation_selector"
+                app:itemTextAppearanceActive="@style/BottomNavigationViewActiveItemText"
+                app:itemTextAppearanceInactive="@style/BottomNavigationViewActiveItemText"
+                app:itemTextColor="@drawable/bottom_navigation_selector"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_nav_menu" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
         <LinearLayout
             android:id="@+id/progress_holder"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_90sdp"
-            android:orientation="vertical"
             android:background="@color/dim_black"
+            android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -375,8 +398,8 @@
                 android:id="@+id/pg_loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progressTint="@color/white"
-                android:padding="@dimen/_5sdp" />
+                android:padding="@dimen/_5sdp"
+                android:progressTint="@color/white" />
 
             <TextView
                 android:layout_width="match_parent"

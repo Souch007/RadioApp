@@ -3,17 +3,19 @@
     <style name="Theme.Radio" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/OrangeRed</item>
-        <item name="colorPrimaryVariant">@color/RoyalBlue</item>
+        <item name="colorPrimaryVariant">@color/DarkBlue</item>
         <item name="colorOnPrimary">@color/White</item>
-        <item name="colorOnSecondary">@color/Black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/header</item>
         <!-- Customize your theme here. -->
         <item name="backgroundColor">@color/white</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/amiko</item>
-        <item name="android:windowSplashScreenBackground">@color/black</item>
+
         <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:windowSplashScreenBackground">@color/DarkBlue</item>
+
 
     </style>
 
@@ -29,7 +31,7 @@
         <item name="backgroundColor">@color/light_grey</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/amiko</item>
-        <item name="android:windowSplashScreenBackground">@color/black</item>
+
     </style>
     <style name="Theme.Radio.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -40,20 +42,34 @@
 
     <style name="Theme.Radio.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="textTitle" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/amiko_regular</item>
-        <item name="maxLines">1</item>
-    </style>
 
-   <style name="textHeading" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/poppins_bold</item>
-        <item name="maxLines">1</item>
-    </style>
 
     <style name="textsubheading" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="maxLines">1</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="textHeading" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="textTitle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/amiko_regular</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="BottomNavigationViewActiveItemText" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">5%</item>
     </style>
 
 

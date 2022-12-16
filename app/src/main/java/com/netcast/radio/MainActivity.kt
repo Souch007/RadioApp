@@ -88,7 +88,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 if(listOffline.size > 0){
                     dataBinding.primeLayout.visibility = View.VISIBLE
                 } else
-                    dataBinding.primeLayout.visibility = View.INVISIBLE
+                    dataBinding.primeLayout.visibility = View.GONE
             }
 
         dataBinding.primeLayout.setOnClickListener {

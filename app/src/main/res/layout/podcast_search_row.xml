@@ -23,16 +23,16 @@
         android:onClick="@{() -> listener.onPodCastSearchedListener(podlist)}"
         >
         <LinearLayout
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_115sdp"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_85sdp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_90sdp"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
                 android:src="@drawable/logo"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 android:gravity="start|center"
                 android:ellipsize="end"

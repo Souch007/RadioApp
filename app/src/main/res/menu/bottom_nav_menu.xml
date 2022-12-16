@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_radio"
-        android:icon="@drawable/ic_radio"
+        android:icon="@drawable/ic_radio2"
         android:title="@string/radio" />
 
     <item
         android:id="@+id/navigation_podcast"
-        android:icon="@drawable/ic_podcast"
+        android:icon="@drawable/ic_mic"
         android:title="@string/title_podcast" />
 
     <item
