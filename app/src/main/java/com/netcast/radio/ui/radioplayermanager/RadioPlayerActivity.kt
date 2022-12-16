@@ -55,7 +55,8 @@ class RadioPlayerActivity() :
 
     private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
+        if(AppSingelton.suggestedRadioList != null)
+            viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         //
         _checkMediaType()
