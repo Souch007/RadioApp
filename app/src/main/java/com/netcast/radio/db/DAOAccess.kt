@@ -14,4 +14,10 @@ interface DAOAccess {
 
     @Query("SELECT * FROM OfflineEpisodes")
     fun getOfflineEpisodes(): List<Data>
+
+    @Query("SELECT * FROM OfflineEpisodes WHERE id=:id")
+    fun getOfflineEpisodeById(id: Long): Data
+
+    @Query("DELETE FROM OfflineEpisodes WHERE id=:id")
+    fun deleteOfflineEpisodeById(id: Long) : Int
 }

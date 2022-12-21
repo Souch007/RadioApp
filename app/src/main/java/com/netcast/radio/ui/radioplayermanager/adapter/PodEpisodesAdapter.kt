@@ -23,7 +23,16 @@ class PodEpisodesAdapter(private val list: List<Data>,
             binding.icDone.visibility = View.VISIBLE
             binding.icDownlaod.visibility = View.GONE
             binding.progressDownload.visibility = View.GONE
+            binding.icDelete.visibility = View.VISIBLE
+        } else {
+            binding.icDelete.visibility = View.GONE
+        }
 
+        binding.icDelete.setOnClickListener {
+            binding.icDelete.visibility = View.GONE
+            binding.icDownlaod.visibility = View.VISIBLE
+            binding.icDone.visibility = View.GONE
+            _onEpisodeListener.onEpisodeDeleteClicked(item)
         }
 
         if(AppSingelton.currentDownloading.matches(item._id.toString().toRegex())){
@@ -32,7 +41,6 @@ class PodEpisodesAdapter(private val list: List<Data>,
 //            binding.tvDownlaodTag.visibility = View.VISIBLE
             binding.icDone.visibility = View.GONE
             binding.icDownlaod.visibility = View.GONE
-
         }
 
     }
@@ -43,9 +51,12 @@ class PodEpisodesAdapter(private val list: List<Data>,
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
+
 }
 
 interface OnEpisodeClickListener {
     fun onEpisodeClicked(data: Data)
     fun onEpisodeDownloadClicked(data: Data)
+    fun onEpisodeDeleteClicked(data: Data)
 }

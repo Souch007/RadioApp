@@ -28,6 +28,7 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     val _episodeSelected = MutableLiveData<Data>()
     val _radioClicked = MutableLiveData<RadioLists>()
     val _episodeDownloadSelected = MutableLiveData<Data>()
+    val _onepisodeDeleteSelected = MutableLiveData<Data>()
 
     override fun onRadioClicked(data: RadioLists) {
         var playingChannelData = PlayingChannelData(
@@ -70,5 +71,9 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
             _episodeDownloadSelected.value = data
         } else
             _episodeSelected.value = data
+    }
+
+    override fun onEpisodeDeleteClicked(data: Data) {
+        _onepisodeDeleteSelected.value = data
     }
 }

@@ -5,7 +5,6 @@ object AppConstants {
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"
     const val MAIN_ACTIVITY : String  = "MainActivity"
     const val DownloadActivity : String  = "DownloadActivity"
-//    const val BASE_URL = "http://3.144.218.112:3000/"
     const val BASE_URL = "http://3.142.211.93:3000/"
     const val FETCH_RADIO = "getRadioListing/"
     const val PODCAST_LISTING = "getPodcastListing"

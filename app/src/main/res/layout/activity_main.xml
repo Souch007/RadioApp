@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="bottom"
-            app:layout_constraintBottom_toTopOf="@+id/nav_view"
+            app:layout_constraintBottom_toTopOf="@+id/nav_cardview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -350,6 +350,7 @@
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/nav_cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:outlineAmbientShadowColor="#3BBFDA"
