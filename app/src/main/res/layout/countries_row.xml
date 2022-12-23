@@ -46,8 +46,7 @@
                 android:maxLines="1"
                 android:padding="@dimen/_5sdp"
                 android:text="@{languageList.name.substring(0, 1).toUpperCase() + languageList.name.substring(1)}"
-
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_8sdp"
                 android:textStyle="normal"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
