@@ -3,28 +3,30 @@ package com.netcast.radio.base
 import android.Manifest
 import android.app.Notification
 import android.app.PendingIntent
-
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.os.Bundle
-import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.widget.Toast
-
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
 import com.netcast.radio.db.AppDatabase
@@ -33,10 +35,6 @@ import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -111,7 +109,9 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }
-        val listOffline = appDatabase!!.appDap().getOfflineEpisodes()
+        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
+        val listOffline: ArrayList<Data> = ArrayList(listOfflineTemp.size)
+        listOffline.addAll(listOfflineTemp)
         listOffline.forEachIndexed { index, data ->
             var data = data;
             val fdelete: File = File(data.fileURI)
@@ -121,9 +121,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
                     AppSingelton.downloadedIds =
                         AppSingelton.downloadedIds + "," + data._id.toString()
+            } else {
+                deletePodcastById(data._id)
+                listOffline.remove(data)
             }
         }
-        return listOffline
+        return listOffline.toList()
     }
 
 
