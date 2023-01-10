@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class RemoteDataSource {
     companion object {
@@ -19,6 +20,8 @@ class RemoteDataSource {
                     val logginInt = HttpLoggingInterceptor();
                     logginInt.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logginInt)
+                    client.connectTimeout(60,TimeUnit.SECONDS)
+                    client.readTimeout(60,TimeUnit.SECONDS)
                 }
             }.build())
             .addConverterFactory(GsonConverterFactory.create())

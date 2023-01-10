@@ -6,24 +6,18 @@ import androidx.annotation.Keep
 
 @Keep
 data class Data(
-    @SerializedName("Business")
+    @SerializedName("Politics")
     val business: List<PodListData>,
-    @SerializedName("Culture")
+    @SerializedName("Wrestling")
     val culture: List<PodListData>,
-    @SerializedName("Education")
+    @SerializedName("Shopping")
     val education: List<PodListData>,
-    @SerializedName("Fitness")
+    @SerializedName("Podcasting")
     val fitness: List<PodListData>,
-    @SerializedName("Health")
+    @SerializedName("Gadgets")
     val health: List<PodListData>,
-    @SerializedName("News")
+    @SerializedName("Wilderness")
     val news: List<PodListData>,
-    @SerializedName("Religion")
+    @SerializedName("Running")
     val religion: List<PodListData>,
-    @SerializedName("Society")
-    val society: List<PodListData>,
-    @SerializedName("Spirituality")
-    val spirituality: List<PodListData>,
-    @SerializedName("Sports")
-    val sports: List<PodListData>
 )
