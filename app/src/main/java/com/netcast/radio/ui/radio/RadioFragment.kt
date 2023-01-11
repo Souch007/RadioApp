@@ -1,8 +1,6 @@
 package com.netcast.radio.ui.radio
 
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -37,9 +35,9 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
-                when(it){
+                /*when(it){
                     is Resource.Failure -> {
-                        Toast.makeText(requireContext(),it.errorCode,Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(),it.errorCode,Toast.LENGTH_SHORT).show()
                     }
                     Resource.Loading -> {
                         Log.d("TAG", "Loading: ")
@@ -48,7 +46,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         Toast.makeText(requireContext(),it.value.data.radio[0].name,Toast.LENGTH_SHORT).show()
                     }
                 }
-
+*/
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
                 AppSingelton.suggestedRadioList = data.publicRadio

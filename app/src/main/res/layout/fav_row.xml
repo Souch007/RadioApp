@@ -20,6 +20,7 @@
         android:layout_margin="@dimen/_4sdp"
         app:cardCornerRadius="@dimen/_5sdp"
         app:cardElevation="@dimen/_3sdp"
+         app:cardBackgroundColor="#151523"
         android:onClick="@{() -> listener.onFavChannelClicked(playing)}"
         >
         <LinearLayout

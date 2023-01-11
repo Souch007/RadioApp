@@ -25,12 +25,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#151523"
     tools:context=".download.DownloadActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/back_nav_grad"
+        android:background="#151523"
         android:padding="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +74,7 @@
         app:cardCornerRadius="@dimen/_4sdp"
         app:cardElevation="@dimen/_5sdp"
         android:visibility="gone"
+        app:cardBackgroundColor="#151523"
         app:layout_constraintTop_toBottomOf="@+id/top_app_bar">
 
         <LinearLayout

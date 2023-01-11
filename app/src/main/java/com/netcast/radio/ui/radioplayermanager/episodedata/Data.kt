@@ -3,12 +3,14 @@ package com.netcast.radio.ui.radioplayermanager.episodedata
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.netcast.radio.interfaces.ListAdapterItem
 import com.google.gson.annotations.SerializedName
+
 @Entity(tableName = "OfflineEpisodes")
 data class Data(
-    @ColumnInfo(name = "chaptersUrl" , defaultValue = "")
+    @ColumnInfo(name = "chaptersUrl", defaultValue = "")
     @SerializedName("chaptersUrl")
     val chaptersUrl: String,
 
@@ -41,7 +43,7 @@ data class Data(
     val enclosureType: String,
 
     @ColumnInfo(name = "enclosureUrl", defaultValue = "")
-    @SerializedName("enclosureUrl")
+    @SerializedName("audio")
     val enclosureUrl: String,
 
     @ColumnInfo(name = "episode", defaultValue = "")
@@ -72,42 +74,43 @@ data class Data(
     @SerializedName("feedImage")
     val feedImage: String,
 
-    @ColumnInfo(name = "feedItunesId",defaultValue = "")
+    @ColumnInfo(name = "feedItunesId", defaultValue = "")
     @SerializedName("feedItunesId")
     val feedItunesId: Int,
 
-    @ColumnInfo(name = "feedLanguage",defaultValue = "")
+    @ColumnInfo(name = "feedLanguage", defaultValue = "")
     @SerializedName("feedLanguage")
     val feedLanguage: String,
-    @ColumnInfo(name = "guid",defaultValue = "")
+
+    @ColumnInfo(name = "guid", defaultValue = "")
     @SerializedName("guid")
     override val id: String,
 
     @PrimaryKey
-    @ColumnInfo(name = "id",defaultValue = "")
+    @ColumnInfo(name = "id", defaultValue = "")
     @SerializedName("id")
-    val _id: Long,
+    val _podid: String,
 
-    @ColumnInfo(name = "image",defaultValue = "")
+    @ColumnInfo(name = "image", defaultValue = "")
     @SerializedName("image")
     val image: String,
 
-    @ColumnInfo(name = "link",defaultValue = "")
+    @ColumnInfo(name = "link", defaultValue = "")
     @SerializedName("link")
     val link: String,
 
-    @ColumnInfo(name = "season",defaultValue = "")
+    @ColumnInfo(name = "season", defaultValue = "")
     @SerializedName("season")
     val season: Int,
 
-    @ColumnInfo(name = "title",defaultValue = "")
+    @ColumnInfo(name = "title", defaultValue = "")
     @SerializedName("title")
     val title: String,
 
-    @ColumnInfo(name = "transcriptUrl",defaultValue = "")
+    @ColumnInfo(name = "transcriptUrl", defaultValue = "")
     @SerializedName("transcriptUrl")
     val transcriptUrl: String,
 
-    @ColumnInfo(name = "fileURI",defaultValue = "")
-    var fileURI : String
-) : ListAdapterItem , java.io.Serializable
+    @ColumnInfo(name = "fileURI", defaultValue = "")
+    var fileURI: String
+) : ListAdapterItem, java.io.Serializable

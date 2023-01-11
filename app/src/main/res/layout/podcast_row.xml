@@ -19,6 +19,7 @@
         android:elevation="@dimen/_8sdp"
         android:layout_margin="@dimen/_4sdp"
         app:cardCornerRadius="@dimen/_5sdp"
+        app:cardBackgroundColor="#151523"
         android:onClick="@{() -> listener.onPodCastClicked(feeds)}"
         app:cardElevation="@dimen/_3sdp">
 

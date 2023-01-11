@@ -20,7 +20,7 @@ class DownloadUsingMediaStore (var data: Data, var context: Context) :
             var count: Int
             val audioOutStream: OutputStream
             try {
-                val fileName = data._id.toString() + "" + System.currentTimeMillis().toString() + ".mp3"
+                val fileName = data._podid.toString() + "" + System.currentTimeMillis().toString() + ".mp3"
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val values = ContentValues()
                     values.put(MediaStore.Audio.Media.DISPLAY_NAME, fileName)
@@ -41,7 +41,7 @@ class DownloadUsingMediaStore (var data: Data, var context: Context) :
                     audioOutStream = FileOutputStream(audio)
                     relativePath =audio.path
                 }
-                AppSingelton.currentDownloading = data._id.toString()
+                AppSingelton.currentDownloading = data._podid.toString()
                 val _url = URL(data.enclosureUrl)
                 val conexion = _url.openConnection()
                 conexion.connect()
@@ -75,10 +75,10 @@ class DownloadUsingMediaStore (var data: Data, var context: Context) :
                     if (current == 100) {
                         data.fileURI = relativePath
                         if (AppSingelton.downloadedIds.matches("".toRegex())) {
-                            AppSingelton.downloadedIds = data._id.toString()
-                        } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                            AppSingelton.downloadedIds = data._podid.toString()
+                        } else if (!AppSingelton.downloadedIds.contains(data._podid.toString() + ""))
                             AppSingelton.downloadedIds =
-                                AppSingelton.downloadedIds + "," + data._id.toString()
+                                AppSingelton.downloadedIds + "," + data._podid.toString()
                         AppSingelton.currentDownloading = ""
                         AppSingelton._onDownloadCompletion.value = data
                     }

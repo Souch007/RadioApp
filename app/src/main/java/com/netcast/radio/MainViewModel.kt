@@ -147,12 +147,12 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     override fun onPodCastClicked(data: PodListData) {
 
         var playingChannelData = PlayingChannelData(
-            data.url,
+            data.website,
             data.image,
             data.title,
-            data.id,
-            data._id.toString(),
-            data.author,
+            data._id,
+            data._id,
+            data.publisher,
             "PODCAST"
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData

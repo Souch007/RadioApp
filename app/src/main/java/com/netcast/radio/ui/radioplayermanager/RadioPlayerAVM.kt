@@ -65,8 +65,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     }
 
     override fun onEpisodeDownloadClicked(data: Data) {
-        if (!AppSingelton.downloadedIds.contains(data._id.toString().toRegex()) &&
-            !AppSingelton.currentDownloading.matches(data._id.toString().toRegex())
+        if (!AppSingelton.downloadedIds.contains(data._podid.toString().toRegex()) &&
+            !AppSingelton.currentDownloading.matches(data._podid.toString().toRegex())
         ) {
             _episodeDownloadSelected.value = data
         } else

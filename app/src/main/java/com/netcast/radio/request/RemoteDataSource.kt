@@ -1,4 +1,6 @@
 package com.netcast.radio.request
+
+
 import com.netcast.radio.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,8 +20,8 @@ class RemoteDataSource {
                     val logginInt = HttpLoggingInterceptor();
                     logginInt.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logginInt)
-                    client.connectTimeout(15,TimeUnit.SECONDS)
-                    client.readTimeout(15,TimeUnit.SECONDS)
+                    client.connectTimeout(60,TimeUnit.SECONDS)
+                    client.readTimeout(60,TimeUnit.SECONDS)
                 }
             }.build())
             .addConverterFactory(GsonConverterFactory.create())

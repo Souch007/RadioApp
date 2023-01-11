@@ -27,6 +27,7 @@
             android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
             app:cardCornerRadius="@dimen/_4sdp"
             app:cardElevation="@dimen/_5sdp"
+            app:cardBackgroundColor="#151523"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +53,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:setImage="@{episodeData.feedImage}" />
+                    app:setImage='@{episodeData.image?? ""}' />
                 <!--  <View
                   android:layout_width="@dimen/_1sdp"
                   android:background="@color/grey"

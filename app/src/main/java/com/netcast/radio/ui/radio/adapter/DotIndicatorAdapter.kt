@@ -26,7 +26,7 @@ class DotIndicatorAdapter(var publicRadio: List<podcastsItem>,var mainActivityVi
             mainActivityViewModel.navigateToPodcast.value = true
         }
         textPodcastName.text = publicRadio.get(position).title
-        podcastLocation.text = publicRadio.get(position).author
+            //podcastLocation.text = publicRadio.get(position).au
         Glide.with(container.context)
             .load(publicRadio.get(position).image)
             .error(R.drawable.logo)

@@ -20,10 +20,4 @@ data class Data(
     val news: List<PodListData>,
     @SerializedName("Running")
     val religion: List<PodListData>,
-    @SerializedName("Society")
-    val society: List<PodListData>,
-    @SerializedName("Spirituality")
-    val spirituality: List<PodListData>,
-    @SerializedName("Sports")
-    val sports: List<PodListData>
 )

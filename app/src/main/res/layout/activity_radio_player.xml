@@ -27,6 +27,7 @@
         android:id="@+id/rp_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#151523"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -153,7 +154,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
-            android:textColor="@color/black"
+            android:background="#151523"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout" />
@@ -178,6 +180,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:background="#151523"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channel_website">
@@ -231,6 +234,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
+            android:background="#151523"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channel_website">
