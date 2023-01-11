@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 open class BaseFragment < T: ViewDataBinding>(@LayoutRes private val layoutResourceId : Int) : Fragment(){
-    protected var _binding: T? = null
+    private var _binding: T? = null
     val binding : T get() = _binding!!
     open fun T.initialize(){}
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

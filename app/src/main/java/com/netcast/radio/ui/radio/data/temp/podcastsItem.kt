@@ -17,15 +17,15 @@ data class podcastsItem(
     @SerializedName("_id")
     val _id: String,
     @SerializedName("id")
-    val id: Int,
+    val id: String,
     @SerializedName("image")
     val image: String,
     @SerializedName("itunesId")
-    val itunesId: Int,
+    val itunesId: String,
     @SerializedName("language")
     val language: String,
     @SerializedName("newestItemPublishTime")
-    val newestItemPublishTime: Int,
+    val newestItemPublishTime: String,
     @SerializedName("title")
     val title: String,
     @SerializedName("trendScore")

@@ -7,8 +7,7 @@ import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.PodcastEpisodesRowBinding
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
-class PodEpisodesAdapter(private val list: List<Data>,
-                         private val _onEpisodeListener: OnEpisodeClickListener
+class PodEpisodesAdapter(private val list: List<Data>, private val _onEpisodeListener: OnEpisodeClickListener
 ) : BaseAdapter<PodcastEpisodesRowBinding, Data>(list) {
     override val layoutId: Int = R.layout.podcast_episodes_row
 

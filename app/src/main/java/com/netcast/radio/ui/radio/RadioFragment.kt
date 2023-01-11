@@ -1,6 +1,8 @@
 package com.netcast.radio.ui.radio
 
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -21,7 +23,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
         activity.let {
-            mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
+            mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
         binding.shimmerLayout.stopShimmer()
         mainActivityViewModel.currentFragmentId = "Radio"
@@ -35,6 +37,18 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
+                when(it){
+                    is Resource.Failure -> {
+                        Toast.makeText(requireContext(),it.errorCode,Toast.LENGTH_SHORT).show()
+                    }
+                    Resource.Loading -> {
+                        Log.d("TAG", "Loading: ")
+                    }
+                    is Resource.Success -> {
+                        Toast.makeText(requireContext(),it.value.data.radio[0].name,Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
                 AppSingelton.suggestedRadioList = data.publicRadio
@@ -133,13 +147,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._radioPopListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
-
         binding.tvAllTagNews.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioNewsListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
         }
-
         binding.tvAllTagTvClassical.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioClassicallistingArry.value

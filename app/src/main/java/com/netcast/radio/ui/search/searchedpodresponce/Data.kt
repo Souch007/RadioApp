@@ -16,7 +16,7 @@ data class Data(
     @SerializedName("_id")
     override val id: String,
     @SerializedName("id")
-    val _id: Int,
+    val _id: String,
     @SerializedName("image")
     val image: String,
     @SerializedName("itunesId")

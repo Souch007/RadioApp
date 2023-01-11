@@ -6,17 +6,17 @@ import java.io.Serializable
 
 data class RadioLists(
     @SerializedName("bitrate")
-    val bitrate: Int,
+    val bitrate: String,
     @SerializedName("changeuuid")
     val changeuuid: String,
     @SerializedName("clickcount")
-    val clickcount: Int,
+    val clickcount: String,
     @SerializedName("clicktimestamp")
     val clicktimestamp: String,
     @SerializedName("clicktimestamp_iso8601")
     val clicktimestampIso8601: String,
     @SerializedName("clicktrend")
-    val clicktrend: Int,
+    val clicktrend: String,
     @SerializedName("codec")
     val codec: String,
     @SerializedName("country")
@@ -26,19 +26,19 @@ data class RadioLists(
     @SerializedName("favicon")
     val favicon: String,
     @SerializedName("geo_lat")
-    val geoLat: Double,
+    val geoLat: String,
     @SerializedName("geo_long")
-    val geoLong: Double,
+    val geoLong: String,
     @SerializedName("has_extended_info")
     val hasExtendedInfo: Boolean,
     @SerializedName("hls")
-    val hls: Int,
+    val hls: String,
     @SerializedName("homepage")
     val homepage: String,
     @SerializedName("_id")
     override val id: String,
-    @SerializedName("iso_3166_2")
-    val iso31662: Any,
+    @SerializedName("id")
+    val _id: String,
     @SerializedName("language")
     val language: List<String>,
     @SerializedName("languagecodes")
@@ -48,7 +48,7 @@ data class RadioLists(
     @SerializedName("lastchangetime_iso8601")
     val lastchangetimeIso8601: String,
     @SerializedName("lastcheckok")
-    val lastcheckok: Int,
+    val lastcheckok: String,
     @SerializedName("lastcheckoktime")
     val lastcheckoktime: String,
     @SerializedName("lastcheckoktime_iso8601")
@@ -60,13 +60,13 @@ data class RadioLists(
     @SerializedName("lastlocalchecktime")
     val lastlocalchecktime: String,
     @SerializedName("lastlocalchecktime_iso8601")
-    val lastlocalchecktimeIso8601: Any,
+    val lastlocalchecktimeIso8601: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("serveruuid")
-    val serveruuid: Any,
+    val serveruuid: String,
     @SerializedName("ssl_error")
-    val sslError: Int,
+    val sslError: String,
     @SerializedName("state")
     val state: String,
     @SerializedName("stationuuid")
@@ -78,5 +78,5 @@ data class RadioLists(
     @SerializedName("url_resolved")
     val urlResolved: String,
     @SerializedName("votes")
-    val votes: Int,
+    val votes: String,
 ) : ListAdapterItem, Serializable

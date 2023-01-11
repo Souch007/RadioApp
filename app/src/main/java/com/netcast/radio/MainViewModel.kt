@@ -145,6 +145,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
     override fun onPodCastClicked(data: PodListData) {
+
         var playingChannelData = PlayingChannelData(
             data.url,
             data.image,

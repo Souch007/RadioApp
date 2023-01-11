@@ -29,7 +29,7 @@
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/back_nav_grad"
+            android:background="@color/header"
             android:padding="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
