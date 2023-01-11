@@ -147,7 +147,7 @@ class RadioPlayerActivity() :
         handleChannel()
     }
 
-    private fun deletePodcast(id: Long){
+    private fun deletePodcast(id: String){
         val data=  getOfflineDataById(id)
         val fileUr = data.fileURI
         val fdelete: File = File(fileUr)
@@ -275,7 +275,7 @@ class RadioPlayerActivity() :
 
         viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity){
             try {
-               val id = it._id
+               val id = it.id
                 CoroutineScope(Dispatchers.IO).launch {
                     deletePodcast(id)
                 }
@@ -357,11 +357,11 @@ class RadioPlayerActivity() :
 
     private fun createPlayingChannelData(it: Data) {
         val playingChannelData = PlayingChannelData(
-            it.enclosureUrl,
+            it.audio,
             it.feedImage,
             it.title,
-            it._id.toString(),
-            it.feedId.toString(),
+            it.id,
+            it.guidFromRss,
             it.description,
             "Episodes"
         )

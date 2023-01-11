@@ -75,7 +75,6 @@
                         android:lines="1"
                         android:maxLines="1"
                         android:padding="@dimen/_2sdp"
-                        android:text="@{episodeData.title}"
                         android:textAlignment="textStart"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="normal"

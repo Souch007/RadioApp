@@ -117,12 +117,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             val fdelete: File = File(data.fileURI)
             if(fdelete.exists()) {
                 if (AppSingelton.downloadedIds.matches("".toRegex())) {
-                    AppSingelton.downloadedIds = data._id.toString()
-                } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                    AppSingelton.downloadedIds = data.id
+                } else if (!AppSingelton.downloadedIds.contains(data.id + ""))
                     AppSingelton.downloadedIds =
-                        AppSingelton.downloadedIds + "," + data._id.toString()
+                        AppSingelton.downloadedIds + "," + data.id
             } else {
-                deletePodcastById(data._id)
+                deletePodcastById(data.id)
                 listOffline.remove(data)
             }
         }
@@ -130,7 +130,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     }
 
 
-    fun getOfflineDataById(id:Long): Data {
+    fun getOfflineDataById(id:String): Data {
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }
@@ -138,7 +138,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         return data
     }
 
-    fun deletePodcastById(id:Long) {
+    fun deletePodcastById(id:String) {
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }

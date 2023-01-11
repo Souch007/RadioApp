@@ -18,7 +18,7 @@ class PodEpisodesAdapter(private val list: List<Data>,
             listener = _onEpisodeListener
             executePendingBindings()
         }
-        if(AppSingelton.downloadedIds.contains(item._id.toString().toRegex())){
+        if(AppSingelton.downloadedIds.contains(item.id.toString().toRegex())){
 //            binding.tvDownlaodTag.text = "Offline Available"
             binding.icDone.visibility = View.VISIBLE
             binding.icDownlaod.visibility = View.GONE
@@ -35,7 +35,7 @@ class PodEpisodesAdapter(private val list: List<Data>,
             _onEpisodeListener.onEpisodeDeleteClicked(item)
         }
 
-        if(AppSingelton.currentDownloading.matches(item._id.toString().toRegex())){
+        if(AppSingelton.currentDownloading.matches(item.id.toString().toRegex())){
             binding.progressDownload.visibility = View.VISIBLE
 //            binding.tvDownlaodTag.text = "Downloading..."
 //            binding.tvDownlaodTag.visibility = View.VISIBLE

@@ -16,13 +16,13 @@ class DownloadFile(var data: Data) :
     protected override fun doInBackground(vararg p0: String?): String? {
         var count: Int
         try {
-            AppSingelton.currentDownloading = data._id.toString()
-            val _url = URL(data.enclosureUrl)
+            AppSingelton.currentDownloading = data.id.toString()
+            val _url = URL(data.audio)
             val conexion = _url.openConnection()
             conexion.connect()
             val lenghtOfFile = conexion.contentLength
             val input: InputStream = BufferedInputStream(_url.openStream())
-            val fileName  = data._id.toString()+""+System.currentTimeMillis().toString()+".mp3"
+            val fileName  = data.id.toString()+""+System.currentTimeMillis().toString()+".mp3"
             relativePath = Environment.getExternalStorageDirectory().path + "/${fileName}"
             val output: OutputStream = FileOutputStream(relativePath)
             val data = ByteArray(1024)
@@ -51,10 +51,10 @@ class DownloadFile(var data: Data) :
                 if (current == 100) {
                     data.fileURI = relativePath;
                     if (AppSingelton.downloadedIds.matches("".toRegex())) {
-                        AppSingelton.downloadedIds = data._id.toString()
-                    } else if (!AppSingelton.downloadedIds.contains(data._id.toString() + ""))
+                        AppSingelton.downloadedIds = data.id.toString()
+                    } else if (!AppSingelton.downloadedIds.contains(data.id.toString() + ""))
                         AppSingelton.downloadedIds =
-                            AppSingelton.downloadedIds + "," + data._id.toString()
+                            AppSingelton.downloadedIds + "," + data.id.toString()
                     AppSingelton.currentDownloading = ""
                     AppSingelton._onDownloadCompletion.value = data
                 }
