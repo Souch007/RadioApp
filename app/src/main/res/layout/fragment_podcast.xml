@@ -73,9 +73,8 @@
                     style="@style/textHeading"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_20sdp"
+                    android:paddingTop="@dimen/_25sdp"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="Politics"
                     android:textSize="@dimen/_11sdp"
@@ -94,9 +93,8 @@
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
                     android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/trending_podcast_stations"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_trending_podcasts"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trending_podcast_stations"

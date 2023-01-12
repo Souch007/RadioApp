@@ -228,7 +228,7 @@ class RadioPlayerActivity() :
                     dataBinding.episode.text =
                         Html.fromHtml(AppSingelton.radioSelectedChannel.value!!.name)
                 } else {
-                    dataBinding.playerView.visibility = View.GONE
+//                    dataBinding.playerView.visibility = View.GONE
                 }
 
             } catch (ex: Exception) {
@@ -361,7 +361,7 @@ class RadioPlayerActivity() :
             it.feedImage,
             it.title,
             it.id,
-            it.guidFromRss,
+            AppSingelton.radioSelectedChannel.value!!.idPodcast,
             it.description,
             "Episodes"
         )

@@ -121,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:layout_margin="@dimen/_8sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintHorizontal_bias="0.0"

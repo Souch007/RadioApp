@@ -73,7 +73,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         sharedPredEditor = sharedPreferences.edit()
 
         AppSingelton._isFavUpdated.observe(this) {
-            val gson = Gson();
+            val gson = Gson()
             val json = gson.toJson(AppSingelton.favouritesRadioArray)
             sharedPredEditor.putString("FavChannels", json).apply()
         }
