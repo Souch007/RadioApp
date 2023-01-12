@@ -117,13 +117,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             val fdelete: File = File(data.fileURI)
             if(fdelete.exists()) {
                 if (AppSingelton.downloadedIds.matches("".toRegex())) {
-                    AppSingelton.downloadedIds = data.
-                    _podid.toString()
-                } else if (!AppSingelton.downloadedIds.contains(data._podid.toString() + ""))
+                    AppSingelton.downloadedIds = data.id
+                } else if (!AppSingelton.downloadedIds.contains(data.id + ""))
                     AppSingelton.downloadedIds =
-                        AppSingelton.downloadedIds + "," + data._podid.toString()
+                        AppSingelton.downloadedIds + "," + data.id
             } else {
-                deletePodcastById(data._podid)
+                deletePodcastById(data.id)
                 listOffline.remove(data)
             }
         }

@@ -275,7 +275,7 @@ class RadioPlayerActivity() :
 
         viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity){
             try {
-               val id = it._podid
+               val id = it.id
                 CoroutineScope(Dispatchers.IO).launch {
                     deletePodcast(id)
                 }
@@ -357,11 +357,11 @@ class RadioPlayerActivity() :
 
     private fun createPlayingChannelData(it: Data) {
         val playingChannelData = PlayingChannelData(
-            it.enclosureUrl,
-            it.image,
+            it.audio,
+            it.feedImage,
             it.title,
-            it._podid,
-            it._podid,
+            it.id,
+            it.guidFromRss,
             it.description,
             "Episodes"
         )

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
-@Database(entities = [Data::class], version = 3, exportSchema = false)
+@Database(entities = arrayOf(Data::class), version = 6, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDap() : DAOAccess
 

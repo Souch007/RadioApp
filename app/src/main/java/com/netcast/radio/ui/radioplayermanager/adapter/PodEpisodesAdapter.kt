@@ -7,7 +7,8 @@ import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.PodcastEpisodesRowBinding
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
-class PodEpisodesAdapter(private val list: List<Data>, private val _onEpisodeListener: OnEpisodeClickListener
+class PodEpisodesAdapter(private val list: List<Data>,
+                         private val _onEpisodeListener: OnEpisodeClickListener
 ) : BaseAdapter<PodcastEpisodesRowBinding, Data>(list) {
     override val layoutId: Int = R.layout.podcast_episodes_row
 
@@ -17,7 +18,7 @@ class PodEpisodesAdapter(private val list: List<Data>, private val _onEpisodeLis
             listener = _onEpisodeListener
             executePendingBindings()
         }
-        if(AppSingelton.downloadedIds.contains(item._podid.toString().toRegex())){
+        if(AppSingelton.downloadedIds.contains(item.id.toString().toRegex())){
 //            binding.tvDownlaodTag.text = "Offline Available"
             binding.icDone.visibility = View.VISIBLE
             binding.icDownlaod.visibility = View.GONE
@@ -34,7 +35,7 @@ class PodEpisodesAdapter(private val list: List<Data>, private val _onEpisodeLis
             _onEpisodeListener.onEpisodeDeleteClicked(item)
         }
 
-        if(AppSingelton.currentDownloading.matches(item._podid.toString().toRegex())){
+        if(AppSingelton.currentDownloading.matches(item.id.toString().toRegex())){
             binding.progressDownload.visibility = View.VISIBLE
 //            binding.tvDownlaodTag.text = "Downloading..."
 //            binding.tvDownlaodTag.visibility = View.VISIBLE

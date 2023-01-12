@@ -34,7 +34,7 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
         Handler(Looper.getMainLooper()).postDelayed({
             if(AppSingelton.downloadingEpisodeData != null){
                 Glide.with(applicationContext)
-                    .load(AppSingelton.downloadingEpisodeData!!.image)
+                    .load(AppSingelton.downloadingEpisodeData!!.feedImage)
                     .error(R.drawable.logo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH)
@@ -84,10 +84,10 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
         viewModel.onDownloadPlayListner.observe(this@DownloadActivity){
                 val playingChannelData = PlayingChannelData(
                     it.fileURI,
-                    it.image,
+                    it.feedImage,
                     it.title,
-                    it._podid,
-                    it.feedId.toString(),
+                    it.id,
+                    it.guidFromRss,
                     it.description,
                     "Offline"
                 )
