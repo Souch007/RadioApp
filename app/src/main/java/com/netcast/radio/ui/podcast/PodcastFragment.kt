@@ -78,7 +78,11 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
             mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"
         }
 
+    }
 
+    override fun onStart() {
+        super.onStart()
+//        mainActivityViewModel.getPodCastListing(podcastViewModel)
     }
 
 }

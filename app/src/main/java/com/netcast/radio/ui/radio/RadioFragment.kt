@@ -177,4 +177,12 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
         binding.recentlyPlayed.adapter = recentlyPlayedAdapter
     }
+
+    override fun onStart() {
+        super.onStart()
+   /*     mainActivityViewModel.getRadioListing(radioViewModel)
+        mainActivityViewModel.getLanguages(radioViewModel)
+        mainActivityViewModel.getCountires(radioViewModel)
+        mainActivityViewModel.getAllGenres(radioViewModel)*/
+    }
 }

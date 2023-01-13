@@ -2,7 +2,9 @@ package com.netcast.radio.request
 
 
 import com.netcast.radio.BuildConfig
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,6 +24,8 @@ class RemoteDataSource {
                     client.addInterceptor(logginInt)
                     client.connectTimeout(60,TimeUnit.SECONDS)
                     client.readTimeout(60,TimeUnit.SECONDS)
+                    client.connectionPool(ConnectionPool(0, 5, TimeUnit.MINUTES))
+                        .protocols(listOf(Protocol.HTTP_1_1))
                 }
             }.build())
             .addConverterFactory(GsonConverterFactory.create())
