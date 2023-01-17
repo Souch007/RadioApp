@@ -194,7 +194,7 @@ class RadioPlayerActivity() :
                         .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer
-                            val mediaItem = MediaItem.fromUri(url!!)
+                            val mediaItem = MediaItem.fromUri(url?: "")
                             exoPlayer.setMediaItem(mediaItem)
                             exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
                             exoPlayer.addListener(this)
