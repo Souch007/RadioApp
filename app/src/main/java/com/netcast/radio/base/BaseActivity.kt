@@ -1,37 +1,29 @@
 package com.netcast.radio.base
 
 import android.Manifest
-import android.app.Notification
-import android.app.PendingIntent
+import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.PlayingChannelData
-import com.netcast.radio.R
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppApis
-import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
@@ -39,7 +31,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.concurrent.ExecutionException
 
 
 abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
@@ -115,7 +106,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         listOffline.forEachIndexed { index, data ->
             var data = data;
             val fdelete: File = File(data.fileURI)
-            if(fdelete.exists()) {
+            if (fdelete.exists()) {
                 if (AppSingelton.downloadedIds.matches("".toRegex())) {
                     AppSingelton.downloadedIds = data.id
                 } else if (!AppSingelton.downloadedIds.contains(data.id + ""))
@@ -130,7 +121,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     }
 
 
-    fun getOfflineDataById(id:String): Data {
+    fun getOfflineDataById(id: String): Data {
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }
@@ -138,7 +129,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         return data
     }
 
-    fun deletePodcastById(id:String) {
+    fun deletePodcastById(id: String) {
         if (appDatabase == null) {
             initializeDB(applicationContext)
         }
@@ -161,8 +152,16 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
         AppSingelton._playingStarted.value = isPlaying
         addToRecentlyPlayedList(AppSingelton._currentPlayingChannel)
-        initListener(AppSingelton._currentPlayingChannel.value)
+//        initListener(AppSingelton._currentPlayingChannel.value)
+        val serviceIntent = Intent(this, AudioPlayerService::class.java)
+        if (isPlaying){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
 
+            }
+        }
     }
 
     private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
@@ -223,7 +222,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
     }
 
-    private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
+   /* private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
 
         val notificationId = AppConstants.NOTIFICATION_ID
         val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
@@ -232,7 +231,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             }
 
             override fun getCurrentContentTitle(player: Player): String {
-                return _currentPlayingChannel!!.name
+                return _currentPlayingChannel!!.name ?: "No Name"
             }
 
             override fun createCurrentContentIntent(player: Player): PendingIntent? {
@@ -293,7 +292,15 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                     notificationId: Int,
                     dismissedByUser: Boolean
                 ) {
+                    try {
+                        playerNotificationManager!!.setPlayer(null)
+                        AppSingelton.exoPlayer?.release()
+                        AppSingelton.exoPlayer = null
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
+
             })
             .build()
 
@@ -305,7 +312,16 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         playerNotificationManager!!.setPlayer(AppSingelton.exoPlayer)
     }
 
-
+*/
+   open fun checkServiceRunning(serviceClass: Class<*>): Boolean {
+       val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+       for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+           if (serviceClass.name == service.service.className) {
+               return true
+           }
+       }
+       return false
+   }
 }
 
 

@@ -1,10 +1,11 @@
 package com.netcast.radio.request
 
 object AppConstants {
+    const val STOPFOREGROUND_ACTION: String = "STOP_SERVICE"
     const val NOTIFICATION_ID: Int = 5709
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"
-    const val MAIN_ACTIVITY : String  = "MainActivity"
-    const val DownloadActivity : String  = "DownloadActivity"
+    const val MAIN_ACTIVITY: String = "MainActivity"
+    const val DownloadActivity: String = "DownloadActivity"
     const val BASE_URL = "http://server.netcast.com:3000/"
     const val FETCH_RADIO = "getRadioListing"
     const val PODCAST_LISTING = "getPodcastListing"

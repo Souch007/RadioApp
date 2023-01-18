@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +17,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.base.ViewModelFactory
@@ -32,16 +36,13 @@ import com.netcast.radio.ui.radio.RadioViewModel
 import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.seeall.SeeAllViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
@@ -49,9 +50,11 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var seeAllViewModel: SeeAllViewModel
+    private var DEVICE_ID = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
@@ -75,6 +78,9 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 }
             }
         )
+
+
+
         searchWatcherListener()
         hideProgressBar()
         checkOfflineChannels()
@@ -83,17 +89,17 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
     @SuppressLint("SuspiciousIndentation")
     private fun checkOfflineChannels() {
         CoroutineScope(Dispatchers.IO).launch {
-        val listOffline = getOfflineData()
+            val listOffline = getOfflineData()
             runOnUiThread {
-                if(listOffline.size > 0){
+                if (listOffline.size > 0) {
                     dataBinding.primeLayout.visibility = View.VISIBLE
                 } else
                     dataBinding.primeLayout.visibility = View.GONE
             }
 
-        dataBinding.primeLayout.setOnClickListener {
-            startActivity(Intent(this@MainActivity, DownloadActivity::class.java))
-        }
+            dataBinding.primeLayout.setOnClickListener {
+                startActivity(Intent(this@MainActivity, DownloadActivity::class.java))
+            }
         }
     }
 
@@ -111,7 +117,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 mainViewModel._state.value = true
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
-                    mainViewModel.getSearchQueryResult(searchedString, searchViewModel)
+                    mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
                     dataBinding.navView.selectedItemId = R.id.navigation_search
                     dataBinding.searchEditText.setText("")
                     val inputMethodManager =
@@ -141,12 +147,12 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
         mainViewModel._queriedSearched.observe(this) {
             dataBinding.searchEditText.setText(it)
-            mainViewModel.getSearchQueryResult(it, searchViewModel)
+            mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
             dataBinding.navView.selectedItemId = R.id.navigation_search
         }
 
         AppSingelton.radioSelectedChannel.observe(this) {
-            if(!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
+            if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
                 Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
                     startActivity(this)
                 }
@@ -154,7 +160,7 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         }
 
         mainViewModel._radioSeeAllSelected.observe(this) {
-           val navController = findNavController(R.id.nav_host_fragment_activity_main)
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
                 navController.navigate(R.id.navigation_radio)
             } else if (it == "CLOSE_PODCAST") {
@@ -167,11 +173,11 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
         AppSingelton._playingStarted.observe(this@MainActivity) {
             if (it) {
-               showSlideUpPanel()
+                showSlideUpPanel()
             }
         }
-        mainViewModel.navigateToPodcast.observe(this@MainActivity){
-            if(it)
+        mainViewModel.navigateToPodcast.observe(this@MainActivity) {
+            if (it)
                 dataBinding.navView.selectedItemId = R.id.navigation_podcast
         }
 
@@ -191,8 +197,9 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
 
     private fun showSlideUpPanel() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if(AppSingelton._currentPlayingChannel.value != null
-                && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())){
+            if (AppSingelton._currentPlayingChannel.value != null
+                && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())
+            ) {
                 dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
                 Glide.with(this)
                     .load(AppSingelton._currentPlayingChannel.value!!.favicon)
@@ -217,7 +224,21 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
                 dataBinding.playBtn.setShowPreviousButton(false)
                 dataBinding.playBtn.setShowNextButton(false)
                 AppSingelton.isNewItemAdded.value = true
+
+                // Added Close Sliding Panel Button
+                dataBinding.closeButton.setOnClickListener {
+                    if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
+                        if (dataBinding.playButtonCarousel.player!!.isPlaying)
+                            dataBinding.playButtonCarousel.player!!.stop()
+                    }
+                    dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+//                    AppSingelton._currentPlayingChannel.value = null
+
+                }
+
             }
+
+
         }, 1000)
     }
 
@@ -227,8 +248,8 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-        mainViewModel.getFrequentSearchesTags(searchViewModel)
-        mainViewModel.getSearchQueryResult("", searchViewModel)
+        mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
+        mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
     }
 
     private fun initializeViewModel() {
@@ -309,4 +330,5 @@ class MainActivity : BaseActivity<MainViewModel,ActivityMainBinding>() {
         showSlideUpPanel()
         checkOfflineChannels()
     }
+
 }

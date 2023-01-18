@@ -30,13 +30,13 @@ suspend  fun getCountries() : Countries
 suspend  fun getAllGenres() : Genres
 
 @GET(AppConstants.GET_FREQUENT_SEARCH)
-suspend  fun getFrequentSearches() : FrequentSearchResponce
+suspend  fun getFrequentSearches(@Query("device_id") device_id:String) : FrequentSearchResponce
 
 @GET(AppConstants.SEARCH+"?type=podcasts&")
-suspend  fun searchPodcast(@Query("q") productId: String) : SearchedReponcePod
+suspend  fun searchPodcast(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedReponcePod
 
 @GET(AppConstants.SEARCH+"?type=channels&")
-suspend  fun searchStations(@Query("q") productId: String) : SearchedResponceStation
+suspend  fun searchStations(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedResponceStation
 
 @GET(AppConstants.PODCAST_EPISODES+"{idPodacast}")
 suspend  fun getPodcastEpisodes(@Path("idPodacast")idPodcast: String): PodEpisodesData

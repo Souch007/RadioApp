@@ -79,7 +79,7 @@ class RadioPlayerActivity() :
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        if (AppSingelton._radioSelectedChannel.value!!.type == "Offline" && !isActivityLoaded) {
+        if (AppSingelton._radioSelectedChannel?.value?.type == "Offline" && !isActivityLoaded) {
             createActivity()
         } else {
             AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
@@ -96,24 +96,24 @@ class RadioPlayerActivity() :
             finish()
         }
         Glide.with(dataBinding.ivChannelLogo.context)
-            .load(AppSingelton.radioSelectedChannel.value!!.favicon)
+            .load(AppSingelton.radioSelectedChannel?.value?.favicon)
             .error(com.netcast.radio.R.drawable.logo)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH)
             .into(dataBinding.ivChannelLogo)
 
         Glide.with(dataBinding.backBlur.context)
-            .load(AppSingelton.radioSelectedChannel.value!!.favicon)
+            .load(AppSingelton.radioSelectedChannel?.value?.favicon)
             .error(com.netcast.radio.R.drawable.logo)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH)
             .into(dataBinding.backBlur)
-        dataBinding.channelDescription.text = AppSingelton.radioSelectedChannel.value!!.name
+        dataBinding.channelDescription.text = AppSingelton.radioSelectedChannel?.value?.name
         dataBinding.favIv.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 viewModel.addChannelToFavourites(AppSingelton.radioSelectedChannel.value!!)
             } else {
-                viewModel.removeChannelFromFavourites(AppSingelton.radioSelectedChannel.value!!)
+                viewModel.removeChannelFromFavourites(AppSingelton.radioSelectedChannel?.value!!)
             }
         }
 
@@ -123,7 +123,7 @@ class RadioPlayerActivity() :
         if(AppSingelton.favouritesRadioArray != null){
             AppSingelton.favouritesRadioArray.forEachIndexed { index, playingChannelData ->
                 val id = playingChannelData.id
-                if(id.matches( AppSingelton.radioSelectedChannel.value!!.id.toRegex())){
+                if(AppSingelton.radioSelectedChannel.value?.id?.toRegex()?.let { id.matches(it) } == true){
                     dataBinding.favIv.isChecked = true
                 }
             }
@@ -141,7 +141,7 @@ class RadioPlayerActivity() :
             dataBinding.playerView.player?.stop()
             dataBinding.playerView.player?.release()
             AppSingelton.exoPlayer = null
-            dataBinding.episode.text = Html.fromHtml(AppSingelton.radioSelectedChannel.value!!.name)
+            dataBinding.episode.text = Html.fromHtml(AppSingelton.radioSelectedChannel.value?.name)
         }
         AppSingelton._radioSelectedChannelId = ""
         handleChannel()
@@ -159,12 +159,12 @@ class RadioPlayerActivity() :
     }
 
     private fun handleChannel() {
-        AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value!!.id
+        AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id?:""
         val currentPlayingUUid = AppSingelton._currenPlayingChannelId
         if (AppSingelton.exoPlayer == null
             || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())
         ) {
-            if (AppSingelton._radioSelectedChannel.value!!.type.matches("Offline".toRegex())) {
+            if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
                 AppSingelton.exoPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
                     var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                     if (file.exists()) {
@@ -372,7 +372,7 @@ class RadioPlayerActivity() :
         //Checking the Type of MEDIA
         if (AppSingelton.exoPlayer != null)
             Log.d("tag", AppSingelton.exoPlayer!!.audioSessionId.toString())
-        podcastType = AppSingelton.radioSelectedChannel.value!!.type
+        podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
@@ -392,7 +392,7 @@ class RadioPlayerActivity() :
 
     private fun checkPodCastEpisodes() {
         dataBinding.podcastLoader.visibility = View.VISIBLE
-        viewModel.getPodcastEpisodes(AppSingelton.radioSelectedChannel.value!!.idPodcast)
+        viewModel.getPodcastEpisodes(AppSingelton.radioSelectedChannel.value!!.idPodcast ?: "")
 
     }
 

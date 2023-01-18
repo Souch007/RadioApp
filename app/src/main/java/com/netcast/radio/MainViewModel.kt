@@ -100,19 +100,20 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         }
     }
 
-    fun getFrequentSearchesTags(searchViewModel: SearchViewModel) {
+    fun getFrequentSearchesTags(device_id: String,searchViewModel: SearchViewModel) {
         viewModelScope.launch {
-            searchViewModel._frequentSearchesTags.value = appRepository.getFrequentSearchTags()
+            searchViewModel._frequentSearchesTags.value = appRepository.getFrequentSearchTags(device_id)
         }
     }
 
-    fun getSearchQueryResult(searchQuery: String, searchViewModel: SearchViewModel) {
+    fun getSearchQueryResult(device_id:String, searchQuery: String, searchViewModel: SearchViewModel) {
         viewModelScope.launch {
             try {
+
                 searchViewModel._searchResultsPodcast.value =
-                    appRepository.searchPodcasts(searchQuery)
+                    appRepository.searchPodcasts(searchQuery,device_id)
                 searchViewModel._searchResultsStations.value =
-                    appRepository.searchedStation(searchQuery)
+                    appRepository.searchedStation(searchQuery,device_id)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }

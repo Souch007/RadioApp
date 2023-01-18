@@ -61,7 +61,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:contentDescription="@string/title_settings"
-                        android:src="@drawable/ic_logo"
+                        android:src="@drawable/logo"
                         app:layout_constraintBottom_toBottomOf="@+id/search_view"
                         app:layout_constraintEnd_toStartOf="@+id/tv_Radio"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -196,27 +196,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/back_nav_grad"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="MissingConstraints">
 
-                    <RelativeLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/header"
                         android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/slideUp"
-                            android:layout_width="@dimen/_45sdp"
+                            android:layout_width="0dp"
+                            android:layout_weight=".1"
                             android:layout_height="@dimen/_45sdp"
                             android:layout_alignParentStart="true"
                             android:layout_centerInParent="true"
-                            android:layout_marginStart="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/logo" />
 
                         <TextView
                             android:id="@+id/playing_channel_name"
                             style="@style/textHeading"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/_5sdp"
                             android:layout_toStartOf="@+id/play_button_carousel_"
@@ -229,15 +236,36 @@
 
                         <com.google.android.exoplayer2.ui.PlayerControlView
                             android:id="@+id/play_button_carousel_"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".15"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_20sdp"
+
                             app:controller_layout_id="@layout/exo_custom"
                             app:show_timeout="-1" />
 
-                    </RelativeLayout>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/close_button"
+                            android:layout_width="0dp"
+                            android:layout_weight=".15"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            app:cardCornerRadius="@dimen/_50sdp"
+                            app:cardBackgroundColor="@color/Black"
+                            app:cardElevation="@dimen/_35sdp"
+                            android:layout_height="@dimen/_43sdp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_cross_white"
+                                />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -334,7 +362,10 @@
                                     android:layout_height="@dimen/_80sdp"
                                     android:layout_alignParentStart="true"
                                     android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/_5sdp"
+                                    android:layout_marginStart="@dimen/_5sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginEnd="@dimen/_5sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
                                     android:background="@color/Black"
                                     app:auto_show="true"
                                     app:hide_during_ads="false"
