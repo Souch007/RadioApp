@@ -1,5 +1,6 @@
 package com.netcast.radio.ui.ui.settings
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,13 +45,22 @@ class SettingsFragment : Fragment() {
             adapter = adapterSettings
         }
         adapterSettings.itemClickListener { pos, view ->
-            if (pos == 0) {
-                showBottomSheetDialog()
+            /*   if (pos == 0) {
+                   showBottomSheetDialog()
+               } else*/
+            if (pos == 1) {
+                openTermsandCons("https://baidu.eu/terms")
+            } else if (pos == 2) {
+                openTermsandCons("https://baidu.eu/privacy")
             }
 
         }
-        setcurrentappmode(null)
+//        setcurrentappmode(null)
         return root
+    }
+
+    private fun openTermsandCons(url: String) {
+        startActivity(Intent(requireContext(), WebviewActivity::class.java).putExtra("url", url))
     }
 
     private fun showBottomSheetDialog() {

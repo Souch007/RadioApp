@@ -40,4 +40,5 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
     override fun getItemCount(): Int {
         return getItemsCount(data)
     }
+
 }

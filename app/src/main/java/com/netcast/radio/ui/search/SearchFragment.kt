@@ -22,11 +22,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
             try {
                 val data = (it as Resource.Success).value.data
-                _fragmentSearchViewModel._frequestSearchList.value = data
+               val searchTags = data.filter {
+                    it.q.isNotEmpty()
+                }.distinctBy {
+                    it.q
+               }
+                _fragmentSearchViewModel._frequestSearchList.value=searchTags
                 binding.tagsadapter = com.netcast.radio.ui.search.adapters.SearchTagsAdapter(
                     listOf(),
                     mainActivityViewModel
                 )
+
             } catch (ex : Exception){
                 ex.printStackTrace()
                 val failure = (it as Resource.Failure).errorCode

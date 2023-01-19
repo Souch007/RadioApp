@@ -1,6 +1,7 @@
 package com.netcast.radio.base
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -8,7 +9,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -143,10 +143,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-        if (!isPlaying)
-            Toast.makeText(this, "Buffering", Toast.LENGTH_SHORT).show()
+//        if (!isPlaying)
+//            Toast.makeText(this, "Buffering", Toast.LENGTH_SHORT).show()
 
         AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
         AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
@@ -156,10 +157,9 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         val serviceIntent = Intent(this, AudioPlayerService::class.java)
         if (isPlaying){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent)
+                AudioPlayerService.startService(this)
             } else {
-                startService(serviceIntent)
-
+                startService(Intent(serviceIntent))
             }
         }
     }

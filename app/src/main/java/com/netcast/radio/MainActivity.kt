@@ -152,10 +152,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         }
 
         AppSingelton.radioSelectedChannel.observe(this) {
+            it?.let {
             if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
                 Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
                     startActivity(this)
                 }
+            }
             }
         }
 

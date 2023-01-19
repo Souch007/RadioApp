@@ -17,14 +17,13 @@ class SearchTagsAdapter(private val list:List<Data>,private val onSearcTagListen
     }
 
     override fun getItemsCount(data: List<Data>): Int {
-        if(data.size > 10)
-            return 10
+        return if(data.size > 10)
+            10
         else
-            return data.size;
+            data.size
     }
 
 }
-
 
 interface OnSearchTagListener{
     fun onSearchTagClicked(data:Data)

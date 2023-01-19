@@ -2,13 +2,14 @@ package com.netcast.radio.base
 
 import android.app.Notification
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.Player
@@ -21,20 +22,28 @@ import java.util.concurrent.ExecutionException
 class AudioPlayerService : LifecycleService() {
     var playerNotificationManager: PlayerNotificationManager? = null
 
+
+    companion object {
+        fun startService(context: Context) {
+            val startIntent = Intent(context, AudioPlayerService::class.java)
+            ContextCompat.startForegroundService(context, startIntent)
+        }
+        fun stopService(context: Context) {
+            val stopIntent = Intent(context, AudioPlayerService::class.java)
+            context.stopService(stopIntent)
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
-        initListener(AppSingelton._currentPlayingChannel.value)
 
     }
 
-    /*override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (intent?.action.equals(AppConstants.STOPFOREGROUND_ACTION)) {
-            stopservice()
-            stopSelfResult(startId)
-        }
+        initListener(AppSingelton._currentPlayingChannel.value)
         return START_NOT_STICKY
-    }*/
+    }
 
     private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
 
@@ -103,7 +112,7 @@ class AudioPlayerService : LifecycleService() {
                     if (ongoing)
                         startForeground(notificationId, notification)
                     else {
-                        stopservice()
+//                       Companion.stopService(this@AudioPlayerService)
                     }
                 }
 
@@ -125,17 +134,21 @@ class AudioPlayerService : LifecycleService() {
         playerNotificationManager!!.setColorized(true)
         playerNotificationManager!!.setColor(0xFFBDBDBD.toInt())
         playerNotificationManager!!.setPlayer(AppSingelton.exoPlayer)
+
     }
 
+/*
     private fun stopservice() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_DETACH)
+
         } else {
             stopForeground(true)
         }
 //        playerNotificationManager?.setPlayer(null)
 //        releasePlayer()
     }
+*/
 
 
     override fun onDestroy() {
@@ -146,14 +159,14 @@ class AudioPlayerService : LifecycleService() {
     private fun releasePlayer() {
         AppSingelton.exoPlayer?.release()
         AppSingelton.exoPlayer = null
-//        AppSingelton._currentPlayingChannel.value=null
+        AppSingelton._radioSelectedChannel.value=null
 
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        if (AppSingelton.exoPlayer?.isPlaying == false)
-           stopservice()
+//        if (AppSingelton.exoPlayer?.isPlaying == false)
+           Companion.stopService(this)
 
     }
 }
