@@ -21,7 +21,7 @@ class SettingsViewModel : ViewModel() {
    /*     settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList*/
 
-    /*    settingsData = SettingsData("","Stream only over WIFI"
+ /*       settingsData = SettingsData("","Stream only over WIFI"
             , "By activating this option, streaming of stations and podcasts will work only with WIFI, so your mobile data will not be consumed",
             true,true)
         settingsList.add(settingsData)
@@ -31,8 +31,8 @@ class SettingsViewModel : ViewModel() {
             , "Enable this feature to not consume mobile data when downlaoding episodes"
             ,true,true)
         settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
-
+        _settingDataArray!!.value = settingsList
+*/
        /* settingsData = SettingsData("","Automatically delete completed episodes",
             "Episodes you have finished listening to will be deleted from your device after 48 hours",true,true)
         settingsList.add(settingsData)
