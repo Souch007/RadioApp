@@ -179,9 +179,9 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onStart() {
         super.onStart()
-   /*     mainActivityViewModel.getRadioListing(radioViewModel)
-        mainActivityViewModel.getLanguages(radioViewModel)
-        mainActivityViewModel.getCountires(radioViewModel)
-        mainActivityViewModel.getAllGenres(radioViewModel)*/
+//        mainActivityViewModel.getRadioListing(radioViewModel)
+//        mainActivityViewModel.getLanguages(radioViewModel)
+//        mainActivityViewModel.getCountires(radioViewModel)
+//        mainActivityViewModel.getAllGenres(radioViewModel)
     }
 }

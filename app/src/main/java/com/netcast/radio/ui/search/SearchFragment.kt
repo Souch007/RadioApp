@@ -1,5 +1,6 @@
 package com.netcast.radio.ui.search
 
+import android.provider.Settings
 import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.activityViewModels
 import com.netcast.radio.MainViewModel
@@ -63,6 +64,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment){
             try {
+
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListStations.value = data
                 binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
@@ -76,5 +78,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             }
 
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+     /*  val device_id = Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
+        mainActivityViewModel.getFrequentSearchesTags(device_id, _fragmentSearchViewModel)*/
     }
 }

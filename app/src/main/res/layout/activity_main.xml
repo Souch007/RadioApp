@@ -292,12 +292,12 @@
                         android:gravity="center">
 
                         <TextView
-                            style="@style/textTitle"
+                            style="@style/textsubheading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="@dimen/_10sdp"
-                            android:text="- NETCAST -"
+                            android:text="netcast"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -306,10 +306,9 @@
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/slide_up_iv"
-                            android:layout_width="match_parent"
+                            android:layout_width="@dimen/_200sdp"
                             android:layout_height="@dimen/_200sdp"
                             android:alpha="0.2"
-                            android:scaleType="centerCrop"
                             app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -414,7 +413,54 @@
         </androidx.cardview.widget.CardView>
 
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
+          android:id="@+id/ll_shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/layout_bg"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/sliding_layout"
+            app:layout_constraintEnd_toEndOf="@+id/sliding_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sliding_layout">
+
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="@+id/sliding_layout"
+                app:layout_constraintEnd_toEndOf="@+id/sliding_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sliding_layout"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="linear">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+
+                    <include layout="@layout/shimmer_loadingview"></include>
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <!--<LinearLayout
             android:id="@+id/progress_holder"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_90sdp"
@@ -441,7 +487,7 @@
                 android:text="Loading..."
                 android:textAlignment="center"
                 android:textColor="@color/white" />
-        </LinearLayout>
+        </LinearLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

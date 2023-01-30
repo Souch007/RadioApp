@@ -2,6 +2,8 @@ package com.netcast.radio.ui.radioplayermanager
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.*
@@ -19,6 +21,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
+import com.netcast.radio.MainActivity
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
@@ -79,6 +82,7 @@ class RadioPlayerActivity() :
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
+
         if (AppSingelton._radioSelectedChannel?.value?.type == "Offline" && !isActivityLoaded) {
             createActivity()
         } else {
@@ -132,7 +136,8 @@ class RadioPlayerActivity() :
     }
 
     override fun onBackPressed() {
-
+        AppSingelton._isPlayerFragVisible.value = false
+        finish()
     }
 
 
@@ -161,9 +166,7 @@ class RadioPlayerActivity() :
     private fun handleChannel() {
         AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id?:""
         val currentPlayingUUid = AppSingelton._currenPlayingChannelId
-        if (AppSingelton.exoPlayer == null
-            || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())
-        ) {
+        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())) {
             if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
                 AppSingelton.exoPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
                     var file = File(AppSingelton._radioSelectedChannel.value!!.url)
@@ -176,7 +179,8 @@ class RadioPlayerActivity() :
                     }
                 }
                 Log.d("Offline", "Request Recieved")
-            } else {
+            }
+            else {
                 val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
                 val loadControl = DefaultLoadControl.Builder()
                     .setAllocator(allocator)

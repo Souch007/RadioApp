@@ -61,8 +61,7 @@
                 android:visibility='@{fragmentSearchViewModel.frequentSearchList.size() > 0 ? View.VISIBLE:View.GONE}'
                 app:layout_constraintHorizontal_bias="0.0"
                 app:submitList="@{fragmentSearchViewModel.frequentSearchList}"
-                tools:itemCount="4"
-                tools:listitem="@layout/tags_row" />
+                />
 
             <TextView
                 android:id="@+id/tag_podcast"

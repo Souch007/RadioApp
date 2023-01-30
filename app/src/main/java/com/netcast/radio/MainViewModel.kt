@@ -109,7 +109,6 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getSearchQueryResult(device_id:String, searchQuery: String, searchViewModel: SearchViewModel) {
         viewModelScope.launch {
             try {
-
                 searchViewModel._searchResultsPodcast.value =
                     appRepository.searchPodcasts(searchQuery,device_id)
                 searchViewModel._searchResultsStations.value =

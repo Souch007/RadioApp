@@ -60,24 +60,23 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
 
-        dataBinding.slidingLayout.addPanelSlideListener(
-            object : SlidingUpPanelLayout.PanelSlideListener {
-                override fun onPanelSlide(panel: View, slideOffset: Float) {
-                }
+        dataBinding.slidingLayout.addPanelSlideListener(object :
+            SlidingUpPanelLayout.PanelSlideListener {
+            override fun onPanelSlide(panel: View, slideOffset: Float) {
+            }
 
-                override fun onPanelStateChanged(
-                    panel: View?,
-                    previousState: SlidingUpPanelLayout.PanelState?,
-                    newState: SlidingUpPanelLayout.PanelState?
-                ) {
-                    if (newState!!.name == "EXPANDED") {
-                        dataBinding.header.visibility = View.GONE
-                    } else {
-                        dataBinding.header.visibility = View.VISIBLE
-                    }
+            override fun onPanelStateChanged(
+                panel: View?,
+                previousState: SlidingUpPanelLayout.PanelState?,
+                newState: SlidingUpPanelLayout.PanelState?
+            ) {
+                if (newState!!.name == "EXPANDED") {
+                    dataBinding.header.visibility = View.GONE
+                } else {
+                    dataBinding.header.visibility = View.VISIBLE
                 }
             }
-        )
+        })
 
 
 
@@ -93,8 +92,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             runOnUiThread {
                 if (listOffline.size > 0) {
                     dataBinding.primeLayout.visibility = View.VISIBLE
-                } else
-                    dataBinding.primeLayout.visibility = View.GONE
+                } else dataBinding.primeLayout.visibility = View.GONE
             }
 
             dataBinding.primeLayout.setOnClickListener {
@@ -105,14 +103,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private fun hideProgressBar() {
         Handler(Looper.getMainLooper()).postDelayed({
-            dataBinding.progressHolder.visibility = View.GONE
+            dataBinding.llShimmerLayout.visibility = View.GONE
         }, 5000)
     }
 
     private fun searchWatcherListener() {
         dataBinding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                dataBinding.progressHolder.visibility = View.VISIBLE
+                dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 hideProgressBar()
                 mainViewModel._state.value = true
                 var searchedString = dataBinding.searchEditText.text.toString()
@@ -147,17 +145,24 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
         mainViewModel._queriedSearched.observe(this) {
             dataBinding.searchEditText.setText(it)
+            dataBinding.llShimmerLayout.visibility = View.VISIBLE
             mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
             dataBinding.navView.selectedItemId = R.id.navigation_search
+            hideProgressBar()
         }
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
-            if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
-                Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
-                    startActivity(this)
+                if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
+                    if (AppSingelton.exoPlayer != null) {
+                        AppSingelton.exoPlayer!!.stop()
+                        AppSingelton.exoPlayer!!.release()
+                        AppSingelton.exoPlayer = null
+                    }
+                    Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
+                        startActivity(this)
+                    }
                 }
-            }
             }
         }
 
@@ -179,15 +184,15 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             }
         }
         mainViewModel.navigateToPodcast.observe(this@MainActivity) {
-            if (it)
-                dataBinding.navView.selectedItemId = R.id.navigation_podcast
+            if (it) dataBinding.navView.selectedItemId = R.id.navigation_podcast
         }
 
         AppSingelton.isNewStationSelected.observe(this@MainActivity) {
             try {
                 if (it && dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
-                    if (dataBinding.playButtonCarousel.player!!.isPlaying)
+                    if (dataBinding.playButtonCarousel.player!!.isPlaying) {
                         dataBinding.playButtonCarousel.player!!.stop()
+                    }
                 }
                 dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
 
@@ -199,25 +204,20 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private fun showSlideUpPanel() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (AppSingelton._currentPlayingChannel.value != null
-                && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())
+            if (AppSingelton._currentPlayingChannel.value != null && AppSingelton.currentActivity.matches(
+                    AppConstants.MAIN_ACTIVITY.toRegex()
+                )
             ) {
                 dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
-                Glide.with(this)
-                    .load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                    .error(R.drawable.logo)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH)
-                    .into(dataBinding.slideUp)
+                Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                    .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH).into(dataBinding.slideUp)
 
-                Glide.with(this)
-                    .load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                    .error(R.drawable.logo)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH)
-                    .into(dataBinding.slideUpIv)
+                Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
+                    .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH).into(dataBinding.slideUpIv)
                 dataBinding.currentRadioInfo.setText(AppSingelton._currentPlayingChannel.value!!.name)
-                dataBinding.settingsBarLayout.visibility = View.VISIBLE
+
                 dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
                 dataBinding.playButtonCarousel.showTimeoutMs = -1
@@ -230,11 +230,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 // Added Close Sliding Panel Button
                 dataBinding.closeButton.setOnClickListener {
                     if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
-                        if (dataBinding.playButtonCarousel.player!!.isPlaying)
+                        if (dataBinding.playButtonCarousel.player!!.isPlaying) {
                             dataBinding.playButtonCarousel.player!!.stop()
+                        }
                     }
                     dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-//                    AppSingelton._currentPlayingChannel.value = null
+//
 
                 }
 
@@ -246,12 +247,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private fun callApis() {
         mainViewModel.getRadioListing(radioViewModel)
-        mainViewModel.getPodCastListing(podcastViewModel)
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-        mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
+        mainViewModel.getPodCastListing(podcastViewModel)
         mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
+        mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
 
     private fun initializeViewModel() {
@@ -301,8 +302,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 //                    dataBinding.tvRadio.text = "Search"
                 }
                 R.id.navigation_see_all -> {
+                    if (dataBinding.settingsBarLayout.visibility == View.VISIBLE)
+                        dataBinding.settingsBarLayout.visibility = View.GONE
                     navView.visibility = View.GONE
-                    dataBinding.settingsBarLayout.visibility = View.GONE
                 }
             }
         }
@@ -331,6 +333,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         showSlideUpPanel()
         checkOfflineChannels()
+        dataBinding.settingsBarLayout.visibility = View.VISIBLE
     }
+
 
 }

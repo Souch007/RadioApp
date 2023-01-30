@@ -1,5 +1,6 @@
 package com.netcast.radio.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,8 +38,11 @@ class SearchViewModel(appRepository: AppRepository) : ViewModel() , OnSearchTagL
     }
 
     override fun onPodCastSearchedListener(data: com.netcast.radio.ui.search.searchedpodresponce.Data) {
+        Log.d("TAG", "onPodCastSearchedListener: ")
     }
 
     override fun onStationSearchListener(data: com.netcast.radio.ui.search.searchedstationresponce.Data) {
+        Log.d("TAG", "onPodCastSearchedListener: ")
+
     }
 }
