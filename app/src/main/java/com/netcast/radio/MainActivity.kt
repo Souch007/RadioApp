@@ -208,7 +208,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     AppConstants.MAIN_ACTIVITY.toRegex()
                 )
             ) {
-                dataBinding.playingChannelName.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                dataBinding.playingChannelName.text = AppSingelton._currentPlayingChannel.value!!.name
                 Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
                     .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH).into(dataBinding.slideUp)
@@ -216,7 +216,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
                     .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH).into(dataBinding.slideUpIv)
-                dataBinding.currentRadioInfo.setText(AppSingelton._currentPlayingChannel.value!!.name)
+                dataBinding.currentRadioInfo.text = AppSingelton._currentPlayingChannel.value!!.name
 
                 dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer

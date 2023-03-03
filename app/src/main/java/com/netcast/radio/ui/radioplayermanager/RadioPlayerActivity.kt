@@ -386,7 +386,8 @@ class RadioPlayerActivity() :
             dataBinding.radioSuggestion.visibility = View.GONE
         } else {
             dataBinding.podEpisodes.visibility = View.GONE
-            dataBinding.radioSuggestion.visibility = View.VISIBLE
+            //changed to gone no need to display
+            dataBinding.radioSuggestion.visibility = View.GONE
             dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                 AppSingelton.suggestedRadioList!!,
                 viewModel

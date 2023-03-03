@@ -1,8 +1,7 @@
 package com.netcast.radio.ui.search
 
-import android.provider.Settings
-import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseFragment
@@ -12,7 +11,7 @@ import com.netcast.radio.ui.search.adapters.PodcastSearchedAdapter
 import com.netcast.radio.ui.search.adapters.StationSearchedAdapter
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search){
-    val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
+    private val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
     private lateinit var mainActivityViewModel : MainViewModel
 
     override fun FragmentSearchBinding.initialize() {
@@ -23,10 +22,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
             try {
                 val data = (it as Resource.Success).value.data
-               val searchTags = data.filter {
-                    it.q.isNotEmpty()
-                }.distinctBy {
-                    it.q
+               val searchTags = data.filter {data->
+                   data.q.isNotEmpty()
+                }.distinctBy {distinctby->
+                   distinctby.q
                }
                 _fragmentSearchViewModel._frequestSearchList.value=searchTags
                 binding.tagsadapter = com.netcast.radio.ui.search.adapters.SearchTagsAdapter(
