@@ -60,6 +60,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val _selectedSeeAllPodcasts = MutableLiveData<List<PodListData>>()
     val selectedSeeAllPodcasts: LiveData<List<PodListData>> = _selectedSeeAllPodcasts
     val _radioSeeAllSelected = MutableLiveData<String>()
+    val _radioSelectedTitle = MutableLiveData<String>()
 
     //------------------------------------------------------------------//
     val _queriedSearched = MutableLiveData<String>()

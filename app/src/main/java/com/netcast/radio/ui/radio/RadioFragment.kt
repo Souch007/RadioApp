@@ -139,21 +139,25 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel.radioListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Local Stations"
         }
         binding.tvAllTagPopRock.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioPopListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Pop&Rock"
         }
         binding.tvAllTagNews.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioNewsListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "News"
         }
         binding.tvAllTagTvClassical.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Classical"
         }
 
     }

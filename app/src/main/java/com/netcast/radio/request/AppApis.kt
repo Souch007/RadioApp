@@ -14,7 +14,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AppApis {
-@GET(AppConstants.FETCH_RADIO)
+@GET(AppConstants.FETCH_RADIO+"?limit=75")
 suspend fun getRadioStations() : RadioResponse
 
 @GET(AppConstants.PODCAST_LISTING)
