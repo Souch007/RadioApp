@@ -1,21 +1,21 @@
 package com.netcast.radio.ui.ui.settings
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 
 class SettingsViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
     private var _settingDataArray: MutableLiveData<ArrayList<SettingsData>>? = null
-    fun getFavs(): MutableLiveData<ArrayList<SettingsData>>? {
+    fun getFavs(sharedprefs: SharedPreferences): MutableLiveData<ArrayList<SettingsData>>? {
         if (_settingDataArray == null) {
             _settingDataArray = MutableLiveData()
-            addSettings()
+            addSettings(sharedprefs)
         }
         return _settingDataArray
     }
 
-    private fun addSettings() {
+    private fun addSettings(sharedPredEditor: SharedPreferences) {
         val settingsList = ArrayList<SettingsData>()
         var settingsData = SettingsData("General","AppStyle", "System Default",false,false)
    /*     settingsList.add(settingsData)
@@ -23,13 +23,13 @@ class SettingsViewModel : ViewModel() {
 
         settingsData = SettingsData("","Stream only over WIFI"
             , "By activating this option, streaming of stations and podcasts will work only with WIFI, so your mobile data will not be consumed",
-            true,true)
+            true, sharedPredEditor.getBoolean("stream_over_wifi",false))
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("Podcast","Only download episodes over Wi-Fi"
             , "Enable this feature to not consume mobile data when downlaoding episodes"
-            ,true,true)
+            ,true,sharedPredEditor.getBoolean("download_over_wifi",false))
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 

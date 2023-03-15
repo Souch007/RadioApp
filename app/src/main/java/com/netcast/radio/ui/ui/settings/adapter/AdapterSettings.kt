@@ -3,6 +3,8 @@ package com.netcast.radio.ui.ui.settings.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +13,7 @@ import com.netcast.radio.R
 import com.netcast.radio.ui.ui.settings.SettingsData
 
 class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<SettingsData>>?) : RecyclerView.Adapter<AdapterSettings.MyViewHodler>(){
-    private var listener: ((Int,View) -> Unit)? = null
+    private var listener: ((Int,View,Boolean) -> Unit)? = null
     inner class MyViewHodler(view: View) : RecyclerView.ViewHolder(view){
         var heading = view.findViewById<TextView>(R.id.tv_heading)
         var subHeading = view.findViewById<TextView>(R.id.tv_sub_heading)
@@ -19,7 +21,7 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         var switch = view.findViewById<SwitchCompat>(R.id.swich_state_wifi)
     }
 
-    fun itemClickListener(l: (Int,View) -> Unit) {
+    fun itemClickListener(l: (Int,View,Boolean) -> Unit) {
         listener = l
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHodler {
@@ -52,9 +54,14 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         } else {
             holder.switch.visibility = View.GONE
         }
+        holder.switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            listener?.let {it->
+                it(position,buttonView,isChecked)
+            }
+        }
         holder.subHeading.setOnClickListener {view->
             listener?.let {
-                it(position,view)
+                it(position,view,false)
             }
         }
     }

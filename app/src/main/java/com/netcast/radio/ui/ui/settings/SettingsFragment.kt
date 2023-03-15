@@ -1,6 +1,8 @@
 package com.netcast.radio.ui.ui.settings
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +31,8 @@ class SettingsFragment : Fragment() {
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
     private val binding get() = bindingSettings!!
     private lateinit var adapterSettings: AdapterSettings
-
+    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPredEditor: SharedPreferences.Editor
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,19 +41,29 @@ class SettingsFragment : Fragment() {
             ViewModelProvider(this).get(SettingsViewModel::class.java)
         bindingSettings = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        settingsViewModel.getFavs()
-        adapterSettings = AdapterSettings(settingsViewModel.getFavs())
+        sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
+        settingsViewModel.getFavs(sharedPreferences)
+        adapterSettings = AdapterSettings(settingsViewModel.getFavs(sharedPreferences))
         binding.rvSettings.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapterSettings
         }
-        adapterSettings.itemClickListener { pos, view ->
+        adapterSettings.itemClickListener { pos, view, ischecked ->
             /*   if (pos == 0) {
                    showBottomSheetDialog()
                } else*/
+            if (pos == 0) {
+                sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
+                sharedPredEditor.apply()
+            }
             if (pos == 1) {
+                sharedPredEditor.putBoolean("download_over_wifi", ischecked)
+                sharedPredEditor.apply()
+            }
+            if (pos == 3) {
                 openTermsandCons("https://baidu.eu/terms")
-            } else if (pos == 2) {
+            } else if (pos == 4) {
                 openTermsandCons("https://baidu.eu/privacy")
             }
 
