@@ -3,12 +3,12 @@ package com.netcast.radio.request.repository
 import com.netcast.radio.request.AppApis
 
 class AppRepository (private val appApis: AppApis) : BaseRepository() {
-    suspend fun getRadioListing() = safeApiCall {
-        appApis.getRadioStations()
+    suspend fun getRadioListing(country:String) = safeApiCall {
+        appApis.getRadioStations(country)
     }
 
-    suspend fun getPodCastListing() = safeApiCall {
-        appApis.getPodCastStations()
+    suspend fun getPodCastListing(country:String) = safeApiCall {
+        appApis.getPodCastStations(country)
     }
 
    suspend fun getLanguages() = safeApiCall {

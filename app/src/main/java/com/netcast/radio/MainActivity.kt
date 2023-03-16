@@ -2,15 +2,18 @@ package com.netcast.radio
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -40,6 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
@@ -51,6 +55,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var seeAllViewModel: SeeAllViewModel
     private var DEVICE_ID = ""
+    private var selectedDestination = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +95,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             val listOffline = getOfflineData()
             runOnUiThread {
-                if (listOffline.size > 0) {
+                if (listOffline.isNotEmpty()) {
                     dataBinding.primeLayout.visibility = View.VISIBLE
                 } else dataBinding.primeLayout.visibility = View.GONE
             }
@@ -208,7 +213,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     AppConstants.MAIN_ACTIVITY.toRegex()
                 )
             ) {
-                dataBinding.playingChannelName.text = AppSingelton._currentPlayingChannel.value!!.name
+                dataBinding.playingChannelName.text =
+                    AppSingelton._currentPlayingChannel.value!!.name
                 Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
                     .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH).into(dataBinding.slideUp)
@@ -246,11 +252,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun callApis() {
-        mainViewModel.getRadioListing(radioViewModel)
+        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-        mainViewModel.getPodCastListing(podcastViewModel)
+        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
         mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
@@ -287,24 +293,31 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 //                    dataBinding.tvRadio.text = "Radio"
                 }
                 R.id.navigation_podcast -> {
+                    selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Podcast"
                 }
                 R.id.navigation_favourites -> {
+                    selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Favourites"
                 }
                 R.id.navigation_search -> {
+                    selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Search"
                 }
                 R.id.navigation_see_all -> {
+                    selectedDestination = destination.label.toString()
                     if (dataBinding.settingsBarLayout.visibility == View.VISIBLE)
                         dataBinding.settingsBarLayout.visibility = View.GONE
                     navView.visibility = View.GONE
+                }
+                else -> {
+                    dataBinding.settingsBarLayout.visibility = View.GONE
                 }
             }
         }
@@ -330,10 +343,52 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
+        if (selectedDestination != getString(R.string.see_all))
+            dataBinding.settingsBarLayout.visibility = View.VISIBLE
+
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         showSlideUpPanel()
         checkOfflineChannels()
-        dataBinding.settingsBarLayout.visibility = View.VISIBLE
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    private fun detectNetworkCountry(context: Context): String? {
+        try {
+            val telephonyManager =
+                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+//            Log.d(TAG, "detectNetworkCountry: ${telephonyManager.networkCountryIso}")
+            return telephonyManager.networkCountryIso
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun getUserCountry(context: Context): String? {
+        try {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val simCountry = tm.simCountryIso
+            if (simCountry != null && simCountry.length == 2) { // SIM country code is available
+                val locale = Locale("", simCountry)
+                return locale.displayCountry
+            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // Device is not 3G (would be unreliable)
+                val networkCountry = tm.networkCountryIso
+                if (networkCountry != null && networkCountry.length == 2) { // network country code is available
+                    val locale = Locale("", networkCountry)
+                    return locale.displayCountry
+                }
+            }
+        } catch (e: Exception) {
+        }
+        return null
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
 

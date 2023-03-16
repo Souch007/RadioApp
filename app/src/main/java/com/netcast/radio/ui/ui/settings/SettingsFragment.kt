@@ -38,7 +38,7 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+            ViewModelProvider(this)[SettingsViewModel::class.java]
         bindingSettings = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -57,11 +57,11 @@ class SettingsFragment : Fragment() {
                 sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
                 sharedPredEditor.apply()
             }
-            if (pos == 1) {
+            else if (pos == 1) {
                 sharedPredEditor.putBoolean("download_over_wifi", ischecked)
                 sharedPredEditor.apply()
             }
-            if (pos == 3) {
+           else if (pos == 3) {
                 openTermsandCons("https://baidu.eu/terms")
             } else if (pos == 4) {
                 openTermsandCons("https://baidu.eu/privacy")

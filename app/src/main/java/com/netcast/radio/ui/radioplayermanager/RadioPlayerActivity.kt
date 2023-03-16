@@ -215,7 +215,8 @@ class RadioPlayerActivity() :
                     it.stop()
                 }
                 AppSingelton.exoPlayer =
-                    ExoPlayer.Builder(this, renderersFactory).setLoadControl(loadControl)
+                    ExoPlayer.Builder(this, renderersFactory)
+                        .setLoadControl(loadControl)
                         .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer

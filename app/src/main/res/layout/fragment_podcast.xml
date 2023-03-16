@@ -108,6 +108,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_trending_podcasts"
+                    tools:itemCount="10"
                     app:setAdapter="@{newsadapter}"
                     app:submitList="@{podcastDataBinding.newsArrayLM}"
                     tools:listitem="@layout/radio_row" />
@@ -155,6 +156,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_fitness"
+                    tools:itemCount="10"
                     app:setAdapter="@{societyadapter}"
                     app:submitList="@{podcastDataBinding.fitnessLM}"
                     tools:listitem="@layout/radio_row" />
@@ -200,6 +202,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_bussiness"
+                    tools:itemCount="10"
                     app:setAdapter="@{businessadapter}"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:submitList="@{podcastDataBinding.businessLM}"
@@ -293,6 +296,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_education"
+                    tools:itemCount="10"
                     app:setAdapter="@{educationaladapter}"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:submitList="@{podcastDataBinding.educationM}"
