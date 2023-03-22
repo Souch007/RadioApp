@@ -15,4 +15,5 @@ object AppConstants {
     const val GET_ALL_GENRES = "getAllGenres"
     const val SEARCH = "search/"
     const val GET_FREQUENT_SEARCH = "getFrequentSearchesTags/"
+    const val PLAYER_SECS = "player_ffbbsec"
 }

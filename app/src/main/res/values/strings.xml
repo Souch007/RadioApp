@@ -26,5 +26,7 @@
     <string name="exo_download_notification_channel_name" />
     <string name="notification_Channel_Description">Netcast app notification manager</string>
     <string name="radio">Radio</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

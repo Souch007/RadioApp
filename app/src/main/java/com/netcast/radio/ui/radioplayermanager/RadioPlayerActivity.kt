@@ -7,6 +7,7 @@ import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.icu.util.TimeUnit
 import android.os.*
 import android.text.Html
 import android.util.Log
@@ -190,7 +191,10 @@ class RadioPlayerActivity() :
             )
         ) {
             if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
-                AppSingelton.exoPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
+                AppSingelton.exoPlayer = ExoPlayer.Builder(this)
+                    .setSeekForwardIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
+                    .setSeekBackIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
+                    .build().also { exoPlayer ->
                     var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                     if (file.exists()) {
                         dataBinding.playerView.player = exoPlayer
@@ -217,6 +221,8 @@ class RadioPlayerActivity() :
                 AppSingelton.exoPlayer =
                     ExoPlayer.Builder(this, renderersFactory)
                         .setLoadControl(loadControl)
+                        .setSeekForwardIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
+                        .setSeekBackIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
                         .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer

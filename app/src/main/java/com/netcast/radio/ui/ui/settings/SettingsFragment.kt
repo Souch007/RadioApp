@@ -1,14 +1,19 @@
 package com.netcast.radio.ui.ui.settings
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.RadioGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -19,6 +24,7 @@ import com.netcast.radio.databinding.FragmentSettingsBinding
 import com.netcast.radio.databinding.LayoutAppmodeBinding
 import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.netcast.radio.request.AppConstants
 
 class SettingsFragment : Fragment() {
 
@@ -50,25 +56,30 @@ class SettingsFragment : Fragment() {
             adapter = adapterSettings
         }
         adapterSettings.itemClickListener { pos, view, ischecked ->
-            /*   if (pos == 0) {
-                   showBottomSheetDialog()
-               } else*/
-            if (pos == 0) {
-                sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
-                sharedPredEditor.apply()
-            }
-            else if (pos == 1) {
-                sharedPredEditor.putBoolean("download_over_wifi", ischecked)
-                sharedPredEditor.apply()
-            }
-           else if (pos == 3) {
-                openTermsandCons("https://baidu.eu/terms")
-            } else if (pos == 4) {
-                openTermsandCons("https://baidu.eu/privacy")
-            }
+            when (pos) {
+                0 -> showBottomSheetDialog()
 
-        }
+                1 -> {
+                    sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
+                    sharedPredEditor.apply()
+                }
+                2 -> {
+                    sharedPredEditor.putBoolean("download_over_wifi", ischecked)
+                    sharedPredEditor.apply()
+                }
+                3 -> {
+                    setForwardBackwardTimeDialog()
+                }
+                7 -> {
+                    openTermsandCons("https://baidu.eu/terms")
+                }
+                8, 9 -> {
+                    openTermsandCons("https://baidu.eu/privacy")
+                }
+
+            }
 //        setcurrentappmode(null)
+        }
         return root
     }
 
@@ -115,6 +126,35 @@ class SettingsFragment : Fragment() {
             }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {}
         }
+    }
+
+    private fun setForwardBackwardTimeDialog() {
+        val alert = AlertDialog.Builder(requireContext())
+        val edittext = EditText(requireContext())
+        edittext.hint = "Enter Name"
+        edittext.maxLines = 1
+        edittext.inputType=InputType.TYPE_CLASS_NUMBER
+        val layout = FrameLayout(requireContext())
+        layout.setPaddingRelative(45, 15, 45, 0)
+        alert.setTitle("Step back and forward in player (Seconds)")
+        layout.addView(edittext)
+        alert.setView(layout)
+        alert.setPositiveButton(getString(R.string.ok)) { dialog, which ->
+            run {
+                sharedPreferences.edit().putLong(AppConstants.PLAYER_SECS,edittext.text.toString().toLong()).apply()
+            }
+
+        }
+        alert.setNegativeButton(getString(R.string.cancel)) {
+
+                dialog, which ->
+            run {
+                dialog.dismiss()
+            }
+
+        }
+
+        alert.show()
     }
 
 

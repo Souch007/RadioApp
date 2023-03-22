@@ -18,8 +18,8 @@ class SettingsViewModel : ViewModel() {
     private fun addSettings(sharedPredEditor: SharedPreferences) {
         val settingsList = ArrayList<SettingsData>()
         var settingsData = SettingsData("General","AppStyle", "System Default",false,false)
-   /*     settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
+        settingsList.add(settingsData)
+        _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("","Stream only over WIFI"
             , "By activating this option, streaming of stations and podcasts will work only with WIFI, so your mobile data will not be consumed",
@@ -33,42 +33,40 @@ class SettingsViewModel : ViewModel() {
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 
-       /* settingsData = SettingsData("","Automatically delete completed episodes",
+        settingsData = SettingsData("","Automatically delete completed episodes",
             "Episodes you have finished listening to will be deleted from your device after 48 hours",true,true)
         settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
+        _settingDataArray!!.value = settingsList
 
- /*       settingsData = SettingsData("","Step back and forward in player", "15 seconds",false,false)
+        settingsData = SettingsData("","Step back and forward in player", "15 seconds",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
-*/
         settingsData = SettingsData("AppInformation","", "",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
-/*
+
         settingsData = SettingsData("","Imprint", "",false,false)
         settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
+        _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("","Terms & Conditions", "",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 
-/*        settingsData = SettingsData("","Privacy Manager", "",false,false)
+        settingsData = SettingsData("","Privacy Manager", "",false,false)
         settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
+        _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("","Privacy", "",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
-/*
         settingsData = SettingsData("","FAQ", "",false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("","Feedback", "",false,false)
         settingsList.add(settingsData)
-        _settingDataArray!!.value = settingsList*/
+        _settingDataArray!!.value = settingsList
 
 
     }
