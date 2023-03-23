@@ -67,7 +67,7 @@ class SettingsFragment : Fragment() {
                     sharedPredEditor.putBoolean("download_over_wifi", ischecked)
                     sharedPredEditor.apply()
                 }
-                3 -> {
+                4 -> {
                     setForwardBackwardTimeDialog()
                 }
                 7 -> {
@@ -131,9 +131,9 @@ class SettingsFragment : Fragment() {
     private fun setForwardBackwardTimeDialog() {
         val alert = AlertDialog.Builder(requireContext())
         val edittext = EditText(requireContext())
-        edittext.hint = "Enter Name"
         edittext.maxLines = 1
         edittext.inputType=InputType.TYPE_CLASS_NUMBER
+        edittext.setText(sharedPreferences.getLong(AppConstants.PLAYER_SECS,15).toString())
         val layout = FrameLayout(requireContext())
         layout.setPaddingRelative(45, 15, 45, 0)
         alert.setTitle("Step back and forward in player (Seconds)")
