@@ -28,6 +28,7 @@ class AudioPlayerService : LifecycleService() {
             val startIntent = Intent(context, AudioPlayerService::class.java)
             ContextCompat.startForegroundService(context, startIntent)
         }
+
         fun stopService(context: Context) {
             val stopIntent = Intent(context, AudioPlayerService::class.java)
             context.stopService(stopIntent)
@@ -100,7 +101,6 @@ class AudioPlayerService : LifecycleService() {
             notificationId, "My_channel_id"
         )
             .setChannelNameResourceId(R.string.app_name)
-
             .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
             .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
@@ -112,6 +112,11 @@ class AudioPlayerService : LifecycleService() {
                     if (ongoing)
                         startForeground(notificationId, notification)
                     else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            stopForeground(notificationId)
+                        } else {
+                            stopForeground(true)
+                        }
 //                       Companion.stopService(this@AudioPlayerService)
                     }
                 }
@@ -120,7 +125,14 @@ class AudioPlayerService : LifecycleService() {
                     notificationId: Int,
                     dismissedByUser: Boolean
                 ) {
+        /*            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        stopForeground(notificationId)
+                    } else {
+                        stopForeground(true)
+                    }
+                    stopSelf()*/
 //                    releasePlayer()
+
                 }
 
             })
@@ -159,14 +171,14 @@ class AudioPlayerService : LifecycleService() {
     private fun releasePlayer() {
         AppSingelton.exoPlayer?.release()
         AppSingelton.exoPlayer = null
-        AppSingelton._radioSelectedChannel.value=null
+        AppSingelton._radioSelectedChannel.value = null
 
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
 //        if (AppSingelton.exoPlayer?.isPlaying == false)
-           Companion.stopService(this)
+        Companion.stopService(this)
 
     }
 }

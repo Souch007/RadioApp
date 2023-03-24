@@ -7,8 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,6 +21,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.gson.Gson
@@ -162,6 +167,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 startService(Intent(serviceIntent))
             }
         }
+    }
+
+    override fun onPlayerError(error: PlaybackException) {
+        super.onPlayerError(error)
+        Toast.makeText(this,error.message,Toast.LENGTH_LONG).show()
     }
 
     private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
@@ -322,6 +332,16 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
        }
        return false
    }
+    fun isWifiConnected(context: Context):Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
+            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)==true
+        } else {
+            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+            activeNetwork?.typeName?.contains("wifi",ignoreCase = true)?:false
+        }
+    }
 
 }
 

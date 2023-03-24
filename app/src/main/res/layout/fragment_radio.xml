@@ -123,6 +123,7 @@
                     android:paddingBottom="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
                     android:layout_margin="@dimen/_8sdp"
+                    tools:itemCount="10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -164,6 +165,7 @@
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/_10sdp"
                     android:layout_margin="@dimen/_8sdp"
+                    tools:itemCount="10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -216,6 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    tools:itemCount="10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -262,6 +265,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
                     app:setAdapter="@{newsadapter}"
+                    tools:itemCount="10"
                     app:submitList="@{radioDataBinding.radioNewsListingArray}"
                     tools:listitem="@layout/radio_row" />
 
@@ -368,6 +372,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_classical"
                     app:setAdapter="@{classicalAdapter}"
+                    tools:itemCount="10"
                     app:submitList="@{radioDataBinding.radioClassicallistingArry}"
                     tools:listitem="@layout/radio_row" />
 

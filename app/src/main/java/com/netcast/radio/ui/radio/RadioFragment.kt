@@ -139,21 +139,25 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel.radioListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Local Stations"
         }
         binding.tvAllTagPopRock.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioPopListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Most Listened Pop and Rock"
         }
         binding.tvAllTagNews.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioNewsListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "News and Culture"
         }
         binding.tvAllTagTvClassical.setOnClickListener {
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
+            mainActivityViewModel._radioSelectedTitle.value = "Classical"
         }
 
     }
@@ -179,9 +183,9 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onStart() {
         super.onStart()
-//        mainActivityViewModel.getRadioListing(radioViewModel)
-//        mainActivityViewModel.getLanguages(radioViewModel)
-//        mainActivityViewModel.getCountires(radioViewModel)
-//        mainActivityViewModel.getAllGenres(radioViewModel)
+       /* mainActivityViewModel.getRadioListing(radioViewModel)
+        mainActivityViewModel.getLanguages(radioViewModel)
+        mainActivityViewModel.getCountires(radioViewModel)
+        mainActivityViewModel.getAllGenres(radioViewModel)*/
     }
 }

@@ -60,6 +60,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val _selectedSeeAllPodcasts = MutableLiveData<List<PodListData>>()
     val selectedSeeAllPodcasts: LiveData<List<PodListData>> = _selectedSeeAllPodcasts
     val _radioSeeAllSelected = MutableLiveData<String>()
+    val _radioSelectedTitle = MutableLiveData<String>()
 
     //------------------------------------------------------------------//
     val _queriedSearched = MutableLiveData<String>()
@@ -69,15 +70,15 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     //----------------------------------//
 
-    fun getRadioListing(radioViewModel: RadioViewModel) {
+    fun getRadioListing(radioViewModel: RadioViewModel,country:String?) {
         viewModelScope.launch {
-            radioViewModel._radioListing.value = appRepository.getRadioListing()
+            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
         }
     }
 
-    fun getPodCastListing(podcastViewModel: PodcastViewModel) {
+    fun getPodCastListing(podcastViewModel: PodcastViewModel,country:String?) {
         viewModelScope.launch {
-            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing()
+            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
 
         }
     }

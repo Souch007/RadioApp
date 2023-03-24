@@ -27,7 +27,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:paddingBottom="@dimen/_60sdp">
@@ -44,7 +44,6 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
                 android:visibility='@{fragmentSearchViewModel.frequentSearchList.size() > 0 ? View.VISIBLE:View.GONE}'
-
                 android:text="Frequent Searches"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
                 android:text="Podcast"
-               app:layout_constraintEnd_toEndOf="parent"
+                android:visibility='@{fragmentSearchViewModel.searchListPodcast.size() > 0 ? View.VISIBLE:View.GONE}'
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frequent_searches_tags" />
 
@@ -84,6 +84,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_podcast"
                 app:setAdapter="@{podsearchadapter}"
+                android:visibility='@{fragmentSearchViewModel.searchListPodcast.size() > 0 ? View.VISIBLE:View.GONE}'
+
                 app:submitList="@{fragmentSearchViewModel.searchListPodcast}"
                 tools:listitem="@layout/podcast_search_row" />
 
@@ -94,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
                 android:text="Channels"
+                android:visibility='@{fragmentSearchViewModel.searchListStations.size() > 0 ? View.VISIBLE:View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/search_results_podcasts" />
@@ -102,15 +105,30 @@
                 android:id="@+id/search_results_stations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal"
+
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_channels"
                 app:setAdapter="@{stationsearchadapter}"
                 app:submitList="@{fragmentSearchViewModel.searchListStations}"
+                android:visibility='@{fragmentSearchViewModel.searchListStations.size() > 0 ? View.VISIBLE:View.GONE}'
                 tools:listitem="@layout/station_search_row" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Data Found"
+                android:visibility="@{fragmentSearchViewModel.searchListStations.size() == 0 &amp;&amp; fragmentSearchViewModel.searchListPodcast.size()==0?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
