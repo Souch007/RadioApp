@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/black"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
-            android:background="@color/black"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -48,7 +46,6 @@
                 android:padding="@dimen/_2sdp"
                 android:text=""
                 android:textAlignment="textStart"
-                android:textColor="@color/white"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/swich_state_wifi"
@@ -64,7 +61,6 @@
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_8sdp"
                 android:textStyle="normal"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_sub_heading"
                 app:layout_constraintStart_toStartOf="parent"

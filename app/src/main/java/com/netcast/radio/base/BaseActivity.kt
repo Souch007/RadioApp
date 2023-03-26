@@ -12,6 +12,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -32,10 +33,14 @@ import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
@@ -54,6 +59,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     var appDatabase: AppDatabase? = null
     val NOTIFICATION_PERMISSION_CODE = 100123
     var playerNotificationManager: PlayerNotificationManager? = null
+//    private var playbackDisposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, layoutRes)
@@ -65,7 +71,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         dataBinding.setVariable(bindingVariable, viewModel)
         dataBinding.executePendingBindings()
 
-        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+    ;    sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
 
         AppSingelton._isFavUpdated.observe(this) {
@@ -151,6 +157,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     @SuppressLint("SuspiciousIndentation")
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
+
 //        if (!isPlaying)
 //            Toast.makeText(this, "Buffering", Toast.LENGTH_SHORT).show()
 
@@ -162,16 +169,35 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         val serviceIntent = Intent(this, AudioPlayerService::class.java)
         if (isPlaying){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                AudioPlayerService.startService(this)
+   ;             AudioPlayerService.startService(this)
             } else {
                 startService(Intent(serviceIntent))
             }
         }
+   /*    playbackDisposable= playbackProgressObservable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.i("TAG", "onIsPlayingChanged: $it")
+            }
+*/
     }
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
         Toast.makeText(this,error.message,Toast.LENGTH_LONG).show()
+    }
+
+    override fun onEvents(player: Player, events: Player.Events) {
+        super.onEvents(player, events)
+
+    }
+
+    override fun onSeekProcessed() {
+        super.onSeekProcessed()
+    }
+
+    override fun onMaxSeekToPreviousPositionChanged(maxSeekToPreviousPositionMs: Long) {
+        super.onMaxSeekToPreviousPositionChanged(maxSeekToPreviousPositionMs)
     }
 
     private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
@@ -342,6 +368,9 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             activeNetwork?.typeName?.contains("wifi",ignoreCase = true)?:false
         }
     }
+
+   /* var playbackProgressObservable: Observable<Boolean> = Observable.interval(1, TimeUnit.SECONDS,AndroidSchedulers.mainThread())
+        .map { AppSingelton.exoPlayer!!.isPlaying }*/
 
 }
 

@@ -7,14 +7,21 @@ abstract class BaseViewModel() : ViewModel() {
 
 
     fun removeChannelFromFavourites(value: PlayingChannelData) {
+        try {
+
         for(i in AppSingelton.favouritesRadioArray.indices){
-            var data = AppSingelton.favouritesRadioArray.get(i);
+            var data = AppSingelton.favouritesRadioArray.get(i)
             if (data.id == value.id){
                 AppSingelton.favouritesRadioArray.removeAt(i);
             }
         }
         AppSingelton._isFavUpdated.value = true
     }
+        catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
 
     fun addChannelToFavourites(value: PlayingChannelData) {
         var isChannelAlreadyAdded = false

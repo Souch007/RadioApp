@@ -16,8 +16,10 @@ class SettingsViewModel : ViewModel() {
     }
 
     private fun addSettings(sharedPredEditor: SharedPreferences) {
+        val appmode=sharedPredEditor.getInt("App_Mode",-1)
+        val currentMode=if (appmode==1) "Light" else if (appmode==0) "Dark" else "System Default"
         val settingsList = ArrayList<SettingsData>()
-        var settingsData = SettingsData("General","AppStyle", "System Default",false,false)
+        var settingsData = SettingsData("General","AppStyle", currentMode,false,false)
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 

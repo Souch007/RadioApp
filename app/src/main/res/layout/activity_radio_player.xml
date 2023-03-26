@@ -27,7 +27,7 @@
         android:id="@+id/rp_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#151523"
+
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -129,7 +129,6 @@
                             android:textColor="@color/white" />
 
 
-
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -153,8 +152,8 @@
             android:id="@+id/channel_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
             android:background="#151523"
+            android:padding="@dimen/_10sdp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -179,15 +178,14 @@
             android:id="@+id/radio_suggestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:background="#151523"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channel_website">
 
             <TextView
                 android:id="@+id/tv_player_radio_more"
-                style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
@@ -195,6 +193,8 @@
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="More Stations"
                 android:textSize="@dimen/_11sdp"
+                android:textColor="@color/white"
+                app:fontFamily="@font/poppins_bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_all_player_more"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -207,9 +207,9 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/all"
-                android:visibility="invisible"
                 android:textColor="@color/OrangeRed"
                 android:textSize="@dimen/_9sdp"
+                android:visibility="invisible"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_player_radio_more"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -232,16 +232,16 @@
             android:id="@+id/pod_episodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:orientation="vertical"
             android:visibility="visible"
-            android:background="#151523"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channel_website">
 
             <TextView
                 android:id="@+id/tv_podcast_episodes"
-                style="@style/textHeading"
+          style="@style/textHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
@@ -257,12 +257,11 @@
                 android:id="@+id/podcast_loader"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:indeterminate="true"
-                android:visibility="gone"
                 android:indeterminateTint="@color/OrangeRed"
-                />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/podcast_episodes"

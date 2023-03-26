@@ -33,8 +33,8 @@ class SettingsFragment : Fragment() {
     }
 
     private lateinit var settingsViewModel: SettingsViewModel
-    private var bindingSettings: FragmentSettingsBinding? = null
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
+    private var bindingSettings: FragmentSettingsBinding? = null
     private val binding get() = bindingSettings!!
     private lateinit var adapterSettings: AdapterSettings
     lateinit var sharedPreferences: SharedPreferences
@@ -55,10 +55,16 @@ class SettingsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapterSettings
         }
+        binding.btnAlaram.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.settings_container, AlarmFragment())
+                .commitNow()
+        }
         adapterSettings.itemClickListener { pos, view, ischecked ->
             when (pos) {
-                0 -> showBottomSheetDialog()
-
+                0 -> {
+                    showBottomSheetDialog()
+                }
                 1 -> {
                     sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
                     sharedPredEditor.apply()
@@ -75,6 +81,9 @@ class SettingsFragment : Fragment() {
                 }
                 8, 9 -> {
                     openTermsandCons("https://baidu.eu/privacy")
+                }
+                else->{
+
                 }
 
             }
@@ -96,13 +105,17 @@ class SettingsFragment : Fragment() {
             when (checkedId) {
                 R.id.rb_dark -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    bottomSheetDialog.dismiss()
-                    adapterSettings.notifyDataSetChanged()
+                    bottomSheetDialog.dismiss();
+                    sharedPredEditor.putInt("App_Mode",0).apply()
+                    adapterSettings.changemodetext("Dark")
+
                 }
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     bottomSheetDialog.dismiss()
-                    adapterSettings.notifyDataSetChanged()
+                    sharedPredEditor.putInt("App_Mode",1).apply()
+                    adapterSettings.changemodetext("Light")
+
                 }
 
             }
@@ -119,6 +132,8 @@ class SettingsFragment : Fragment() {
             Configuration.UI_MODE_NIGHT_NO -> {
                 radioGroup?.check(radioGroup[0].id)
                 adapterSettings.changemodetext("Light")
+
+
             }
             Configuration.UI_MODE_NIGHT_YES -> {
                 radioGroup?.check(radioGroup[1].id)

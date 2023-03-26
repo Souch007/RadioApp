@@ -15,60 +15,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.SettingsActivity">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/back_nav_grad"
+            android:background="@color/black"
             android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" >
 
             <ImageView
                 android:id="@+id/iv_back_settings_av"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/title_settings"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_baseline_keyboard_backspace_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:contentDescription="@string/title_settings" />
 
             <TextView
                 android:id="@+id/tv_title_settings"
-                style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/title_welcome"
-                android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textAlignment="center"
+                style="@style/textHeading"
                 android:textSize="@dimen/_11sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout">
-
-            <View
-                android:id="@+id/cenet_view"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:alpha="0.5"
-                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +60,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
             tools:layout="@layout/fragment_settings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -14,16 +14,92 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settings"
         android:layout_width="match_parent"
-        android:background="@color/black"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Black"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/cenet_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:alpha="0.5"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_alaram"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:drawableLeft="@drawable/ic_baseline_alarm_24"
+                android:drawablePadding="@dimen/_2sdp"
+                android:gravity="center"
+                android:text="Alarm Clock"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/cenet_midview"
+                android:layout_width="1.5dp"
+                android:layout_height="0dp"
+                android:alpha="0.5"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/cenet_bottomview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_sleep_timer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:backgroundTint="@color/black"
+                android:drawableLeft="@drawable/ic_sleep_24"
+                android:gravity="start|center"
+                android:text="Sleep Timer"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cenet_midview"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/cenet_bottomview"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:alpha="0.5"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_alaram"
+                app:layout_constraintVertical_bias="0.0"
+                tools:layout_editor_absoluteX="-16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_settings"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

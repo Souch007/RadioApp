@@ -68,13 +68,14 @@
 
                     <TextView
                         android:id="@+id/channel_name"
-                        style="@style/textHeading"
+                        app:fontFamily="@font/poppins_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:gravity="start|center"
                         android:lines="1"
                         android:maxLines="1"
+                        android:textColor="@color/white"
                         android:text="@{episodeData.title}"
                         android:padding="@dimen/_2sdp"
                         android:textAlignment="textStart"
