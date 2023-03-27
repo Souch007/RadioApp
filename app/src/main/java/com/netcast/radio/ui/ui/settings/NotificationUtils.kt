@@ -8,8 +8,10 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.os.Build
+import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import com.netcast.radio.MainActivity
 import com.netcast.radio.R
@@ -43,6 +45,8 @@ class  NotificationUtils(base: Context) : ContextWrapper(base) {
     }
 
     fun getNotificationBuilder(): NotificationCompat.Builder {
+        val player = MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI)
+        player.start()
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -55,5 +59,6 @@ class  NotificationUtils(base: Context) : ContextWrapper(base) {
             .setContentIntent(pendingIntent)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setAutoCancel(true)
+
     }
 }

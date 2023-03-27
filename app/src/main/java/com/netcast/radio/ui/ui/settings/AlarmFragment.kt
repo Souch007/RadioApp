@@ -5,103 +5,154 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.AudioManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TimePicker
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import com.netcast.radio.R
 import com.netcast.radio.databinding.FragmentAlarmBinding
 import java.util.*
 
 
-class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
+class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedChangeListener {
     private var _binding: FragmentAlarmBinding? = null
     private val binding get() = _binding!!
     private lateinit var calendar: Calendar
+    private var hour = 0
+    private var min = 0
+    private var am_pm = 0
+    private var audioManager: AudioManager? = null
+    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPredEditor: SharedPreferences.Editor
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAlarmBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val dateNow = Calendar.getInstance().time
+        hour = sharedPreferences.getInt("hour",0)
+        min = sharedPreferences.getInt("min",0)
+        setTime(hour, min)
         binding.tvTimer.setOnClickListener {
             val audio = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
             audio?.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                70,
-                0
+                AudioManager.STREAM_MUSIC, 70, 0
             )
             showTimerPickerFragment(it)
+            setcheckBoxListner()
+        }
+        setSeekBarVolume()
+        binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) setAlaram()
+            else cancelAlarm()
+
         }
         return root
     }
 
-    private fun setAlaram(view: View) {
-        when (view.id) {
-            R.id.tv_sunday -> {
-
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-            }
-            R.id.tv_monday -> {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-
-            }
-            R.id.tv_tuesday -> {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY)
-
-            }
-            R.id.tv_wednesday -> {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
-
-            }
-            R.id.tv_thursday -> {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY)
-
-            }
-            R.id.tv_friday -> {
-                calendar.clear(Calendar.FRIDAY)
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
-
-            }
-            R.id.tv_saturday -> {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
-            }
-        }
-        startAlarm(calendar)
-/*        calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY, Calendar.FRIDAY)
-        //calendar.add(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
-        //calendar.add(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
-        calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour())
-        calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute())
-        Log.e("Point_1", "Calendar " + calendar.getTime())
-        val intent1 = Intent(this@MyService_alarm, MyReceiver_Alarm::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this@MyService_alarm,
-            intent.getIntExtra("Size", 1),
-            intent1,
-            0
-        )
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager?
-        alarmManager!!.setRepeating(
-            AlarmManager.RTC,
-            calendar.getTimeInMillis(),
-            (7 * 24 * 3600 * 1000).toLong(),
-            pendingIntent
-        )*/
+    private fun setTime(hour: Int, min: Int) {
+        binding.tvTimer.text = "$hour:$min"
+        binding.tvTimer2.text = "$hour:$min"
     }
 
-    private fun startAlarm(calendar: Calendar) {
+    private fun setcheckBoxListner() {
+        binding.chkSaturday.setOnCheckedChangeListener(this)
+        binding.chkSunday.setOnCheckedChangeListener(this)
+        binding.chkMonday.setOnCheckedChangeListener(this)
+        binding.chkTuesday.setOnCheckedChangeListener(this)
+        binding.chkThursday.setOnCheckedChangeListener(this)
+        binding.chkFriday.setOnCheckedChangeListener(this)
+    }
+
+    private fun setSeekBarVolume() {
+        try {
+            audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+            binding.seekbar.setMax(audioManager?.getStreamMaxVolume(AudioManager.STREAM_MUSIC)!!)
+            binding.seekbar.progress = audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC);
+            binding.seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                    audioManager!!.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setAlaram() {
+        if ((binding.chkMonday.isChecked()) || (binding.chkTuesday.isChecked()) || (binding.chkWednesday.isChecked()) || (binding.chkThursday.isChecked()) || (binding.chkFriday.isChecked()) || (binding.chkSaturday.isChecked()) || (binding.chkSunday.isChecked())) {
+
+            if (binding.chkMonday.isChecked()) {
+                setAlarm(Calendar.MONDAY)
+            }
+            if (binding.chkTuesday.isChecked()) {
+                setAlarm(Calendar.TUESDAY)
+            }
+            if (binding.chkWednesday.isChecked()) {
+                setAlarm(Calendar.WEDNESDAY)
+            }
+            if (binding.chkThursday.isChecked()) {
+                setAlarm(Calendar.THURSDAY)
+            }
+            if (binding.chkFriday.isChecked()) {
+                setAlarm(Calendar.FRIDAY)
+            }
+            if (binding.chkSaturday.isChecked()) {
+                setAlarm(Calendar.SATURDAY)
+            }
+            if (binding.chkSunday.isChecked()) {
+                setAlarm(Calendar.SUNDAY)
+            }
+        } else {
+            if (((hour * 3600000) + (min * 60000)) < (System.currentTimeMillis())) {
+                setAlarm(Calendar.DAY_OF_WEEK + 1)
+            } else {
+                setAlarm(Calendar.DAY_OF_WEEK)
+            }
+
+        }
+    }
+
+    private fun setAlarm(dayOfWeek: Int) {
+        if (hour > 12) {
+            am_pm = Calendar.PM
+            hour = hour - 12
+        } else {
+            am_pm = Calendar.AM
+        }
+
+
+        val calendar = Calendar.getInstance()
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, min)
+        calendar.set(Calendar.AM_PM, am_pm)
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek)
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE //this is needed in Android 12
+        } else {
+            PendingIntent.FLAG_CANCEL_CURRENT
+        }
 
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlramReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
-            requireContext(),
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            requireContext(), 0, intent, flag
         )
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
@@ -109,7 +160,19 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
             AlarmManager.INTERVAL_DAY * 7,
             pendingIntent
         )
+     sharedPredEditor.putInt("hour",hour).putInt("min",min).apply()
+    }
 
+    private fun cancelAlarm() {
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager?
+        val myIntent = Intent(
+            requireContext(), AlramReceiver::class.java
+        )
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        alarmManager!!.cancel(pendingIntent)
     }
 
     private fun showTimerPickerFragment(view: View) {
@@ -119,85 +182,14 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-        startAlarm(calendar)
-        binding.tvTimer.text = "$hour : $minute"
-        binding.tvTimer2.text = "$hour : $minute"
+        this.hour = hour
+        min = minute
+        setAlaram()
+        setTime(hour, min)
     }
 
-    private fun checkThisForAlara() {
-/*        if (Build.VERSION.SDK_INT >= 23) {
-            hour = picker.getHour();
-            minute = picker.getMinute();
-        } else {
-            hour = picker.getCurrentHour();
-            minute = picker.getCurrentMinute();
-        }
-        if (hour > 12) {
-            am_pm = Calendar.PM;
-            hour = hour - 12;
-        } else {
-            am_pm = Calendar.AM;
-        }
-        CheckBox monday = (CheckBox) findViewById(R.id.checkBox);
-        CheckBox tuesday = (CheckBox) findViewById(R.id.checkBox2);
-        CheckBox wednesday = (CheckBox) findViewById(R.id.checkBox3);
-        CheckBox thursday = (CheckBox) findViewById(R.id.checkBox4);
-        CheckBox friday = (CheckBox) findViewById(R.id.checkBox5);
-        CheckBox saturday = (CheckBox) findViewById(R.id.checkBox6);
-        CheckBox sunday = (CheckBox) findViewById(R.id.checkBox7);
-
-        if((monday.isChecked()) || (tuesday.isChecked()) || (wednesday.isChecked()) || (thursday.isChecked()) || (friday.isChecked()) || (saturday.isChecked()) || (sunday.isChecked())) {
-
-            if (monday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.MONDAY);
-            }
-            if (tuesday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.TUESDAY);
-            }
-            if (wednesday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.WEDNESDAY);
-            }
-            if (thursday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.THURSDAY);
-            }
-            if (friday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.FRIDAY);
-            }
-            if (saturday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.SATURDAY);
-            }
-            if (sunday.isChecked()) {
-                setAlarm(hour, minute, am_pm, Calendar.SUNDAY);
-            }
-        }
-        else{
-            if(((hour*3600000)+(minute*60000)) < (System.currentTimeMillis())){
-                setAlarm(hour, minute, am_pm, (Calendar.DAY_OF_WEEK + 1));
-            }
-            else{
-                setAlarm(hour, minute, am_pm, Calendar.DAY_OF_WEEK);
-            }
-        }
-
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        if (binding.swichAlarm.isChecked) setAlaram()
     }
-    public void setAlarm(int hr, int min, int ampm, int day){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hr);
-        calendar.set(Calendar.MINUTE, min);
-        calendar.set(Calendar.AM_PM, ampm);
-        calendar.set(Calendar.DAY_OF_WEEK, day);
-        Intent intent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent =  PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0 );
-        AlarmManager alarmManager= (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-        Toast.makeText(this, "The alarm is set", Toast.LENGTH_LONG).show();
-        finish();
-    }*/
 
-
-    }
 }
