@@ -71,7 +71,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         dataBinding.setVariable(bindingVariable, viewModel)
         dataBinding.executePendingBindings()
 
-    ;    sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+       sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
 
         AppSingelton._isFavUpdated.observe(this) {

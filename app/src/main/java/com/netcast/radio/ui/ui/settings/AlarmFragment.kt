@@ -37,7 +37,9 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
     ): View? {
         _binding = FragmentAlarmBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val dateNow = Calendar.getInstance().time
+        sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
+//        val dateNow = Calendar.getInstance().time
         hour = sharedPreferences.getInt("hour",0)
         min = sharedPreferences.getInt("min",0)
         setTime(hour, min)
