@@ -1,9 +1,6 @@
 package com.netcast.radio.ui.ui.settings
 
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.InputType
@@ -13,10 +10,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.netcast.radio.R
@@ -24,6 +23,8 @@ import com.netcast.radio.databinding.FragmentSettingsBinding
 import com.netcast.radio.databinding.LayoutAppmodeBinding
 import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.netcast.radio.MainViewModel
+import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.request.AppConstants
 
 class SettingsFragment : Fragment() {
@@ -31,7 +32,7 @@ class SettingsFragment : Fragment() {
     companion object {
         fun newInstance() = SettingsFragment()
     }
-
+    private val timerReceiver = TimerReceiver()
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
     private var bindingSettings: FragmentSettingsBinding? = null
@@ -39,6 +40,7 @@ class SettingsFragment : Fragment() {
     private lateinit var adapterSettings: AdapterSettings
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPredEditor: SharedPreferences.Editor
+    private val mainViewModel:MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,13 +53,16 @@ class SettingsFragment : Fragment() {
         sharedPredEditor = sharedPreferences.edit()
         settingsViewModel.getFavs(sharedPreferences)
         adapterSettings = AdapterSettings(settingsViewModel.getFavs(sharedPreferences))
+        mainViewModel.radiotimer.observe(viewLifecycleOwner){
+            binding.btnAlaram.text=it
+        }
         binding.rvSettings.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapterSettings
         }
         binding.btnAlaram.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, AlarmFragment())
+                .replace(R.id.settings_container, SleepTimerFragment())
                 .commitNow()
         }
         adapterSettings.itemClickListener { pos, view, ischecked ->
@@ -171,6 +176,32 @@ class SettingsFragment : Fragment() {
 
         alert.show()
     }
+    private inner class TimerReceiver : BroadcastReceiver() {
 
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent == null) return
+
+            when (intent.action) {
+                TimerService.ACTION_TICK -> {
+                    val timeLeft = intent.getStringExtra(TimerService.TIME_LEFT_KEY)
+                    Toast.makeText(requireContext(), "$timeLeft", Toast.LENGTH_SHORT).show()
+//                    updateUIForTick(timeLeft)
+                }
+                TimerService.ACTION_FINISHED -> {
+
+                }/*updateUIForTimerFinished()*/
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_TICK))
+        requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_FINISHED))
+    }
+    override fun onPause() {
+        requireContext().unregisterReceiver(timerReceiver)
+        super.onPause()
+    }
 
 }

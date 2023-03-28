@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Radio" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/OrangeRed</item>
         <item name="colorPrimaryVariant">@color/DarkBlue</item>
         <item name="colorOnPrimary">@color/White</item>
         <!-- Secondary brand color. -->
-        <item name="colorOnSecondary">@color/Black</item>
+        <item name="colorOnSecondary">@color/OrangeRed</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/header</item>
         <!-- Customize your theme here. -->
@@ -22,10 +22,10 @@
 
     <style name="Theme.Settings" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/Black</item>
+        <item name="colorPrimary">@color/OrangeRed</item>
         <item name="colorPrimaryVariant">@color/DarkBlue</item>
         <item name="colorOnPrimary">@color/White</item>
-        <item name="colorOnSecondary">@color/Black</item>
+        <item name="colorOnSecondary">@color/OrangeRed</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 

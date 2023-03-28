@@ -100,6 +100,8 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
+        <service android:name=".ui.ui.settings.TimerService"
+            android:exported="false"/>
     </application>
 
 </manifest>

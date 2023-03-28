@@ -88,6 +88,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         searchWatcherListener()
         hideProgressBar()
         checkOfflineChannels()
+
     }
 
     @SuppressLint("SuspiciousIndentation")

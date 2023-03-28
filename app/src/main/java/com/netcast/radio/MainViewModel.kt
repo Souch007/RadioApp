@@ -38,6 +38,9 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> get() = _state
 
+     val _timerradio = MutableLiveData<String>()
+    val radiotimer: LiveData<String> get() = _timerradio
+
     val _isStationActive = MutableLiveData<Boolean>()
     val isStationActive: LiveData<Boolean> = _isStationActive
 
