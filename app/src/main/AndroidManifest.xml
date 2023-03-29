@@ -102,6 +102,15 @@
         </receiver>
         <service android:name=".ui.ui.settings.TimerService"
             android:exported="false"/>
+        <receiver
+            android:name=".ui.ui.settings.TimerReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.android" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

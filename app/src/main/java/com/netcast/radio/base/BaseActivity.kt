@@ -10,7 +10,6 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -31,22 +30,16 @@ import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
-import com.netcast.radio.ui.ui.settings.TimerService
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 
 abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
     Player.Listener {
     protected lateinit var viewModel: VM
     protected lateinit var dataBinding: VDB
-    private val timerReceiver = TimerReceiver()
     @get:LayoutRes
     abstract val layoutRes: Int
     abstract val bindingVariable: Int
@@ -80,6 +73,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
 
         requestNotificationPermission()
+    AppSingelton._SleepTimer.observe(this)
+    {
+        it?.let {
+            Toast.makeText(this, "Updatinggg", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     }
 
@@ -367,30 +366,13 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             activeNetwork?.typeName?.contains("wifi",ignoreCase = true)?:false
         }
     }
-    private inner class TimerReceiver : BroadcastReceiver() {
 
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent == null) return
-
-            when (intent.action) {
-                TimerService.ACTION_TICK -> {
-                    val timeLeft = intent.getStringExtra(TimerService.TIME_LEFT_KEY)
-
-                }
-                TimerService.ACTION_FINISHED -> {
-                    AppSingelton.exoPlayer?.stop()
-                }/*updateUIForTimerFinished()*/
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_TICK))
-        registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_FINISHED))
+
     }
     override fun onPause() {
-        unregisterReceiver(timerReceiver)
         super.onPause()
     }
 

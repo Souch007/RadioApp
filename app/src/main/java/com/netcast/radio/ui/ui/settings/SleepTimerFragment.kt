@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.slider.Slider
 import com.netcast.radio.MainViewModel
+import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.databinding.FragmentSleepTimerBinding
 import java.util.concurrent.TimeUnit
 
@@ -29,6 +30,12 @@ class SleepTimerFragment : Fragment() {
     ): View? {
         _binding = FragmentSleepTimerBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        AppSingelton._SleepTimer.observe(viewLifecycleOwner){
+            it?.let {
+                binding.tvTimer.text=it
+            }
+        }
         binding.continuousSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {
 //              mainViewModel._timerradio.value=false
@@ -89,29 +96,15 @@ class SleepTimerFragment : Fragment() {
         }
         (countdowntimer as CountDownTimer).start()
     }*/
-    private inner class TimerReceiver : BroadcastReceiver() {
 
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent == null) return
-
-            when (intent.action) {
-                TimerService.ACTION_TICK -> {
-                    val timeLeft = intent.getStringExtra(TimerService.TIME_LEFT_KEY)
-                    binding.tvTimer.text=timeLeft
-//                    updateUIForTick(timeLeft)
-                }
-                TimerService.ACTION_FINISHED -> {}/*updateUIForTimerFinished()*/
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
-        requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_TICK))
+      /*  requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_TICK))
          requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_FINISHED))
-    }
+  */  }
     override fun onPause() {
-        requireContext().unregisterReceiver(timerReceiver)
+//        requireContext().unregisterReceiver(timerReceiver)
         super.onPause()
     }
 }

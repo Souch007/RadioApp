@@ -94,6 +94,11 @@ class SettingsFragment : Fragment() {
             }
 //        setcurrentappmode(null)
         }
+        AppSingelton._SleepTimer.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
+            }
+        }
         return root
     }
 
@@ -176,31 +181,12 @@ class SettingsFragment : Fragment() {
 
         alert.show()
     }
-    private inner class TimerReceiver : BroadcastReceiver() {
-
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent == null) return
-
-            when (intent.action) {
-                TimerService.ACTION_TICK -> {
-                    val timeLeft = intent.getStringExtra(TimerService.TIME_LEFT_KEY)
-                    Toast.makeText(requireContext(), "$timeLeft", Toast.LENGTH_SHORT).show()
-//                    updateUIForTick(timeLeft)
-                }
-                TimerService.ACTION_FINISHED -> {
-
-                }/*updateUIForTimerFinished()*/
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
-        requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_TICK))
-        requireContext().registerReceiver(timerReceiver, IntentFilter(TimerService.ACTION_FINISHED))
     }
     override fun onPause() {
-        requireContext().unregisterReceiver(timerReceiver)
+//        requireContext().unregisterReceiver(timerReceiver)
         super.onPause()
     }
 
