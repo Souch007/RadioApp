@@ -18,6 +18,7 @@ import com.netcast.radio.base.AppSingelton
             }
             TimerService.ACTION_FINISHED -> {
                 AppSingelton.exoPlayer?.stop()
+                AppSingelton._SleepTimerEnd.value=true
             }
         }
     }

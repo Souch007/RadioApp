@@ -33,6 +33,7 @@ object AppSingelton {
 
     var _isFavUpdated = MutableLiveData<Boolean>()
     var _SleepTimer = MutableLiveData<String>()
+    var _SleepTimerEnd = MutableLiveData<Boolean>()
     var currentActivity = "";
 
     //--------------- Download -------------------------------//

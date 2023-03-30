@@ -53,7 +53,7 @@ class  NotificationUtils(base: Context) : ContextWrapper(base) {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,  PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(applicationContext, MYCHANNEL_ID)
             .setContentTitle("Alarm!")
-            .setContentText("Your AlarmManager is working.")
+            .setContentText("Radio AlarmManager is working.")
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
             .setColor(Color.YELLOW)
             .setContentIntent(pendingIntent)

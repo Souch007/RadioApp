@@ -35,10 +35,10 @@ class TimerService : Service() {
 
 
     private fun createTimer(COUNTDOWN_LENGTH:Long): CountDownTimer =
-        object :    CountDownTimer(1 * 1000 * 60, 1000) {
+        object :    CountDownTimer(COUNTDOWN_LENGTH * 1000 * 60, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val time=String.format(
-                    "%d min, %d sec",
+                    "%d:%d ",
                     TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                     TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                             TimeUnit.MINUTES.toSeconds(

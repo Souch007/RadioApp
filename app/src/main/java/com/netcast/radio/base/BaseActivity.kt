@@ -40,6 +40,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     Player.Listener {
     protected lateinit var viewModel: VM
     protected lateinit var dataBinding: VDB
+
     @get:LayoutRes
     abstract val layoutRes: Int
     abstract val bindingVariable: Int
@@ -51,7 +52,8 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     var appDatabase: AppDatabase? = null
     val NOTIFICATION_PERMISSION_CODE = 100123
     var playerNotificationManager: PlayerNotificationManager? = null
-//    private var playbackDisposable: Disposable? = null
+
+    //    private var playbackDisposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, layoutRes)
@@ -63,7 +65,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         dataBinding.setVariable(bindingVariable, viewModel)
         dataBinding.executePendingBindings()
 
-       sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
 
         AppSingelton._isFavUpdated.observe(this) {
@@ -73,14 +75,15 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
 
         requestNotificationPermission()
-    AppSingelton._SleepTimer.observe(this)
-    {
-        it?.let {
-            Toast.makeText(this, "Updatinggg", Toast.LENGTH_SHORT).show()
+        AppSingelton._SleepTimerEnd.observe(this)
+        {
+            if (it && AppSingelton.exoPlayer?.isPlaying == true) {
+                AppSingelton.exoPlayer?.stop()
+            }
+
         }
     }
 
-    }
 
     open fun requestNotificationPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -165,24 +168,24 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         addToRecentlyPlayedList(AppSingelton._currentPlayingChannel)
 //        initListener(AppSingelton._currentPlayingChannel.value)
         val serviceIntent = Intent(this, AudioPlayerService::class.java)
-        if (isPlaying){
+        if (isPlaying) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-   ;             AudioPlayerService.startService(this)
+                ; AudioPlayerService.startService(this)
             } else {
                 startService(Intent(serviceIntent))
             }
         }
-   /*    playbackDisposable= playbackProgressObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                Log.i("TAG", "onIsPlayingChanged: $it")
-            }
-*/
+        /*    playbackDisposable= playbackProgressObservable
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe {
+                     Log.i("TAG", "onIsPlayingChanged: $it")
+                 }
+     */
     }
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        Toast.makeText(this,error.message,Toast.LENGTH_LONG).show()
+        Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
     }
 
     override fun onEvents(player: Player, events: Player.Events) {
@@ -256,114 +259,115 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
     }
 
-   /* private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
+    /* private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
 
-        val notificationId = AppConstants.NOTIFICATION_ID
-        val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
-            override fun getCurrentSubText(player: Player): CharSequence? {
-                return "netcast"
-            }
+         val notificationId = AppConstants.NOTIFICATION_ID
+         val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
+             override fun getCurrentSubText(player: Player): CharSequence? {
+                 return "netcast"
+             }
 
-            override fun getCurrentContentTitle(player: Player): String {
-                return _currentPlayingChannel!!.name ?: "No Name"
-            }
+             override fun getCurrentContentTitle(player: Player): String {
+                 return _currentPlayingChannel!!.name ?: "No Name"
+             }
 
-            override fun createCurrentContentIntent(player: Player): PendingIntent? {
-                return null
-            }
+             override fun createCurrentContentIntent(player: Player): PendingIntent? {
+                 return null
+             }
 
-            override fun getCurrentContentText(player: Player): String {
-                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.fromHtml(_currentPlayingChannel!!.country, Html.FROM_HTML_MODE_COMPACT)
-                        .toString()
-                } else {
-                    Html.fromHtml(_currentPlayingChannel!!.country).toString()
-                }
-            }
+             override fun getCurrentContentText(player: Player): String {
+                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                     Html.fromHtml(_currentPlayingChannel!!.country, Html.FROM_HTML_MODE_COMPACT)
+                         .toString()
+                 } else {
+                     Html.fromHtml(_currentPlayingChannel!!.country).toString()
+                 }
+             }
 
-            override fun getCurrentLargeIcon(
-                player: Player,
-                callback: PlayerNotificationManager.BitmapCallback
-            ): Bitmap? {
-                var trackImage: Bitmap? = null
-                val thread = Thread {
-                    try {
-                        val uri = Uri.parse(_currentPlayingChannel!!.favicon)
-                        val bitmap = Glide.with(applicationContext)
-                            .asBitmap()
-                            .load(uri)
-                            .submit().get()
-                        trackImage = bitmap
-                        callback.onBitmap(bitmap)
-                    } catch (e: ExecutionException) {
-                        e.printStackTrace()
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
-                }
-                thread.start()
-                return trackImage
+             override fun getCurrentLargeIcon(
+                 player: Player,
+                 callback: PlayerNotificationManager.BitmapCallback
+             ): Bitmap? {
+                 var trackImage: Bitmap? = null
+                 val thread = Thread {
+                     try {
+                         val uri = Uri.parse(_currentPlayingChannel!!.favicon)
+                         val bitmap = Glide.with(applicationContext)
+                             .asBitmap()
+                             .load(uri)
+                             .submit().get()
+                         trackImage = bitmap
+                         callback.onBitmap(bitmap)
+                     } catch (e: ExecutionException) {
+                         e.printStackTrace()
+                     } catch (e: InterruptedException) {
+                         e.printStackTrace()
+                     }
+                 }
+                 thread.start()
+                 return trackImage
+             }
+         }
+
+         playerNotificationManager = PlayerNotificationManager.Builder(
+             this,
+             notificationId, "My_channel_id"
+         )
+             .setChannelNameResourceId(R.string.app_name)
+             .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
+             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
+             .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
+                 override fun onNotificationPosted(
+                     notificationId: Int,
+                     notification: Notification,
+                     ongoing: Boolean
+                 ) {
+                     Log.d("TAG", "onNotificationPosted: ")
+                 }
+
+                 override fun onNotificationCancelled(
+                     notificationId: Int,
+                     dismissedByUser: Boolean
+                 ) {
+                     try {
+                         playerNotificationManager!!.setPlayer(null)
+                         AppSingelton.exoPlayer?.release()
+                         AppSingelton.exoPlayer = null
+                     } catch (e: Exception) {
+                         e.printStackTrace()
+                     }
+                 }
+
+             })
+             .build()
+
+         playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
+         playerNotificationManager!!.setUsePlayPauseActions(true)
+         playerNotificationManager!!.setSmallIcon(R.drawable.logo)
+         playerNotificationManager!!.setColorized(true)
+         playerNotificationManager!!.setColor(0xFFBDBDBD.toInt())
+         playerNotificationManager!!.setPlayer(AppSingelton.exoPlayer)
+     }
+
+    */
+    open fun checkServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
             }
         }
-
-        playerNotificationManager = PlayerNotificationManager.Builder(
-            this,
-            notificationId, "My_channel_id"
-        )
-            .setChannelNameResourceId(R.string.app_name)
-            .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
-            .setMediaDescriptionAdapter(mediaDescriptionAdapter)
-            .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
-                override fun onNotificationPosted(
-                    notificationId: Int,
-                    notification: Notification,
-                    ongoing: Boolean
-                ) {
-                    Log.d("TAG", "onNotificationPosted: ")
-                }
-
-                override fun onNotificationCancelled(
-                    notificationId: Int,
-                    dismissedByUser: Boolean
-                ) {
-                    try {
-                        playerNotificationManager!!.setPlayer(null)
-                        AppSingelton.exoPlayer?.release()
-                        AppSingelton.exoPlayer = null
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
-            })
-            .build()
-
-        playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
-        playerNotificationManager!!.setUsePlayPauseActions(true)
-        playerNotificationManager!!.setSmallIcon(R.drawable.logo)
-        playerNotificationManager!!.setColorized(true)
-        playerNotificationManager!!.setColor(0xFFBDBDBD.toInt())
-        playerNotificationManager!!.setPlayer(AppSingelton.exoPlayer)
+        return false
     }
 
-*/
-   open fun checkServiceRunning(serviceClass: Class<*>): Boolean {
-       val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-       for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-           if (serviceClass.name == service.service.className) {
-               return true
-           }
-       }
-       return false
-   }
-    fun isWifiConnected(context: Context):Boolean {
+    fun isWifiConnected(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
-            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)==true
+            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
         } else {
             val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-            activeNetwork?.typeName?.contains("wifi",ignoreCase = true)?:false
+            activeNetwork?.typeName?.contains("wifi", ignoreCase = true) ?: false
         }
     }
 
@@ -372,12 +376,13 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         super.onResume()
 
     }
+
     override fun onPause() {
         super.onPause()
     }
 
-   /* var playbackProgressObservable: Observable<Boolean> = Observable.interval(1, TimeUnit.SECONDS,AndroidSchedulers.mainThread())
-        .map { AppSingelton.exoPlayer!!.isPlaying }*/
+/* var playbackProgressObservable: Observable<Boolean> = Observable.interval(1, TimeUnit.SECONDS,AndroidSchedulers.mainThread())
+     .map { AppSingelton.exoPlayer!!.isPlaying }*/
 
 }
 

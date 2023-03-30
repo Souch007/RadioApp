@@ -1,6 +1,8 @@
 package com.netcast.radio.ui.ui.settings
 
-import android.content.*
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.InputType
@@ -18,20 +20,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.netcast.radio.R
-import com.netcast.radio.databinding.FragmentSettingsBinding
-import com.netcast.radio.databinding.LayoutAppmodeBinding
-import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.netcast.radio.MainViewModel
+import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
+import com.netcast.radio.databinding.FragmentSettingsBinding
+import com.netcast.radio.databinding.LayoutAppmodeBinding
 import com.netcast.radio.request.AppConstants
+import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
 
 class SettingsFragment : Fragment() {
 
     companion object {
         fun newInstance() = SettingsFragment()
     }
+
     private val timerReceiver = TimerReceiver()
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
@@ -40,7 +43,7 @@ class SettingsFragment : Fragment() {
     private lateinit var adapterSettings: AdapterSettings
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPredEditor: SharedPreferences.Editor
-    private val mainViewModel:MainViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,14 +56,20 @@ class SettingsFragment : Fragment() {
         sharedPredEditor = sharedPreferences.edit()
         settingsViewModel.getFavs(sharedPreferences)
         adapterSettings = AdapterSettings(settingsViewModel.getFavs(sharedPreferences))
-        mainViewModel.radiotimer.observe(viewLifecycleOwner){
-            binding.btnAlaram.text=it
+        mainViewModel.radiotimer.observe(viewLifecycleOwner) {
+            binding.btnAlaram.text = it
         }
         binding.rvSettings.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapterSettings
         }
         binding.btnAlaram.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.settings_container, AlarmFragment())
+                .commitNow()
+        }
+
+        binding.btnSleepTimer.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.settings_container, SleepTimerFragment())
                 .commitNow()
@@ -87,16 +96,16 @@ class SettingsFragment : Fragment() {
                 8, 9 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
-                else->{
+                else -> {
 
                 }
 
             }
-//        setcurrentappmode(null)
+        setcurrentappmode(null)
         }
-        AppSingelton._SleepTimer.observe(viewLifecycleOwner){
+        AppSingelton._SleepTimer.observe(viewLifecycleOwner) {
             it?.let {
-                Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
+                binding.tvTimer.text = it
             }
         }
         return root
@@ -116,14 +125,14 @@ class SettingsFragment : Fragment() {
                 R.id.rb_dark -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     bottomSheetDialog.dismiss();
-                    sharedPredEditor.putInt("App_Mode",0).apply()
+                    sharedPredEditor.putInt("App_Mode", 0).apply()
                     adapterSettings.changemodetext("Dark")
 
                 }
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     bottomSheetDialog.dismiss()
-                    sharedPredEditor.putInt("App_Mode",1).apply()
+                    sharedPredEditor.putInt("App_Mode", 1).apply()
                     adapterSettings.changemodetext("Light")
 
                 }
@@ -157,8 +166,8 @@ class SettingsFragment : Fragment() {
         val alert = AlertDialog.Builder(requireContext())
         val edittext = EditText(requireContext())
         edittext.maxLines = 1
-        edittext.inputType=InputType.TYPE_CLASS_NUMBER
-        edittext.setText(sharedPreferences.getLong(AppConstants.PLAYER_SECS,15).toString())
+        edittext.inputType = InputType.TYPE_CLASS_NUMBER
+        edittext.setText(sharedPreferences.getLong(AppConstants.PLAYER_SECS, 15).toString())
         val layout = FrameLayout(requireContext())
         layout.setPaddingRelative(45, 15, 45, 0)
         alert.setTitle("Step back and forward in player (Seconds)")
@@ -166,7 +175,8 @@ class SettingsFragment : Fragment() {
         alert.setView(layout)
         alert.setPositiveButton(getString(R.string.ok)) { dialog, which ->
             run {
-                sharedPreferences.edit().putLong(AppConstants.PLAYER_SECS,edittext.text.toString().toLong()).apply()
+                sharedPreferences.edit()
+                    .putLong(AppConstants.PLAYER_SECS, edittext.text.toString().toLong()).apply()
             }
 
         }
@@ -185,8 +195,8 @@ class SettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
     }
+
     override fun onPause() {
-//        requireContext().unregisterReceiver(timerReceiver)
         super.onPause()
     }
 
