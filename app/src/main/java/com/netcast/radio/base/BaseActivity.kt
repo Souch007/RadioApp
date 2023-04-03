@@ -137,12 +137,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 initializeDB(applicationContext)
             }
 //        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
-            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
             val time= TimeUnit.DAYS.toMillis(2)
+            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
             if (!list.isNullOrEmpty()) {
                 for (data in list) {
-                    var isDayPassed =
-                        (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
+                    var isDayPassed = (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
                     if (isDayPassed) {
                         appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
                     }
