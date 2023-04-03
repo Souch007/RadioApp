@@ -20,6 +20,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -88,6 +92,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         searchWatcherListener()
         hideProgressBar()
         checkOfflineChannels()
+        getIntentData()
+        if (sharedPreferences.getBoolean("delete_completed_episode", true))
+            deleteCompletedEpisodes()
 
     }
 
@@ -111,6 +118,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         Handler(Looper.getMainLooper()).postDelayed({
             dataBinding.llShimmerLayout.visibility = View.GONE
         }, 5000)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
     }
 
     private fun searchWatcherListener() {
@@ -159,6 +171,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
+                if (AppSingelton.isAlramSet)
+                    storeObjectInSharedPref(it, "alarm_radiodata")
+
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
                     if (AppSingelton.exoPlayer != null) {
                         AppSingelton.exoPlayer!!.stop()
@@ -392,5 +407,27 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         super.onPause()
     }
 
+    private fun getIntentData() {
+        val url = intent.getStringExtra("alarm_radio_url")
+        if (!url.isNullOrEmpty()) {
+            val renderersFactory = DefaultRenderersFactory(this)
+            AppSingelton.exoPlayer?.let {
+                it.release()
+                it.stop()
+            }
+
+            AppSingelton.exoPlayer =
+                ExoPlayer.Builder(this, renderersFactory)
+                    .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
+                        val mediaItem =
+                            MediaItem.fromUri(url ?: "")
+                        exoPlayer.setMediaItem(mediaItem)
+                        exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
+                        exoPlayer.addListener(this)
+                        exoPlayer.prepare()
+                        exoPlayer.play()
+                    }
+        }
+    }
 
 }

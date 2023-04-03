@@ -45,15 +45,15 @@ class  NotificationUtils(base: Context) : ContextWrapper(base) {
     }
 
     fun getNotificationBuilder(): NotificationCompat.Builder {
-        val player = MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI)
-        player.start()
+        /*val player = MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI)
+        player.start()*/
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,  PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(applicationContext, MYCHANNEL_ID)
             .setContentTitle("Alarm!")
-            .setContentText("Radio AlarmManager is working.")
+            .setContentText("Netcast your schedule radio is currently playing.")
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
             .setColor(Color.YELLOW)
             .setContentIntent(pendingIntent)

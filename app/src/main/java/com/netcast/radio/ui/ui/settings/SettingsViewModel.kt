@@ -36,7 +36,7 @@ class SettingsViewModel : ViewModel() {
         _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData("","Automatically delete completed episodes",
-            "Episodes you have finished listening to will be deleted from your device after 48 hours",true,true)
+            "Episodes you have finished listening to will be deleted from your device after 48 hours",true,sharedPredEditor.getBoolean("delete_completed_episode",false))
         settingsList.add(settingsData)
         _settingDataArray!!.value = settingsList
 

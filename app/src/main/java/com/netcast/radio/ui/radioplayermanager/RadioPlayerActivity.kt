@@ -2,12 +2,8 @@ package com.netcast.radio.ui.radioplayermanager
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.PendingIntent.getActivity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.icu.util.TimeUnit
 import android.os.*
 import android.text.Html
 import android.util.Log
@@ -23,7 +19,6 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
-import com.netcast.radio.MainActivity
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
@@ -192,18 +187,28 @@ class RadioPlayerActivity() :
         ) {
             if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
                 AppSingelton.exoPlayer = ExoPlayer.Builder(this)
-                    .setSeekForwardIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
-                    .setSeekBackIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
+                    .setSeekForwardIncrementMs(
+                        (sharedPreferences.getLong(
+                            AppConstants.PLAYER_SECS,
+                            15
+                        ) * 1000)
+                    )
+                    .setSeekBackIncrementMs(
+                        (sharedPreferences.getLong(
+                            AppConstants.PLAYER_SECS,
+                            15
+                        ) * 1000)
+                    )
                     .build().also { exoPlayer ->
-                    var file = File(AppSingelton._radioSelectedChannel.value!!.url)
-                    if (file.exists()) {
-                        dataBinding.playerView.player = exoPlayer
-                        val mediaItem = MediaItem.fromUri(file.toUri())
-                        exoPlayer.setMediaItem(mediaItem)
-                        exoPlayer.addListener(this)
+                        var file = File(AppSingelton._radioSelectedChannel.value!!.url)
+                        if (file.exists()) {
+                            dataBinding.playerView.player = exoPlayer
+                            val mediaItem = MediaItem.fromUri(file.toUri())
+                            exoPlayer.setMediaItem(mediaItem)
+                            exoPlayer.addListener(this)
 
+                        }
                     }
-                }
                 Log.d("Offline", "Request Recieved")
             } else {
                 val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
@@ -221,8 +226,18 @@ class RadioPlayerActivity() :
                 AppSingelton.exoPlayer =
                     ExoPlayer.Builder(this, renderersFactory)
                         .setLoadControl(loadControl)
-                        .setSeekForwardIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
-                        .setSeekBackIncrementMs((sharedPreferences.getLong(AppConstants.PLAYER_SECS,15)*1000))
+                        .setSeekForwardIncrementMs(
+                            (sharedPreferences.getLong(
+                                AppConstants.PLAYER_SECS,
+                                15
+                            ) * 1000)
+                        )
+                        .setSeekBackIncrementMs(
+                            (sharedPreferences.getLong(
+                                AppConstants.PLAYER_SECS,
+                                15
+                            ) * 1000)
+                        )
                         .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer
@@ -282,39 +297,20 @@ class RadioPlayerActivity() :
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity) {
             try {
-
-                if (sharedPreferences.getBoolean("download_over_wifi", false) && !isWifiConnected(this)) {
-                    if (AppSingelton.currentDownloading.matches("".toRegex())) {
-                        val data = it;
-                        AppSingelton.downloadingEpisodeData = it;
-//                    DownloadFile(data).execute()
-                        DownloadUsingMediaStore(data, this).execute()
-                        startActivity(
-                            Intent(
-                                this@RadioPlayerActivity,
-                                DownloadActivity::class.java
-                            )
-                        )
-//                val snackbar = Snackbar
-//                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
-//                    .setAction("Go To Downloads ?") {
-//
-//                    }
-//                snackbar.show()
+                val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
+                if (isWifiDownloadEnable) {
+                    if (isWifiConnected(this)) {
+                        downloadEpisode(it)
                     } else {
                         Toast.makeText(
                             this,
-                            "Please wait another download is in progress...",
-                            Toast.LENGTH_SHORT
+                            "Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings",
+                            Toast.LENGTH_LONG
                         ).show()
                     }
-                }
-                else{
-                    Toast.makeText(
-                        this,
-                        "Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings",
-                        Toast.LENGTH_LONG
-                    ).show()
+
+                } else {
+                    downloadEpisode(it)
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -348,6 +344,33 @@ class RadioPlayerActivity() :
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
+        }
+    }
+
+    private fun downloadEpisode(data: Data) {
+        if (AppSingelton.currentDownloading.matches("".toRegex())) {
+            val data = data
+            AppSingelton.downloadingEpisodeData = data
+//                    DownloadFile(data).execute()
+            DownloadUsingMediaStore(data, this).execute()
+            startActivity(
+                Intent(
+                    this@RadioPlayerActivity,
+                    DownloadActivity::class.java
+                )
+            )
+//                val snackbar = Snackbar
+//                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
+//                    .setAction("Go To Downloads ?") {
+//
+//                    }
+//                snackbar.show()
+        } else {
+            Toast.makeText(
+                this,
+                "Please wait another download is in progress...",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -434,7 +457,7 @@ class RadioPlayerActivity() :
 //            dataBinding.radioSuggestion.visibility = View.GONE
             dataBinding.radioSuggestion.visibility = View.VISIBLE
             dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                AppSingelton.suggestedRadioList?: listOf(),
+                AppSingelton.suggestedRadioList ?: listOf(),
                 viewModel
             )
         }

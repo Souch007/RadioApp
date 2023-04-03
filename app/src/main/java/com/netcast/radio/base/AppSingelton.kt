@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
 object AppSingelton {
+
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
     public var _playingStarted = MutableLiveData<Boolean>()
@@ -30,6 +31,7 @@ object AppSingelton {
     var favouritesRadioArray =  ArrayList<PlayingChannelData>()
     var recentlyPlayedArray =  ArrayList<PlayingChannelData>()
     var isNewItemAdded =  MutableLiveData<Boolean>()
+    var isAlramSet: Boolean=false
 
     var _isFavUpdated = MutableLiveData<Boolean>()
     var _SleepTimer = MutableLiveData<String>()

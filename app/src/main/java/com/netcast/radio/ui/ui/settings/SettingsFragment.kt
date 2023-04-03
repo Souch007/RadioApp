@@ -63,6 +63,7 @@ class SettingsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapterSettings
         }
+        setcurrentappmode(null)
         binding.btnAlaram.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.settings_container, AlarmFragment())
@@ -82,10 +83,17 @@ class SettingsFragment : Fragment() {
                 1 -> {
                     sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
                     sharedPredEditor.apply()
+//                    adapterSettings.notifyDataSetChanged()
                 }
                 2 -> {
                     sharedPredEditor.putBoolean("download_over_wifi", ischecked)
                     sharedPredEditor.apply()
+//                    adapterSettings.notifyDataSetChanged()
+                }
+                3->{
+                    sharedPredEditor.putBoolean("delete_completed_episode", ischecked)
+                    sharedPredEditor.apply()
+//                    adapterSettings.notifyDataSetChanged()
                 }
                 4 -> {
                     setForwardBackwardTimeDialog()
@@ -101,7 +109,7 @@ class SettingsFragment : Fragment() {
                 }
 
             }
-        setcurrentappmode(null)
+//          setcurrentappmode(null)
         }
         AppSingelton._SleepTimer.observe(viewLifecycleOwner) {
             it?.let {

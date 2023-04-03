@@ -29,11 +29,14 @@ import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
+import com.netcast.radio.ui.podcast.CompletedEpisodes
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
+import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
 
 
 abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
@@ -75,8 +78,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
 
         requestNotificationPermission()
-        AppSingelton._SleepTimerEnd.observe(this)
-        {
+        AppSingelton._SleepTimerEnd.observe(this) {
             if (it && AppSingelton.exoPlayer?.isPlaying == true) {
                 AppSingelton.exoPlayer?.stop()
             }
@@ -87,14 +89,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 
     open fun requestNotificationPermission() {
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
+                this, Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         ) return
         ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-            NOTIFICATION_PERMISSION_CODE
+            this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), NOTIFICATION_PERMISSION_CODE
         )
     }
 
@@ -121,15 +120,38 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             if (fdelete.exists()) {
                 if (AppSingelton.downloadedIds.matches("".toRegex())) {
                     AppSingelton.downloadedIds = data.id
-                } else if (!AppSingelton.downloadedIds.contains(data.id + ""))
-                    AppSingelton.downloadedIds =
-                        AppSingelton.downloadedIds + "," + data.id
+                } else if (!AppSingelton.downloadedIds.contains(data.id + "")) AppSingelton.downloadedIds =
+                    AppSingelton.downloadedIds + "," + data.id
             } else {
                 deletePodcastById(data.id)
                 listOffline.remove(data)
             }
         }
         return listOffline.toList()
+    }
+
+    fun deleteCompletedEpisodes() {
+        try {
+
+            if (appDatabase == null) {
+                initializeDB(applicationContext)
+            }
+//        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
+            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
+            val time= TimeUnit.DAYS.toMillis(2)
+            if (!list.isNullOrEmpty()) {
+                for (data in list) {
+                    var isDayPassed =
+                        (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
+                    if (isDayPassed) {
+                        appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
+                    }
+
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
@@ -146,7 +168,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             initializeDB(applicationContext)
         }
         var record = appDatabase!!.appDap().deleteOfflineEpisodeById(id)
-        AppSingelton.downloadedIds = "";
+        AppSingelton.downloadedIds = ""
         getOfflineData()
     }
 
@@ -158,22 +180,23 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     @SuppressLint("SuspiciousIndentation")
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-
-//        if (!isPlaying)
-//            Toast.makeText(this, "Buffering", Toast.LENGTH_SHORT).show()
-
-        AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
-        AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
-        AppSingelton._playingStarted.value = isPlaying
-        addToRecentlyPlayedList(AppSingelton._currentPlayingChannel)
-//        initListener(AppSingelton._currentPlayingChannel.value)
-        val serviceIntent = Intent(this, AudioPlayerService::class.java)
-        if (isPlaying) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                ; AudioPlayerService.startService(this)
-            } else {
-                startService(Intent(serviceIntent))
+        try {
+            AppSingelton._currentPlayingChannel = AppSingelton._radioSelectedChannel
+            AppSingelton._currenPlayingChannelId = AppSingelton._radioSelectedChannelId
+            AppSingelton._playingStarted.value = isPlaying
+            addToRecentlyPlayedList(AppSingelton._currentPlayingChannel)
+            val serviceIntent = Intent(this, AudioPlayerService::class.java)
+            if (isPlaying) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    AudioPlayerService.startService(this)
+                } else {
+                    startService(Intent(serviceIntent))
+                }
             }
+//        initListener(AppSingelton._currentPlayingChannel.value)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         /*    playbackDisposable= playbackProgressObservable
                  .observeOn(AndroidSchedulers.mainThread())
@@ -188,21 +211,35 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
     }
 
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        super.onPlayerStateChanged(playWhenReady, playbackState)
+    }
+
     override fun onEvents(player: Player, events: Player.Events) {
         super.onEvents(player, events)
 
     }
 
-    override fun onSeekProcessed() {
-        super.onSeekProcessed()
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        super.onPlaybackStateChanged(playbackState)
+        val mediaType = AppSingelton.radioSelectedChannel.value?.type
+        if (playbackState == Player.STATE_ENDED && mediaType?.matches("PODCAST".toRegex()) == true || mediaType?.matches(
+                "Episodes".toRegex()
+            ) == true || mediaType?.matches("Offline".toRegex()) == true
+        ) {
+            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
+            val completedEpisodes = CompletedEpisodes(
+                System.currentTimeMillis(),
+                AppSingelton._radioSelectedChannel.value?.id ?: ""
+            )
+            list.add(completedEpisodes)
+            setList("completed_episodes", list)
+        }
     }
 
-    override fun onMaxSeekToPreviousPositionChanged(maxSeekToPreviousPositionMs: Long) {
-        super.onMaxSeekToPreviousPositionChanged(maxSeekToPreviousPositionMs)
-    }
 
     private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
-        val gson = Gson();
+        val gson = Gson()
         var recentlyPlayedChannelsArray = ArrayList<PlayingChannelData>()
 
         val json = sharedPreferences.getString("RecentlyPlayed", null)
@@ -217,8 +254,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 break;
             }
         }
-        if (!isAlreadyAdded)
-            recentlyPlayedChannelsArray.add(_currentPlayingChannel.value!!)
+        if (!isAlreadyAdded) recentlyPlayedChannelsArray.add(_currentPlayingChannel.value!!)
         val gson2 = Gson();
         val dataArray = gson2.toJson(recentlyPlayedChannelsArray)
         sharedPredEditor.putString("RecentlyPlayed", dataArray).apply()
@@ -245,9 +281,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String?>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
@@ -381,8 +415,35 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         super.onPause()
     }
 
-/* var playbackProgressObservable: Observable<Boolean> = Observable.interval(1, TimeUnit.SECONDS,AndroidSchedulers.mainThread())
-     .map { AppSingelton.exoPlayer!!.isPlaying }*/
+
+    fun storeObjectInSharedPref(dataObject: Any, prefName: String): Boolean {
+        val dataObjectInJson = Gson().toJson(dataObject)
+        sharedPredEditor.putString(prefName, dataObjectInJson)
+        return sharedPredEditor.commit()
+    }
+
+    open fun <T> setList(key: String?, list: List<T>?) {
+        val gson = Gson()
+        val json = gson.toJson(list)
+        set(key, json)
+    }
+
+    open operator fun set(key: String?, value: String?) {
+        sharedPredEditor.putString(key, value)
+        sharedPredEditor.commit()
+    }
+
+    open fun <T> getList(key: String?): List<T?>? {
+        val arrayItems: List<T>
+        val serializedObject = sharedPreferences.getString(key, null)
+        if (serializedObject != null) {
+            val gson = Gson()
+            val type: Type = object : TypeToken<List<T?>?>() {}.type
+            arrayItems = gson.fromJson<List<T>>(serializedObject, type)
+            return arrayItems
+        }
+        return emptyList()
+    }
 
 }
 
