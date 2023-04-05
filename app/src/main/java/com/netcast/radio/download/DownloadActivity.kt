@@ -54,6 +54,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel,ActivityDownloadBinding>
             val listOfEpisodes = getOfflineData()
             if(listOfEpisodes != null && listOfEpisodes.size > 0)
                 viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
+          else
+              dataBinding.titleDownload.text="No Data Found"
         }
     }
 

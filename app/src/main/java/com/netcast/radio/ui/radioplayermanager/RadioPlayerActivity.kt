@@ -199,7 +199,11 @@ class RadioPlayerActivity() :
                             15
                         ) * 1000)
                     )
+                    .setPauseAtEndOfMediaItems(sharedPreferences.getBoolean(AppConstants.SKIP_SLIENCE,false))
+
+
                     .build().also { exoPlayer ->
+
                         var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                         if (file.exists()) {
                             dataBinding.playerView.player = exoPlayer
@@ -238,6 +242,8 @@ class RadioPlayerActivity() :
                                 15
                             ) * 1000)
                         )
+                        .setPauseAtEndOfMediaItems(sharedPreferences.getBoolean(AppConstants.SKIP_SLIENCE,false))
+
                         .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer
@@ -267,7 +273,6 @@ class RadioPlayerActivity() :
                 val res = (it as Resource.Success).value
                 viewModel._podEpisodeArray.value = res.data
                 podcastEpisodeList = res.data
-                refreshAdapter()
                 dataBinding.podcastLoader.visibility = View.GONE
                 if (!podcastEpisodeList!!.isNullOrEmpty()) {
                     dataBinding.playerView.visibility = View.VISIBLE
@@ -278,6 +283,7 @@ class RadioPlayerActivity() :
                 } else {
 //                    dataBinding.playerView.visibility = View.GONE
                 }
+                refreshAdapter()
 
             } catch (ex: Exception) {
                 ex.printStackTrace()

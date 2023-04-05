@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="favViewModel"
             type="com.netcast.radio.ui.favourites.FavouritesViewModel" />
@@ -17,53 +18,78 @@
             name="favouritesAdapter"
             type="com.netcast.radio.ui.favourites.adapters.FavouriteAdapter" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.favourites.FavouritesFragment">
 
-    <TextView
-        android:id="@+id/head"
-        style="@style/textHeading"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        android:text="Your Favourite \n Channels &amp; Podcasts"
-        android:textAlignment="center"
-        android:textSize="@dimen/_18sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/emptyView"
-        style="@style/textHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        android:text="You have not added any favourites yet"
-        android:textAlignment="center"
-        android:textSize="@dimen/_25sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".ui.favourites.FavouritesFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fav_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/head"
-        app:layout_constraintVertical_bias="0.019"
-        app:setAdapter="@{favouritesAdapter}"
-        app:submitList="@{mainViewModel.favouritesRadioArray}"
-        tools:listitem="@layout/podcast_search_row" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/head"
+            style="@style/textHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="Your Favourite \n Channels &amp; Podcasts"
+            android:textAlignment="center"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_download" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_download"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/black"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="My Downloads"
+            android:paddingEnd="@dimen/_15sdp"
+            android:drawableRight="@drawable/ic_arrow_forward"
+            style="@style/textHeading"
+            android:paddingStart="@dimen/_10sdp"
+            android:drawablePadding="@dimen/_10sdp"
+            android:drawableLeft="@drawable/ic_downloadwhite"
+            android:textColor="@color/white"
+            android:gravity="center|left"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <TextView
+            android:id="@+id/emptyView"
+            style="@style/textHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="You have not added any favourites yet"
+            android:textAlignment="center"
+            android:textSize="@dimen/_25sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fav_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/head"
+            app:layout_constraintVertical_bias="0.019"
+            app:setAdapter="@{favouritesAdapter}"
+            app:submitList="@{mainViewModel.favouritesRadioArray}"
+            tools:listitem="@layout/podcast_search_row" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

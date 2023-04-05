@@ -96,16 +96,19 @@ class SettingsFragment : Fragment() {
 //                    adapterSettings.notifyDataSetChanged()
                 }
                 4 -> {
+                    sharedPredEditor.putBoolean(AppConstants.SKIP_SLIENCE,ischecked).apply()
+                }
+                5->{
                     setForwardBackwardTimeDialog()
                 }
-                7 -> {
+                8 -> {
                     openTermsandCons("https://baidu.eu/terms")
                 }
-                8, 9 -> {
+                9, 10 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
                 else -> {
-
+                    openTermsandCons("https://baidu.eu/privacy")
                 }
 
             }
