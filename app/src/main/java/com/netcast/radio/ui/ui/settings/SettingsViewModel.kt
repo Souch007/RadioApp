@@ -66,6 +66,16 @@ class SettingsViewModel : ViewModel() {
         _settingDataArray!!.value = settingsList
 
         settingsData = SettingsData(
+            "",
+            "Autoplay",
+            "The next episode from current context will playback automatically",
+            true,
+            sharedPredEditor.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
+        )
+        settingsList.add(settingsData)
+        _settingDataArray!!.value = settingsList
+
+        settingsData = SettingsData(
             "", "Step back and forward in player", sharedPredEditor.getLong(
                 AppConstants.PLAYER_SECS,
                 15

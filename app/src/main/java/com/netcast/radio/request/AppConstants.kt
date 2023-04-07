@@ -17,4 +17,5 @@ object AppConstants {
     const val GET_FREQUENT_SEARCH = "getFrequentSearchesTags/"
     const val PLAYER_SECS = "player_ffbbsec"
     const val SKIP_SLIENCE = "player_skip_silence"
+    const val AUTO_PLAY_EPISODES = "auto_play_episodes"
 }

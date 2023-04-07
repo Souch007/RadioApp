@@ -143,6 +143,8 @@
                     app:hide_on_touch="false"
                     app:played_color="@color/OrangeRed"
                     app:show_timeout="0"
+                    app:show_buffering="always"
+                    app:show_shuffle_button="true"
                     app:unplayed_color="@color/white" />
             </RelativeLayout>
 

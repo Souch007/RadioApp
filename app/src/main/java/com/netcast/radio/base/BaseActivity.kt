@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
@@ -27,6 +29,7 @@ import com.google.gson.reflect.TypeToken
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppApis
+import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.RemoteDataSource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.podcast.CompletedEpisodes
@@ -137,11 +140,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 initializeDB(applicationContext)
             }
 //        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
-            val time= TimeUnit.DAYS.toMillis(2)
+            val time = TimeUnit.DAYS.toMillis(2)
             val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
             if (!list.isNullOrEmpty()) {
                 for (data in list) {
-                    var isDayPassed = (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
+                    var isDayPassed =
+                        (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
                     if (isDayPassed) {
                         appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
                     }
@@ -221,21 +225,29 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
-        val mediaType = AppSingelton.radioSelectedChannel.value?.type
-        if (playbackState == Player.STATE_ENDED && mediaType?.matches("PODCAST".toRegex()) == true || mediaType?.matches(
-                "Episodes".toRegex()
-            ) == true || mediaType?.matches("Offline".toRegex()) == true
-        ) {
-            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
-            val completedEpisodes = CompletedEpisodes(
-                System.currentTimeMillis(),
-                AppSingelton._radioSelectedChannel.value?.id ?: ""
-            )
-            list.add(completedEpisodes)
-            setList("completed_episodes", list)
+        try {
+            if (playbackState == Player.STATE_ENDED) {
+                val isAutoPlayEnable =
+                    sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
+
+                val mediaType = AppSingelton.radioSelectedChannel.value?.type
+                if (mediaType?.matches("PODCAST".toRegex()) == true || mediaType?.matches("Episodes".toRegex()) == true || mediaType?.matches(
+                        "Offline".toRegex()
+                    ) == true
+                ) {
+                    val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
+                    val completedEpisodes = CompletedEpisodes(
+                        System.currentTimeMillis(),
+                        AppSingelton._radioSelectedChannel.value?.id ?: ""
+                    )
+                    list.add(completedEpisodes)
+                    setList("completed_episodes", list)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
-
 
     private fun addToRecentlyPlayedList(_currentPlayingChannel: MutableLiveData<PlayingChannelData>) {
         val gson = Gson()

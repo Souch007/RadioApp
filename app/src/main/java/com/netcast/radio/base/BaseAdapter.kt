@@ -35,6 +35,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
 
     override fun onBindViewHolder(holder: BaseViewHolder<BINDING>, position: Int) {
         bind(holder.binder, data[position])
+        AppSingelton.currentPlayingPos=position
     }
 
     override fun getItemCount(): Int {

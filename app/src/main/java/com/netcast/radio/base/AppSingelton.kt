@@ -9,6 +9,8 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
 object AppSingelton {
 
+    var currentPlayingPos: Int=0
+
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
     public var _playingStarted = MutableLiveData<Boolean>()

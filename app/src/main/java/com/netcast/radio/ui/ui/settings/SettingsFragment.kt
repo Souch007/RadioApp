@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
@@ -45,11 +44,9 @@ class SettingsFragment : Fragment() {
     private lateinit var sharedPredEditor: SharedPreferences.Editor
     private val mainViewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this)[SettingsViewModel::class.java]
+        val settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         bindingSettings = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -66,14 +63,12 @@ class SettingsFragment : Fragment() {
         setcurrentappmode(null)
         binding.btnAlaram.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, AlarmFragment())
-                .commitNow()
+                .replace(R.id.settings_container, AlarmFragment()).commitNow()
         }
 
         binding.btnSleepTimer.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, SleepTimerFragment())
-                .commitNow()
+                .replace(R.id.settings_container, SleepTimerFragment()).commitNow()
         }
         adapterSettings.itemClickListener { pos, view, ischecked ->
             when (pos) {
@@ -90,21 +85,25 @@ class SettingsFragment : Fragment() {
                     sharedPredEditor.apply()
 //                    adapterSettings.notifyDataSetChanged()
                 }
-                3->{
+                3 -> {
                     sharedPredEditor.putBoolean("delete_completed_episode", ischecked)
                     sharedPredEditor.apply()
 //                    adapterSettings.notifyDataSetChanged()
                 }
                 4 -> {
-                    sharedPredEditor.putBoolean(AppConstants.SKIP_SLIENCE,ischecked).apply()
+                    sharedPredEditor.putBoolean(AppConstants.SKIP_SLIENCE, ischecked).apply()
                 }
-                5->{
+                5 -> {
+                    sharedPredEditor.putBoolean(AppConstants.AUTO_PLAY_EPISODES, ischecked).apply()
+                }
+
+                6 -> {
                     setForwardBackwardTimeDialog()
                 }
-                8 -> {
+                9 -> {
                     openTermsandCons("https://baidu.eu/terms")
                 }
-                9, 10 -> {
+                10, 11 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
                 else -> {
@@ -156,8 +155,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setcurrentappmode(radioGroup: RadioGroup?) {
-        val nightModeFlags = requireContext().resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK
+        val nightModeFlags =
+            requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         when (nightModeFlags) {
             Configuration.UI_MODE_NIGHT_NO -> {
                 radioGroup?.check(radioGroup[0].id)
