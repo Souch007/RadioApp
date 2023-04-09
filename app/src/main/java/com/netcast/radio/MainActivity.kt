@@ -25,12 +25,14 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.base.ViewModelFactory
 import com.netcast.radio.databinding.ActivityMainBinding
+import com.netcast.radio.databinding.OptionLayoutBinding
 import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.AppConstants
@@ -67,7 +69,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+
+//        dataBinding.slidingLayout.setDragView(dataBinding.slidedown)
+//        dataBinding.slidingLayout.setDragView(dataBinding.playerOptions)
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
+        dataBinding.playerOptions.setOnClickListener {
+            showBottomSheetDialog()
+        }
 
         dataBinding.slidingLayout.addPanelSlideListener(object :
             SlidingUpPanelLayout.PanelSlideListener {
@@ -88,13 +96,15 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         })
 
 
-
         searchWatcherListener()
         hideProgressBar()
         checkOfflineChannels()
         getIntentData()
-        if (sharedPreferences.getBoolean("delete_completed_episode", true))
-            deleteCompletedEpisodes()
+        if (sharedPreferences.getBoolean(
+                "delete_completed_episode",
+                true
+            )
+        ) deleteCompletedEpisodes()
 
     }
 
@@ -171,8 +181,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
-                if (AppSingelton.isAlramSet)
-                    storeObjectInSharedPref(it, "alarm_radiodata")
+                if (AppSingelton.isAlramSet) storeObjectInSharedPref(it, "alarm_radiodata")
 
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
                     if (AppSingelton.exoPlayer != null) {
@@ -249,6 +258,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 dataBinding.playBtn.setShowNextButton(false)
                 AppSingelton.isNewItemAdded.value = true
 
+
                 // Added Close Sliding Panel Button
                 dataBinding.closeButton.setOnClickListener {
                     if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
@@ -273,7 +283,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-        mainViewModel.getPodCastListing(podcastViewModel,"")
+        mainViewModel.getPodCastListing(podcastViewModel, "")
 //        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
         mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
@@ -330,8 +340,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 }
                 R.id.navigation_see_all -> {
                     selectedDestination = destination.label.toString()
-                    if (dataBinding.settingsBarLayout.visibility == View.VISIBLE)
-                        dataBinding.settingsBarLayout.visibility = View.GONE
+                    if (dataBinding.settingsBarLayout.visibility == View.VISIBLE) dataBinding.settingsBarLayout.visibility =
+                        View.GONE
                     navView.visibility = View.GONE
                 }
                 else -> {
@@ -361,8 +371,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (selectedDestination != getString(R.string.see_all))
-            dataBinding.settingsBarLayout.visibility = View.VISIBLE
+        if (selectedDestination != getString(R.string.see_all)) dataBinding.settingsBarLayout.visibility =
+            View.VISIBLE
 
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         showSlideUpPanel()
@@ -419,10 +429,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             }
 
             AppSingelton.exoPlayer =
-                ExoPlayer.Builder(this, renderersFactory)
-                    .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
-                        val mediaItem =
-                            MediaItem.fromUri(url ?: "")
+                ExoPlayer.Builder(this, renderersFactory).setHandleAudioBecomingNoisy(true).build()
+                    .also { exoPlayer ->
+                        val mediaItem = MediaItem.fromUri(url ?: "")
                         exoPlayer.setMediaItem(mediaItem)
                         exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
                         exoPlayer.addListener(this)
@@ -432,4 +441,25 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         }
     }
 
+    private fun showBottomSheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val optionLayoutBinding = OptionLayoutBinding.inflate(layoutInflater, null, false)
+        bottomSheetDialog.setContentView(optionLayoutBinding!!.root)
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        optionLayoutBinding.tvSetalarm.setOnClickListener {
+            navController.navigate(R.id.alarmFragment)
+            bottomSheetDialog.dismiss()
+            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+        optionLayoutBinding.tvSetsleeptime.setOnClickListener {
+            navController.navigate(R.id.sleepTimerFragment)
+            bottomSheetDialog.dismiss()
+            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+        optionLayoutBinding.tvShare.setOnClickListener {
+
+        }
+        bottomSheetDialog.show()
+    }
 }

@@ -66,7 +66,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         //
         Observers()
         //
-//        exoPlayerManager("Normal")
+        exoPlayerManager("Normal")
         //
         uiControls()
 //        requestPermission()
@@ -172,23 +172,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
 
-    // creating a ConcatenatingMediaSource
-    private fun buildMediaSource(): MediaSource {
-
-        val dataSourceFactory = DefaultHttpDataSource.Factory()
-
-        val mediaSource1 = ProgressiveMediaSource.Factory(dataSourceFactory)
-
-            .createMediaSource(MediaItem.fromUri(podcastEpisodeList!![0].audio))
-
-        val mediaSource2 = ProgressiveMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(MediaItem.fromUri(podcastEpisodeList!![1].audio))
-
-        // Heterogeneous Playlist
-        return ConcatenatingMediaSource(mediaSource1, mediaSource2, mediaSource1, mediaSource2)
-    }
-
-
     private fun handleChannel() {
         val isAutoPlayEnable = sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
         AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id ?: ""
@@ -236,7 +219,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     it.stop()
                 }
                 AppSingelton.exoPlayer =
-                    ExoPlayer.Builder(this).setLoadControl(loadControl)
+                    ExoPlayer.Builder(this,renderersFactory).setLoadControl(loadControl)
                         .setSeekForwardIncrementMs(
                             (sharedPreferences.getLong(
                                 AppConstants.PLAYER_SECS, 15
@@ -253,7 +236,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         )*/.setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer
-                            if (isAutoPlayEnable) {
+                            if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex()))&& !podcastEpisodeList.isNullOrEmpty()) {
                                 val mediaitems = mutableListOf<MediaItem>()
                                 for (i in 0 until podcastEpisodeList!!.size) {
                                     val mediaItem: MediaItem =
@@ -298,7 +281,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                     refreshAdapter()
                     viewModel._episodeSelected.value = podcastEpisodeList!![0]
-//                    viewModel._episodeSelected.value = podcastEpisodeList!![0]
+
                     dataBinding.episode.text =
                         Html.fromHtml(AppSingelton.radioSelectedChannel.value!!.name)
                 } else {

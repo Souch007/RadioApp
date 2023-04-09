@@ -57,4 +57,12 @@
             android:id="@+id/action_navigation_see_all_to_navigation_podcast"
             app:destination="@id/navigation_podcast" />
     </fragment>
+    <fragment
+        android:id="@+id/sleepTimerFragment"
+        android:name="com.netcast.radio.ui.ui.settings.SleepTimerFragment"
+        android:label="SleepTimerFragment" />
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="com.netcast.radio.ui.ui.settings.AlarmFragment"
+        android:label="AlarmFragment" />
 </navigation>

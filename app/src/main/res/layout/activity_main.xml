@@ -282,8 +282,11 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="@dimen/_30sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+
                         android:src="@drawable/ic_down_arrow"
                         app:tint="@color/white" />
+
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -352,9 +355,20 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent">
 
+                            <ImageView
+                                android:id="@+id/player_options"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_gravity="center"
+                                android:clickable="true"
+                                android:src="@drawable/ic_menu"
+                                />
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
+
 
                                 <com.google.android.exoplayer2.ui.PlayerView
                                     android:id="@+id/play_btn"
