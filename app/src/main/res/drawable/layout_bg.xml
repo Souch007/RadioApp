@@ -3,12 +3,12 @@
 
 
     <gradient
-        android:centerColor="@color/white"
+        android:centerColor="@color/Snow"
         android:centerX="0.5"
         android:centerY="0.5"
         android:angle="90"
-        android:endColor="@color/white"
-        android:startColor="@color/white"
+        android:endColor="@color/Snow"
+        android:startColor="@color/Snow"
         android:useLevel="false" />
 
 </shape>

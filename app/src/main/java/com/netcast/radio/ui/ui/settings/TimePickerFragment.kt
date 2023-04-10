@@ -22,6 +22,6 @@ class TimePickerFragment(private val listner:TimePickerDialog.OnTimeSetListener)
             listner,
             hour,
             minute,
-            true)
+            false)
     }
 }

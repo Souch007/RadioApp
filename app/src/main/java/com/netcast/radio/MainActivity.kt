@@ -101,8 +101,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         checkOfflineChannels()
         getIntentData()
         if (sharedPreferences.getBoolean(
-                "delete_completed_episode",
-                true
+                "delete_completed_episode", true
             )
         ) deleteCompletedEpisodes()
 
@@ -145,7 +144,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
                     mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
                     dataBinding.navView.selectedItemId = R.id.navigation_search
-                    dataBinding.searchEditText.setText("")
+//                    dataBinding.searchEditText.setText("")
                     val inputMethodManager =
                         getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
@@ -181,7 +180,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
-                if (AppSingelton.isAlramSet) storeObjectInSharedPref(it, "alarm_radiodata")
+                if (AppSingelton.isAlramSet) storeObjectInSharedPref(
+                    it, AppConstants.SELECTED_ALARM_RADIO
+                )
 
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
                     if (AppSingelton.exoPlayer != null) {
@@ -261,13 +262,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
                 // Added Close Sliding Panel Button
                 dataBinding.closeButton.setOnClickListener {
-                    if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
-                        if (dataBinding.playButtonCarousel.player!!.isPlaying) {
-                            dataBinding.playButtonCarousel.player!!.stop()
-                        }
-                    }
-                    dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-//
+                    closePlayerandPanel()
 
                 }
 
@@ -275,6 +270,16 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
 
         }, 1000)
+    }
+
+    private fun closePlayerandPanel() {
+        if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
+            if (dataBinding.playButtonCarousel.player!!.isPlaying) {
+                dataBinding.playButtonCarousel.player!!.stop()
+            }
+        }
+        dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+//
     }
 
     private fun callApis() {
@@ -450,16 +455,30 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         optionLayoutBinding.tvSetalarm.setOnClickListener {
             navController.navigate(R.id.alarmFragment)
             bottomSheetDialog.dismiss()
-            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+            closePlayerandPanel()
+//            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
         }
         optionLayoutBinding.tvSetsleeptime.setOnClickListener {
             navController.navigate(R.id.sleepTimerFragment)
             bottomSheetDialog.dismiss()
-            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+            closePlayerandPanel()
+//            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
         }
         optionLayoutBinding.tvShare.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            share(
+                "Checkout this link its amazing. ",
+                AppSingelton._radioSelectedChannel.value?.url ?: ""
+            )
 
         }
         bottomSheetDialog.show()
+    }
+
+    private fun share(messageToShare: String, appUrl: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
+        startActivity(Intent(intent))
     }
 }

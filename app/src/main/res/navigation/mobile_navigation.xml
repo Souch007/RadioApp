@@ -63,6 +63,7 @@
         android:label="SleepTimerFragment" />
     <fragment
         android:id="@+id/alarmFragment"
+
         android:name="com.netcast.radio.ui.ui.settings.AlarmFragment"
         android:label="AlarmFragment" />
 </navigation>

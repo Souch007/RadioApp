@@ -1,6 +1,8 @@
 package com.netcast.radio.request
 
 object AppConstants {
+ val ALARM_CHECKBOX: String="alarm_checkbox"
+ const val SELECTED_ALARM_RADIO: String="alarm_radiodata"
     const val STOPFOREGROUND_ACTION: String = "STOP_SERVICE"
     const val NOTIFICATION_ID: Int = 5709
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"

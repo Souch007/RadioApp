@@ -30,6 +30,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ui.settings.adapter.AlarmSelectedChannelActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.ui.settings.AlaramActivity"
             android:exported="false">
             <meta-data
@@ -98,10 +105,13 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-           <!-- android:process=":remote"-->
-              <!--  <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+
+                <!-- android:process=":remote" -->
+                <!--
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
                 <action android:name="from alarm" />
-              -->  <action android:name="android.intent.action.BOOT_COMPLETED" />
+                -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

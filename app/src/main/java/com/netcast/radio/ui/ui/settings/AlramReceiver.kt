@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.AudioPlayerService
+import com.netcast.radio.request.AppConstants
 
 
 class AlramReceiver : BroadcastReceiver(), Player.Listener {
@@ -35,8 +36,9 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
             it.release()
             it.stop()
         }
-        val playingChannelData =retrieveStoredObject("alarm_radiodata",PlayingChannelData::class.java)
-        if (playingChannelData!=null) {
+        val playingChannelData =retrieveStoredObject(AppConstants.SELECTED_ALARM_RADIO,PlayingChannelData::class.java)
+      val alarmCheckbox=  sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        if (playingChannelData!=null && alarmCheckbox) {
 //        AppSingelton._radioSelectedChannel.value=playingChannelData
         AppSingelton._currentPlayingChannel.value=playingChannelData
             AppSingelton.exoPlayer =

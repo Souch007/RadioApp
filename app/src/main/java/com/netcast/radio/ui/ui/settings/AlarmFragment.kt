@@ -24,10 +24,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.MainActivity
+import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.databinding.FragmentAlarmBinding
-import com.netcast.radio.ui.radio.RadioFragment
+import com.netcast.radio.request.AppConstants
+import com.netcast.radio.ui.ui.settings.adapter.AlarmSelectedChannelActivity
 import java.util.*
 
 
@@ -51,10 +53,17 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
         alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
-//        val dateNow = Calendar.getInstance().time
         hour = sharedPreferences.getInt("hour", 0)
         min = sharedPreferences.getInt("min", 0)
         setTime(hour, min)
+        val playingChannelData = retrieveStoredObject(
+            AppConstants.SELECTED_ALARM_RADIO,
+            PlayingChannelData::class.java
+        )
+        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        if (playingChannelData != null && alarmCheckbox)
+            binding.tvSelectchannel.text = playingChannelData.name
+
         binding.tvTimer.setOnClickListener {
             val audio = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
             audio?.setStreamVolume(
@@ -68,15 +77,22 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
             else cancelAlarm()
 
         }
+
         binding.tvSelectchannel.setOnClickListener {
-           startActivity(Intent(requireContext(),MainActivity::class.java))
-            AppSingelton.isAlramSet=true
+           val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+            if (playingChannelData!=null)
+                startActivity(Intent(requireContext(), AlarmSelectedChannelActivity::class.java))
+            else {
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                AppSingelton.isAlramSet = true
+            }
         }
         if (sharedPreferences.getBoolean("isAlarmSet", false)) {
             binding.swichAlarm.isChecked = true
         }
         setSeekBarVolume()
         setcheckBoxListner()
+
 
         return root
     }
@@ -209,7 +225,7 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
     @SuppressLint("SuspiciousIndentation")
     private fun cancelAlarm() {
         pendingIntent?.let {
-        alarmManager!!.cancel(it)
+            alarmManager!!.cancel(it)
 
         }
     }
@@ -217,10 +233,12 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
     private fun showTimerPickerFragment(view: View) {
         calendar = Calendar.getInstance()
         val timePickerFragment = TimePickerFragment(this)
+
         timePickerFragment.show(requireActivity().supportFragmentManager, "time_picker")
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
+
         this.hour = hour
         min = minute
         setAlaram()
@@ -234,8 +252,7 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
             R.id.chk_monday -> {
                 if (p0.isChecked) {
                     list.add("Monday")
-                }
-                    else list.remove("Monday")
+                } else list.remove("Monday")
             }
             R.id.chk_tuesday -> {
                 if (p0.isChecked) list.add("Tuesday")
@@ -286,8 +303,6 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
             PendingIntent.FLAG_CANCEL_CURRENT
         }
 
-
-
         val intent = Intent(requireContext(), AlramReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(
             requireContext(), 0, intent, flag
@@ -315,6 +330,11 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
         } catch (e: JsonSyntaxException) {
             emptyList()
         }
+    }
+
+    fun <T> retrieveStoredObject(prefName: String, baseClass: Class<T>): T? {
+        val dataObject: String? = sharedPreferences.getString(prefName, "")
+        return Gson().fromJson(dataObject, baseClass)
     }
 
 }
