@@ -45,6 +45,8 @@ import com.netcast.radio.ui.radio.RadioViewModel
 import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.seeall.SeeAllViewModel
+import com.netcast.radio.ui.ui.settings.AlarmFragment
+import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -283,13 +285,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun callApis() {
-//        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
-        mainViewModel.getRadioListing(radioViewModel, "")
+        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
+//        mainViewModel.getRadioListing(radioViewModel, "")
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-        mainViewModel.getPodCastListing(podcastViewModel, "")
-//        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
+//        mainViewModel.getPodCastListing(podcastViewModel, "")
+        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
         mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
@@ -453,13 +455,15 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         optionLayoutBinding.tvSetalarm.setOnClickListener {
-            navController.navigate(R.id.alarmFragment)
+            startActivity(Intent(this,AlarmFragment::class.java))
             bottomSheetDialog.dismiss()
             closePlayerandPanel()
 //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
         }
         optionLayoutBinding.tvSetsleeptime.setOnClickListener {
-            navController.navigate(R.id.sleepTimerFragment)
+//            navController.navigate(R.id.sleepTimerFragment)
+            startActivity(Intent(this,SleepTimerFragment::class.java))
+
             bottomSheetDialog.dismiss()
             closePlayerandPanel()
 //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED

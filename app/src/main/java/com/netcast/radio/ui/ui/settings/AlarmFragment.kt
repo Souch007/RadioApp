@@ -10,16 +10,14 @@ import android.content.SharedPreferences
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TimePicker
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
@@ -33,9 +31,11 @@ import com.netcast.radio.ui.ui.settings.adapter.AlarmSelectedChannelActivity
 import java.util.*
 
 
-class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedChangeListener {
-    private var _binding: FragmentAlarmBinding? = null
-    private val binding get() = _binding!!
+class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, OnCheckedChangeListener {
+    /*private var _binding: FragmentAlarmBinding? = null
+    private val binding get() = _binding!!*/
+    private lateinit var binding: FragmentAlarmBinding
+
     private lateinit var calendar: Calendar
     private var hour = 0
     private var min = 0
@@ -45,7 +45,63 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
     private lateinit var sharedPredEditor: SharedPreferences.Editor
     private lateinit var alarmManager: AlarmManager
     private var pendingIntent: PendingIntent? = null
-    override fun onCreateView(
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = FragmentAlarmBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.header.tvTitle.text="Alarm Settings"
+        binding.header.imgBack.setOnClickListener {
+            finish()
+        }
+/*
+        _binding = FragmentAlarmBinding.inflate(inflater, container, false)
+        val root: View = binding.root*/
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
+        hour = sharedPreferences.getInt("hour", 0)
+        min = sharedPreferences.getInt("min", 0)
+        setTime(hour, min)
+        val playingChannelData = retrieveStoredObject(
+            AppConstants.SELECTED_ALARM_RADIO,
+            PlayingChannelData::class.java
+        )
+        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        if (playingChannelData != null && alarmCheckbox)
+            binding.tvSelectchannel.text = playingChannelData.name
+
+        binding.tvTimer.setOnClickListener {
+            val audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+            audio?.setStreamVolume(
+                AudioManager.STREAM_MUSIC, 70, 0
+            )
+            showTimerPickerFragment(it)
+        }
+        binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
+            sharedPredEditor.putBoolean("isAlarmSet", b).commit()
+            if (b) setAlaram()
+            else cancelAlarm()
+
+        }
+
+        binding.tvSelectchannel.setOnClickListener {
+            val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+            if (playingChannelData!=null)
+                startActivity(Intent(this, AlarmSelectedChannelActivity::class.java))
+            else {
+                startActivity(Intent(this, MainActivity::class.java))
+                AppSingelton.isAlramSet = true
+            }
+        }
+        if (sharedPreferences.getBoolean("isAlarmSet", false)) {
+            binding.swichAlarm.isChecked = true
+        }
+        setSeekBarVolume()
+        setcheckBoxListner()
+
+    }
+/*    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAlarmBinding.inflate(inflater, container, false)
@@ -95,16 +151,17 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
 
 
         return root
-    }
+    }*/
 
     private fun setTime(hour: Int, min: Int) {
         var finalhour = hour
-        if (hour > 12) {
-            am_pm = "PM"
-            finalhour = hour - 12
-        } else {
+        if (hour < 12) {
             am_pm = "AM"
+        } else {
+            finalhour = hour - 12
+            am_pm = "PM"
         }
+
         binding.tvTimer.text = "$finalhour:$min $am_pm"
         binding.tvTimer2.text = "$finalhour:$min $am_pm"
     }
@@ -134,7 +191,7 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
 
     private fun setSeekBarVolume() {
         try {
-            audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+            audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
             binding.seekbar.max = audioManager?.getStreamMaxVolume(AudioManager.STREAM_MUSIC)!!
             binding.seekbar.progress = audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC);
             binding.seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
@@ -208,9 +265,9 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
         }
 
 
-        val intent = Intent(requireContext(), AlramReceiver::class.java)
+        val intent = Intent(this, AlramReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(
-            requireContext(), 0, intent, flag
+            this, 0, intent, flag
         )
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
@@ -234,13 +291,14 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
         calendar = Calendar.getInstance()
         val timePickerFragment = TimePickerFragment(this)
 
-        timePickerFragment.show(requireActivity().supportFragmentManager, "time_picker")
+        timePickerFragment.show(supportFragmentManager, "time_picker")
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
 
         this.hour = hour
         min = minute
+
         setAlaram()
         setTime(this.hour, min)
     }
@@ -303,9 +361,9 @@ class AlarmFragment : Fragment(), TimePickerDialog.OnTimeSetListener, OnCheckedC
             PendingIntent.FLAG_CANCEL_CURRENT
         }
 
-        val intent = Intent(requireContext(), AlramReceiver::class.java)
+        val intent = Intent(this, AlramReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(
-            requireContext(), 0, intent, flag
+            this, 0, intent, flag
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(

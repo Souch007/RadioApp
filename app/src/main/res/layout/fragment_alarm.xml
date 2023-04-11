@@ -13,6 +13,9 @@
         android:orientation="vertical"
         tools:context=".ui.ui.settings.AlarmFragment">
 
+        <include
+            android:id="@+id/header"
+            layout="@layout/activity_header" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_timer"
@@ -21,6 +24,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="00:00"
+            android:layout_marginTop="@dimen/_5sdp"
             android:textSize="@dimen/_25sdp" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -60,11 +64,13 @@
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.2"
             android:background="@color/Gray" />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/textHeading"
             android:layout_width="wrap_content"
@@ -81,11 +87,13 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="00:00"
             android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.2"
             android:background="@color/Gray" />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/textHeading"
             android:layout_width="wrap_content"
@@ -172,11 +180,13 @@
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.2"
             android:background="@color/Gray" />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/textHeading"
             android:layout_width="wrap_content"
@@ -195,11 +205,13 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Select channel"
             android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.2"
             android:background="@color/Gray" />
+
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/textHeading"
             android:layout_width="wrap_content"

@@ -62,13 +62,16 @@ class SettingsFragment : Fragment() {
         }
         setcurrentappmode(null)
         binding.btnAlaram.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, AlarmFragment()).commitNow()
+            /* requireActivity().supportFragmentManager.beginTransaction()
+                 .replace(R.id.settings_container, AlarmFragment()).commitNow()*/
+            requireContext().startActivity(Intent(requireContext(), AlarmFragment::class.java))
         }
 
         binding.btnSleepTimer.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, SleepTimerFragment()).commitNow()
+            /*requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.settings_container, SleepTimerFragment()).commitNow()*/
+            requireContext().startActivity(Intent(requireContext(), SleepTimerFragment::class.java))
+
         }
         adapterSettings.itemClickListener { pos, view, ischecked ->
             when (pos) {
