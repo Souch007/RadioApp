@@ -18,10 +18,10 @@ import com.netcast.radio.request.AppConstants
 
 class AlramReceiver : BroadcastReceiver(), Player.Listener {
     lateinit var sharedPreferences: SharedPreferences
-    private var context:Context?=null
+    private var context: Context? = null
 
     override fun onReceive(context: Context, p1: Intent?) {
-        this.context=context
+        this.context = context
         val notificationUtils = NotificationUtils(context)
         val notification = notificationUtils.getNotificationBuilder().build()
         notificationUtils.getManager().notify(150, notification)
@@ -36,11 +36,12 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
             it.release()
             it.stop()
         }
-        val playingChannelData =retrieveStoredObject(AppConstants.SELECTED_ALARM_RADIO,PlayingChannelData::class.java)
-      val alarmCheckbox=  sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-        if (playingChannelData!=null && alarmCheckbox) {
+        val playingChannelData =
+            retrieveStoredObject(AppConstants.SELECTED_ALARM_RADIO, PlayingChannelData::class.java)
+        val alarmCheckbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        if (playingChannelData != null && alarmCheckbox) {
 //        AppSingelton._radioSelectedChannel.value=playingChannelData
-        AppSingelton._currentPlayingChannel.value=playingChannelData
+            AppSingelton._currentPlayingChannel.value = playingChannelData
             AppSingelton.exoPlayer =
                 ExoPlayer.Builder(context, renderersFactory)
                     .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
@@ -66,7 +67,7 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
         }
     }
 
-    fun <T> retrieveStoredObject(prefName: String, baseClass: Class<T>): T?{
+    fun <T> retrieveStoredObject(prefName: String, baseClass: Class<T>): T? {
         val dataObject: String? = sharedPreferences.getString(prefName, "")
         return Gson().fromJson(dataObject, baseClass)
     }
