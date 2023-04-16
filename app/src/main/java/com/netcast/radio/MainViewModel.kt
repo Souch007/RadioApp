@@ -12,6 +12,7 @@ import com.netcast.radio.ui.favourites.adapters.OnFavouriteClickListener
 import com.netcast.radio.ui.podcast.PodcastViewModel
 import com.netcast.radio.ui.podcast.adapter.OnClickListenerPodcast
 import com.netcast.radio.ui.podcast.poddata.PodListData
+import com.netcast.radio.ui.radio.FilterSearchListener
 import com.netcast.radio.ui.radio.RadioViewModel
 import com.netcast.radio.ui.radio.adapter.OnClickGeneresListener
 import com.netcast.radio.ui.radio.adapter.OnClickListenerCountires
@@ -20,6 +21,7 @@ import com.netcast.radio.ui.radio.adapter.OnClickListnerRadio
 import com.netcast.radio.ui.radio.countries.Data
 import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.search.SearchViewModel
+
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
 import com.netcast.radio.ui.search.adapters.PodSearchOnClickListener
 import com.netcast.radio.ui.search.adapters.StationSearchListener
@@ -31,7 +33,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     OnFavouriteClickListener,
     OnClickListenerSeeAll, OnClickListerPODSeeAll, OnClickListenerLanguages,
     OnClickListenerCountires, OnClickGeneresListener, OnSearchTagListener,
-    PodSearchOnClickListener, StationSearchListener {
+    PodSearchOnClickListener, StationSearchListener, FilterSearchListener {
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
 
@@ -128,6 +130,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
 
     override fun onRadioClicked(data: RadioLists) {
+
         var playingChannelData = PlayingChannelData(
             data.url,
             data.favicon,
@@ -239,5 +242,10 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         AppSingelton._isNewStationSelected.value = false
         AppSingelton.exoPlayer = null
     }
+
+    override fun onFilterSearchListenerr(data: RadioLists) {
+        onRadioClicked(data)
+    }
+
 
 }

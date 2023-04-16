@@ -17,11 +17,7 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultAllocator
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.netcast.radio.BR
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
@@ -46,9 +42,17 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     private var isActivityLoaded = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkWifiPlaySettings()
-        createActivity()
-        isActivityLoaded = true
+        if (!checkWifiPlaySettings()) {
+            createActivity()
+            isActivityLoaded = true
+        } else {
+            Toast.makeText(
+                this,
+                "Please check your wifi as you enabled stream over wifi",
+                Toast.LENGTH_LONG
+            ).show()
+            finish()
+        }
     }
 
     private val permissions = arrayOf(
@@ -79,20 +83,18 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
     }
 
-    private fun checkWifiPlaySettings() {
-        if (sharedPreferences.getBoolean("stream_over_wifi", false) && !isWifiConnected(this)) {
-            Toast.makeText(
-                this, "Please check your wifi as you enabled stream over wifi", Toast.LENGTH_LONG
-            ).show()
-
-            finish()
+    private fun checkWifiPlaySettings(): Boolean {
+        val iswifiplay = sharedPreferences.getBoolean("stream_over_wifi", false)
+        if (iswifiplay && !isWifiConnected(this)) {
+            return true
         }
+        return false
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-
+//        if (checkWifiPlaySettings()) {
         if (AppSingelton._radioSelectedChannel?.value?.type == "Offline" && !isActivityLoaded) {
             createActivity()
         } else {
@@ -101,6 +103,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
         }
+        /*} else {
+            Toast.makeText(
+                this,
+                "Please check your wifi as you enabled stream over wifi",
+                Toast.LENGTH_LONG
+            ).show()
+
+        }*/
     }
 
     private fun uiControls() {
@@ -219,7 +229,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     it.stop()
                 }
                 AppSingelton.exoPlayer =
-                    ExoPlayer.Builder(this,renderersFactory).setLoadControl(loadControl)
+                    ExoPlayer.Builder(this, renderersFactory).setLoadControl(loadControl)
                         .setSeekForwardIncrementMs(
                             (sharedPreferences.getLong(
                                 AppConstants.PLAYER_SECS, 15
@@ -236,13 +246,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         )*/.setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
                             val url = AppSingelton.radioSelectedChannel.value?.url
                             dataBinding.playerView.player = exoPlayer
-                            if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex()))&& !podcastEpisodeList.isNullOrEmpty()) {
+                            if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches(
+                                    "Episodes".toRegex()
+                                )) && !podcastEpisodeList.isNullOrEmpty()
+                            ) {
                                 val mediaitems = mutableListOf<MediaItem>()
                                 for (i in 0 until podcastEpisodeList!!.size) {
-                                    val mediaItem: MediaItem =
-                                        MediaItem.Builder()
-                                            .setUri(podcastEpisodeList!![i].audio.toUri())
-                                            .setMediaId(i.toString()).setTag(i).build()
+                                    val mediaItem: MediaItem = MediaItem.Builder()
+                                        .setUri(podcastEpisodeList!![i].audio.toUri())
+                                        .setMediaId(i.toString()).setTag(i).build()
                                     mediaitems.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
                                 }
@@ -441,8 +453,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     private fun _checkMediaType() {
         //Checking the Type of MEDIA
         if (AppSingelton.exoPlayer != null) Log.d(
-            "tag",
-            AppSingelton.exoPlayer!!.audioSessionId.toString()
+            "tag", AppSingelton.exoPlayer!!.audioSessionId.toString()
         )
         podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {

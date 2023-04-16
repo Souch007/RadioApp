@@ -173,11 +173,20 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         manageRecentlyPlayed()
 
         mainViewModel._queriedSearched.observe(this) {
-            dataBinding.searchEditText.setText(it)
-            dataBinding.llShimmerLayout.visibility = View.VISIBLE
-            mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
-            dataBinding.navView.selectedItemId = R.id.navigation_search
-            hideProgressBar()
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+            val args = Bundle()
+            args.putString("filter_tag", it)
+            navController.navigate(R.id.action_navigation_radio_to_navigation_filterstaions,args)
+
+//            dataBinding.searchEditText.setText(it)
+//            dataBinding.llShimmerLayout.visibility = View.VISIBLE
+//            mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
+//            dataBinding.navView.selectedItemId = R.id.navigation_search
+//            hideProgressBar()
+//            startActivity(Intent(this, FilterRadioActivity::class.java).putExtra("filter_tag", it))
+//            finish()
+
         }
 
         AppSingelton.radioSelectedChannel.observe(this) {
@@ -352,6 +361,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     navView.visibility = View.GONE
                 }
                 else -> {
+                    selectedDestination=getString(R.string.see_all)
                     dataBinding.settingsBarLayout.visibility = View.GONE
                 }
             }
@@ -455,14 +465,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         optionLayoutBinding.tvSetalarm.setOnClickListener {
-            startActivity(Intent(this,AlarmFragment::class.java))
+            startActivity(Intent(this, AlarmFragment::class.java))
             bottomSheetDialog.dismiss()
             closePlayerandPanel()
 //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
         }
         optionLayoutBinding.tvSetsleeptime.setOnClickListener {
 //            navController.navigate(R.id.sleepTimerFragment)
-            startActivity(Intent(this,SleepTimerFragment::class.java))
+            startActivity(Intent(this, SleepTimerFragment::class.java))
 
             bottomSheetDialog.dismiss()
             closePlayerandPanel()

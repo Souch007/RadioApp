@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.netcast.radio.base.BaseViewModel
 import com.netcast.radio.request.Resource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
@@ -14,7 +15,7 @@ import com.netcast.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.netcast.radio.ui.search.searchedpodresponce.SearchedReponcePod
 import com.netcast.radio.ui.search.searchedstationresponce.SearchedResponceStation
 
-class SearchViewModel(appRepository: AppRepository) : ViewModel() , OnSearchTagListener ,
+class SearchViewModel(appRepository: AppRepository) : BaseViewModel() , OnSearchTagListener ,
     PodSearchOnClickListener, StationSearchListener {
     var _frequentSearchesTags = MutableLiveData<Resource<FrequentSearchResponce>>()
     val frequentSearchResponce : LiveData<Resource<FrequentSearchResponce>> = _frequentSearchesTags

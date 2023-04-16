@@ -13,6 +13,11 @@
         <action
             android:id="@+id/action_navigation_radio_to_navigation_see_all"
             app:destination="@id/navigation_see_all" />
+        <action
+            android:id="@+id/action_navigation_radio_to_navigation_filterstaions"
+            app:popUpTo="@id/navigation_radio"
+            app:popUpToInclusive="false"
+            app:destination="@id/navigation_filterstaions" />
     </fragment>
 
     <fragment
@@ -66,4 +71,8 @@
 
         android:name="com.netcast.radio.ui.ui.settings.AlarmFragment"
         android:label="AlarmFragment" />
+    <fragment
+        android:id="@+id/navigation_filterstaions"
+        android:name="com.netcast.radio.ui.radio.FilterRadioFragment"
+        android:label="FilterRadioActivity" />
 </navigation>

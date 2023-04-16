@@ -13,44 +13,34 @@
             type="com.netcast.radio.ui.radio.adapter.OnClickGeneresListener" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_margin="@dimen/_6sdp"
-        android:elevation="@dimen/_8sdp"
-        app:cardCornerRadius="@dimen/_5sdp"
-        android:outlineAmbientShadowColor="@color/DarkCyan"
-        android:outlineSpotShadowColor="@color/DarkCyan"
-        app:cardBackgroundColor="@color/Black"
+        android:orientation="vertical"
+        android:padding="@dimen/_2sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:onClick="@{() -> listener.OnClickGenres(genresList)}"
-        app:cardElevation="@dimen/_20sdp">
+        android:background="@drawable/layout_filterbg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!--        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"-->
-        <RelativeLayout
+        <TextView
+            android:id="@+id/textView"
+            style="@style/textsubheading"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_2sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/_5sdp"
+            android:text="@{genresList.name.substring(0, 1).toUpperCase() + genresList.name.substring(1)}"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/textView"
-                style="@style/textsubheading"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:padding="@dimen/_5sdp"
-                android:text="@{genresList.name.substring(0, 1).toUpperCase() + genresList.name.substring(1)}"
-                android:textSize="@dimen/_8sdp"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
 </layout>

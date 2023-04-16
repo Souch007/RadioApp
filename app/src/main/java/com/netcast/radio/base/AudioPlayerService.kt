@@ -5,6 +5,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -33,6 +36,7 @@ class AudioPlayerService : LifecycleService() {
             val stopIntent = Intent(context, AudioPlayerService::class.java)
             context.stopService(stopIntent)
         }
+
     }
 
     override fun onCreate() {

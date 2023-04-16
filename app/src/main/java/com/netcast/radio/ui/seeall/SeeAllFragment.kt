@@ -25,12 +25,15 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
         binding.mainViewModel = mainActivityViewModel
 
         mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment) {
-            binding.radioRv.visibility = View.VISIBLE
-            binding.podcastRv.visibility = View.GONE
-            binding.seeallaadapter = com.netcast.radio.ui.seeall.adapter.SeeAllAdapter(
-                it,
-                mainActivityViewModel
-            )
+            it?.let {radioList->
+                binding.radioRv.visibility = View.VISIBLE
+                binding.podcastRv.visibility = View.GONE
+                binding.seeallaadapter = com.netcast.radio.ui.seeall.adapter.SeeAllAdapter(
+                    radioList,
+                    mainActivityViewModel
+                )
+            }
+
         }
 
         mainActivityViewModel._selectedSeeAllPodcasts.observe(this@SeeAllFragment) {
