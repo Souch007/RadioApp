@@ -188,6 +188,23 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         AppSingelton.exoPlayer = null
     }
 
+    override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {
+        try {
+            for(i in AppSingelton.favouritesRadioArray.indices){
+                var data = AppSingelton.favouritesRadioArray.get(i)
+                if (data.id == playingChannelData.id){
+                    AppSingelton.favouritesRadioArray.removeAt(i);
+                }
+            }
+            AppSingelton._isFavUpdated.value = true
+        }
+        catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+
+
     override fun onSeeAllClick(data: RadioLists) {
         onRadioClicked(data)
     }

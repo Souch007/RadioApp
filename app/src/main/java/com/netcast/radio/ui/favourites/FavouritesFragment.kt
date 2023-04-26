@@ -8,12 +8,14 @@ import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseFragment
+import com.netcast.radio.base.BaseViewModel
 import com.netcast.radio.databinding.FragmentFavouritesBinding
 import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.ui.favourites.adapters.FavouriteAdapter
 
 class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.fragment_favourites) {
     val favouritesViewModel: FavouritesViewModel by activityViewModels()
+    val baseViewModel: BaseViewModel by activityViewModels()
     private lateinit var mainActivityViewModel: MainViewModel
 
     override fun FragmentFavouritesBinding.initialize() {
@@ -37,7 +39,12 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         binding.btnDownload.setOnClickListener {
             startActivity(Intent(requireContext(), DownloadActivity::class.java))
         }
+    AppSingelton._isFavDeleteUpdated.observe(viewLifecycleOwner){
+        if (it)
+            favouritesAdapter!!.notifyDataSetChanged()
     }
+    }
+
 
 
 }

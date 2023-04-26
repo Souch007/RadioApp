@@ -18,13 +18,14 @@ private val onFavouriteClickListener : OnFavouriteClickListener) :  BaseAdapter<
     }
 
     override fun getItemsCount(data: List<PlayingChannelData>): Int {
-        if(data.size >5)
+       /* if(data.size >5)
             return 5;
-        else
-            return data.size;
+        else*/
+            return data.size
     }
 }
 
 interface OnFavouriteClickListener {
     fun onFavChannelClicked(playingChannelData: PlayingChannelData)
+    fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData)
 }

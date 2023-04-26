@@ -78,6 +78,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             val gson = Gson()
             val json = gson.toJson(AppSingelton.favouritesRadioArray)
             sharedPredEditor.putString("FavChannels", json).apply()
+            AppSingelton._isFavDeleteUpdated.value=true
         }
 
         requestNotificationPermission()

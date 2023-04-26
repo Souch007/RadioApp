@@ -294,13 +294,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun callApis() {
-        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
-//        mainViewModel.getRadioListing(radioViewModel, "")
+//        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
+        mainViewModel.getRadioListing(radioViewModel, "")
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
-//        mainViewModel.getPodCastListing(podcastViewModel, "")
-        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
+        mainViewModel.getPodCastListing(podcastViewModel, "")
+//        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
         mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
