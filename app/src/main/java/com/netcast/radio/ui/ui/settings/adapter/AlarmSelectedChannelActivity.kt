@@ -30,7 +30,7 @@ class AlarmSelectedChannelActivity : AppCompatActivity() {
             AppConstants.SELECTED_ALARM_RADIO, PlayingChannelData::class.java
         )
         playingChannelData?.let {
-            binding.checkboxAlramchannel.text = it.name
+            binding.tvChannelName.text = it.name
         }
         val alarmChecbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
         if (playingChannelData != null && alarmChecbox) {
