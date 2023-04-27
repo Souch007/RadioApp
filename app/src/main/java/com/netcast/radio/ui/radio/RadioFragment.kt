@@ -166,7 +166,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             binding.tvRecentlyPlayed.visibility = View.VISIBLE
             binding.recentlyPlayed.visibility = View.VISIBLE
             val recentlyPlayedAdapter =
-                FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+                FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel,"recently_played")
             binding.recentlyPlayed.adapter = recentlyPlayedAdapter
         } else {
             binding.tvRecentlyPlayed.visibility = View.GONE
@@ -176,7 +176,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onResume() {
         super.onResume()
-        val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel)
+        val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray, mainActivityViewModel,"recently_played")
         binding.recentlyPlayed.adapter = recentlyPlayedAdapter
 
     }

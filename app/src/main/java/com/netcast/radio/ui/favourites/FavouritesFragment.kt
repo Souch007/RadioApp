@@ -30,7 +30,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
             binding.emptyView.visibility = View.GONE
             binding.head.visibility = View.VISIBLE
-            binding.favouritesAdapter = FavouriteAdapter(listOf(), mainActivityViewModel)
+            binding.favouritesAdapter = FavouriteAdapter(listOf(), mainActivityViewModel,"favourites")
 
         } else {
             binding.emptyView.visibility = View.VISIBLE
@@ -39,12 +39,14 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         binding.btnDownload.setOnClickListener {
             startActivity(Intent(requireContext(), DownloadActivity::class.java))
         }
-    AppSingelton._isFavDeleteUpdated.observe(viewLifecycleOwner){
-        if (it)
-            favouritesAdapter!!.notifyDataSetChanged()
-    }
-    }
+        AppSingelton._isFavDeleteUpdated.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it)
+                    favouritesAdapter?.notifyDataSetChanged()
 
+            }
+        }
+    }
 
 
 }
