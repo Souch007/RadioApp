@@ -36,10 +36,9 @@ object AppSingelton {
     var isAlramSet: Boolean=false
 
     var _isFavUpdated = MutableLiveData<Boolean>()
-    var _isFavDeleteUpdated = MutableLiveData<Boolean>()
     var _SleepTimer = MutableLiveData<String>()
     var _SleepTimerEnd = MutableLiveData<Boolean>()
-    var currentActivity = "";
+    var currentActivity = ""
 
     //--------------- Download -------------------------------//
    public var downloadingEpisodeData: Data? = null

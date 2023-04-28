@@ -39,7 +39,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         binding.btnDownload.setOnClickListener {
             startActivity(Intent(requireContext(), DownloadActivity::class.java))
         }
-        AppSingelton._isFavDeleteUpdated.observe(viewLifecycleOwner) {
+        AppSingelton._isFavUpdated.observe(viewLifecycleOwner) {
             it?.let {
                 if (it)
                     favouritesAdapter?.notifyDataSetChanged()

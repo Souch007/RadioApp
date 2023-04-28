@@ -12,7 +12,8 @@ abstract class BaseViewModel() : ViewModel() {
         for(i in AppSingelton.favouritesRadioArray.indices){
             var data = AppSingelton.favouritesRadioArray.get(i)
             if (data.id == value.id){
-                AppSingelton.favouritesRadioArray.removeAt(i);
+                AppSingelton.favouritesRadioArray.removeAt(i)
+
             }
         }
         AppSingelton._isFavUpdated.value = true

@@ -1,10 +1,15 @@
 package com.netcast.radio.ui.ui.settings
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +32,8 @@ import com.netcast.radio.databinding.FragmentSettingsBinding
 import com.netcast.radio.databinding.LayoutAppmodeBinding
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
+import java.util.*
+
 
 class SettingsFragment : Fragment() {
 
@@ -103,14 +110,33 @@ class SettingsFragment : Fragment() {
                 6 -> {
                     setForwardBackwardTimeDialog()
                 }
+                8 -> {
+                    startActivity(
+                        Intent(requireContext(), FAQsActivity::class.java)
+                            .putExtra("type", "IMPRINT")
+                    )
+
+                }
+
                 9 -> {
                     openTermsandCons("https://baidu.eu/terms")
                 }
-                10, 11 -> {
+                10 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
-                else -> {
+                11 -> {
                     openTermsandCons("https://baidu.eu/privacy")
+                }
+                12 -> {
+                    startActivity(
+                        Intent(requireContext(), FAQsActivity::class.java)
+                            .putExtra("type", "FAQS")
+                    )
+                }
+                else -> {
+//                    openTermsandCons("https://baidu.eu/privacy")
+
+                    sendEmail()
                 }
 
             }
@@ -122,6 +148,36 @@ class SettingsFragment : Fragment() {
             }
         }
         return root
+    }
+
+    private fun sendEmail() {
+        try {
+            val manufacturer = Build.MANUFACTURER
+            val model = Build.MODEL
+            val version = Build.VERSION.SDK_INT
+            val versionRelease = Build.VERSION.RELEASE
+            val lang = Locale.getDefault().getDisplayLanguage()
+            val conntectionType = getConnectionType(requireContext())
+            val operatorName =
+                (requireContext().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager)?.networkOperatorName
+                    ?: "unknown"
+            var type = if (conntectionType == 2) "true" else "false"
+            val connected = if (conntectionType == 0) "false" else "true"
+            val text =
+                "netCast\nBuild: freerelease" + "\n" + "Version: " + versionRelease + "\n" + "Locale: ${lang}\n" + "Free app without prime subscription" + "\n" +
+                        manufacturer + " " + model + "\nConnected? ${connected}, Wifi? ${type} \n Provider (Network/Sim) ${operatorName}"
+
+            val intent = Intent(Intent.ACTION_SEND)
+            val recipients = arrayOf("legal@baidu.eu")
+            intent.putExtra(Intent.EXTRA_EMAIL, recipients)
+            intent.putExtra(Intent.EXTRA_SUBJECT, "FeedBack")
+            intent.putExtra(Intent.EXTRA_TEXT, text)
+            intent.type = "text/html"
+            intent.setPackage("com.google.android.gm")
+            startActivity(Intent.createChooser(intent, "Send mail"))
+        } catch (e: ActivityNotFoundException) {
+            //TODO smth
+        }
     }
 
     private fun openTermsandCons(url: String) {
@@ -211,6 +267,37 @@ class SettingsFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+    }
+
+    fun getConnectionType(context: Context): Int {
+        var result = 0 // Returns connection type. 0: none; 1: mobile data; 2: wifi
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val capabilities =
+                cm.getNetworkCapabilities(cm.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    result = 2
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    result = 1
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                    result = 3
+                }
+            }
+        } else {
+            val activeNetwork = cm.activeNetworkInfo
+            if (activeNetwork != null) {
+                // connected to the internet
+                if (activeNetwork.type === ConnectivityManager.TYPE_WIFI) {
+                    result = 2
+                } else if (activeNetwork.type === ConnectivityManager.TYPE_MOBILE) {
+                    result = 1
+                } else if (activeNetwork.type === ConnectivityManager.TYPE_VPN) {
+                    result = 3
+                }
+            }
+        }
+        return result
     }
 
 }

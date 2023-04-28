@@ -1,5 +1,6 @@
 package com.netcast.radio.ui.favourites.adapters
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
@@ -10,6 +11,7 @@ class FavouriteAdapter(private val list: List<PlayingChannelData>,
 private val onFavouriteClickListener : OnFavouriteClickListener,private val type:String) :  BaseAdapter<FavRowBinding, PlayingChannelData>(list)  {
     override val layoutId: Int = R.layout.fav_row
 
+    @SuppressLint("SuspiciousIndentation")
     override fun bind(binding: FavRowBinding, item: PlayingChannelData) {
         binding.apply {
             playing = item
