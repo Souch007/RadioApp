@@ -10,7 +10,6 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
@@ -35,6 +33,7 @@ import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.podcast.CompletedEpisodes
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
@@ -142,15 +141,23 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             }
 //        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
             val time = TimeUnit.DAYS.toMillis(2)
-            val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
-            if (!list.isNullOrEmpty()) {
-                for (data in list) {
+            val list = getList<CompletedEpisodes>("completed_episodes")
+//            if (!list.isNullOrEmpty()) {
+            if (list != null) {
+                for (i in 0 until list.size) {
+                    val data = fromJson<CompletedEpisodes>(list[i].toString())
                     var isDayPassed =
-                        (System.currentTimeMillis() - data!!.date) >= TimeUnit.DAYS.toMillis(2)
+                        (System.currentTimeMillis() - data.date) >= TimeUnit.DAYS.toMillis(2)
                     if (isDayPassed) {
-                        appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
-                    }
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val episodedata =
+                                appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
+                            if (episodedata != null) {
+                                appDatabase!!.appDap().deleteOfflineEpisodeById(episodedata.id)
+                            }
 
+                        }
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -158,6 +165,9 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
     }
 
+    inline fun <reified T> fromJson(json: String?): T {
+        return Gson().fromJson<T>(json, object : TypeToken<T>() {}.type)
+    }
 
     fun getOfflineDataById(id: String): Data {
         if (appDatabase == null) {
@@ -236,12 +246,14 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                         "Offline".toRegex()
                     ) == true
                 ) {
-                    val list = getList<CompletedEpisodes>("completed_episodes") as MutableList
+
+
+                    val list = getList<CompletedEpisodes>("completed_episodes")?.toMutableList()
                     val completedEpisodes = CompletedEpisodes(
                         System.currentTimeMillis(),
                         AppSingelton._radioSelectedChannel.value?.id ?: ""
                     )
-                    list.add(completedEpisodes)
+                    list?.add(completedEpisodes)
                     setList("completed_episodes", list)
                 }
             }
@@ -305,97 +317,6 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         }
     }
 
-    /* private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
-
-         val notificationId = AppConstants.NOTIFICATION_ID
-         val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
-             override fun getCurrentSubText(player: Player): CharSequence? {
-                 return "netcast"
-             }
-
-             override fun getCurrentContentTitle(player: Player): String {
-                 return _currentPlayingChannel!!.name ?: "No Name"
-             }
-
-             override fun createCurrentContentIntent(player: Player): PendingIntent? {
-                 return null
-             }
-
-             override fun getCurrentContentText(player: Player): String {
-                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                     Html.fromHtml(_currentPlayingChannel!!.country, Html.FROM_HTML_MODE_COMPACT)
-                         .toString()
-                 } else {
-                     Html.fromHtml(_currentPlayingChannel!!.country).toString()
-                 }
-             }
-
-             override fun getCurrentLargeIcon(
-                 player: Player,
-                 callback: PlayerNotificationManager.BitmapCallback
-             ): Bitmap? {
-                 var trackImage: Bitmap? = null
-                 val thread = Thread {
-                     try {
-                         val uri = Uri.parse(_currentPlayingChannel!!.favicon)
-                         val bitmap = Glide.with(applicationContext)
-                             .asBitmap()
-                             .load(uri)
-                             .submit().get()
-                         trackImage = bitmap
-                         callback.onBitmap(bitmap)
-                     } catch (e: ExecutionException) {
-                         e.printStackTrace()
-                     } catch (e: InterruptedException) {
-                         e.printStackTrace()
-                     }
-                 }
-                 thread.start()
-                 return trackImage
-             }
-         }
-
-         playerNotificationManager = PlayerNotificationManager.Builder(
-             this,
-             notificationId, "My_channel_id"
-         )
-             .setChannelNameResourceId(R.string.app_name)
-             .setChannelDescriptionResourceId(R.string.notification_Channel_Description)
-             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
-             .setNotificationListener(object : PlayerNotificationManager.NotificationListener {
-                 override fun onNotificationPosted(
-                     notificationId: Int,
-                     notification: Notification,
-                     ongoing: Boolean
-                 ) {
-                     Log.d("TAG", "onNotificationPosted: ")
-                 }
-
-                 override fun onNotificationCancelled(
-                     notificationId: Int,
-                     dismissedByUser: Boolean
-                 ) {
-                     try {
-                         playerNotificationManager!!.setPlayer(null)
-                         AppSingelton.exoPlayer?.release()
-                         AppSingelton.exoPlayer = null
-                     } catch (e: Exception) {
-                         e.printStackTrace()
-                     }
-                 }
-
-             })
-             .build()
-
-         playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
-         playerNotificationManager!!.setUsePlayPauseActions(true)
-         playerNotificationManager!!.setSmallIcon(R.drawable.logo)
-         playerNotificationManager!!.setColorized(true)
-         playerNotificationManager!!.setColor(0xFFBDBDBD.toInt())
-         playerNotificationManager!!.setPlayer(AppSingelton.exoPlayer)
-     }
-
-    */
     open fun checkServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
@@ -454,7 +375,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             arrayItems = gson.fromJson<List<T>>(serializedObject, type)
             return arrayItems
         }
-        return emptyList()
+        return mutableListOf()
     }
 
 }
