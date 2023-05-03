@@ -149,7 +149,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                     var isDayPassed =
                         (System.currentTimeMillis() - data.date) >= TimeUnit.DAYS.toMillis(2)
                     if (isDayPassed) {
-                        CoroutineScope(Dispatchers.IO).launch {
+                        CoroutineScope(IO).launch {
                             val episodedata =
                                 appDatabase!!.appDap().getOfflineEpisodeById(data.episode_id)
                             if (episodedata != null) {
