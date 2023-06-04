@@ -14,7 +14,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="@dimen/_8sdp"
         android:layout_margin="@dimen/_4sdp"
@@ -24,11 +24,22 @@
         app:cardElevation="@dimen/_3sdp">
 
         <LinearLayout
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_110sdp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/checkbox_checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:buttonTint="@color/OrangeRed"
+                />
+
+
 
             <ImageView
                 android:id="@+id/imageView"
@@ -43,7 +54,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="start|center"
                 android:padding="@dimen/_2sdp"

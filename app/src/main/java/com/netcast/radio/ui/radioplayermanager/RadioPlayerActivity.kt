@@ -23,7 +23,6 @@ import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityRadioPlayerBinding
-import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.download.DownloadUsingMediaStore
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
@@ -65,6 +64,13 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         checkWifiPlaySettings()
+
+        AppSingelton.radioSelectedChannel.observe(this) {
+          it?.let {
+              dataBinding.tvChannelName.text=it.name
+          }
+
+        }
         //
         _checkMediaType()
         //
@@ -81,6 +87,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         CoroutineScope(Dispatchers.IO).launch {
             getOfflineData()
         }
+
     }
 
     private fun checkWifiPlaySettings(): Boolean {
@@ -348,6 +355,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 ex.printStackTrace()
             }
         }
+        viewModel._onepisodeShareClicked.observe(this@RadioPlayerActivity) {
+            try {
+                share("Checkout this link its amazing. ", it.listennotesUrl)
+
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        }
 
         viewModel._radioClicked.observe(this@RadioPlayerActivity) {
             try {
@@ -368,28 +383,35 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
          }*/
     }
 
+    private fun share(messageToShare: String, appUrl: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
+        startActivity(Intent(intent))
+    }
+
     private fun downloadEpisode(data: Data) {
-        if (AppSingelton.currentDownloading.matches("".toRegex())) {
-            val data = data
-            AppSingelton.downloadingEpisodeData = data
+//        if (AppSingelton.currentDownloading.matches("".toRegex())) {
+        val data = data
+        AppSingelton.downloadingEpisodeData = data
 //                    DownloadFile(data).execute()
-            DownloadUsingMediaStore(data, this).execute()
-            startActivity(
-                Intent(
-                    this@RadioPlayerActivity, DownloadActivity::class.java
-                )
-            )
+        DownloadUsingMediaStore(data, this).execute()
+        /* startActivity(
+             Intent(
+                 this@RadioPlayerActivity, DownloadActivity::class.java
+             )
+         )*/
 //                val snackbar = Snackbar
 //                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
 //                    .setAction("Go To Downloads ?") {
 //
 //                    }
 //                snackbar.show()
-        } else {
+        /*} else {
             Toast.makeText(
                 this, "Please wait another download is in progress...", Toast.LENGTH_SHORT
             ).show()
-        }
+        }*/
     }
 
     private fun refreshAdapter() {

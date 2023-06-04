@@ -126,8 +126,8 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 } else if (!AppSingelton.downloadedIds.contains(data.id + "")) AppSingelton.downloadedIds =
                     AppSingelton.downloadedIds + "," + data.id
             } else {
-                deletePodcastById(data.id)
-                listOffline.remove(data)
+//                deletePodcastById(data.id)
+//                listOffline.remove(data)
             }
         }
         return listOffline.toList()

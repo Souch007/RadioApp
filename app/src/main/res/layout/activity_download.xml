@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
+
     <data>
 
         <variable
@@ -13,207 +14,222 @@
             name="downloadVM"
             type="com.netcast.radio.download.DownloadViewModel" />
 
-<!--        <variable-->
-<!--            name="podepisodeadapter"-->
-<!--            type="com.coderoids.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter" />-->
+        <!--        <variable-->
+        <!--            name="podepisodeadapter"-->
+        <!--            type="com.coderoids.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter" />-->
 
         <variable
             name="adapter"
             type="com.netcast.radio.download.adapter.DownloadEpisodeAdapter" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#151523"
-    tools:context=".download.DownloadActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#151523"
-        android:padding="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:context=".download.DownloadActivity">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/title_settings"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/tv_download_title"
-            style="@style/textHeading"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center|start"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/title_download"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_13sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_download"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        android:elevation="@dimen/_8sdp"
-        app:cardCornerRadius="@dimen/_4sdp"
-        app:cardElevation="@dimen/_5sdp"
-        android:visibility="gone"
-        app:cardBackgroundColor="#151523"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_bar">
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_8sdp"
-            android:orientation="horizontal"
+            android:background="#151523"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iv_channel_pod"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_5sdp"
-                android:src="@drawable/logo"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/title_settings"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_baseline_keyboard_backspace_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                 />
-            <!--  <View
-                  android:layout_width="@dimen/_1sdp"
-                  android:background="@color/grey"
-                  android:alpha="0.5"
-                  android:layout_height="@dimen/_90sdp"/>-->
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_download_title"
+                style="@style/textHeading"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/title_download"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_download"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:elevation="@dimen/_8sdp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#151523"
+            app:cardCornerRadius="@dimen/_4sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/top_app_bar">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp">
+                android:elevation="@dimen/_8sdp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/channel_name"
-                    style="@style/textHeading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start|center"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:padding="@dimen/_2sdp"
-
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <ImageView
+                    android:id="@+id/iv_channel_pod"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:src="@drawable/logo"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/location"
-                    style="@style/textTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start|center"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:padding="@dimen/_2sdp"
-                    android:textAlignment="textStart"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent" />
-
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <!--  <View
+                      android:layout_width="@dimen/_1sdp"
+                      android:background="@color/grey"
+                      android:alpha="0.5"
+                      android:layout_height="@dimen/_90sdp"/>-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <TextView
+                        android:id="@+id/channel_name"
+                        style="@style/textHeading"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
-                        android:id="@+id/download_episode"
-                       >
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:padding="@dimen/_2sdp"
 
-                        <ProgressBar
-                            android:id="@+id/progress_bar"
-                            style="?android:attr/progressBarStyleHorizontal"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="normal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        style="@style/textTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start|center"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:padding="@dimen/_2sdp"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="normal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/download_episode"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:indeterminate="false"
-                            android:progressDrawable="@drawable/progress_bar_style"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/tv_downlaod_tag"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_height="@dimen/_50sdp">
 
-                        <TextView
-                            android:id="@+id/tv_downlaod_tag"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_25sdp"
-                            android:gravity="center"
-                            android:text="Loading..."
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_10sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            <ProgressBar
+                                android:id="@+id/progress_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:indeterminate="false"
+                                android:progressDrawable="@drawable/progress_bar_style"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/tv_downlaod_tag"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/tv_downlaod_tag"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"
+                                android:gravity="center"
+                                android:padding="@dimen/_5sdp"
+                                android:text="Loading..."
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
-
             </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/title_download"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Play Offline Podcasts"
-        style="@style/textHeading"
-        android:textSize="@dimen/_12sdp"
-        android:padding="@dimen/_10sdp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_download" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/download_rv"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:spanCount="3"
-        app:layout_constraintTop_toBottomOf="@+id/title_download"
-        app:setAdapter="@{adapter}"
-        app:submitList="@{downloadVM.listDownloadedEpisodes}"
-        tools:listitem="@layout/download_row"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/title_download"
+            style="@style/textHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="Play Offline Podcasts"
+            android:textAlignment="center"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_download" />
+
+        <TextView
+            android:id="@+id/title_delete"
+            style="@style/textHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textAlignment="center"
+            android:textColor="@color/OrangeRed"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_download" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/download_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_delete"
+            app:setAdapter="@{adapter}"
+            app:spanCount="3"
+            app:submitList="@{downloadVM.listDownloadedEpisodes}"
+            tools:listitem="@layout/download_row" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

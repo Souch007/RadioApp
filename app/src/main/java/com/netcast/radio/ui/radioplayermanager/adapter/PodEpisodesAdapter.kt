@@ -34,6 +34,9 @@ class PodEpisodesAdapter(private val list: List<Data>,
             binding.icDone.visibility = View.GONE
             _onEpisodeListener.onEpisodeDeleteClicked(item)
         }
+        binding.icShare.setOnClickListener {
+            _onEpisodeListener.onEpisodeShareClicked(item)
+        }
 
         if(AppSingelton.currentDownloading.matches(item.id.toString().toRegex())){
             binding.progressDownload.visibility = View.VISIBLE
@@ -59,4 +62,5 @@ interface OnEpisodeClickListener {
     fun onEpisodeClicked(data: Data)
     fun onEpisodeDownloadClicked(data: Data)
     fun onEpisodeDeleteClicked(data: Data)
+    fun onEpisodeShareClicked(data: Data)
 }

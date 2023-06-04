@@ -48,6 +48,8 @@ data class Data(
     @SerializedName("thumbnail")
     val thumbnail: String,
 
+    var isSelected: Boolean,
+
     @ColumnInfo(name = "title", defaultValue = "")
     @SerializedName("title")
     val title: String,
