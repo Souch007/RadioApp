@@ -1,6 +1,9 @@
 package com.netcast.radio.download
 
+
 import android.app.DownloadManager
+import android.app.Notification
+import android.app.NotificationManager
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -9,25 +12,61 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.core.app.NotificationCompat
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
+
 
 class DownloadUsingMediaStore(var data: Data, var context: Context) :
     AsyncTask<String?, Int?, String?>() {
     var appDatabase: AppDatabase? = null
-
+    private var notificationManager: NotificationManager? = null
+    private val DOWNLOAD_NOTIFICATION_ID = 1
     var relativePath = ""
-    protected override fun doInBackground(vararg p0: String?): String? {
+
+    private fun updateNotification(progress: Int) {
+        val builder: NotificationCompat.Builder =
+            NotificationCompat.Builder(context, "download_channel")
+                .setContentTitle("Downloading file")
+                .setContentText("Please wait...")
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setProgress(100, progress, false)
+                .setOnlyAlertOnce(true)
+        val notification: Notification = builder.build()
+        notificationManager!!.notify(DOWNLOAD_NOTIFICATION_ID, notification)
+    }
+
+    override fun onPreExecute() {
+        super.onPreExecute()
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Download Channel"
+
+            val description = "Channel for file downloads"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("download_channel", name, importance).apply {
+                this.description = description
+            }
+            notificationManager = context.getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+        } else {
+            notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        }*/
+    }
+
+    override fun doInBackground(vararg p0: String?): String? {
         var count: Int
         val audioOutStream: OutputStream
         try {
+            notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+
             val fileName = data.id + "" + System.currentTimeMillis().toString() + ".mp3"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues()
@@ -53,8 +92,9 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
                 relativePath = audio.path
             }
             AppSingelton.currentDownloading = data.id.toString()
-            downloadFile(fileName, "Downloading episode..", data.audio, relativePath)
-            /*val _url = URL(data.audio)
+
+            downloadFile(fileName,"",data.audio,relativePath,data.title)
+         /*   val _url = URL(data.audio)
             val conexion = _url.openConnection()
             conexion.connect()
             val lenghtOfFile = conexion.contentLength
@@ -79,11 +119,17 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
 
     override fun onProgressUpdate(vararg values: Int?) {
         super.onProgressUpdate(*values)
+        values[0]?.let { updateNotification(it) }
         val current = values[0]
         if (current != null && current >= 0) {
+            /*  CoroutineScope(Dispatchers.IO).launch {
+                  updateProgress(current)
+              }*/
+
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
                 if (current == 100) {
+
                     data.fileURI = relativePath
                     if (AppSingelton.downloadedIds.matches("".toRegex())) {
                         AppSingelton.downloadedIds = data.id.toString()
@@ -92,10 +138,17 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
                             AppSingelton.downloadedIds + "," + data.id.toString()
                     AppSingelton.currentDownloading = ""
                     AppSingelton._onDownloadCompletion.value = data
+
                 }
             }
         }
     }
+
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
+        notificationManager?.cancel(DOWNLOAD_NOTIFICATION_ID)
+    }
+
 
     private fun getRealPathFromURI(context: Context, contentUri: Uri): String {
         val cursor: Cursor? = context.contentResolver.query(contentUri, null, null, null, null)
@@ -119,23 +172,38 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
         } else ""
     }
 
-    private fun downloadFile(fileName: String, desc: String, url: String, outputPath: String) {
+    private fun downloadFile(
+        fileName: String,
+        desc: String,
+        url: String,
+        outputPath: String,
+        title: String
+    ) {
         if (appDatabase == null)
             appDatabase = AppDatabase.getDatabaseClient(context)
+        val file1 = File(relativePath)
+
+        if (file1.exists()) {
+            file1.delete()
+        }
         // fileName -> fileName with extension
         val request = DownloadManager.Request(Uri.parse(url))
             .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-            .setTitle("Downloadin$fileName")
+            .setTitle("Downloading $title")
             .setDescription(desc)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setAllowedOverRoaming(true)
             .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(false)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            .setDestinationUri(Uri.fromFile(file1))
+//            .setDestinationInExternalPublicDir(relativePath, fileName)
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadID = downloadManager.enqueue(request)
+//        data.fileURI = Environment.DIRECTORY_DOWNLOADS+"/${fileName}"
+        data.fileURI = relativePath
         CoroutineScope(Dispatchers.IO).launch {
             appDatabase!!.appDap().insertOfflineEpisode(data)
         }
+        AppSingelton.currentDownloading = ""
     }
 
 }

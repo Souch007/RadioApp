@@ -2,6 +2,7 @@ package com.netcast.radio.ui.radioplayermanager
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.*
@@ -30,7 +31,7 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
+import java.io.*
 
 
 class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>() {
@@ -39,6 +40,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     lateinit var radioPlayerAVM: RadioPlayerAVM
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
     private var isActivityLoaded = false
+    private var notificationManager: NotificationManager? = null
+
+    companion object {
+        private const val CHANNEL_ID = "download_channel"
+        private const val FILE_URL = "https://www.example.com/file.pdf"
+        private const val FILE_NAME = "file.pdf"
+        private const val DOWNLOAD_NOTIFICATION_ID = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!checkWifiPlaySettings()) {
@@ -52,11 +62,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             ).show()
             finish()
         }
+
+
     }
 
     private val permissions = arrayOf(
         WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
     )
+
 
     private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
@@ -66,9 +79,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         checkWifiPlaySettings()
 
         AppSingelton.radioSelectedChannel.observe(this) {
-          it?.let {
-              dataBinding.tvChannelName.text=it.name
-          }
+            it?.let {
+                dataBinding.tvChannelName.text = it.name
+            }
 
         }
         //
@@ -119,6 +132,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         }*/
     }
+
 
     private fun uiControls() {
         checkIfItemisInFav()
@@ -177,7 +191,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         handleChannel()
     }
 
-    private fun deletePodcast(id: String) {
+    override fun deletePodcast(id: String) {
         val data = getOfflineDataById(id)
         val fileUr = data.fileURI
         val fdelete: File = File(fileUr)
@@ -391,27 +405,19 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun downloadEpisode(data: Data) {
-//        if (AppSingelton.currentDownloading.matches("".toRegex())) {
-        val data = data
         AppSingelton.downloadingEpisodeData = data
 //                    DownloadFile(data).execute()
-        DownloadUsingMediaStore(data, this).execute()
-        /* startActivity(
-             Intent(
-                 this@RadioPlayerActivity, DownloadActivity::class.java
-             )
-         )*/
-//                val snackbar = Snackbar
-//                    .make(dataBinding.rpLayout, "Downloading Your Podcast", Snackbar.LENGTH_LONG)
-//                    .setAction("Go To Downloads ?") {
-//
-//                    }
-//                snackbar.show()
-        /*} else {
-            Toast.makeText(
-                this, "Please wait another download is in progress...", Toast.LENGTH_SHORT
-            ).show()
-        }*/
+        if (AppSingelton.currentDownloading.matches("".toRegex())) {
+            val data = data
+            AppSingelton.downloadingEpisodeData = data
+            DownloadUsingMediaStore(data, this).execute()
+            /*       startActivity(
+                       Intent(
+                           this@RadioPlayerActivity, DownloadActivity::class.java
+                       )
+                   )*/
+
+        }
     }
 
     private fun refreshAdapter() {
@@ -445,8 +451,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty()) {
-                val READ_EXTERNAL_STORAGE = grantResults[0] === PackageManager.PERMISSION_GRANTED
-                val WRITE_EXTERNAL_STORAGE = grantResults[1] === PackageManager.PERMISSION_GRANTED
+                val READ_EXTERNAL_STORAGE =
+                    grantResults[0] === PackageManager.PERMISSION_GRANTED
+                val WRITE_EXTERNAL_STORAGE =
+                    grantResults[1] === PackageManager.PERMISSION_GRANTED
                 if (READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE) {
                     // perform action when allow permission success
                 } else {
@@ -516,4 +524,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.episode.text = podcastEpisodeList!![currentPos?.toInt() ?: 0].title
 
     }
+
+
 }

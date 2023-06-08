@@ -39,6 +39,7 @@ object AppSingelton {
     var _SleepTimer = MutableLiveData<String>()
     var _SleepTimerEnd = MutableLiveData<Boolean>()
     var currentActivity = ""
+    var IsDeleted=MutableLiveData<Boolean>()
 
     //--------------- Download -------------------------------//
    public var downloadingEpisodeData: Data? = null

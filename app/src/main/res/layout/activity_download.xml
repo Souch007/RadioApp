@@ -198,6 +198,7 @@
             android:text="Play Offline Podcasts"
             android:textAlignment="center"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_download" />
@@ -222,14 +223,12 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_delete"
-            app:setAdapter="@{adapter}"
-            app:spanCount="3"
-            app:submitList="@{downloadVM.listDownloadedEpisodes}"
+
             tools:listitem="@layout/download_row" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

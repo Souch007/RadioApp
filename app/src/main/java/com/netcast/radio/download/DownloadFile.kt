@@ -49,7 +49,7 @@ class DownloadFile(var data: Data) :
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
                 if (current == 100) {
-                    data.fileURI = relativePath;
+                    data.fileURI = relativePath
                     if (AppSingelton.downloadedIds.matches("".toRegex())) {
                         AppSingelton.downloadedIds = data.id.toString()
                     } else if (!AppSingelton.downloadedIds.contains(data.id.toString() + ""))

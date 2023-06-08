@@ -54,7 +54,7 @@ class  NotificationUtils(base: Context) : ContextWrapper(base) {
         return NotificationCompat.Builder(applicationContext, MYCHANNEL_ID)
             .setContentTitle("Alarm!")
             .setContentText("Netcast your schedule radio is currently playing.")
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setSmallIcon(R.drawable.logo)
             .setColor(Color.YELLOW)
             .setContentIntent(pendingIntent)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

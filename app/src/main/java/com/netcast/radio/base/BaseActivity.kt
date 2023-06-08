@@ -186,6 +186,15 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         getOfflineData()
     }
 
+    open fun deletePodcast(id: String) {
+        if (appDatabase == null) {
+            initializeDB(applicationContext)
+        }
+        var record = appDatabase!!.appDap().deleteOfflineEpisodeById(id)
+        AppSingelton.downloadedIds = ""
+        getOfflineData()
+    }
+
     private fun getViewModelFactory(): ViewModelFactory {
         val remoteDataSource = RemoteDataSource()
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))

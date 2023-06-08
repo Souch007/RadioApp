@@ -14,6 +14,7 @@ import com.netcast.radio.download.adapter.DownloadEpisodeAdapter
 import com.netcast.radio.request.AppConstants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding>() {
@@ -31,9 +32,15 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
                 downlaodEpisodeAdapter.enbaleCheckboxes(true)
 
             } else {
+                GlobalScope.launch {
+                downlaodEpisodeAdapter.deleteSelectedItems(appDatabase)
+                }
                 downlaodEpisodeAdapter.enbaleCheckboxes(false)
                 dataBinding.titleDelete.text = "Edit"
-                downlaodEpisodeAdapter.deleteSelectedItems(appDatabase)
+//                dataBinding.downloadRv.adapter?.notifyDataSetChanged()
+               /* Handler(Looper.myLooper()!!).postDelayed({
+                   dataBinding.adapter?.notifyDataSetChanged()
+                }, 2000)*/
 
 
             }
@@ -42,28 +49,29 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
         dataBinding.ivBack.setOnClickListener {
             finish()
         }
-        /* Handler(Looper.getMainLooper()).postDelayed({
-             if(AppSingelton.downloadingEpisodeData != null){
-                 Glide.with(applicationContext)
-                     .load(AppSingelton.downloadingEpisodeData!!.feedImage)
-                     .error(R.drawable.logo)
-                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                     .priority(Priority.HIGH)
-                     .into(dataBinding.ivChannelPod)
-                 dataBinding.channelName.text = AppSingelton.downloadingEpisodeData!!.title
-                 dataBinding.location.text = Html.fromHtml((AppSingelton.downloadingEpisodeData!!.description))
-                 dataBinding.cardDownload.visibility = View.VISIBLE
-             } else {
-                 dataBinding.cardDownload.visibility = View.GONE
-             }
-         }, 3000)*/
+
+        /*   Handler(Looper.getMainLooper()).postDelayed({
+               if(AppSingelton.downloadingEpisodeData != null){
+                   Glide.with(applicationContext)
+                       .load(AppSingelton.downloadingEpisodeData!!.feedImage)
+                       .error(R.drawable.logo)
+                       .diskCacheStrategy(DiskCacheStrategy.ALL)
+                       .priority(Priority.HIGH)
+                       .into(dataBinding.ivChannelPod)
+                   dataBinding.channelName.text = AppSingelton.downloadingEpisodeData!!.title
+                   dataBinding.location.text = Html.fromHtml((AppSingelton.downloadingEpisodeData!!.description))
+                   dataBinding.cardDownload.visibility = View.VISIBLE
+               } else {
+                   dataBinding.cardDownload.visibility = View.GONE
+               }
+           }, 3000)*/
 
     }
 
     private fun manageOfflineData() {
         CoroutineScope(Dispatchers.IO).launch {
             val listOfEpisodes = getOfflineData()
-            if (listOfEpisodes != null && listOfEpisodes.size > 0)
+            if (listOfEpisodes != null && listOfEpisodes.isNotEmpty())
                 viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
             else
                 dataBinding.titleDownload.text = "No Data Found"
@@ -74,7 +82,7 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
         AppSingelton._progressPublish.observe(this@DownloadActivity) {
             if (it != null) {
                 dataBinding.tvDownlaodTag.text = "Downloading " + it.toString() + " %"
-                dataBinding.progressBar.setProgress(it)
+                dataBinding.progressBar.progress = it
                 if (it == 100) {
                     AppSingelton._progressPublish.value = null
                     dataBinding.tvDownlaodTag.setText("Downloaded")
@@ -89,11 +97,10 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
                 manageOfflineData()
             }, 3000)
         }
-
         viewModel._listDownloadedEpisodes.observe(this@DownloadActivity) {
             it?.let {
-                downlaodEpisodeAdapter=DownloadEpisodeAdapter(mutableListOf(), viewModel,false)
-                dataBinding.adapter = downlaodEpisodeAdapter
+                downlaodEpisodeAdapter = DownloadEpisodeAdapter(it.toMutableList(), viewModel, false)
+                dataBinding.downloadRv.adapter = downlaodEpisodeAdapter
             }
         }
 

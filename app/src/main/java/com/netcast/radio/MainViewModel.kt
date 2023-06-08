@@ -77,15 +77,15 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     fun getRadioListing(radioViewModel: RadioViewModel,country:String?) {
         viewModelScope.launch {
-//            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
-            radioViewModel._radioListing.value = appRepository.getRadioListing("")
+            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
+//            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }
 
     fun getPodCastListing(podcastViewModel: PodcastViewModel,country:String?) {
         viewModelScope.launch {
-            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
-//            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
+//            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
+            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
 
         }
     }
@@ -191,9 +191,9 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {
         try {
             for(i in AppSingelton.favouritesRadioArray.indices){
-                var data = AppSingelton.favouritesRadioArray.get(i)
+                var data = AppSingelton.favouritesRadioArray[i]
                 if (data.id == playingChannelData.id){
-                    AppSingelton.favouritesRadioArray.removeAt(i);
+                    AppSingelton.favouritesRadioArray.removeAt(i)
                 }
             }
             AppSingelton._isFavUpdated.value = true

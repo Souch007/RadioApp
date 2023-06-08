@@ -16,17 +16,20 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp"
         android:elevation="@dimen/_8sdp"
-        android:layout_margin="@dimen/_4sdp"
-        app:cardCornerRadius="@dimen/_5sdp"
-        app:cardBackgroundColor="#151523"
         android:onClick="@{() -> listener.onDownloadedEpisodeClicked(episode)}"
-        app:cardElevation="@dimen/_3sdp">
+        app:cardBackgroundColor="@color/black"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_110sdp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -35,16 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"
                 android:buttonTint="@color/OrangeRed"
-                />
-
+                android:visibility="gone" />
 
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_90sdp"
+                android:layout_height="90dp"
                 android:src="@drawable/logo"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,23 +53,53 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:setImage="@{episode.feedImage}" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="start|center"
-                android:padding="@dimen/_2sdp"
-                android:text="@{episode.title}"
-                style="@style/textTitle"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/_7sdp"
-                android:textStyle="normal"
-                android:lines="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="@dimen/_2sdp"
+                    android:text="@{episode.title}"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:padding="@dimen/_2sdp"
+                    android:text="@{episode.title}"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/_10sdp"
+
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
