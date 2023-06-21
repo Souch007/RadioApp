@@ -135,9 +135,12 @@
             </intent-filter>-->
         </receiver>
 
+
         <service
             android:name=".ui.ui.settings.TimerService"
             android:exported="false" />
+
+
     </application>
 
 </manifest>

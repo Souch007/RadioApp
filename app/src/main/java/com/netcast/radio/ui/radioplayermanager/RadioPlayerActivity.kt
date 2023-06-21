@@ -2,10 +2,16 @@ package com.netcast.radio.ui.radioplayermanager
 
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
-import android.app.NotificationManager
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.*
+import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -24,7 +30,7 @@ import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityRadioPlayerBinding
-import com.netcast.radio.download.DownloadUsingMediaStore
+import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
@@ -40,7 +46,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     lateinit var radioPlayerAVM: RadioPlayerAVM
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
     private var isActivityLoaded = false
-    private var notificationManager: NotificationManager? = null
+    var relativePath = ""
+    private var downloadManager: DownloadManager? = null
 
     companion object {
         private const val CHANNEL_ID = "download_channel"
@@ -410,7 +417,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         if (AppSingelton.currentDownloading.matches("".toRegex())) {
             val data = data
             AppSingelton.downloadingEpisodeData = data
-            DownloadUsingMediaStore(data, this).execute()
+            downloadEpisodeNow(data, this)
+//            DownloadUsingMediaStore(data, this).execute()
             /*       startActivity(
                        Intent(
                            this@RadioPlayerActivity, DownloadActivity::class.java
@@ -420,12 +428,133 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
     }
 
+
+    private fun downloadEpisodeNow(data: Data, radioPlayerActivity: RadioPlayerActivity) {
+        val fileName = data.id + "" + System.currentTimeMillis().toString() + ".mp3"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues()
+            values.put(MediaStore.Audio.Media.DISPLAY_NAME, fileName)
+            values.put(MediaStore.Audio.Media.MIME_TYPE, "audio/mpeg")
+            values.put(
+                MediaStore.Audio.Media.RELATIVE_PATH,
+                "${Environment.DIRECTORY_MUSIC}"
+            )
+            val uri = contentResolver.insert(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                values
+            )
+            relativePath = getRealPathFromURI(this, uri!!)
+        } else {
+            Environment.getExternalStorageDirectory().path + "/${fileName}"
+            val audio = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+                    .toString(), fileName
+            )
+
+            relativePath = audio.path
+        }
+        AppSingelton.currentDownloading = data.id
+
+        downloadFile(fileName, "", data.audio, relativePath, data.title, data)
+    }
+
+    private fun getRealPathFromURI(context: Context, contentUri: Uri): String {
+        val cursor: Cursor? = context.contentResolver.query(contentUri, null, null, null, null)
+        val idx: Int = if (contentUri.path!!.startsWith("/external/image") || contentUri.path
+            !!.startsWith("/internal/image")
+        ) {
+            cursor!!.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+        } else if (contentUri!!.path!!.startsWith("/external/video") || contentUri!!.path
+            !!.startsWith("/internal/video")
+        ) {
+            cursor!!.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
+        } else if (contentUri.path!!.startsWith("/external/audio") || contentUri!!.path
+            !!.startsWith("/internal/audio")
+        ) {
+            cursor!!.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
+        } else {
+            return contentUri.path!!
+        }
+        return if (cursor != null && cursor.moveToFirst()) {
+            cursor.getString(idx)
+        } else ""
+    }
+
+
+    private fun downloadFile(
+        fileName: String,
+        desc: String,
+        url: String,
+        outputPath: String,
+        title: String,
+        data: Data
+    ) {
+        if (appDatabase == null)
+            appDatabase = AppDatabase.getDatabaseClient(this)
+        val file1 = File(relativePath)
+        if (downloadManager != null && isDownloadingInProgress(this)) {
+            Toast.makeText(this, "Downloading in progress please wait a while...", Toast.LENGTH_SHORT).show()
+            AppSingelton.currentDownloading = ""
+            return
+        } else {
+            if (file1.exists()) {
+                Toast.makeText(this, "File Already Exist...", Toast.LENGTH_SHORT).show()
+//                showAlertDialog("Alert", "File Already Exist")
+                AppSingelton.currentDownloading = ""
+                return
+            }
+            // fileName -> fileName with extension
+            val request = DownloadManager.Request(Uri.parse(url))
+                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                .setTitle("Downloading $title")
+                .setDescription(desc)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setAllowedOverRoaming(true)
+                .setAllowedOverMetered(true)
+                .setDestinationUri(Uri.fromFile(file1))
+//            .setDestinationInExternalPublicDir(relativePath, fileName)
+            downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+            val downloadId = downloadManager?.enqueue(request)!!
+//        data.fileURI = Environment.DIRECTORY_DOWNLOADS+"/${fileName}"
+            data.fileURI = relativePath
+            CoroutineScope(Dispatchers.IO).launch {
+                appDatabase!!.appDap().insertOfflineEpisode(data)
+            }
+            AppSingelton.currentDownloading = ""
+        }
+
+
+    }
+
+    private fun showAlertDialog(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun isDownloadingInProgress(context: Context): Boolean {
+//         downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+        val query = DownloadManager.Query()
+        query.setFilterByStatus(DownloadManager.STATUS_RUNNING)
+
+        val cursor = downloadManager?.query(query)
+        val inProgress = cursor?.count!! > 0
+        cursor?.close()
+
+        return inProgress
+    }
+
     private fun refreshAdapter() {
         dataBinding.podepisodeadapter =
             com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter(
                 podcastEpisodeList!!, viewModel
             )
     }
+
 
     private fun checkPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

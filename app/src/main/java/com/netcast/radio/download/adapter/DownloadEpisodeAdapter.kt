@@ -6,7 +6,10 @@ import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.DownloadRowBinding
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 
 class DownloadEpisodeAdapter(
@@ -25,10 +28,10 @@ class DownloadEpisodeAdapter(
             listener = _onClickListenerPodcast
             executePendingBindings()
         }
-  /*      binding.checkboxChecked.setOnCheckedChangeListener { buttonView, isChecked ->
-            currentItem.isSelected = !currentItem.isSelected
-            toggleSelection(currentItem)
-        }*/
+        /*      binding.checkboxChecked.setOnCheckedChangeListener { buttonView, isChecked ->
+                  currentItem.isSelected = !currentItem.isSelected
+                  toggleSelection(currentItem)
+              }*/
 
         binding.checkboxChecked.setOnClickListener {
             currentItem.isSelected = !currentItem.isSelected
@@ -62,26 +65,30 @@ class DownloadEpisodeAdapter(
 
     // Delete selected items
     suspend fun deleteSelectedItems(appDatabase: AppDatabase?) {
-        val job=CoroutineScope(Dispatchers.IO).async {
-            for (i in selectedItems) {
-                var data = appDatabase!!.appDap().getOfflineEpisodeById(i.id)
-                val fileUr = data.fileURI
-                val fdelete: File = File(fileUr)
-                if (fdelete.exists()) {
-                    if (fdelete.delete()) {
+        try {
+            val job = CoroutineScope(Dispatchers.IO).async {
+                for (i in selectedItems) {
+                    var data = appDatabase!!.appDap().getOfflineEpisodeById(i.id)
+                    val fileUr = data.fileURI
+                    val fdelete: File = File(fileUr)
+                    if (fdelete.exists()) {
+                        appDatabase?.appDap()?.deleteOfflineEpisodeById(i.id)
+                        fdelete.delete()
+                    } else {
                         appDatabase?.appDap()?.deleteOfflineEpisodeById(i.id)
                     }
+
                 }
-
             }
+            job.await()
+            list.removeAll(selectedItems)
+            selectedItems.clear()
+            CoroutineScope(Dispatchers.Main).launch {
+                notifyDataSetChanged()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        job.await()
-        list.removeAll(selectedItems)
-        selectedItems.clear()
-        CoroutineScope(Dispatchers.Main).launch {
-        notifyDataSetChanged()
-        }
-
     }
 
     fun enbaleCheckboxes(enable: Boolean) {
