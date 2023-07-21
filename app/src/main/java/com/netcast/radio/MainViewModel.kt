@@ -77,15 +77,15 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     fun getRadioListing(radioViewModel: RadioViewModel,country:String?) {
         viewModelScope.launch {
-//            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
-            radioViewModel._radioListing.value = appRepository.getRadioListing("")
+            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
+//            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }
 
     fun getPodCastListing(podcastViewModel: PodcastViewModel,country:String?) {
         viewModelScope.launch {
-            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
-//            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
+//            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
+            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
 
         }
     }

@@ -487,7 +487,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             )
 
         }
-  /*      optionLayoutBinding.tvFavourite.setOnClickListener {
+        optionLayoutBinding.tvFavourite.setOnClickListener {
             bottomSheetDialog.dismiss()
             AppSingelton._radioSelectedChannel.value?.let { it1 ->
                 viewModel.addChannelToFavourites(
@@ -495,7 +495,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 )
             }
 
-        }*/
+        }
         bottomSheetDialog.show()
     }
 
