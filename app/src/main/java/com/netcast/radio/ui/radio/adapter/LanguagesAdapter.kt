@@ -5,7 +5,7 @@ import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.LanguagesRowBinding
 import com.netcast.radio.ui.radio.lanuages.Data
 
-class LanguagesAdapter (
+class LanguagesAdapter(
     private val list: List<Data>,
     private val onClickListenerLanguages: OnClickListenerLanguages
 ) : BaseAdapter<LanguagesRowBinding, Data>(list) {
@@ -17,16 +17,18 @@ class LanguagesAdapter (
             listener = onClickListenerLanguages
             executePendingBindings()
         }
+
     }
 
     override fun getItemsCount(data: List<Data>): Int {
-        if(data.size > 10)
-            return 9;
+        if (data.size > 10)
+            return 9
         else
             return data.size;
     }
 
 }
+
 interface OnClickListenerLanguages {
     fun onLanguageClicked(data: Data)
 }

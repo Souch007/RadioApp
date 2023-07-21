@@ -52,6 +52,21 @@
             android:text="Share Station"
             android:textSize="@dimen/_13sdp" />
 
+        <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_favourite"
+            style="@style/textHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/OrangeRed"
+            android:padding="@dimen/_5sdp"
+            android:text="Add to Favourite"
+            android:textSize="@dimen/_13sdp" />
+-->
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
