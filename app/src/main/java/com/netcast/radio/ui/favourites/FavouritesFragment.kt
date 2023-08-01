@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
+import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseFragment
@@ -22,9 +23,9 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         binding.lifecycleOwner = this@FavouritesFragment
         binding.favViewModel = favouritesViewModel
         activity.let {
-            mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
+            mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
-        mainActivityViewModel.favouritesRadioArray = AppSingelton.favouritesRadioArray
+        mainActivityViewModel.favouritesRadioArray = AppSingelton.favouritesRadioArray.asReversed() as ArrayList<PlayingChannelData>
         binding.mainViewModel = mainActivityViewModel
 
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
