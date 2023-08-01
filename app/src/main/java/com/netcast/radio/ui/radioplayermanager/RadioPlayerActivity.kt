@@ -4,6 +4,7 @@ import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -508,7 +509,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setTitle("Downloading $title")
                 .setDescription(desc)
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
                 .setAllowedOverRoaming(true)
                 .setAllowedOverMetered(true)
                 .setDestinationUri(Uri.fromFile(file1))
@@ -526,6 +527,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
     }
+
+
 
     private fun showAlertDialog(title: String, message: String) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
