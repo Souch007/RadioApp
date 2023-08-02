@@ -56,29 +56,18 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:ellipsize="end"
                 android:gravity="center|start"
+                android:maxLength="30"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/title_radio"
-                android:ellipsize="end"
-                android:maxLength="30"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox
-                android:id="@+id/fav_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:button="@drawable/checkbox_selector"
-                android:buttonTint="@color/Red"
-                android:gravity="center"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                app:layout_constraintEnd_toEndOf="@+id/tv_channel_name"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
@@ -91,7 +80,9 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_channel_logo"
                     android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
                     android:src="@drawable/logo"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                     app:strokeWidth="1dp" />
@@ -111,8 +102,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:alpha="0.2"
-                            android:visibility="gone"
                             android:scaleType="centerCrop"
+                            android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -124,11 +115,47 @@
                             style="@style/textHeading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_30sdp"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:padding="@dimen/_5sdp"
                             android:textColor="@color/white" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/episode"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/fav_iv"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_centerInParent="true"
+                                android:button="@drawable/checkbox_selector"
+                                android:buttonTint="@color/white"
+                                android:gravity="center"
+                                android:scaleX="0.5"
+                                android:scaleY="0.5"
+                                app:layout_constraintEnd_toEndOf="@+id/tv_channel_name"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:src="@drawable/ic_exo_icon_play"
+
+                                />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:src="@drawable/ic_menu" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
                     </RelativeLayout>
@@ -140,12 +167,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    app:auto_show="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone"
+                    app:auto_show="true"
                     app:hide_during_ads="false"
                     app:hide_on_touch="false"
                     app:played_color="@color/OrangeRed"

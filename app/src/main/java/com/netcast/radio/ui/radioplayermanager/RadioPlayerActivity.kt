@@ -4,7 +4,6 @@ import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
-import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -13,6 +12,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
+import android.support.v4.media.session.PlaybackStateCompat
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -197,6 +197,18 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         AppSingelton._radioSelectedChannelId = ""
         handleChannel()
+        dataBinding.playerView.player?.addListener(object : Player.Listener {
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
+                    //do something
+                }
+            }
+
+            fun onPlayWhenReadyCommitted() {}
+            fun onPlayerError(error: ExoPlaybackException?) {
+                dataBinding.playerView.player?.stop()
+            }
+        })
     }
 
     override fun deletePodcast(id: String) {
