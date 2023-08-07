@@ -64,9 +64,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             isActivityLoaded = true
         } else {
             Toast.makeText(
-                this,
-                "Please check your wifi as you enabled stream over wifi",
-                Toast.LENGTH_LONG
+                this, "Please check your wifi as you enabled stream over wifi", Toast.LENGTH_LONG
             ).show()
             finish()
         }
@@ -109,6 +107,17 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             getOfflineData()
         }
 
+        dataBinding.icPlay.setOnClickListener {
+            if (dataBinding.playerView.player?.isPlaying == true) {
+                dataBinding.playerView.player?.pause()
+               dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
+            }
+            else{
+                dataBinding.playerView.player?.play()
+                dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
+            }
+
+        }
     }
 
     private fun checkWifiPlaySettings(): Boolean {
@@ -130,8 +139,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             if (dataBinding.podepisodeadapter != null) {
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
-        }
-        /*} else {
+        }/*} else {
             Toast.makeText(
                 this,
                 "Please check your wifi as you enabled stream over wifi",
@@ -200,7 +208,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.playerView.player?.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
-                    //do something
+                    dataBinding.icPlay.setImageResource(R.drawable.exo_icon_pause)
+                } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
+                    dataBinding.icPlay.setImageResource(R.drawable.exo_icon_play)
+
                 }
             }
 
@@ -279,8 +290,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             (sharedPreferences.getLong(
                                 AppConstants.PLAYER_SECS, 15
                             ) * 1000)
-                        )
-                        /*.setPauseAtEndOfMediaItems(
+                        )/*.setPauseAtEndOfMediaItems(
                             sharedPreferences.getBoolean(
                                 AppConstants.SKIP_SLIENCE, false
                             )
@@ -449,12 +459,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             values.put(MediaStore.Audio.Media.DISPLAY_NAME, fileName)
             values.put(MediaStore.Audio.Media.MIME_TYPE, "audio/mpeg")
             values.put(
-                MediaStore.Audio.Media.RELATIVE_PATH,
-                "${Environment.DIRECTORY_MUSIC}"
+                MediaStore.Audio.Media.RELATIVE_PATH, "${Environment.DIRECTORY_MUSIC}"
             )
             val uri = contentResolver.insert(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                values
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values
             )
             relativePath = getRealPathFromURI(this, uri!!)
         } else {
@@ -473,21 +481,22 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun getRealPathFromURI(context: Context, contentUri: Uri): String {
         val cursor: Cursor? = context.contentResolver.query(contentUri, null, null, null, null)
-        val idx: Int = if (contentUri.path!!.startsWith("/external/image") || contentUri.path
-            !!.startsWith("/internal/image")
-        ) {
-            cursor!!.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-        } else if (contentUri!!.path!!.startsWith("/external/video") || contentUri!!.path
-            !!.startsWith("/internal/video")
-        ) {
-            cursor!!.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
-        } else if (contentUri.path!!.startsWith("/external/audio") || contentUri!!.path
-            !!.startsWith("/internal/audio")
-        ) {
-            cursor!!.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
-        } else {
-            return contentUri.path!!
-        }
+        val idx: Int =
+            if (contentUri.path!!.startsWith("/external/image") || contentUri.path!!.startsWith("/internal/image")) {
+                cursor!!.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            } else if (contentUri!!.path!!.startsWith("/external/video") || contentUri!!.path!!.startsWith(
+                    "/internal/video"
+                )
+            ) {
+                cursor!!.getColumnIndex(MediaStore.Video.VideoColumns.DATA)
+            } else if (contentUri.path!!.startsWith("/external/audio") || contentUri!!.path!!.startsWith(
+                    "/internal/audio"
+                )
+            ) {
+                cursor!!.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
+            } else {
+                return contentUri.path!!
+            }
         return if (cursor != null && cursor.moveToFirst()) {
             cursor.getString(idx)
         } else ""
@@ -495,18 +504,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
     private fun downloadFile(
-        fileName: String,
-        desc: String,
-        url: String,
-        outputPath: String,
-        title: String,
-        data: Data
+        fileName: String, desc: String, url: String, outputPath: String, title: String, data: Data
     ) {
-        if (appDatabase == null)
-            appDatabase = AppDatabase.getDatabaseClient(this)
+        if (appDatabase == null) appDatabase = AppDatabase.getDatabaseClient(this)
         val file1 = File(relativePath)
         if (downloadManager != null && isDownloadingInProgress(this)) {
-            Toast.makeText(this, "Downloading in progress please wait a while...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, "Downloading in progress please wait a while...", Toast.LENGTH_SHORT
+            ).show()
             AppSingelton.currentDownloading = ""
             return
         } else {
@@ -519,11 +524,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             // fileName -> fileName with extension
             val request = DownloadManager.Request(Uri.parse(url))
                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-                .setTitle("Downloading $title")
-                .setDescription(desc)
+                .setTitle("Downloading $title").setDescription(desc)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                .setAllowedOverRoaming(true)
-                .setAllowedOverMetered(true)
+                .setAllowedOverRoaming(true).setAllowedOverMetered(true)
                 .setDestinationUri(Uri.fromFile(file1))
 //            .setDestinationInExternalPublicDir(relativePath, fileName)
             downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -541,13 +544,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
 
-
     private fun showAlertDialog(title: String, message: String) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("OK", null)
-            .show()
+        builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show()
     }
 
     private fun isDownloadingInProgress(context: Context): Boolean {
@@ -595,10 +594,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty()) {
-                val READ_EXTERNAL_STORAGE =
-                    grantResults[0] === PackageManager.PERMISSION_GRANTED
-                val WRITE_EXTERNAL_STORAGE =
-                    grantResults[1] === PackageManager.PERMISSION_GRANTED
+                val READ_EXTERNAL_STORAGE = grantResults[0] === PackageManager.PERMISSION_GRANTED
+                val WRITE_EXTERNAL_STORAGE = grantResults[1] === PackageManager.PERMISSION_GRANTED
                 if (READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE) {
                     // perform action when allow permission success
                 } else {

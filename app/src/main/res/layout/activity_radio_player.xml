@@ -126,6 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/episode"
                             android:layout_marginStart="@dimen/_20sdp"
+                            android:elevation="@dimen/_10sdp"
                             android:orientation="horizontal">
 
                             <CheckBox
@@ -142,16 +143,17 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
+                                android:id="@+id/ic_play"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
                                 android:layout_marginStart="@dimen/_20sdp"
-                                android:src="@drawable/ic_exo_icon_play"
+                                android:src="@drawable/play_button"
 
                                 />
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
                                 android:layout_marginStart="@dimen/_20sdp"
                                 android:src="@drawable/ic_menu" />
 

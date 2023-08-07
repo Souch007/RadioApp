@@ -8,7 +8,7 @@ object AppConstants {
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"
     const val MAIN_ACTIVITY: String = "MainActivity"
     const val DownloadActivity: String = "DownloadActivity"
-    const val BASE_URL = "http://server.netcast.com:3000/"
+    const val BASE_URL = "https://apitest.netcast.com/"
     const val FETCH_RADIO = "getRadioListing"
     const val PODCAST_LISTING = "getPodcastListing"
     const val PODCAST_EPISODES = "getPodcastEpisodes/"
