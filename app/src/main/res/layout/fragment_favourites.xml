@@ -39,19 +39,19 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_download"
+            style="@style/textHeading"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:background="@color/black"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="My Downloads"
-            android:paddingEnd="@dimen/_15sdp"
-            android:drawableRight="@drawable/ic_arrow_forward"
-            style="@style/textHeading"
-            android:paddingStart="@dimen/_10sdp"
-            android:drawablePadding="@dimen/_10sdp"
+            android:background="@color/black"
             android:drawableLeft="@drawable/ic_downloadwhite"
-            android:textColor="@color/white"
+            android:drawableRight="@drawable/ic_arrow_forward"
+            android:drawablePadding="@dimen/_10sdp"
             android:gravity="center|left"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_15sdp"
+            android:text="My Downloads"
+            android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,21 +74,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_tabview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:elevation="@dimen/_20sdp"
+            android:background="@color/light_grey"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/head">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_Radio"
+                android:layout_width="150dp"
+                android:layout_height="@dimen/_50sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="Radio"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+               android:id="@+id/tv_Podcast"
+                android:layout_width="150dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="PodCast"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fav_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:spanCount="4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/head"
+            app:layout_constraintTop_toBottomOf="@+id/ll_tabview"
             app:layout_constraintVertical_bias="0.019"
             app:setAdapter="@{favouritesAdapter}"
+            app:spanCount="4"
             app:submitList="@{mainViewModel.favouritesRadioArray}"
             tools:listitem="@layout/podcast_search_row" />
     </androidx.constraintlayout.widget.ConstraintLayout>

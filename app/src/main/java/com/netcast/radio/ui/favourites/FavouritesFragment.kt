@@ -2,6 +2,7 @@ package com.netcast.radio.ui.favourites
 
 import android.content.Intent
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -25,7 +26,12 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
-        mainActivityViewModel.favouritesRadioArray = AppSingelton.favouritesRadioArray.asReversed() as ArrayList<PlayingChannelData>
+
+        var radioFiterList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast!="PODCAST"}
+        var radioPodcasrList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast=="PODCAST"}
+        mainActivityViewModel.favouritesRadioArray = radioFiterList?.asReversed() as ArrayList<PlayingChannelData>
+
+
         binding.mainViewModel = mainActivityViewModel
 
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
@@ -46,6 +52,32 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
                     favouritesAdapter?.notifyDataSetChanged()
 
             }
+        }
+        binding.tvRadio.setOnClickListener {
+            setSelectedTab(true,radioFiterList,radioPodcasrList)
+
+        }
+        binding.tvPodcast.setOnClickListener {
+            setSelectedTab(false, radioFiterList, radioPodcasrList)
+        }
+    }
+    private fun setSelectedTab(
+        isStation: Boolean,
+        radioFiterList: List<PlayingChannelData>,
+        radioPodcasrList: List<PlayingChannelData>?
+    ) {
+        if (isStation) {
+            binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
+            binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.Black))
+            mainActivityViewModel.favouritesRadioArray = radioFiterList?.asReversed() as ArrayList<PlayingChannelData>
+
+        }
+        else{
+            binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.Black))
+            binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.Green))
+            mainActivityViewModel.favouritesRadioArray = radioPodcasrList?.asReversed() as ArrayList<PlayingChannelData>
+
+
         }
     }
 
