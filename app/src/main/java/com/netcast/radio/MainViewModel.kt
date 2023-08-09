@@ -56,7 +56,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val suggestedStations: LiveData<List<RadioLists>> = _suggesteStations
 
     val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
-    var favouritesRadioArray = ArrayList<PlayingChannelData>()
+    var favouritesRadioArray = mutableListOf<PlayingChannelData>()
     val favouritesRadio: LiveData<List<PlayingChannelData>> = _favouritesRadio
 
     //---------------------------------------------------------------------//

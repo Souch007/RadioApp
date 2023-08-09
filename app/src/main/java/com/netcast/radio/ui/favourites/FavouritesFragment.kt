@@ -25,7 +25,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
-        mainActivityViewModel.favouritesRadioArray = AppSingelton.favouritesRadioArray.asReversed() as ArrayList<PlayingChannelData>
+        mainActivityViewModel.favouritesRadioArray = AppSingelton?.favouritesRadioArray?.asReversed() ?: mutableListOf()
         binding.mainViewModel = mainActivityViewModel
 
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
