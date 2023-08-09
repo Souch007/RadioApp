@@ -2,6 +2,7 @@ package com.netcast.radio.ui.favourites
 
 import android.content.Intent
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -26,6 +27,10 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
         mainActivityViewModel.favouritesRadioArray = AppSingelton?.favouritesRadioArray?.asReversed() ?: mutableListOf()
+
+        var radioFiterList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast!="PODCAST"}
+        var radioPodcasrList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast=="PODCAST"}
+
         binding.mainViewModel = mainActivityViewModel
 
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
@@ -46,6 +51,35 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
                     favouritesAdapter?.notifyDataSetChanged()
 
             }
+        }
+        binding.tvRadio.setOnClickListener {
+            radioFiterList?.let { it1 -> setSelectedTab(true, it1,radioPodcasrList) }
+
+        }
+        binding.tvPodcast.setOnClickListener {
+            radioFiterList?.let { it1 -> setSelectedTab(false, it1, radioPodcasrList) }
+        }
+    }
+    private fun setSelectedTab(
+        isStation: Boolean,
+        radioFiterList: List<PlayingChannelData>,
+        radioPodcasrList: List<PlayingChannelData>?
+    ) {
+        if (isStation) {
+            binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.White))
+            binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.OrangeRed))
+            mainActivityViewModel.favouritesRadioArray = radioFiterList?.asReversed()?.toMutableList()
+                ?: mutableListOf<PlayingChannelData>()
+            binding.favouritesAdapter = FavouriteAdapter(mainActivityViewModel.favouritesRadioArray, mainActivityViewModel,"favourites")
+
+        }
+        else{
+            binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.OrangeRed))
+            binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.White))
+            mainActivityViewModel.favouritesRadioArray = radioPodcasrList?.asReversed()?.toMutableList() ?: mutableListOf<PlayingChannelData>()
+
+            binding.favouritesAdapter = FavouriteAdapter(mainActivityViewModel.favouritesRadioArray, mainActivityViewModel,"favourites")
+
         }
     }
 
