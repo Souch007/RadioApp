@@ -27,7 +27,10 @@ private val onFavouriteClickListener : OnFavouriteClickListener,private val type
        /* if(data.size >5)
             return 5;
         else*/
-            return data.size
+        return if (type=="favourites")
+            data.size
+        else
+            10
     }
 }
 
