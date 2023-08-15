@@ -13,11 +13,15 @@
         <action
             android:id="@+id/action_navigation_radio_to_navigation_see_all"
             app:destination="@id/navigation_see_all" />
+
         <action
             android:id="@+id/action_navigation_radio_to_navigation_filterstaions"
             app:popUpTo="@id/navigation_radio"
             app:popUpToInclusive="false"
             app:destination="@id/navigation_filterstaions" />
+        <action
+            android:id="@+id/action_navigation_radio_to_allGenreFragment"
+            app:destination="@id/allGenreFragment" />
     </fragment>
 
     <fragment
@@ -68,11 +72,15 @@
         android:label="SleepTimerFragment" />
     <fragment
         android:id="@+id/alarmFragment"
-
         android:name="com.netcast.radio.ui.ui.settings.AlarmFragment"
         android:label="AlarmFragment" />
     <fragment
         android:id="@+id/navigation_filterstaions"
         android:name="com.netcast.radio.ui.radio.FilterRadioFragment"
         android:label="FilterRadioActivity" />
+    <fragment
+        android:id="@+id/allGenreFragment"
+        android:name="com.netcast.radio.ui.radio.AllGenreFragment"
+        android:label="AllGenreFragment" />
+
 </navigation>

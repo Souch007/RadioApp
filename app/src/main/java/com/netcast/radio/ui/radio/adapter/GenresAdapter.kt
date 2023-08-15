@@ -6,7 +6,7 @@ import com.netcast.radio.databinding.GenresRowBinding
 import com.netcast.radio.ui.radio.genres.Data
 
 class GenresAdapter(
-    private val list: List<Data>, private val onClickGeneresListener: OnClickGeneresListener
+    private val list: List<Data>, private val onClickGeneresListener: OnClickGeneresListener,private val type:String
 ) : BaseAdapter<GenresRowBinding, Data>(list) {
     override val layoutId: Int = R.layout.genres_row
     var drawable: Int = 0
@@ -44,8 +44,10 @@ class GenresAdapter(
     }
 
     override fun getItemsCount(data: List<Data>): Int {
-        if (data.size > 10) return 9
-        else return data.size;
+        return if (type=="all")
+            data.size
+        else if (data.size > 10) 9
+        else data.size
     }
 
 }

@@ -3,6 +3,7 @@ package com.netcast.radio.ui.radio
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
@@ -129,7 +130,9 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._genresListArray.value = data
                 binding.genresAdapter = com.netcast.radio.ui.radio.adapter.GenresAdapter(
                     listOf(),
-                    mainActivityViewModel
+                    mainActivityViewModel,
+                    "few"
+
                 )
             } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
@@ -157,6 +160,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "Classical"
+        }
+        binding.tvAllTagTvGenres.setOnClickListener {
+            findNavController().navigate(
+                    R.id.action_navigation_radio_to_allGenreFragment
+            )
         }
 
     }
