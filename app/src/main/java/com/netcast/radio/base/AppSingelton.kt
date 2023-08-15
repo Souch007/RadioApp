@@ -51,6 +51,7 @@ object AppSingelton {
 
     var downloadedIds : String = ""
     var currentDownloading : String = ""
+//    var currentDownloading = MutableLiveData<String>("")
     //-----------------------------------------------------//
 
 }

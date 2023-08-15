@@ -1,3 +1,4 @@
+/*
 package com.netcast.radio.download
 
 import android.os.AsyncTask
@@ -16,7 +17,7 @@ class DownloadFile(var data: Data) :
     protected override fun doInBackground(vararg p0: String?): String? {
         var count: Int
         try {
-            AppSingelton.currentDownloading = data.id.toString()
+            AppSingelton.currentDownloading.value = data.id.toString()
             val _url = URL(data.audio)
             val conexion = _url.openConnection()
             conexion.connect()
@@ -37,7 +38,7 @@ class DownloadFile(var data: Data) :
             input.close()
         } catch (e: Exception) {
             e.printStackTrace()
-            AppSingelton.currentDownloading = ""
+            AppSingelton.currentDownloading.value = ""
         }
         return null
     }
@@ -55,7 +56,7 @@ class DownloadFile(var data: Data) :
                     } else if (!AppSingelton.downloadedIds.contains(data.id.toString() + ""))
                         AppSingelton.downloadedIds =
                             AppSingelton.downloadedIds + "," + data.id.toString()
-                    AppSingelton.currentDownloading = ""
+                    AppSingelton.currentDownloading.value= ""
                     AppSingelton._onDownloadCompletion.value = data
                 }
             }
@@ -63,4 +64,4 @@ class DownloadFile(var data: Data) :
     }
 
 
-}
+}*/

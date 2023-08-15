@@ -15,6 +15,7 @@ private val onFavouriteClickListener : OnFavouriteClickListener,private val type
     override fun bind(binding: FavRowBinding, item: PlayingChannelData) {
         binding.apply {
             playing = item
+            tabtype=type
             listener = onFavouriteClickListener
             executePendingBindings()
         }
@@ -31,6 +32,6 @@ private val onFavouriteClickListener : OnFavouriteClickListener,private val type
 }
 
 interface OnFavouriteClickListener {
-    fun onFavChannelClicked(playingChannelData: PlayingChannelData)
+    fun onFavChannelClicked(playingChannelData: PlayingChannelData,tabtype:String)
     fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData)
 }

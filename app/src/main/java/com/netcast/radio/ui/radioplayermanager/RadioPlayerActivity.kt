@@ -34,6 +34,7 @@ import com.netcast.radio.databinding.ActivityRadioPlayerBinding
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
+import com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +50,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     private var isActivityLoaded = false
     var relativePath = ""
     private var downloadManager: DownloadManager? = null
+    lateinit var podEpisodesAdapter: PodEpisodesAdapter
 
     companion object {
         private const val CHANNEL_ID = "download_channel"
@@ -68,6 +70,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             ).show()
             finish()
         }
+
 
 
     }
@@ -208,9 +211,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.playerView.player?.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
-                    dataBinding.icPlay.setImageResource(R.drawable.exo_icon_pause)
+                    dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
+                    dataBinding.progressDownload.visibility=View.INVISIBLE
                 } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
-                    dataBinding.icPlay.setImageResource(R.drawable.exo_icon_play)
+                    dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
 
                 }
             }
@@ -262,9 +266,20 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                         if (file.exists()) {
                             dataBinding.playerView.player = exoPlayer
-                            val mediaItem = MediaItem.fromUri(file.toUri())
+
+
+
+                            val filePath = AppSingelton._radioSelectedChannel.value!!.url
+                            val uri: Uri = Uri.parse(filePath)
+
+                            // Prepare media item and start playback
+                            val mediaItem = MediaItem.fromUri(uri)
                             exoPlayer.setMediaItem(mediaItem)
+                            exoPlayer.prepare()
+                            exoPlayer.play()
                             exoPlayer.addListener(this)
+//                            val mediaItem = MediaItem.fromUri(file.toUri())
+//                            exoPlayer.setMediaItem(mediaItem)
 
                         }
                     }
@@ -340,7 +355,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 podcastEpisodeList = res.data
                 dataBinding.podcastLoader.visibility = View.GONE
                 if (!podcastEpisodeList!!.isNullOrEmpty()) {
-                    dataBinding.playerView.visibility = View.VISIBLE
+//                    dataBinding.playerView.visibility = View.VISIBLE
 
                     refreshAdapter()
                     viewModel._episodeSelected.value = podcastEpisodeList!![0]
@@ -475,7 +490,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             relativePath = audio.path
         }
         AppSingelton.currentDownloading = data.id
-
+        podEpisodesAdapter?.notifyDataSetChanged()
         downloadFile(fileName, "", data.audio, relativePath, data.title, data)
     }
 
@@ -512,13 +527,13 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             Toast.makeText(
                 this, "Downloading in progress please wait a while...", Toast.LENGTH_SHORT
             ).show()
-            AppSingelton.currentDownloading = ""
+//            AppSingelton.currentDownloading = ""
             return
         } else {
             if (file1.exists()) {
                 Toast.makeText(this, "File Already Exist...", Toast.LENGTH_SHORT).show()
 //                showAlertDialog("Alert", "File Already Exist")
-                AppSingelton.currentDownloading = ""
+//                AppSingelton.currentDownloading = ""
                 return
             }
             // fileName -> fileName with extension
@@ -537,7 +552,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             CoroutineScope(Dispatchers.IO).launch {
                 appDatabase!!.appDap().insertOfflineEpisode(data)
             }
-            AppSingelton.currentDownloading = ""
+//            AppSingelton.currentDownloading = ""
         }
 
 
@@ -563,10 +578,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun refreshAdapter() {
-        dataBinding.podepisodeadapter =
-            com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter(
-                podcastEpisodeList!!, viewModel
-            )
+        podEpisodesAdapter=PodEpisodesAdapter(
+            podcastEpisodeList!!, viewModel
+        )
+        dataBinding.podepisodeadapter =podEpisodesAdapter
+
     }
 
 

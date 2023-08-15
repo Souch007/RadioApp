@@ -30,11 +30,11 @@ abstract class BaseViewModel() : ViewModel() {
             var data = AppSingelton.favouritesRadioArray.get(i);
             if (data.id == value.id) {
                 isChannelAlreadyAdded = true
-                break;
+                break
             }
         }
         if(!isChannelAlreadyAdded)
-            AppSingelton.favouritesRadioArray.add(value)
+            AppSingelton.favouritesRadioArray.add(0,value)
         AppSingelton._isFavUpdated.value = true
     }
 

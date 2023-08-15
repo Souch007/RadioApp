@@ -19,6 +19,8 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
     val favouritesViewModel: FavouritesViewModel by activityViewModels()
     val baseViewModel: BaseViewModel by activityViewModels()
     private lateinit var mainActivityViewModel: MainViewModel
+    private lateinit var favouriteAdapter: FavouriteAdapter
+    private var isStation=true
 
     override fun FragmentFavouritesBinding.initialize() {
         binding.lifecycleOwner = this@FavouritesFragment
@@ -26,59 +28,93 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
-        mainActivityViewModel.favouritesRadioArray = AppSingelton?.favouritesRadioArray?.asReversed() ?: mutableListOf()
-
-        var radioFiterList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast!="PODCAST"}
-        var radioPodcasrList = AppSingelton.favouritesRadioArray?.filter { it.idPodcast=="PODCAST"}
+        favouriteAdapter = FavouriteAdapter(listOf(), mainActivityViewModel, "favourites")
 
         binding.mainViewModel = mainActivityViewModel
+        mainActivityViewModel.favouritesRadioArray = AppSingelton?.favouritesRadioArray ?: mutableListOf()
 
         if (mainActivityViewModel.favouritesRadioArray.size > 0) {
             binding.emptyView.visibility = View.GONE
-            binding.head.visibility = View.VISIBLE
-            binding.favouritesAdapter = FavouriteAdapter(listOf(), mainActivityViewModel,"favourites")
+//            binding.head.visibility = View.VISIBLE
+            binding.favouritesAdapter = favouriteAdapter
+
 
         } else {
             binding.emptyView.visibility = View.VISIBLE
-            binding.head.visibility = View.GONE
+//            binding.head.visibility = View.GONE
         }
+
+        setSelectedTab(AppSingelton.favouritesRadioArray ,isStation)
         binding.btnDownload.setOnClickListener {
             startActivity(Intent(requireContext(), DownloadActivity::class.java))
         }
         AppSingelton._isFavUpdated.observe(viewLifecycleOwner) {
             it?.let {
-                if (it)
-                    favouritesAdapter?.notifyDataSetChanged()
+                if (it) {
+                    mainActivityViewModel.favouritesRadioArray = AppSingelton?.favouritesRadioArray ?: mutableListOf()
+                    setSelectedTab(
+                        AppSingelton.favouritesRadioArray,
+                        isStation
+                    )
+//                    favouritesAdapter?.notifyDataSetChanged()
+                }
 
             }
         }
         binding.tvRadio.setOnClickListener {
-            radioFiterList?.let { it1 -> setSelectedTab(true, it1,radioPodcasrList) }
-
+            isStation=true
+            setSelectedTab(AppSingelton.favouritesRadioArray, isStation)
         }
         binding.tvPodcast.setOnClickListener {
-            radioFiterList?.let { it1 -> setSelectedTab(false, it1, radioPodcasrList) }
+            isStation=false
+           setSelectedTab(AppSingelton.favouritesRadioArray, isStation)
         }
     }
+
     private fun setSelectedTab(
+        favouriteList: MutableList<PlayingChannelData>,
         isStation: Boolean,
-        radioFiterList: List<PlayingChannelData>,
-        radioPodcasrList: List<PlayingChannelData>?
     ) {
+
+        var radioFiterList =
+            favouriteList?.filter { it.type.equals("RADIO", true) }
+        var podCastList =
+            favouriteList?.filter { it.type.equals("Episodes", true) }
+
         if (isStation) {
             binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.White))
-            binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.OrangeRed))
-            mainActivityViewModel.favouritesRadioArray = radioFiterList?.asReversed()?.toMutableList()
-                ?: mutableListOf<PlayingChannelData>()
-            binding.favouritesAdapter = FavouriteAdapter(mainActivityViewModel.favouritesRadioArray, mainActivityViewModel,"favourites")
+            binding.tvRadio.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.OrangeRed
+                )
+            )
 
-        }
-        else{
-            binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.OrangeRed))
+//            mainActivityViewModel.favouritesRadioArray = radioFiterList?.toMutableList()?.asReversed()!!
+            mainActivityViewModel.favouritesRadioArray = radioFiterList?.toMutableList()!!
+//            AppSingelton._isFavUpdated.value = true
+             binding.favouritesAdapter = FavouriteAdapter(
+                 mainActivityViewModel.favouritesRadioArray,
+                 mainActivityViewModel,
+                 "favourites")
+//            favouriteAdapter.notifyDataSetChanged()
+
+        } else {
+            binding.tvPodcast.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(), R.color.OrangeRed
+                )
+            )
             binding.tvRadio.setTextColor(ContextCompat.getColor(requireContext(), R.color.White))
-            mainActivityViewModel.favouritesRadioArray = radioPodcasrList?.asReversed()?.toMutableList() ?: mutableListOf<PlayingChannelData>()
+            mainActivityViewModel.favouritesRadioArray = podCastList?.toMutableList()!!
+//            mainActivityViewModel.favouritesRadioArray = podCastList?.toMutableList()?.asReversed()!!
+            binding.favouritesAdapter = FavouriteAdapter(
+                 mainActivityViewModel.favouritesRadioArray,
+                 mainActivityViewModel,
+                 "favourites"
+             )
 
-            binding.favouritesAdapter = FavouriteAdapter(mainActivityViewModel.favouritesRadioArray, mainActivityViewModel,"favourites")
+//            favouriteAdapter.notifyDataSetChanged()
+//            AppSingelton._isFavUpdated.value = true
 
         }
     }

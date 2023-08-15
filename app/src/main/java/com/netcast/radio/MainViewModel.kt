@@ -1,5 +1,6 @@
 package com.netcast.radio
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,7 @@ import com.netcast.radio.ui.search.adapters.StationSearchListener
 import com.netcast.radio.ui.seeall.adapter.OnClickListenerSeeAll
 import com.netcast.radio.ui.seeall.adapter.OnClickListerPODSeeAll
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodcast,
     OnFavouriteClickListener,
@@ -40,7 +42,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> get() = _state
 
-     val _timerradio = MutableLiveData<String>()
+    val _timerradio = MutableLiveData<String>()
     val radiotimer: LiveData<String> get() = _timerradio
 
     val _isStationActive = MutableLiveData<Boolean>()
@@ -75,17 +77,18 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     //----------------------------------//
 
-    fun getRadioListing(radioViewModel: RadioViewModel,country:String?) {
+    fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
         viewModelScope.launch {
-            radioViewModel._radioListing.value = appRepository.getRadioListing(country?:"")
+            radioViewModel._radioListing.value = appRepository.getRadioListing(country ?: "")
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }
 
-    fun getPodCastListing(podcastViewModel: PodcastViewModel,country:String?) {
+    fun getPodCastListing(podcastViewModel: PodcastViewModel, country: String?) {
         viewModelScope.launch {
 //            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
-            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country?:"")
+            podcastViewModel._podcastListingMutable.value =
+                appRepository.getPodCastListing(country ?: "")
 
         }
     }
@@ -108,19 +111,24 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         }
     }
 
-    fun getFrequentSearchesTags(device_id: String,searchViewModel: SearchViewModel) {
+    fun getFrequentSearchesTags(device_id: String, searchViewModel: SearchViewModel) {
         viewModelScope.launch {
-            searchViewModel._frequentSearchesTags.value = appRepository.getFrequentSearchTags(device_id)
+            searchViewModel._frequentSearchesTags.value =
+                appRepository.getFrequentSearchTags(device_id)
         }
     }
 
-    fun getSearchQueryResult(device_id:String, searchQuery: String, searchViewModel: SearchViewModel) {
+    fun getSearchQueryResult(
+        device_id: String,
+        searchQuery: String,
+        searchViewModel: SearchViewModel
+    ) {
         viewModelScope.launch {
             try {
                 searchViewModel._searchResultsPodcast.value =
-                    appRepository.searchPodcasts(searchQuery,device_id)
+                    appRepository.searchPodcasts(searchQuery, device_id)
                 searchViewModel._searchResultsStations.value =
-                    appRepository.searchedStation(searchQuery,device_id)
+                    appRepository.searchedStation(searchQuery, device_id)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
@@ -156,10 +164,10 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     override fun onPodCastClicked(data: PodListData) {
         var playingChannelData = PlayingChannelData(
-            data.website?: "",
+            data.website ?: "",
             data.image,
             data.title,
-            data._id ,
+            data._id,
             data._id,
             data.publisher,
             "PODCAST"
@@ -178,7 +186,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
 
-    override fun onFavChannelClicked(playingChannelData: PlayingChannelData) {
+    override fun onFavChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
+        Log.d("onFavChannelClicked", "onFavChannelClicked: $tabtype")
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
         if (AppSingelton.exoPlayer != null) {
@@ -186,23 +195,38 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             AppSingelton.exoPlayer!!.release()
         }
         AppSingelton.exoPlayer = null
+        if (tabtype.equals("favourites", true)) {
+            val updatedList = AppSingelton.favouritesRadioArray
+            updatedList?.remove(playingChannelData)
+            updatedList?.add(0, playingChannelData)
+            AppSingelton.favouritesRadioArray = updatedList
+            AppSingelton._isFavUpdated.value = true
+        } else {
+            val recentPlayedupdatedList = AppSingelton.recentlyPlayedArray
+            recentPlayedupdatedList?.remove(playingChannelData)
+        recentPlayedupdatedList?.add(AppSingelton.recentlyPlayedArray.size,playingChannelData)
+//            recentPlayedupdatedList?.add(0, playingChannelData)
+            AppSingelton.recentlyPlayedArray = recentPlayedupdatedList
+//        updatedList?.remove(playingChannelData)
+//        AppSingelton.favouritesRadioArray=updatedList
+            AppSingelton.isNewItemAdded.value = true
+
+        }
     }
 
     override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {
         try {
-            for(i in AppSingelton.favouritesRadioArray.indices){
+            for (i in AppSingelton.favouritesRadioArray.indices) {
                 var data = AppSingelton.favouritesRadioArray[i]
-                if (data.id == playingChannelData.id){
+                if (data.id == playingChannelData.id) {
                     AppSingelton.favouritesRadioArray.removeAt(i)
                 }
             }
             AppSingelton._isFavUpdated.value = true
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
 
 
     override fun onSeeAllClick(data: RadioLists) {

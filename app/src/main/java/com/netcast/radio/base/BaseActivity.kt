@@ -80,6 +80,14 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 //            AppSingelton._isFavDeleteUpdated.value=true
         }
 
+        AppSingelton.isNewItemAdded.observe(this){
+            val gson = Gson()
+            val json = gson.toJson(AppSingelton.recentlyPlayedArray)
+            if (json != null) {
+                sharedPredEditor.putString("RecentlyPlayed", json).apply()
+            }
+        }
+
         requestNotificationPermission()
         AppSingelton._SleepTimerEnd.observe(this) {
             if (it && AppSingelton.exoPlayer?.isPlaying == true) {

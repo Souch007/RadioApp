@@ -1,3 +1,4 @@
+/*
 package com.netcast.radio.download
 
 
@@ -49,7 +50,8 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
 
     override fun onPreExecute() {
         super.onPreExecute()
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        */
+/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Download Channel"
 
             val description = "Channel for file downloads"
@@ -62,7 +64,8 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
         } else {
             notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        }*/
+        }*//*
+
     }
 
     override fun doInBackground(vararg p0: String?): String? {
@@ -93,10 +96,11 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
 
                 relativePath = audio.path
             }
-            AppSingelton.currentDownloading = data.id.toString()
+//            AppSingelton.currentDownloading.value = data.id.toString()
 
             downloadFile(fileName,"",data.audio,relativePath,data.title)
-         /*   val _url = URL(data.audio)
+         */
+/*   val _url = URL(data.audio)
             val conexion = _url.openConnection()
             conexion.connect()
             val lenghtOfFile = conexion.contentLength
@@ -111,10 +115,11 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
             }
             audioOutStream.flush()
             audioOutStream.close()
-            input.close()*/
+            input.close()*//*
+
         } catch (e: Exception) {
             e.printStackTrace()
-            AppSingelton.currentDownloading = ""
+//            AppSingelton.currentDownloading.value = ""
         }
         return null
     }
@@ -124,9 +129,11 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
         values[0]?.let { updateNotification(it) }
         val current = values[0]
         if (current != null && current >= 0) {
-            /*  CoroutineScope(Dispatchers.IO).launch {
+            */
+/*  CoroutineScope(Dispatchers.IO).launch {
                   updateProgress(current)
-              }*/
+              }*//*
+
 
             if (current % 5 == 0) {
                 AppSingelton._progressPublish.value = current
@@ -138,7 +145,7 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
                     } else if (!AppSingelton.downloadedIds.contains(data.id.toString() + ""))
                         AppSingelton.downloadedIds =
                             AppSingelton.downloadedIds + "," + data.id.toString()
-                    AppSingelton.currentDownloading = ""
+//                    AppSingelton.currentDownloading = ""
                     AppSingelton._onDownloadCompletion.value = data
 
                 }
@@ -214,7 +221,7 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
             CoroutineScope(Dispatchers.IO).launch {
                 appDatabase!!.appDap().insertOfflineEpisode(data)
             }
-            AppSingelton.currentDownloading = ""
+//            AppSingelton.currentDownloading = ""
         }
 
 
@@ -241,4 +248,4 @@ class DownloadUsingMediaStore(var data: Data, var context: Context) :
     }
 
 
-}
+}*/

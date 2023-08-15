@@ -24,19 +24,19 @@
         android:layout_height="match_parent"
         tools:context=".ui.favourites.FavouritesFragment">
 
-        <TextView
-            android:id="@+id/head"
-            style="@style/textHeading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            android:text="Your Favourite \n Channels &amp; Podcasts"
-            android:textAlignment="center"
-            android:textSize="@dimen/_18sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_download" />
-
+        <!-- <TextView
+             android:id="@+id/head"
+             style="@style/textHeading"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="@dimen/_10sdp"
+             android:text="Your Favourite \n Channels &amp; Podcasts"
+             android:textAlignment="center"
+             android:textSize="@dimen/_18sdp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/btn_download" />
+ -->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_download"
             style="@style/textHeading"
@@ -79,14 +79,14 @@
             android:id="@+id/ll_tabview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:elevation="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@color/black"
+            android:elevation="@dimen/_20sdp"
             android:gravity="center"
             android:orientation="horizontal"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/head">
+            app:layout_constraintTop_toBottomOf="@+id/btn_download">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_Radio"
@@ -96,11 +96,10 @@
                 android:gravity="center"
                 android:text="Channels"
                 android:textColor="@color/OrangeRed"
-                android:textSize="@dimen/_15sdp"
-                />
+                android:textSize="@dimen/_15sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
-               android:id="@+id/tv_Podcast"
+                android:id="@+id/tv_Podcast"
                 android:layout_width="150dp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_gravity="center"
@@ -108,8 +107,7 @@
                 android:gravity="center"
                 android:text="PodCast"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp"
-               />
+                android:textSize="@dimen/_15sdp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -118,8 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +127,7 @@
             app:layout_constraintVertical_bias="0.019"
             app:setAdapter="@{favouritesAdapter}"
             app:spanCount="4"
+            app:reverseLayout="false"
             app:submitList="@{mainViewModel.favouritesRadioArray}"
             tools:listitem="@layout/podcast_search_row" />
     </androidx.constraintlayout.widget.ConstraintLayout>

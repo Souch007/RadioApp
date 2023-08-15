@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="false"
@@ -123,17 +124,12 @@
         <receiver
             android:name=".ui.ui.settings.AlramReceiver"
             android:enabled="true"
-            android:exported="true">
-        <!--    <intent-filter>
+            android:exported="true"></receiver>
 
-                &lt;!&ndash; android:process=":remote" &ndash;&gt;
-                &lt;!&ndash;
-                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
-                <action android:name="from alarm" />
-                &ndash;&gt;
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>-->
-        </receiver>
+        <receiver
+            android:name=".ui.podcast.DownloadCompletetionReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
 
         <service

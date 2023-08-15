@@ -172,6 +172,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             binding.tvRecentlyPlayed.visibility = View.GONE
             binding.recentlyPlayed.visibility = View.GONE
         }
+
     }
 
     override fun onResume() {

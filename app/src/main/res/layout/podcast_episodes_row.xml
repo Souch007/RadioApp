@@ -138,6 +138,7 @@
                                     android:layout_marginStart="@dimen/_10sdp"
                                     android:src="@drawable/ic_download"
                                     android:tint="@color/OrangeRed"
+                                    android:visibility="visible"
                                     android:onClick="@{() -> listener.onEpisodeDownloadClicked(episodeData)}"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -166,7 +167,7 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_share"
+                                    app:layout_constraintStart_toEndOf="@+id/progress_download"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <androidx.appcompat.widget.AppCompatImageView
@@ -212,7 +213,7 @@
                                     android:visibility="gone"
                                     android:indeterminateTintMode="src_atop"
                                     android:indeterminateTint="@color/OrangeRed"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
+                                    app:layout_constraintStart_toEndOf="@+id/ic_share"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>

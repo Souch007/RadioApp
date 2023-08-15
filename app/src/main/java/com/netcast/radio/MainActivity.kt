@@ -113,7 +113,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             val listOffline = getOfflineData()
             runOnUiThread {
                 if (listOffline.isNotEmpty()) {
-                    dataBinding.primeLayout.visibility = View.VISIBLE
+//                    dataBinding.primeLayout.visibility = View.VISIBLE
                 } else dataBinding.primeLayout.visibility = View.GONE
             }
 
