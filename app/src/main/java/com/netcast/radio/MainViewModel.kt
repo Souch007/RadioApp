@@ -80,6 +80,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
         viewModelScope.launch {
             radioViewModel._radioListing.value = appRepository.getRadioListing(country ?: "")
+            Log.d("MainViewModel", "getRadioListing: $country")
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }

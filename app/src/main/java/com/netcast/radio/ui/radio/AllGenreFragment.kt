@@ -1,9 +1,11 @@
 package com.netcast.radio.ui.radio
 
+import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseFragment
@@ -43,6 +45,14 @@ class AllGenreFragment() :
                 ex.printStackTrace()
             }
         }
+ /*       mainActivityViewModel._queriedSearched.observe(viewLifecycleOwner) {
+            it?.let {
+                val args = Bundle()
+                args.putString("filter_tag", it)
+                findNavController().navigate(R.id.navigation_filterstaions,args)
+
+            }
+        }*/
 
     }
 

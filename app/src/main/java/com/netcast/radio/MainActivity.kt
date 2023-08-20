@@ -102,8 +102,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         hideProgressBar()
         checkOfflineChannels()
         getIntentData()
-        if (sharedPreferences.getBoolean("delete_completed_episode", true))
-            deleteCompletedEpisodes()
+        if (sharedPreferences.getBoolean(
+                "delete_completed_episode",
+                true
+            )
+        ) deleteCompletedEpisodes()
 
     }
 
@@ -176,8 +179,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 val args = Bundle()
                 args.putString("filter_tag", it)
                 navController.navigate(
-                    R.id.action_navigation_radio_to_navigation_filterstaions,
-                    args
+                    R.id.action_navigation_radio_to_navigation_filterstaions, args
+                )
+            } else if (navController.currentDestination?.id == R.id.allGenreFragment) {
+                val args = Bundle()
+                args.putString("filter_tag", it)
+                navController.navigate(
+                    R.id.navigation_filterstaions, args
                 )
             } else {
                 dataBinding.searchEditText.setText(it)
@@ -337,30 +345,35 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Radio"
                 }
+
                 R.id.navigation_podcast -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Podcast"
                 }
+
                 R.id.navigation_favourites -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Favourites"
                 }
+
                 R.id.navigation_search -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Search"
                 }
+
                 R.id.navigation_see_all -> {
                     selectedDestination = destination.label.toString()
                     if (dataBinding.settingsBarLayout.visibility == View.VISIBLE) dataBinding.settingsBarLayout.visibility =
                         View.GONE
                     navView.visibility = View.GONE
                 }
+
                 else -> {
                     selectedDestination = getString(R.string.see_all)
                     dataBinding.settingsBarLayout.visibility = View.GONE
