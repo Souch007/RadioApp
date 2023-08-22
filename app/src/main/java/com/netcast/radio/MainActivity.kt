@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -102,8 +103,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         hideProgressBar()
         checkOfflineChannels()
         getIntentData()
-        if (sharedPreferences.getBoolean("delete_completed_episode", true))
-            deleteCompletedEpisodes()
+        if (sharedPreferences.getBoolean(
+                "delete_completed_episode",
+                true
+            )
+        ) deleteCompletedEpisodes()
 
     }
 
@@ -176,8 +180,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 val args = Bundle()
                 args.putString("filter_tag", it)
                 navController.navigate(
-                    R.id.action_navigation_radio_to_navigation_filterstaions,
-                    args
+                    R.id.action_navigation_radio_to_navigation_filterstaions, args
                 )
             } else {
                 dataBinding.searchEditText.setText(it)
@@ -337,30 +340,35 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Radio"
                 }
+
                 R.id.navigation_podcast -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Podcast"
                 }
+
                 R.id.navigation_favourites -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Favourites"
                 }
+
                 R.id.navigation_search -> {
                     selectedDestination = destination.label.toString()
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
                     navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Search"
                 }
+
                 R.id.navigation_see_all -> {
                     selectedDestination = destination.label.toString()
                     if (dataBinding.settingsBarLayout.visibility == View.VISIBLE) dataBinding.settingsBarLayout.visibility =
                         View.GONE
                     navView.visibility = View.GONE
                 }
+
                 else -> {
                     selectedDestination = getString(R.string.see_all)
                     dataBinding.settingsBarLayout.visibility = View.GONE
@@ -483,7 +491,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             bottomSheetDialog.dismiss()
             share(
                 "Checkout this link its amazing. ",
-                AppSingelton._radioSelectedChannel.value?.url ?: ""
+                AppSingelton._radioSelectedChannel.value
             )
 
         }
@@ -499,10 +507,28 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         bottomSheetDialog.show()
     }
 
-    private fun share(messageToShare: String, appUrl: String) {
+    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
+
+
+        AppConstants.generateSharingLink(
+            deepLink = "${AppConstants.PREFIX}/channels/${Gson().toJson(appUrl)}".toUri()
+        ) { generatedLink ->
+            shareDeepLink(generatedLink)
+        }
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
         startActivity(Intent(intent))
+    }
+
+    private fun shareDeepLink(deepLink: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(
+            Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
+        )
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink)
+        startActivity(intent)
+
     }
 }
