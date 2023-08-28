@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -185,8 +186,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 val args = Bundle()
                 args.putString("filter_tag", it)
                 navController.navigate(
-                    R.id.navigation_filterstaions, args
-                )
+                    R.id.navigation_filterstaions, args)
             } else {
                 dataBinding.searchEditText.setText(it)
                 dataBinding.llShimmerLayout.visibility = View.VISIBLE
@@ -496,7 +496,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             bottomSheetDialog.dismiss()
             share(
                 "Checkout this link its amazing. ",
-                AppSingelton._radioSelectedChannel.value?.url ?: ""
+                AppSingelton._radioSelectedChannel.value
             )
 
         }
@@ -512,10 +512,24 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         bottomSheetDialog.show()
     }
 
-    private fun share(messageToShare: String, appUrl: String) {
+    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
+        AppConstants.generateSharingLink(
+            deepLink = AppConstants.PREFIX.toUri(),
+            Gson().toJson(appUrl)
+        ) { generatedLink ->
+            shareDeepLink(generatedLink)
+        }
+
+    }
+
+    private fun shareDeepLink(deepLink: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
-        startActivity(Intent(intent))
+        intent.putExtra(
+            Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
+        )
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink)
+        startActivity(intent)
+
     }
 }

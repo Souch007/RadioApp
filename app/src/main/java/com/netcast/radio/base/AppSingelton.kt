@@ -18,8 +18,9 @@ object AppSingelton {
     public var exoPlayer: ExoPlayer? = null
     public val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
     public val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel
-    var  _radioSelectedChannelId : String = "";
-    var _currenPlayingChannelId : String = "";
+    var  _radioSelectedChannelId : String = ""
+    var _currenPlayingChannelId : String = ""
+    var country=""
 
     var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
     val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel

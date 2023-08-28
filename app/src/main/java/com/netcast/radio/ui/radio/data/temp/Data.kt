@@ -18,7 +18,7 @@ data class Data(
     val news: List<RadioLists>,
     @SerializedName("Pop")
     val pop: List<RadioLists>,
-    @SerializedName("Community")
+    @SerializedName("localStations")
     val publicRadio: List<RadioLists>,
     @SerializedName("radio")
     val radio: List<RadioLists>,
