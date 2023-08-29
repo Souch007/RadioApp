@@ -32,13 +32,15 @@ object AppConstants {
 
    fun generateSharingLink(
       deepLink: Uri,
-
+      channeldata:String,
       getShareableLink: (String) -> Unit = {},
    ) {
       FirebaseDynamicLinks.getInstance().createDynamicLink().run {
          // What is this link parameter? You will get to know when we will actually use this function.
          link = deepLink
          domainUriPrefix = PREFIX
+         link = link!!.buildUpon().appendQueryParameter("channeldata", channeldata).build()
+
          // Pass your preview Image Link here;
        /*  setSocialMetaTagParameters(
             DynamicLink.SocialMetaTagParameters.Builder()

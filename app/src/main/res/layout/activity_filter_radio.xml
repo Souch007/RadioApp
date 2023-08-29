@@ -48,9 +48,9 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:gravity="center|start"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/title_radio"
-                android:gravity="center|start"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,14 +60,25 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ProgressBar
+            android:id="@+id/pb_filterstations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_results_stations"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:paddingStart="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

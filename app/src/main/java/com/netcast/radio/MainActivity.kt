@@ -182,6 +182,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                 navController.navigate(
                     R.id.action_navigation_radio_to_navigation_filterstaions, args
                 )
+            } else if (navController.currentDestination?.id == R.id.allGenreFragment) {
+                val args = Bundle()
+                args.putString("filter_tag", it)
+                navController.navigate(
+                    R.id.navigation_filterstaions, args)
             } else {
                 dataBinding.searchEditText.setText(it)
                 dataBinding.llShimmerLayout.visibility = View.VISIBLE
@@ -508,17 +513,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
-
-
         AppConstants.generateSharingLink(
-            deepLink = "${AppConstants.PREFIX}/channels/${Gson().toJson(appUrl)}".toUri()
+            deepLink = AppConstants.PREFIX.toUri(),
+            Gson().toJson(appUrl)
         ) { generatedLink ->
             shareDeepLink(generatedLink)
         }
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
-        startActivity(Intent(intent))
+
     }
 
     private fun shareDeepLink(deepLink: String) {

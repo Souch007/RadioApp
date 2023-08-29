@@ -6,26 +6,26 @@ import androidx.annotation.Keep
 
 @Keep
 data class Data(
-    @SerializedName("classical")
+    @SerializedName("Dance")
     val classical: List<RadioLists>,
     @SerializedName("estación")
     val estación: List<RadioLists>,
-    @SerializedName("music")
+    @SerializedName("Other")
     val music: List<RadioLists>,
     @SerializedName("méxico")
     val méxico: List<RadioLists>,
-    @SerializedName("news")
+    @SerializedName("Talk")
     val news: List<RadioLists>,
-    @SerializedName("pop")
+    @SerializedName("Pop")
     val pop: List<RadioLists>,
-    @SerializedName("public radio")
+    @SerializedName("localStations")
     val publicRadio: List<RadioLists>,
     @SerializedName("radio")
     val radio: List<RadioLists>,
-    @SerializedName("rock")
+    @SerializedName("Rock")
     val rock: List<RadioLists>,
     @SerializedName("podcasts")
     val podcasts: List<podcastsItem>,
-    @SerializedName("talk")
+    @SerializedName("Decades")
     val talk: List<RadioLists>
 )

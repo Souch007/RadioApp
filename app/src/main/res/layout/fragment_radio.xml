@@ -81,7 +81,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shimmer_repeat_mode="restart"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:shimmer_shape="linear">
 
                     <LinearLayout

@@ -2,6 +2,7 @@ package com.netcast.radio.ui.radio
 
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -29,14 +30,17 @@ class FilterRadioFragment() :
 
 
         searchviewModel.searchResultsStations.observe(viewLifecycleOwner) {
+            binding.pbFilterstations.visibility=View.GONE
             it?.let { searchData ->
                 try {
+                    binding.searchResultsStations.visibility=View.VISIBLE
                     Log.d(TAG, "SearchData: $searchData")
                     val data = (searchData as Resource.Success).value.data
                     searchViewModel!!._searchListStations.value = data
                     binding.stationsearchadapter =
                         StationSearchedAdapter(listOf(), mainActivityViewModel)
                 } catch (ex: Exception) {
+                    binding.pbFilterstations.visibility=View.GONE
                     ex.printStackTrace()
                     val failure = (searchData as Resource.Failure).errorCode
                     val responseBody = searchData.errorResponseBody
@@ -53,6 +57,8 @@ class FilterRadioFragment() :
 
     override fun onResume() {
         super.onResume()
+        binding.pbFilterstations.visibility=View.VISIBLE
+        binding.searchResultsStations.visibility=View.GONE
         val deviceID =
             Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
         mainActivityViewModel.getSearchQueryResult(
