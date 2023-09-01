@@ -185,8 +185,14 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onResume() {
         super.onResume()
-        val recentlyPlayedAdapter = FavouriteAdapter(AppSingelton.recentlyPlayedArray.asReversed(), mainActivityViewModel,"recently_played")
-        binding.recentlyPlayed.adapter = recentlyPlayedAdapter
+        try {
+            val recentlyPlayedAdapter = AppSingelton?.recentlyPlayedArray?.asReversed()
+                ?.let { FavouriteAdapter(it, mainActivityViewModel, "recently_played") }
+            binding.recentlyPlayed.adapter = recentlyPlayedAdapter
+        }
+        catch (e:Exception){
+            e.printStackTrace()
+        }
 
     }
 
