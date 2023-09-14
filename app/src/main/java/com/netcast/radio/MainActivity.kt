@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
@@ -48,6 +50,8 @@ import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.seeall.SeeAllViewModel
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
+import com.netcast.radio.util.BottomSheetOptionsFragment
+import com.netcast.radio.util.OptionsClickListner
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +59,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsClickListner {
 
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
@@ -473,10 +477,15 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun showBottomSheetDialog() {
-        val bottomSheetDialog = BottomSheetDialog(this)
+
+
+       val bottomSheetFragment = BottomSheetOptionsFragment(this)
+        bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
+
+
+      /*  val bottomSheetDialog = BottomSheetDialog(this)
         val optionLayoutBinding = OptionLayoutBinding.inflate(layoutInflater, null, false)
         bottomSheetDialog.setContentView(optionLayoutBinding!!.root)
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         optionLayoutBinding.tvSetalarm.setOnClickListener {
             startActivity(Intent(this, AlarmFragment::class.java))
@@ -509,27 +518,56 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
             }
 
         }
-        bottomSheetDialog.show()
+        bottomSheetDialog.show()*/
     }
 
-    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
-        AppConstants.generateSharingLink(
-            deepLink = AppConstants.PREFIX.toUri(),
-            Gson().toJson(appUrl)
-        ) { generatedLink ->
-            shareDeepLink(generatedLink)
-        }
+//    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
+//        AppConstants.generateSharingLink(
+////            deepLink = AppConstants.PREFIX.toUri(),
+//            deepLink = Uri.parse("https://netcast.com/"),
+//            Gson().toJson(appUrl)
+//        ) { generatedLink ->
+//            shareDeepLink(generatedLink)
+//        }
+//
+//    }
+//
+//    private fun shareDeepLink(deepLink: String) {
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.type = "text/plain"
+//        intent.putExtra(
+//            Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
+//        )
+//        intent.putExtra(Intent.EXTRA_TEXT, deepLink)
+//        startActivity(intent)
+//        closePlayerandPanel()
+//
+//    }
 
+    override fun onSetAlarm() {
+        startActivity(Intent(this, AlarmFragment::class.java))
+        closePlayerandPanel()
     }
 
-    private fun shareDeepLink(deepLink: String) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(
-            Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
+    override fun onShare() {
+        AppConstants.share(
+            "Checkout this link its amazing. ",
+            AppSingelton._radioSelectedChannel.value,
+            this
         )
-        intent.putExtra(Intent.EXTRA_TEXT, deepLink)
-        startActivity(intent)
+        closePlayerandPanel()
+    }
 
+    override fun onSleepTimer() {
+        startActivity(Intent(this, SleepTimerFragment::class.java))
+        closePlayerandPanel()
+    }
+
+    override fun onFavourite() {
+        AppSingelton._radioSelectedChannel.value?.let { it1 ->
+            viewModel.addChannelToFavourites(
+                it1
+            )
+        }
     }
 }

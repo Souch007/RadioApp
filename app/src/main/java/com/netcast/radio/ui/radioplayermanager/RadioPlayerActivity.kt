@@ -36,13 +36,18 @@ import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
+import com.netcast.radio.ui.ui.settings.AlarmFragment
+import com.netcast.radio.ui.ui.settings.SleepTimerFragment
+import com.netcast.radio.util.BottomSheetOptionsFragment
+import com.netcast.radio.util.OptionsClickListner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
 
 
-class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>() {
+class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>(),
+    OptionsClickListner {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
     lateinit var radioPlayerAVM: RadioPlayerAVM
@@ -70,7 +75,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             ).show()
             finish()
         }
-
 
 
     }
@@ -113,14 +117,22 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.icPlay.setOnClickListener {
             if (dataBinding.playerView.player?.isPlaying == true) {
                 dataBinding.playerView.player?.pause()
-               dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
-            }
-            else{
+                dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
+            } else {
                 dataBinding.playerView.player?.play()
                 dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
             }
 
         }
+        dataBinding.playerOptions.setOnClickListener {
+            showBottomSheetDialog()
+        }
+    }
+
+    private fun showBottomSheetDialog() {
+        val bottomSheetFragment = BottomSheetOptionsFragment(this)
+        bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
+
     }
 
     private fun checkWifiPlaySettings(): Boolean {
@@ -212,7 +224,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
-                    dataBinding.progressDownload.visibility=View.INVISIBLE
+                    dataBinding.progressDownload.visibility = View.INVISIBLE
                 } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
 
@@ -266,7 +278,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                         if (file.exists()) {
                             dataBinding.playerView.player = exoPlayer
-
 
 
                             val filePath = AppSingelton._radioSelectedChannel.value!!.url
@@ -578,10 +589,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun refreshAdapter() {
-        podEpisodesAdapter=PodEpisodesAdapter(
+        podEpisodesAdapter = PodEpisodesAdapter(
             podcastEpisodeList!!, viewModel
         )
-        dataBinding.podepisodeadapter =podEpisodesAdapter
+        dataBinding.podepisodeadapter = podEpisodesAdapter
 
     }
 
@@ -682,5 +693,30 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     }
 
+    override fun onSetAlarm() {
+        startActivity(Intent(this, AlarmFragment::class.java))
+//        closePlayerandPanel()
+    }
 
+    override fun onShare() {
+        AppConstants.share(
+            "Checkout this link its amazing. ",
+            AppSingelton._radioSelectedChannel.value,
+            this
+        )
+
+    }
+
+    override fun onSleepTimer() {
+        startActivity(Intent(this, SleepTimerFragment::class.java))
+
+    }
+
+    override fun onFavourite() {
+        AppSingelton._radioSelectedChannel.value?.let { it1 ->
+            viewModel.addChannelToFavourites(
+                it1
+            )
+        }
+    }
 }

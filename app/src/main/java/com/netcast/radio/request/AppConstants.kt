@@ -1,10 +1,14 @@
 package com.netcast.radio.request
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.gson.Gson
+import com.netcast.radio.PlayingChannelData
 
 object AppConstants {
  val ALARM_CHECKBOX: String="alarm_checkbox"
@@ -28,6 +32,31 @@ object AppConstants {
     const val AUTO_PLAY_EPISODES = "auto_play_episodes"
    const val PREFIX = "https://netcast.page.link"
 
+
+
+
+   fun share(messageToShare: String, appUrl: PlayingChannelData?,context: Context) {
+      AppConstants.generateSharingLink(
+//            deepLink = AppConstants.PREFIX.toUri(),
+         deepLink = Uri.parse("https://netcast.com/"),
+         Gson().toJson(appUrl)
+      ) { generatedLink ->
+         shareDeepLink(generatedLink,context)
+      }
+
+   }
+
+   private fun shareDeepLink(deepLink: String,context:Context) {
+      val intent = Intent(Intent.ACTION_SEND)
+      intent.type = "text/plain"
+      intent.putExtra(
+         Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
+      )
+      intent.putExtra(Intent.EXTRA_TEXT, deepLink)
+      context.startActivity(intent)
+
+
+   }
 
 
    fun generateSharingLink(
