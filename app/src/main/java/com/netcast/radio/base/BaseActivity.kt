@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -61,39 +62,43 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     //    private var playbackDisposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataBinding = DataBindingUtil.setContentView(this, layoutRes)
-        dataBinding.lifecycleOwner = this
-        appDatabase = initializeDB(this)
-        viewModelFactory = getViewModelFactory()
-        viewModel = ViewModelProvider(this@BaseActivity, viewModelFactory).get(viewModelClass)
+        try {
+            dataBinding = DataBindingUtil.setContentView(this, layoutRes)
+            dataBinding.lifecycleOwner = this
+            appDatabase = initializeDB(this)
+            viewModelFactory = getViewModelFactory()
+            viewModel = ViewModelProvider(this@BaseActivity, viewModelFactory).get(viewModelClass)
 
-        dataBinding.setVariable(bindingVariable, viewModel)
-        dataBinding.executePendingBindings()
+            dataBinding.setVariable(bindingVariable, viewModel)
+            dataBinding.executePendingBindings()
 
-        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
-        sharedPredEditor = sharedPreferences.edit()
+            sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+            sharedPredEditor = sharedPreferences.edit()
 
-        AppSingelton._isFavUpdated.observe(this) {
-            val gson = Gson()
-            val json = gson.toJson(AppSingelton.favouritesRadioArray)
-            sharedPredEditor.putString("FavChannels", json).apply()
+            AppSingelton._isFavUpdated.observe(this) {
+                val gson = Gson()
+                val json = gson.toJson(AppSingelton.favouritesRadioArray)
+                sharedPredEditor.putString("FavChannels", json).apply()
 //            AppSingelton._isFavDeleteUpdated.value=true
-        }
-
-        AppSingelton.isNewItemAdded.observe(this){
-            val gson = Gson()
-            val json = gson.toJson(AppSingelton.recentlyPlayedArray)
-            if (json != null) {
-                sharedPredEditor.putString("RecentlyPlayed", json).apply()
-            }
-        }
-
-        requestNotificationPermission()
-        AppSingelton._SleepTimerEnd.observe(this) {
-            if (it && AppSingelton.exoPlayer?.isPlaying == true) {
-                AppSingelton.exoPlayer?.stop()
             }
 
+            AppSingelton.isNewItemAdded.observe(this) {
+                val gson = Gson()
+                val json = gson.toJson(AppSingelton.recentlyPlayedArray)
+                if (json != null) {
+                    sharedPredEditor.putString("RecentlyPlayed", json).apply()
+                }
+            }
+
+            requestNotificationPermission()
+            AppSingelton._SleepTimerEnd.observe(this) {
+                if (it && AppSingelton.exoPlayer?.isPlaying == true) {
+                    AppSingelton.exoPlayer?.stop()
+                }
+
+            }
+        }
+        catch (e:Exception){
         }
     }
 

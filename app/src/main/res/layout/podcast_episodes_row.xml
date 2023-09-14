@@ -209,7 +209,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.0"
                                     android:layout_marginStart="@dimen/_12sdp"
-                                    android:indeterminate="true"
+
                                     android:visibility="gone"
                                     android:indeterminateTintMode="src_atop"
                                     android:indeterminateTint="@color/OrangeRed"

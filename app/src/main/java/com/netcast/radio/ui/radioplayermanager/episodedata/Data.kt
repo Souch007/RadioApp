@@ -50,11 +50,14 @@ data class Data(
 
     var isSelected: Boolean,
 
+
     @ColumnInfo(name = "title", defaultValue = "")
     @SerializedName("title")
     val title: String,
 
     @ColumnInfo(name = "fileURI", defaultValue = "")
     var fileURI: String,
+
+    var videoID: Long=0L,
 
  ) : ListAdapterItem, java.io.Serializable

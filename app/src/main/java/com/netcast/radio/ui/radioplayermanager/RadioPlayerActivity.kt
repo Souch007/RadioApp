@@ -380,7 +380,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             } catch (ex: Exception) {
                 ex.printStackTrace()
                 dataBinding.podcastLoader.visibility = View.GONE
-                dataBinding.episode.setText("No Episodes To Play")
+                dataBinding.episode.text = "No Episodes To Play"
             }
         }
 
@@ -563,7 +563,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             CoroutineScope(Dispatchers.IO).launch {
                 appDatabase!!.appDap().insertOfflineEpisode(data)
             }
+            data.videoID=downloadId
+            podEpisodesAdapter.notifyDataSetChanged()
 //            AppSingelton.currentDownloading = ""
+
+
         }
 
 
@@ -590,7 +594,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun refreshAdapter() {
         podEpisodesAdapter = PodEpisodesAdapter(
-            podcastEpisodeList!!, viewModel
+            podcastEpisodeList!!, viewModel,this
         )
         dataBinding.podepisodeadapter = podEpisodesAdapter
 
