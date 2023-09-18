@@ -96,35 +96,37 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             }
         }
 
-        radioViewModel.languagesListingLive.observe(this@RadioFragment) {
+        radioViewModel.languagesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._langListArray.value = data
                 binding.languagesAdapter =
                     com.netcast.radio.ui.radio.adapter.LanguagesAdapter(
                         listOf(),
-                        mainActivityViewModel
+                        mainActivityViewModel,
+                        "limited"
                     )
             } catch (exception: java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
 
-        radioViewModel.countriesListingLive.observe(this@RadioFragment) {
+        radioViewModel.countriesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._countriesListArray.value = data
                 binding.countriesAdapter =
                     com.netcast.radio.ui.radio.adapter.CountriesAdapter(
                         listOf(),
-                        mainActivityViewModel
+                        mainActivityViewModel,
+                        "limited"
                     )
             } catch (exception: java.lang.Exception) {
                 exception.printStackTrace()
             }
         }
 
-        radioViewModel._genresListinLive.observe(this@RadioFragment) {
+        radioViewModel._genresListinLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._genresListArray.value = data
@@ -165,6 +167,12 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             findNavController().navigate(
                     R.id.action_navigation_radio_to_allGenreFragment
             )
+        }
+        binding.tvAllTagTvCountries.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_radio_to_allcountriesFragment)
+        }
+        binding.tvAllTagTvLanguages.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_radio_to_allLanguagesFragment)
         }
 
     }

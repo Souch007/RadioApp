@@ -20,7 +20,7 @@ class FilterStationAdapter (private val list:List<RadioLists>, val  stationSearc
     }
 
     override fun getItemsCount(data: List<RadioLists>): Int {
-        return data.size;
+        return data.size
     }
 
     override fun getItemViewType(position: Int): Int {

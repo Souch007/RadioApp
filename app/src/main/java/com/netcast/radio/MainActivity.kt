@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsClickListner {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner {
 
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
@@ -108,8 +108,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsC
         checkOfflineChannels()
         getIntentData()
         if (sharedPreferences.getBoolean(
-                "delete_completed_episode",
-                true
+                "delete_completed_episode", true
             )
         ) deleteCompletedEpisodes()
 
@@ -186,11 +185,24 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsC
                 navController.navigate(
                     R.id.action_navigation_radio_to_navigation_filterstaions, args
                 )
+            } else if (navController.currentDestination?.id == R.id.allcountriesFragment) {
+                val args = Bundle()
+                args.putString("filter_tag", it)
+                navController.navigate(
+                    R.id.action_allcountriesFragment_to_navigation_filterstaions, args
+                )
             } else if (navController.currentDestination?.id == R.id.allGenreFragment) {
                 val args = Bundle()
                 args.putString("filter_tag", it)
                 navController.navigate(
-                    R.id.navigation_filterstaions, args)
+                    R.id.navigation_filterstaions, args
+                )
+            } else if (navController.currentDestination?.id == R.id.allLanguagesFragment) {
+                val args = Bundle()
+                args.putString("filter_tag", it)
+                navController.navigate(
+                    R.id.navigation_filterstaions, args
+                )
             } else {
                 dataBinding.searchEditText.setText(it)
                 dataBinding.llShimmerLayout.visibility = View.VISIBLE
@@ -479,46 +491,46 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsC
     private fun showBottomSheetDialog() {
 
 
-       val bottomSheetFragment = BottomSheetOptionsFragment(this)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
 
-      /*  val bottomSheetDialog = BottomSheetDialog(this)
-        val optionLayoutBinding = OptionLayoutBinding.inflate(layoutInflater, null, false)
-        bottomSheetDialog.setContentView(optionLayoutBinding!!.root)
+        /*  val bottomSheetDialog = BottomSheetDialog(this)
+          val optionLayoutBinding = OptionLayoutBinding.inflate(layoutInflater, null, false)
+          bottomSheetDialog.setContentView(optionLayoutBinding!!.root)
 
-        optionLayoutBinding.tvSetalarm.setOnClickListener {
-            startActivity(Intent(this, AlarmFragment::class.java))
-            bottomSheetDialog.dismiss()
-            closePlayerandPanel()
-//            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
-        }
-        optionLayoutBinding.tvSetsleeptime.setOnClickListener {
-//            navController.navigate(R.id.sleepTimerFragment)
-            startActivity(Intent(this, SleepTimerFragment::class.java))
+          optionLayoutBinding.tvSetalarm.setOnClickListener {
+              startActivity(Intent(this, AlarmFragment::class.java))
+              bottomSheetDialog.dismiss()
+              closePlayerandPanel()
+  //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+          }
+          optionLayoutBinding.tvSetsleeptime.setOnClickListener {
+  //            navController.navigate(R.id.sleepTimerFragment)
+              startActivity(Intent(this, SleepTimerFragment::class.java))
 
-            bottomSheetDialog.dismiss()
-            closePlayerandPanel()
-//            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
-        }
-        optionLayoutBinding.tvShare.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            share(
-                "Checkout this link its amazing. ",
-                AppSingelton._radioSelectedChannel.value
-            )
+              bottomSheetDialog.dismiss()
+              closePlayerandPanel()
+  //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
+          }
+          optionLayoutBinding.tvShare.setOnClickListener {
+              bottomSheetDialog.dismiss()
+              share(
+                  "Checkout this link its amazing. ",
+                  AppSingelton._radioSelectedChannel.value
+              )
 
-        }
-        optionLayoutBinding.tvFavourite.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            AppSingelton._radioSelectedChannel.value?.let { it1 ->
-                viewModel.addChannelToFavourites(
-                    it1
-                )
-            }
+          }
+          optionLayoutBinding.tvFavourite.setOnClickListener {
+              bottomSheetDialog.dismiss()
+              AppSingelton._radioSelectedChannel.value?.let { it1 ->
+                  viewModel.addChannelToFavourites(
+                      it1
+                  )
+              }
 
-        }
-        bottomSheetDialog.show()*/
+          }
+          bottomSheetDialog.show()*/
     }
 
 //    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
@@ -551,9 +563,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),OptionsC
 
     override fun onShare() {
         AppConstants.share(
-            "Checkout this link its amazing. ",
-            AppSingelton._radioSelectedChannel.value,
-            this
+            "Checkout this link its amazing. ", AppSingelton._radioSelectedChannel.value, this
         )
         closePlayerandPanel()
     }
