@@ -72,7 +72,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 >
-
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
@@ -98,9 +97,11 @@
 
                         <include layout="@layout/shimmer_loadingview"></include>
 
-                     <include layout="@layout/shimmer_loadingview"></include>
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                        <include layout="@layout/shimmer_loadingview"></include>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+
                 <TextView
                     android:id="@+id/tv_recently_played"
                     style="@style/textHeading"

@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.netcast.radio.R
-import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.databinding.OptionLayoutBinding
 import com.netcast.radio.ui.ui.settings.AlarmFragment
-import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 
-class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickListner) : BottomSheetDialogFragment() {
+class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickListner) :
+    BottomSheetDialogFragment() {
 
     private var _binding: OptionLayoutBinding? = null
     private val optionLayoutBinding get() = _binding!!
@@ -37,7 +35,7 @@ class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickLi
         }
         optionLayoutBinding.tvShare.setOnClickListener {
             optionsClickListner.onShare()
-//           dismiss()
+            dismiss()
 //            share(
 //                "Checkout this link its amazing. ",
 //                AppSingelton._radioSelectedChannel.value

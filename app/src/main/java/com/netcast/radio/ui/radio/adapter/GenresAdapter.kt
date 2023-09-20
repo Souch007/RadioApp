@@ -19,7 +19,7 @@ class GenresAdapter(
             executePendingBindings()
         }
 
-        if (item.name.equals("Rock", true)) {
+       /* if (item.name.equals("Rock", true)) {
             drawable = R.drawable.rock
         } else if (item.name.equals("Pop", true)) {
             drawable = R.drawable.pop
@@ -40,7 +40,7 @@ class GenresAdapter(
             drawable = R.drawable.logo
         }
 
-        binding.img.setImageResource(drawable)
+        binding.img.setImageResource(drawable)*/
     }
 
     override fun getItemsCount(data: List<Data>): Int {

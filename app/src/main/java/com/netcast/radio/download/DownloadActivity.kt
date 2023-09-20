@@ -33,14 +33,14 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
 
             } else {
                 GlobalScope.launch {
-                downlaodEpisodeAdapter.deleteSelectedItems(appDatabase)
+                    downlaodEpisodeAdapter.deleteSelectedItems(appDatabase)
                 }
                 downlaodEpisodeAdapter.enbaleCheckboxes(false)
                 dataBinding.titleDelete.text = "Edit"
 //                dataBinding.downloadRv.adapter?.notifyDataSetChanged()
-               /* Handler(Looper.myLooper()!!).postDelayed({
-                   dataBinding.adapter?.notifyDataSetChanged()
-                }, 2000)*/
+                /* Handler(Looper.myLooper()!!).postDelayed({
+                    dataBinding.adapter?.notifyDataSetChanged()
+                 }, 2000)*/
 
 
             }
@@ -71,10 +71,13 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
     private fun manageOfflineData() {
         CoroutineScope(Dispatchers.IO).launch {
             val listOfEpisodes = getOfflineData()
-            if (listOfEpisodes != null && listOfEpisodes.isNotEmpty())
+            if (listOfEpisodes != null && listOfEpisodes.isNotEmpty()) {
                 viewModel._listDownloadedEpisodes.postValue(listOfEpisodes)
-            else
+                dataBinding.titleDelete.visibility = View.VISIBLE
+            } else {
+                dataBinding.titleDownload.visibility=View.VISIBLE
                 dataBinding.titleDownload.text = "No Data Found"
+            }
         }
     }
 
@@ -99,7 +102,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
         }
         viewModel._listDownloadedEpisodes.observe(this@DownloadActivity) {
             it?.let {
-                downlaodEpisodeAdapter = DownloadEpisodeAdapter(it.toMutableList(), viewModel, false)
+                downlaodEpisodeAdapter =
+                    DownloadEpisodeAdapter(it.toMutableList(), viewModel, false)
                 dataBinding.downloadRv.adapter = downlaodEpisodeAdapter
             }
         }
