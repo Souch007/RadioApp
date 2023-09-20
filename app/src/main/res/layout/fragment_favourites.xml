@@ -79,7 +79,7 @@
             android:id="@+id/ll_tabview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+
             android:background="@color/black"
             android:elevation="@dimen/_20sdp"
             android:gravity="center"

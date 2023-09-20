@@ -66,14 +66,15 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             dataBinding = DataBindingUtil.setContentView(this, layoutRes)
             dataBinding.lifecycleOwner = this
             appDatabase = initializeDB(this)
+            sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+            sharedPredEditor = sharedPreferences.edit()
             viewModelFactory = getViewModelFactory()
             viewModel = ViewModelProvider(this@BaseActivity, viewModelFactory).get(viewModelClass)
 
             dataBinding.setVariable(bindingVariable, viewModel)
             dataBinding.executePendingBindings()
 
-            sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
-            sharedPredEditor = sharedPreferences.edit()
+
 
             AppSingelton._isFavUpdated.observe(this) {
                 val gson = Gson()
@@ -99,6 +100,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             }
         }
         catch (e:Exception){
+            e.printStackTrace()
         }
     }
 

@@ -37,8 +37,6 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
             binding.emptyView.visibility = View.GONE
 //            binding.head.visibility = View.VISIBLE
             binding.favouritesAdapter = favouriteAdapter
-
-
         } else {
             binding.emptyView.visibility = View.VISIBLE
 //            binding.head.visibility = View.GONE
