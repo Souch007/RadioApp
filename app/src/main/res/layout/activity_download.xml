@@ -212,6 +212,7 @@
             android:textAlignment="center"
             android:textColor="@color/OrangeRed"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"

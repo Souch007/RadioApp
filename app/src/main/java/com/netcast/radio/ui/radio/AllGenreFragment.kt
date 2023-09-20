@@ -59,6 +59,7 @@ class AllGenreFragment() :
     override fun onResume() {
         super.onResume()
         mainActivityViewModel.getAllGenres(radioViewModel)
+        binding.tvFilter.text = "All Genre"
     }
 
 }

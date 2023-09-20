@@ -47,6 +47,7 @@ class AllLanguagesFragment() :
     override fun onResume() {
         super.onResume()
         mainActivityViewModel.getLanguages(radioViewModel)
+        binding.tvFilter.text = "All Languages"
     }
 
 }

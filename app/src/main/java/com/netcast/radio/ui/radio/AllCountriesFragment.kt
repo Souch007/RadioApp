@@ -16,7 +16,7 @@ class AllCountriesFragment() :
     val radioViewModel: RadioViewModel by activityViewModels()
 
     override fun FragmentAllcountriesBinding.initialize() {
-        binding.viewmodel=radioViewModel
+        binding.viewmodel = radioViewModel
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
@@ -29,30 +29,27 @@ class AllCountriesFragment() :
             try {
                 val data = (it as Resource.Success).value.data
                 radioViewModel._countriesListArray.value = data
-                binding.countriesAdapter =
-                    com.netcast.radio.ui.radio.adapter.CountriesAdapter(
-                        listOf(),
-                        mainActivityViewModel,
-                        "all"
-                    )
+                binding.countriesAdapter = com.netcast.radio.ui.radio.adapter.CountriesAdapter(
+                    listOf(), mainActivityViewModel, "all"
+                )
             } catch (exception: java.lang.Exception) {
                 exception.printStackTrace()
             }
-        }
- /*       mainActivityViewModel._queriedSearched.observe(viewLifecycleOwner) {
-            it?.let {
-                val args = Bundle()
-                args.putString("filter_tag", it)
-                findNavController().navigate(R.id.navigation_filterstaions,args)
+        }/*       mainActivityViewModel._queriedSearched.observe(viewLifecycleOwner) {
+                   it?.let {
+                       val args = Bundle()
+                       args.putString("filter_tag", it)
+                       findNavController().navigate(R.id.navigation_filterstaions,args)
 
-            }
-        }*/
+                   }
+               }*/
 
     }
 
     override fun onResume() {
         super.onResume()
         mainActivityViewModel.getCountires(radioViewModel)
+        binding.tvFilter.text = "All Countires"
     }
 
 }
