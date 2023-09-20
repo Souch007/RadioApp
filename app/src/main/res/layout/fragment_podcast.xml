@@ -40,7 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <RelativeLayout
             android:id="@+id/empty_view_pod"
             android:layout_width="match_parent"
@@ -68,241 +67,289 @@
                 android:layout_height="0dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_trending_podcasts"
-                    style="@style/textHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_25sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Politics"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_all_podcast_tag"
-                    style="@style/textHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/all"
-                    android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_trending_podcasts"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/trending_podcast_stations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_trending_podcasts"
-                    tools:itemCount="10"
-                    app:setAdapter="@{newsadapter}"
-                    app:submitList="@{podcastDataBinding.newsArrayLM}"
-                    tools:listitem="@layout/radio_row" />
-
-
-                <TextView
-                    android:id="@+id/tv_fitness"
-                    style="@style/textHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Wrestling"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/trending_podcast_stations" />
-
-                <TextView
-                    android:id="@+id/tv_all_fitness_tag"
-                    style="@style/textHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/all"
-                    android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_fitness"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_fitness" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fitness_podcast_stations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_fitness"
-                    tools:itemCount="10"
-                    app:setAdapter="@{societyadapter}"
-                    app:submitList="@{podcastDataBinding.fitnessLM}"
-                    tools:listitem="@layout/radio_row" />
-
-                <TextView
-                    android:id="@+id/tv_bussiness"
-                    style="@style/textHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Business"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fitness_podcast_stations" />
-
-                <TextView
-                    android:id="@+id/tv_all_business_tag"
-                    style="@style/textHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/all"
-                    android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_bussiness"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_bussiness" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/society_business_stations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_bussiness"
-                    tools:itemCount="10"
-                    app:setAdapter="@{businessadapter}"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:submitList="@{podcastDataBinding.businessLM}"
-                    tools:listitem="@layout/radio_row" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shimmer_repeat_mode="restart"
+                    android:visibility="visible"
+                    app:shimmer_shape="linear">
 
-                <TextView
-                    android:id="@+id/tv_culture"
-                    style="@style/textHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Cultural Podcasts"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/society_business_stations" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
-                <TextView
-                    android:id="@+id/tv_all_culture_tag"
-                    style="@style/textHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/all"
-                    android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_culture"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_culture" />
+                        <include layout="@layout/shimmer_loadingview"></include>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/society_cultural_stations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        <include layout="@layout/shimmer_loadingview"></include>
+
+                        <include layout="@layout/shimmer_loadingview"></include>
+
+                        <include layout="@layout/shimmer_loadingview"></include>
+
+                        <include layout="@layout/shimmer_loadingview"></include>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/podcast_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_culture"
-                    app:setAdapter="@{culturaladpter}"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:submitList="@{podcastDataBinding.cultureLM}"
-                    tools:listitem="@layout/radio_row" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tv_education"
-                    style="@style/textHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="Educational Podcasts"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_all_culture_tag"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/society_cultural_stations" />
 
-                <TextView
-                    android:id="@+id/tv_all_educational_tag"
-                    style="@style/textHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/all"
-                    android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_education"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_education" />
+                    <TextView
+                        android:id="@+id/tv_trending_podcasts"
+                        style="@style/textHeading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_25sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="Politics"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/society_educational_stations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:clipToPadding="false"
-                    android:paddingBottom="@dimen/_60sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_education"
-                    tools:itemCount="10"
-                    app:setAdapter="@{educationaladapter}"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:submitList="@{podcastDataBinding.educationM}"
-                    tools:listitem="@layout/radio_row" />
+                    <TextView
+                        android:id="@+id/tv_all_podcast_tag"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/all"
+                        android:textColor="@color/OrangeRed"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_trending_podcasts"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/trending_podcast_stations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_10sdp"
+
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_trending_podcasts"
+                        app:setAdapter="@{newsadapter}"
+                        app:submitList="@{podcastDataBinding.newsArrayLM}"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/radio_row" />
+
+
+                    <TextView
+                        android:id="@+id/tv_fitness"
+                        style="@style/textHeading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="Wrestling"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/trending_podcast_stations" />
+
+                    <TextView
+                        android:id="@+id/tv_all_fitness_tag"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/all"
+                        android:textColor="@color/OrangeRed"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_fitness"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_fitness" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fitness_podcast_stations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_10sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_fitness"
+                        app:setAdapter="@{societyadapter}"
+                        app:submitList="@{podcastDataBinding.fitnessLM}"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/radio_row" />
+
+                    <TextView
+                        android:id="@+id/tv_bussiness"
+                        style="@style/textHeading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="Business"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/fitness_podcast_stations" />
+
+                    <TextView
+                        android:id="@+id/tv_all_business_tag"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/all"
+                        android:textColor="@color/OrangeRed"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_bussiness"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_bussiness" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/society_business_stations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_10sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_bussiness"
+                        app:setAdapter="@{businessadapter}"
+                        app:submitList="@{podcastDataBinding.businessLM}"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/radio_row" />
+
+                    <TextView
+                        android:id="@+id/tv_culture"
+                        style="@style/textHeading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="Cultural Podcasts"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_all_podcast_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/society_business_stations" />
+
+                    <TextView
+                        android:id="@+id/tv_all_culture_tag"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/all"
+                        android:textColor="@color/OrangeRed"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_culture"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_culture" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/society_cultural_stations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_10sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_culture"
+                        app:setAdapter="@{culturaladpter}"
+                        app:submitList="@{podcastDataBinding.cultureLM}"
+                        tools:listitem="@layout/radio_row" />
+
+                    <TextView
+                        android:id="@+id/tv_education"
+                        style="@style/textHeading"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:text="Educational Podcasts"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_all_culture_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/society_cultural_stations" />
+
+                    <TextView
+                        android:id="@+id/tv_all_educational_tag"
+                        style="@style/textHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/all"
+                        android:textColor="@color/OrangeRed"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_education"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_education" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/society_educational_stations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_60sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_education"
+                        app:setAdapter="@{educationaladapter}"
+                        app:submitList="@{podcastDataBinding.educationM}"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/radio_row" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

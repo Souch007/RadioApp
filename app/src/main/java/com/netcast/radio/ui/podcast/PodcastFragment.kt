@@ -44,7 +44,16 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
                     podcastViewModel._educationM.value = _data.education
                     binding.educationaladapter =
                         PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                    binding.podcastLayout.visibility=View.VISIBLE
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+
+
                 } catch (ex : Exception){
+
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+
                     ex.printStackTrace()
                     val failure = (it as Resource.Failure).errorCode
                     val responseBody = (it as Resource.Failure).errorResponseBody

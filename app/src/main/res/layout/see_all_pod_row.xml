@@ -76,7 +76,7 @@
                     style="@style/textTitle"
                     android:textAlignment="textStart"
                     android:textSize="@dimen/_10sdp"
-                    android:text="@{podlist.language}"
+                    android:text="@{podlist.country}"
                     android:textStyle="normal"
                     android:lines="1"
                     app:layout_constraintHorizontal_bias="0.5"
