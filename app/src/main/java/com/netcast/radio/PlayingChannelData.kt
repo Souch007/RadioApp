@@ -11,4 +11,5 @@ data class PlayingChannelData(
     val idPodcast : String?,
     val country : String?,
     val type: String?,
+    var isSelected:Boolean=false
     ) : ListAdapterItem, Serializable

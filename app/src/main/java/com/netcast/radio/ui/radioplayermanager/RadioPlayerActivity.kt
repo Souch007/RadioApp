@@ -671,7 +671,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 //            dataBinding.radioSuggestion.visibility = View.GONE
             dataBinding.radioSuggestion.visibility = View.VISIBLE
             dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                AppSingelton.suggestedRadioList ?: listOf(), viewModel
+                AppSingelton.suggestedRadioList ?: listOf(), viewModel, "public"
             )
         }
     }

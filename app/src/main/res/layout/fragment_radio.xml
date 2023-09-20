@@ -117,6 +117,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/shimmerLayout" />
 
+
+                <TextView
+                    android:id="@+id/tv_all_recentplayed"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/all"
+                    android:textColor="@color/OrangeRed"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_recently_played"
+                    app:layout_constraintEnd_toEndOf="parent" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recently_played"
                     android:layout_width="wrap_content"
