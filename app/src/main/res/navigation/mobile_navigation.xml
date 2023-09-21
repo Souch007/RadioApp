@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_navigation_radio_to_allLanguagesFragment"
             app:destination="@id/allLanguagesFragment" />
+        <action
+            android:id="@+id/action_navigation_radio_to_allRecentlyPlayedFragment"
+            app:destination="@id/allRecentlyPlayedFragment" />
 
     </fragment>
 
@@ -102,5 +105,9 @@
         android:id="@+id/allLanguagesFragment"
         android:name="com.netcast.radio.ui.radio.AllLanguagesFragment"
         android:label="AllLanguagesFragment" />
+    <fragment
+        android:id="@+id/allRecentlyPlayedFragment"
+        android:name="com.netcast.radio.ui.radio.lanuages.AllRecentlyPlayedFragment"
+        android:label="AllRecentlyPlayedFragment" />
 
 </navigation>

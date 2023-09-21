@@ -51,28 +51,36 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 val data = (it as Resource.Success).value.data
                 radioViewModel.radioListArray.value = data.publicRadio
                 AppSingelton.suggestedRadioList = data.publicRadio
+                AppSingelton.publicList=data.publicRadio
                 binding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    mainActivityViewModel
+                    mainActivityViewModel,
+                    "public"
                 )
 
                 radioViewModel._radioPopListArray.value = data.pop
+                AppSingelton.popList=data.pop
                 binding.popadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    mainActivityViewModel
+                    mainActivityViewModel,
+                    "pop"
                 )
 
                 radioViewModel._radioNewsListArray.value = data.news
+                AppSingelton.newsList=data.news
                 binding.newsadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                     listOf(),
-                    mainActivityViewModel
+                    mainActivityViewModel,
+                    "news"
                 )
 
                 radioViewModel._radioClassicallistingArry.value = data.classical
+                AppSingelton.classicalList=data.classical
                 binding.classicalAdapter =
                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                         listOf(),
-                        mainActivityViewModel
+                        mainActivityViewModel,
+                        "classical"
                     )
                 mainActivityViewModel._suggesteStations.value = data.music
                 binding.shimmerLayout.stopShimmer()
@@ -173,6 +181,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         }
         binding.tvAllTagTvLanguages.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_radio_to_allLanguagesFragment)
+        }
+
+        binding.tvAllRecentplayed.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_radio_to_allRecentlyPlayedFragment)
         }
 
     }

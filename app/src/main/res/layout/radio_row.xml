@@ -9,6 +9,10 @@
             type="com.netcast.radio.ui.radio.data.temp.RadioLists" />
 
         <variable
+            name="type"
+            type="String" />
+
+        <variable
             name="listener"
             type="com.netcast.radio.ui.radio.adapter.OnClickListnerRadio" />
     </data>
@@ -18,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_4sdp"
         android:elevation="@dimen/_8sdp"
+        android:onClick="@{() -> listener.onRadioClicked(radioLists,type)}"
         app:cardBackgroundColor="#151523"
-        android:onClick="@{() -> listener.onRadioClicked(radioLists)}"
         app:cardCornerRadius="@dimen/_5sdp"
         app:cardElevation="@dimen/_3sdp">
 
@@ -34,8 +38,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
-                android:src="@drawable/logo"
                 android:scaleType="fitCenter"
+                android:src="@drawable/logo"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

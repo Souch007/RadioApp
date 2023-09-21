@@ -13,6 +13,10 @@ object AppSingelton {
 
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
+    public var classicalList: List<RadioLists>? = null
+    public var popList: List<RadioLists>? = null
+    public var newsList: List<RadioLists>? = null
+    public var publicList: List<RadioLists>? = null
     public var _playingStarted = MutableLiveData<Boolean>()
     //-------------------Player Variables---------------------------------//
     public var exoPlayer: ExoPlayer? = null

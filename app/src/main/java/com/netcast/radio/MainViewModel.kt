@@ -15,6 +15,7 @@ import com.netcast.radio.ui.podcast.adapter.OnClickListenerPodcast
 import com.netcast.radio.ui.podcast.poddata.PodListData
 import com.netcast.radio.ui.radio.FilterSearchListener
 import com.netcast.radio.ui.radio.RadioViewModel
+import com.netcast.radio.ui.radio.adapter.OnAllRecentPlayerClickListener
 import com.netcast.radio.ui.radio.adapter.OnClickGeneresListener
 import com.netcast.radio.ui.radio.adapter.OnClickListenerCountires
 import com.netcast.radio.ui.radio.adapter.OnClickListenerLanguages
@@ -31,11 +32,12 @@ import com.netcast.radio.ui.seeall.adapter.OnClickListerPODSeeAll
 import kotlinx.coroutines.launch
 import kotlin.math.log
 
+
 class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodcast,
-    OnFavouriteClickListener,
-    OnClickListenerSeeAll, OnClickListerPODSeeAll, OnClickListenerLanguages,
-    OnClickListenerCountires, OnClickGeneresListener, OnSearchTagListener,
-    PodSearchOnClickListener, StationSearchListener, FilterSearchListener {
+    OnFavouriteClickListener, OnClickListenerSeeAll, OnClickListerPODSeeAll,
+    OnClickListenerLanguages, OnClickListenerCountires, OnClickGeneresListener, OnSearchTagListener,
+    PodSearchOnClickListener, StationSearchListener, FilterSearchListener,
+    OnAllRecentPlayerClickListener {
     val remoteDataSource = RemoteDataSource()
     val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
 
@@ -79,7 +81,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
         viewModelScope.launch {
-            radioViewModel._radioListing.value = appRepository.getRadioListing(AppSingelton.country ?: "")
+            radioViewModel._radioListing.value =
+                appRepository.getRadioListing(AppSingelton.country ?: "")
             Log.d("MainViewModel", "getRadioListing: $country")
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
@@ -120,9 +123,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
     fun getSearchQueryResult(
-        device_id: String,
-        searchQuery: String,
-        searchViewModel: SearchViewModel
+        device_id: String, searchQuery: String, searchViewModel: SearchViewModel
     ) {
         viewModelScope.launch {
             try {
@@ -138,20 +139,14 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
 
-    override fun onRadioClicked(data: RadioLists) {
+    override fun onRadioClicked(data: RadioLists, type: String) {
 
         var playingChannelData = PlayingChannelData(
-            data.url,
-            data.favicon,
-            data.name,
-            data.id,
-            "",
-            data.country,
-            "RADIO"
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
-        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
-            AppSingelton._isNewStationSelected.value = false
+        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
+            false
         else {
             AppSingelton._isNewStationSelected.value = true
             if (AppSingelton.exoPlayer != null) {
@@ -160,7 +155,37 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             }
             AppSingelton.exoPlayer = null
         }
+        getsuggestedList(type)
 
+    }
+
+    private fun getsuggestedList(type: String) {
+        when (type) {
+            "classical" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.classicalList
+            }
+
+            "pop" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.popList
+
+            }
+
+            "news" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.newsList
+
+            }
+
+            "public" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.publicList
+
+            }
+
+            else -> {
+                AppSingelton.suggestedRadioList = AppSingelton.publicList
+
+            }
+
+        }
     }
 
     override fun onPodCastClicked(data: PodListData) {
@@ -174,8 +199,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "PODCAST"
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
-        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
-            AppSingelton._isNewStationSelected.value = false
+        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
+            false
         else {
             AppSingelton._isNewStationSelected.value = true
             if (AppSingelton.exoPlayer != null) {
@@ -203,16 +228,20 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             AppSingelton.favouritesRadioArray = updatedList
             AppSingelton._isFavUpdated.value = true
         } else {
-            val recentPlayedupdatedList = AppSingelton.recentlyPlayedArray
-            recentPlayedupdatedList?.remove(playingChannelData)
-        recentPlayedupdatedList?.add(AppSingelton.recentlyPlayedArray.size,playingChannelData)
-//            recentPlayedupdatedList?.add(0, playingChannelData)
-            AppSingelton.recentlyPlayedArray = recentPlayedupdatedList
-//        updatedList?.remove(playingChannelData)
-//        AppSingelton.favouritesRadioArray=updatedList
-            AppSingelton.isNewItemAdded.value = true
+            playRecentData(playingChannelData)
 
         }
+    }
+
+    private fun playRecentData(playingChannelData: PlayingChannelData) {
+        val recentPlayedupdatedList = AppSingelton.recentlyPlayedArray
+        recentPlayedupdatedList?.remove(playingChannelData)
+        recentPlayedupdatedList?.add(AppSingelton.recentlyPlayedArray.size, playingChannelData)
+//            recentPlayedupdatedList?.add(0, playingChannelData)
+        AppSingelton.recentlyPlayedArray = recentPlayedupdatedList
+//        updatedList?.remove(playingChannelData)
+//        AppSingelton.favouritesRadioArray=updatedList
+        AppSingelton.isNewItemAdded.value = true
     }
 
     override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {
@@ -231,7 +260,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
 
     override fun onSeeAllClick(data: RadioLists) {
-        onRadioClicked(data)
+        onRadioClicked(data, "")
     }
 
     override fun onPodClicked(data: PodListData) {
@@ -257,13 +286,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     override fun onPodCastSearchedListener(data: com.netcast.radio.ui.search.searchedpodresponce.Data) {
         val playingChannelData = PlayingChannelData(
-            data.url,
-            data.image,
-            data.title,
-            data._id,
-            data._id,
-            data.author,
-            "PODCAST"
+            data.url, data.image, data.title, data._id, data._id, data.author, "PODCAST"
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -272,13 +295,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     override fun onStationSearchListener(data: com.netcast.radio.ui.search.searchedstationresponce.Data) {
         val playingChannelData = PlayingChannelData(
-            data.url,
-            data.favicon,
-            data.name,
-            data.id,
-            "",
-            data.country,
-            "RADIO"
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -286,7 +303,15 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
     override fun onFilterSearchListenerr(data: RadioLists) {
-        onRadioClicked(data)
+        onRadioClicked(data, "")
+    }
+
+    override fun onChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
+        if (AppSingelton.exoPlayer != null) {
+            AppSingelton.exoPlayer!!.stop()
+            AppSingelton.exoPlayer!!.release()
+        }
+        playRecentData(playingChannelData)
     }
 
 

@@ -71,7 +71,7 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio , OnClickListenerLang
 
 
 
-    override fun onRadioClicked(data: RadioLists) {
+    override fun onRadioClicked(data: RadioLists,type: String) {
     }
 
     override fun onLanguageClicked(data: Data) {
