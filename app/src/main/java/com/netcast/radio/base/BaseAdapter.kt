@@ -13,7 +13,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
     @get:LayoutRes
     abstract val layoutId: Int
 
-    abstract fun bind(binding: BINDING, item: T)
+    abstract fun bind(binding: BINDING, item: T, position: Int)
 
     abstract fun getItemsCount(data: List<T>) : Int
 
@@ -34,12 +34,14 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<BINDING>, position: Int) {
-        bind(holder.binder, data[position])
+        bind(holder.binder, data[position],position)
         AppSingelton.currentPlayingPos=position
     }
 
     override fun getItemCount(): Int {
         return getItemsCount(data)
     }
+
+
 
 }

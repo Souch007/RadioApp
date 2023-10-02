@@ -11,7 +11,7 @@ class SeeAllAdapter (
 ) : BaseAdapter<SeeAllRowBinding, RadioLists>(list) {
     override val layoutId: Int = R.layout.see_all_row
 
-    override fun bind(binding: SeeAllRowBinding, item: RadioLists) {
+    override fun bind(binding: SeeAllRowBinding, item: RadioLists, position: Int) {
         binding.apply {
             radioLists = item
             listener = onClickListenerSeeAll

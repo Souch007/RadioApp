@@ -8,7 +8,7 @@ import com.netcast.radio.ui.search.searchedpodresponce.Data
 class PodcastSearchedAdapter(private val list : List<Data>,val  podcastSearchedAdapter: PodSearchOnClickListener)
     :BaseAdapter<PodcastSearchRowBinding,Data>(list){
     override val layoutId: Int = R.layout.podcast_search_row
-    override fun bind(binding: PodcastSearchRowBinding, item: Data) {
+    override fun bind(binding: PodcastSearchRowBinding, item: Data, position: Int) {
         binding.apply {
             podlist = item
             listener = podcastSearchedAdapter

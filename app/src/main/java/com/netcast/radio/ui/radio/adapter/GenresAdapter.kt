@@ -11,7 +11,7 @@ class GenresAdapter(
     override val layoutId: Int = R.layout.genres_row
     var drawable: Int = 0
 
-    override fun bind(binding: GenresRowBinding, item: Data) {
+    override fun bind(binding: GenresRowBinding, item: Data, position: Int) {
 
         binding.apply {
             genresList = item

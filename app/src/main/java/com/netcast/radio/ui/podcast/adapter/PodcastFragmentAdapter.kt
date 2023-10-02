@@ -12,7 +12,7 @@ class PodcastFragmentAdapter(
 ) : BaseAdapter<PodcastRowBinding, PodListData>(list) {
     override val layoutId: Int = R.layout.podcast_row
 
-    override fun bind(binding: PodcastRowBinding , item: PodListData) {
+    override fun bind(binding: PodcastRowBinding, item: PodListData, position: Int) {
         binding.apply {
             feeds = item
             listener = _onClickListenerPodcast

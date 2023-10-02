@@ -8,7 +8,7 @@ import com.netcast.radio.ui.search.frequentsearch.Data
 class SearchTagsAdapter(private val list:List<Data>,private val onSearcTagListener : OnSearchTagListener)
     : BaseAdapter<TagsRowBinding,Data>(list){
     override val layoutId: Int = R.layout.tags_row
-    override fun bind(binding: TagsRowBinding, item: Data) {
+    override fun bind(binding: TagsRowBinding, item: Data, position: Int) {
         binding.apply {
             tagsdata = item
             listener = onSearcTagListener

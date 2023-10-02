@@ -491,7 +491,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun showBottomSheetDialog() {
 
 
-        val bottomSheetFragment = BottomSheetOptionsFragment(this)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this,true)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
 

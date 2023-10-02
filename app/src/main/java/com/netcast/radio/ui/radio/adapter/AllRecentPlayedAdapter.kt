@@ -7,9 +7,7 @@ import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseAdapter
-import com.netcast.radio.databinding.FavRowBinding
 import com.netcast.radio.databinding.RecentplayerRowBinding
-import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +22,7 @@ class AllRecentPlayedAdapter(
     private var selectedItems = mutableListOf<PlayingChannelData>()
 
     @SuppressLint("SuspiciousIndentation")
-    override fun bind(binding: RecentplayerRowBinding, item: PlayingChannelData) {
+    override fun bind(binding: RecentplayerRowBinding, item: PlayingChannelData, position: Int) {
         val currentItem = item
         binding.apply {
             playing = item

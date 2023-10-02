@@ -9,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.netcast.radio.databinding.OptionLayoutBinding
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 
-class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickListner) :
+class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickListner,private val hidefav:Boolean) :
     BottomSheetDialogFragment() {
 
     private var _binding: OptionLayoutBinding? = null
@@ -52,6 +52,11 @@ class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickLi
 //            }
 
         }
+        if (hidefav)
+            optionLayoutBinding.tvFavourite.visibility=View.GONE
+        else
+            optionLayoutBinding.tvFavourite.visibility=View.VISIBLE
+
         return optionLayoutBinding.root
     }
 }

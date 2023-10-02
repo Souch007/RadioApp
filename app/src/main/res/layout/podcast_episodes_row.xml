@@ -25,9 +25,9 @@
             android:layout_margin="@dimen/_5sdp"
             android:elevation="@dimen/_8sdp"
             android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="@dimen/_4sdp"
             app:cardElevation="@dimen/_5sdp"
-            app:cardBackgroundColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,15 +45,15 @@
                     android:id="@+id/imageView"
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="match_parent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-                    android:src="@drawable/logo"
                     android:scaleType="centerCrop"
-
+                    android:src="@drawable/logo"
                     app:layout_constraintBottom_toTopOf="@+id/textView"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:setImage='@{episodeData.feedImage?? ""}' />
+                    app:setImage='@{episodeData.feedImage?? ""}'
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
                 <!--  <View
                   android:layout_width="@dimen/_1sdp"
                   android:background="@color/grey"
@@ -68,19 +68,19 @@
 
                     <TextView
                         android:id="@+id/channel_name"
-                        app:fontFamily="@font/poppins_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:gravity="start|center"
                         android:lines="1"
                         android:maxLines="1"
-                        android:textColor="@color/white"
-                        android:text="@{episodeData.title}"
                         android:padding="@dimen/_2sdp"
+                        android:text="@{episodeData.title}"
                         android:textAlignment="textStart"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="normal"
+                        app:fontFamily="@font/poppins_bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -99,125 +99,127 @@
                         android:textAlignment="textStart"
                         android:textSize="@dimen/_8sdp"
                         android:textStyle="normal"
-                        app:setTextHtml="@{episodeData.description}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:setTextHtml="@{episodeData.description}" />
 
 
-                        <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                >
+                            android:layout_height="@dimen/_35sdp">
 
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/appCompatImageView"
-                                    android:layout_width="@dimen/_20sdp"
-                                    android:layout_height="@dimen/_20sdp"
-                                    android:layout_marginStart="@dimen/_20sdp"
-                                    android:src="@drawable/ic_play"
-                                    android:tint="@color/OrangeRed"
-                                    android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/appCompatImageView"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:onClick="@{() -> listener.onEpisodeClicked(episodeData)}"
+                                android:src="@drawable/ic_play"
+                                android:tint="@color/OrangeRed"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-<!--                                if download is done replace it with ic_done-->
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/ic_downlaod"
-                                    android:layout_width="@dimen/_20sdp"
-                                    android:layout_height="@dimen/_20sdp"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:src="@drawable/ic_download"
-                                    android:tint="@color/OrangeRed"
-                                    android:visibility="visible"
-                                    android:onClick="@{() -> listener.onEpisodeDownloadClicked(episodeData)}"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <!--                                if download is done replace it with ic_done-->
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ic_downlaod"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:onClick="@{() -> listener.onEpisodeDownloadClicked(episodeData)}"
+                                android:src="@drawable/ic_download"
+                                android:tint="@color/OrangeRed"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/ic_share"
-                                    android:layout_width="@dimen/_22sdp"
-                                    android:layout_height="@dimen/_22sdp"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:src="@drawable/ic_shareepisode"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_done"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ic_share"
+                                android:layout_width="@dimen/_22sdp"
+                                android:layout_height="@dimen/_22sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_shareepisode"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/ic_done"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/ic_delete"
-                                    android:layout_width="@dimen/_25sdp"
-                                    android:layout_height="@dimen/_25sdp"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:src="@drawable/ic_delete"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toEndOf="@+id/progress_download"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ic_delete"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_delete"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/progress_download"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="@dimen/_25sdp"
-                                    android:layout_height="@dimen/_25sdp"
-                                    android:src="@drawable/ic_done"
-                                    android:id="@+id/ic_done"
-                                    android:visibility="gone"
-                                    android:tint="@color/OrangeRed"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    android:layout_marginStart="@dimen/_12sdp"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ic_done"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:src="@drawable/ic_done"
+                                android:tint="@color/OrangeRed"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <TextView
-                                    android:id="@+id/tv_downlaod_tag"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:padding="18dp"
-                                    android:text="Downloading"
-                                    style="@style/textHeading"
-                                    android:textColor="@color/OrangeRed"
-                                    android:textSize="11sp"
-                                    android:textStyle="bold"
-                                    android:visibility="gone"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/tv_downlaod_tag"
+                                style="@style/textHeading"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="18dp"
+                                android:text="Downloading"
+                                android:textColor="@color/OrangeRed"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/ic_downlaod"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <ProgressBar
-                                    android:id="@+id/progress_download"
-                                    android:layout_width="@dimen/_25sdp"
-                                    android:layout_height="@dimen/_25sdp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    android:layout_marginStart="@dimen/_12sdp"
+                            <ProgressBar
+                                android:id="@+id/progress_download"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:progress="0"
+                                android:max="100"
+                                android:visibility="gone"
+                                android:indeterminate="false"
+                                android:progressDrawable="@drawable/circular_progress_bar"
+                                android:background="@drawable/circle_shape"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/ic_share"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                    android:visibility="gone"
-                                    android:indeterminateTintMode="src_atop"
-                                    android:indeterminateTint="@color/OrangeRed"
-                                    app:layout_constraintStart_toEndOf="@+id/ic_share"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

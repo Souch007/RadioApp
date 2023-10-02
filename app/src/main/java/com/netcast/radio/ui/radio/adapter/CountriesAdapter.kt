@@ -12,7 +12,7 @@ class CountriesAdapter (
 ) : BaseAdapter<CountriesRowBinding, Data>(list) {
     override val layoutId: Int = R.layout.countries_row
 
-    override fun bind(binding: CountriesRowBinding, item: Data) {
+    override fun bind(binding: CountriesRowBinding, item: Data, position: Int) {
         binding.apply {
             languageList = item
             listener = onClickListenerCountires

@@ -80,6 +80,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
             favouriteList?.filter { it.type.equals("Episodes", true) }
 
         if (isStation) {
+            binding.btnDownload.visibility=View.VISIBLE
             binding.tvPodcast.setTextColor(ContextCompat.getColor(requireContext(), R.color.White))
             binding.tvRadio.setTextColor(
                 ContextCompat.getColor(
@@ -97,6 +98,7 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
 //            favouriteAdapter.notifyDataSetChanged()
 
         } else {
+            binding.btnDownload.visibility=View.GONE
             binding.tvPodcast.setTextColor(
                 ContextCompat.getColor(
                     requireContext(), R.color.OrangeRed

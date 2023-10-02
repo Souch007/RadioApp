@@ -37,27 +37,6 @@
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toBottomOf="@+id/btn_download" />
  -->
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_download"
-            style="@style/textHeading"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/black"
-            android:drawableLeft="@drawable/ic_downloadwhite"
-            android:drawableRight="@drawable/ic_arrow_forward"
-            android:drawablePadding="@dimen/_10sdp"
-            android:gravity="center|left"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_15sdp"
-            android:text="My Downloads"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
 
 
         <TextView
@@ -84,9 +63,11 @@
             android:elevation="@dimen/_20sdp"
             android:gravity="center"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_download">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_Radio"
@@ -111,23 +92,47 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_download"
+            style="@style/textHeading"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/black"
+            android:drawableLeft="@drawable/ic_downloadwhite"
+            android:drawableRight="@drawable/ic_arrow_forward"
+            android:drawablePadding="@dimen/_10sdp"
+            android:gravity="center|left"
+            android:visibility="gone"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_15sdp"
+            android:text="My Downloads"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/ll_tabview"
+            app:layout_constraintVertical_bias="0.0" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fav_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_tabview"
+
+            app:layout_constraintTop_toBottomOf="@+id/btn_download"
             app:layout_constraintVertical_bias="0.019"
+            app:reverseLayout="false"
             app:setAdapter="@{favouritesAdapter}"
             app:spanCount="4"
-            app:reverseLayout="false"
             app:submitList="@{mainViewModel.favouritesRadioArray}"
             tools:listitem="@layout/podcast_search_row" />
     </androidx.constraintlayout.widget.ConstraintLayout>

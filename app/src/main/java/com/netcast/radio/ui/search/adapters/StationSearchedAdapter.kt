@@ -9,7 +9,7 @@ class StationSearchedAdapter(private val list:List<Data>, val  stationSearchList
     BaseAdapter<StationSearchRowBinding,Data>(list){
     override val layoutId: Int = R.layout.station_search_row
 
-    override fun bind(binding: StationSearchRowBinding, item: Data) {
+    override fun bind(binding: StationSearchRowBinding, item: Data, position: Int) {
         binding.apply {
             searchstation = item
             listener = stationSearchListener

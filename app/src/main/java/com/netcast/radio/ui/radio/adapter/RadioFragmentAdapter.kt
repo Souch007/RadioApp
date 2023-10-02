@@ -12,7 +12,7 @@ class RadioFragmentAdapter(
 ) : BaseAdapter<RadioRowBinding, RadioLists>(list) {
     override val layoutId: Int = R.layout.radio_row
 
-    override fun bind(binding: RadioRowBinding, item: RadioLists) {
+    override fun bind(binding: RadioRowBinding, item: RadioLists, position: Int) {
         binding.apply {
             radioLists = item
             type=selectiontype

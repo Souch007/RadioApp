@@ -1,6 +1,7 @@
 package com.netcast.radio.download.adapter
 
 import android.view.View
+import com.downloader.Progress
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.DownloadRowBinding
@@ -12,6 +13,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 
+
+
 class DownloadEpisodeAdapter(
     private var list: MutableList<Data>,
     private val _onClickListenerPodcast: OnClickEpisodeDownload,
@@ -19,10 +22,12 @@ class DownloadEpisodeAdapter(
 ) : BaseAdapter<DownloadRowBinding, Data>(list) {
     private var selectedItems = mutableListOf<Data>()
 
+
+
     override val layoutId: Int = R.layout.download_row
 
-    override fun bind(binding: DownloadRowBinding, item: Data) {
-        val currentItem = item
+    override fun bind(binding: DownloadRowBinding, item: Data, position: Int) {
+
         binding.apply {
             episode = item
             listener = _onClickListenerPodcast
@@ -34,17 +39,22 @@ class DownloadEpisodeAdapter(
               }*/
 
         binding.checkboxChecked.setOnClickListener {
-            currentItem.isSelected = !currentItem.isSelected
-            toggleSelection(currentItem)
+            item.isSelected = !item.isSelected
+            toggleSelection(item)
         }
         // Highlight selected items
-        binding.checkboxChecked.isChecked = currentItem.isSelected
+        binding.checkboxChecked.isChecked = item.isSelected
 
         if (isCheckBoxesEnable) {
             binding.checkboxChecked.visibility = View.VISIBLE
         } else
             binding.checkboxChecked.visibility = View.GONE
+
     }
+
+
+
+
 
     override fun getItemsCount(data: List<Data>): Int {
         return data.size
@@ -99,7 +109,14 @@ class DownloadEpisodeAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
+
 }
+
+
+
+fun toPercent(progress: Progress) =
+    (100 * (progress.currentBytes / progress.totalBytes.toDouble())).toInt().toByte()
 
 interface OnClickEpisodeDownload {
     fun onDownloadedEpisodeClicked(data: Data)

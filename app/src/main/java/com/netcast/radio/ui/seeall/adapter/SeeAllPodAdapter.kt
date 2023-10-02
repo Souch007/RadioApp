@@ -11,7 +11,7 @@ class SeeAllPodAdapter (
 ) : BaseAdapter<SeeAllPodRowBinding, PodListData>(list){
     override val layoutId: Int = R.layout.see_all_pod_row
 
-    override fun bind(binding: SeeAllPodRowBinding, item: PodListData) {
+    override fun bind(binding: SeeAllPodRowBinding, item: PodListData, position: Int) {
         binding.apply {
             podlist = item
             listener = onCLickListenerPODSeeAll

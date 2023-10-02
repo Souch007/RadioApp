@@ -4,7 +4,6 @@ import com.netcast.radio.R
 import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.LanguagesRowBinding
 import com.netcast.radio.ui.radio.lanuages.Data
-import java.security.PrivateKey
 
 class LanguagesAdapter(
     private val list: List<Data>,
@@ -13,7 +12,7 @@ class LanguagesAdapter(
 ) : BaseAdapter<LanguagesRowBinding, Data>(list) {
     override val layoutId: Int = R.layout.languages_row
 
-    override fun bind(binding: LanguagesRowBinding, item: Data) {
+    override fun bind(binding: LanguagesRowBinding, item: Data, position: Int) {
         binding.apply {
             languageList = item
             listener = onClickListenerLanguages

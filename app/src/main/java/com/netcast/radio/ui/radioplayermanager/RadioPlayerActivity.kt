@@ -130,7 +130,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun showBottomSheetDialog() {
-        val bottomSheetFragment = BottomSheetOptionsFragment(this)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this,true)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
     }
@@ -398,7 +398,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
                 if (isWifiDownloadEnable) {
                     if (isWifiConnected(this)) {
-                        downloadEpisode(it)
+//                        downloadEpisode(it)
+                    podEpisodesAdapter.downloadEpisode()
                     } else {
                         Toast.makeText(
                             this,
@@ -408,7 +409,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     }
 
                 } else {
-                    downloadEpisode(it)
+//                    downloadEpisode(it)
+                podEpisodesAdapter.downloadEpisode()
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -563,7 +565,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             CoroutineScope(Dispatchers.IO).launch {
                 appDatabase!!.appDap().insertOfflineEpisode(data)
             }
-            data.videoID=downloadId
+            data.videoID= downloadId.toInt()
             podEpisodesAdapter.notifyDataSetChanged()
 //            AppSingelton.currentDownloading = ""
 
@@ -597,6 +599,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             podcastEpisodeList!!, viewModel,this
         )
         dataBinding.podepisodeadapter = podEpisodesAdapter
+        podEpisodesAdapter.downloadEpisode()
 
     }
 

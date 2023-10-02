@@ -15,7 +15,7 @@ class FavouriteAdapter(
     override val layoutId: Int = R.layout.fav_row
 
     @SuppressLint("SuspiciousIndentation")
-    override fun bind(binding: FavRowBinding, item: PlayingChannelData) {
+    override fun bind(binding: FavRowBinding, item: PlayingChannelData, position: Int) {
         binding.apply {
             playing = item
             tabtype = type

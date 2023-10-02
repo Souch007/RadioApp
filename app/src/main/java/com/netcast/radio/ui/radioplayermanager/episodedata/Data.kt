@@ -58,6 +58,7 @@ data class Data(
     @ColumnInfo(name = "fileURI", defaultValue = "")
     var fileURI: String,
 
-    var videoID: Long=0L,
+    var videoID: Int,
+    var percentDownloaded: Byte //can only ever be between 0-100, so no need for Int
 
  ) : ListAdapterItem, java.io.Serializable
