@@ -7,7 +7,6 @@ import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseFragment
 import com.netcast.radio.databinding.FragmentSeeAllBinding
-import com.netcast.radio.util.EndLessLoading
 
 
 class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see_all) {
@@ -30,7 +29,8 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
                 binding.podcastRv.visibility = View.GONE
                 binding.seeallaadapter = com.netcast.radio.ui.seeall.adapter.SeeAllAdapter(
                     radioList,
-                    mainActivityViewModel
+                    mainActivityViewModel,
+                    mainActivityViewModel._radioSelectedTitle.value
                 )
             }
 
@@ -41,7 +41,8 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             binding.radioRv.visibility = View.GONE
             binding.seeallpodadapter = com.netcast.radio.ui.seeall.adapter.SeeAllPodAdapter(
                 it,
-                mainActivityViewModel
+                mainActivityViewModel,
+                mainActivityViewModel._radioSelectedTitle.value
             )
         }
         binding.ivBack.setOnClickListener {

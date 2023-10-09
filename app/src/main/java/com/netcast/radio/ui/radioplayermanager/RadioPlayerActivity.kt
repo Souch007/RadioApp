@@ -398,8 +398,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
                 if (isWifiDownloadEnable) {
                     if (isWifiConnected(this)) {
-//                        downloadEpisode(it)
-                    podEpisodesAdapter.downloadEpisode()
+                        downloadEpisode(it)
+//                    podEpisodesAdapter.downloadEpisode(it)
                     } else {
                         Toast.makeText(
                             this,
@@ -409,8 +409,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     }
 
                 } else {
-//                    downloadEpisode(it)
-                podEpisodesAdapter.downloadEpisode()
+                    downloadEpisode(it)
+//                podEpisodesAdapter.downloadEpisode(it)
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -596,10 +596,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun refreshAdapter() {
         podEpisodesAdapter = PodEpisodesAdapter(
-            podcastEpisodeList!!, viewModel,this
+            podcastEpisodeList!!, viewModel
         )
         dataBinding.podepisodeadapter = podEpisodesAdapter
-        podEpisodesAdapter.downloadEpisode()
+
 
     }
 

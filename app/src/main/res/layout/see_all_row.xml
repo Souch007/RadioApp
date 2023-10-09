@@ -11,6 +11,11 @@
         <variable
             name="listener"
             type="com.netcast.radio.ui.seeall.adapter.OnClickListenerSeeAll" />
+
+        <variable
+            name="title"
+            type="String" />
+
     </data>
 
     <androidx.cardview.widget.CardView
@@ -67,7 +72,7 @@
                     android:textAlignment="textStart"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
-                    android:textStyle="normal"
+                    android:textStyle="bold"
                     app:fontFamily="@font/poppins_bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +90,7 @@
                     android:maxLines="1"
 
                     android:padding="@dimen/_2sdp"
-                    android:text="@{radioLists.country}"
+                    android:text="@{title}"
                     android:textAlignment="textStart"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="normal"
