@@ -429,8 +429,13 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         viewModel._onepisodeShareClicked.observe(this@RadioPlayerActivity) {
             try {
-                share("Checkout this link its amazing. ", it.listennotesUrl)
+//                share("Checkout this link its amazing. ", it.listennotesUrl)
 
+                AppConstants.share(
+                    "Checkout this link its amazing. ",
+                    AppSingelton._radioSelectedChannel.value,
+                    this
+                )
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }

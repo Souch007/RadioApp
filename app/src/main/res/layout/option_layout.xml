@@ -19,7 +19,7 @@
             android:buttonTint="@color/OrangeRed"
             android:padding="@dimen/_5sdp"
             android:text="Set sleep timer"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_10sdp" />
 
         <View
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:buttonTint="@color/OrangeRed"
             android:padding="@dimen/_5sdp"
             android:text="Set Alarm"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_10sdp" />
 
 
         <View
@@ -50,7 +50,7 @@
             android:buttonTint="@color/OrangeRed"
             android:padding="@dimen/_5sdp"
             android:text="Share Station"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_10sdp" />
 
         <View
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
             android:buttonTint="@color/OrangeRed"
             android:padding="@dimen/_5sdp"
             android:text="Add to Favourite"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_10sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

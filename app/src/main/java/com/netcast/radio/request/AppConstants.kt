@@ -38,17 +38,17 @@ object AppConstants {
          deepLink = Uri.parse("https://netcast.com/"),
          Gson().toJson(appUrl)
       ) { generatedLink ->
-         shareDeepLink(generatedLink,context)
+         shareDeepLink(messageToShare,generatedLink,context)
       }
 
    }
 
-   private fun shareDeepLink(deepLink: String,context:Context) {
+   private fun shareDeepLink(message :String, deepLink: String,context:Context) {
       val intent = Intent(Intent.ACTION_SEND)
       intent.type = "text/plain"
-      intent.putExtra(
-         Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
-      )
+
+      intent.putExtra(Intent.EXTRA_TEXT, message + "\n" + deepLink)
+
       intent.putExtra(Intent.EXTRA_TEXT, deepLink)
       context.startActivity(intent)
 
