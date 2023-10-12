@@ -21,7 +21,8 @@ class PodcastFragmentAdapter(
     }
 
     override fun getItemsCount(data: List<PodListData>): Int {
-        return data.size;
+//        return data.size
+        return 10
     }
 
 }

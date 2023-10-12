@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -69,6 +70,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private lateinit var seeAllViewModel: SeeAllViewModel
     private var DEVICE_ID = ""
     private var selectedDestination = ""
+    var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,10 +109,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         hideProgressBar()
         checkOfflineChannels()
         getIntentData()
-        if (sharedPreferences.getBoolean(
-                "delete_completed_episode", true
-            )
-        ) deleteCompletedEpisodes()
+        if (sharedPreferences.getBoolean("delete_completed_episode", true))
+            deleteCompletedEpisodes()
+
+
 
     }
 
@@ -163,6 +165,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
+            super.onBackPressed()
+            finish()
+        } else {
+            Toast.makeText(this, "Press back again to leave the app.", Toast.LENGTH_LONG).show()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 
     private fun Observers() {
@@ -491,7 +500,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun showBottomSheetDialog() {
 
 
-        val bottomSheetFragment = BottomSheetOptionsFragment(this,true)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this, true)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
 
