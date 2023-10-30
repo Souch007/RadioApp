@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,8 +14,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -28,15 +25,12 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.base.ViewModelFactory
 import com.netcast.radio.databinding.ActivityMainBinding
-import com.netcast.radio.databinding.OptionLayoutBinding
 import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.AppConstants
@@ -111,7 +105,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         getIntentData()
         if (sharedPreferences.getBoolean("delete_completed_episode", true))
             deleteCompletedEpisodes()
-
 
 
     }
@@ -500,7 +493,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun showBottomSheetDialog() {
 
 
-        val bottomSheetFragment = BottomSheetOptionsFragment(this, true)
+        val isEpisode= AppSingelton._radioSelectedChannel.value?.type != "RADIO"
+        val bottomSheetFragment = BottomSheetOptionsFragment(this, true, isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
 

@@ -1,6 +1,7 @@
 package com.netcast.radio.ui.seeall.adapter
 
 import com.netcast.radio.R
+import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.SeeAllPodRowBinding
 import com.netcast.radio.ui.podcast.poddata.PodListData
@@ -19,6 +20,21 @@ class SeeAllPodAdapter(
             listener = onCLickListenerPODSeeAll
             executePendingBindings()
         }
+        checkIfItemisInFav(binding,item)
+    }
+
+    private fun checkIfItemisInFav(binding: SeeAllPodRowBinding, item: PodListData) {
+        if (AppSingelton.favouritesRadioArray != null) {
+            AppSingelton.favouritesRadioArray.forEachIndexed { index, playingChannelData ->
+                val id = playingChannelData.id
+                if (item._id.toRegex()
+                        ?.let { id.matches(it) } == true
+                ) {
+                    binding.imageShare.setImageResource(R.drawable.ic_fav_filled_24)
+                }
+            }
+        }
+
     }
 
     override fun getItemsCount(data: List<PodListData>): Int {
@@ -28,4 +44,5 @@ class SeeAllPodAdapter(
 }
 interface OnClickListerPODSeeAll {
     fun onPodClicked(data: PodListData)
+    fun onSeeALlPodFavouriteClicked(data: PodListData)
 }
