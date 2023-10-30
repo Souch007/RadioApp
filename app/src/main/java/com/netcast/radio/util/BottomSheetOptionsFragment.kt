@@ -9,7 +9,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.netcast.radio.databinding.OptionLayoutBinding
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 
-class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickListner,private val hidefav:Boolean) :
+class BottomSheetOptionsFragment(
+    private var optionsClickListner: OptionsClickListner,
+    private val hidefav: Boolean,
+    private val isEpisode: Boolean
+) :
     BottomSheetDialogFragment() {
 
     private var _binding: OptionLayoutBinding? = null
@@ -53,9 +57,11 @@ class BottomSheetOptionsFragment(private var optionsClickListner: OptionsClickLi
 
         }
         if (hidefav)
-            optionLayoutBinding.tvFavourite.visibility=View.GONE
+            optionLayoutBinding.tvFavourite.visibility = View.GONE
         else
-            optionLayoutBinding.tvFavourite.visibility=View.VISIBLE
+            optionLayoutBinding.tvFavourite.visibility = View.VISIBLE
+        if (isEpisode)
+            optionLayoutBinding.tvShare.text = "Share Podcast"
 
         return optionLayoutBinding.root
     }

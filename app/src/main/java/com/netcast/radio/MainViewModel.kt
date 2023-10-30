@@ -263,8 +263,28 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         onRadioClicked(data, "")
     }
 
+    override fun onSeeAllFavClick(data: RadioLists) {
+        var playingChannelData = PlayingChannelData(
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
+        )
+        addChannelToFavourites(playingChannelData)
+    }
+
     override fun onPodClicked(data: PodListData) {
         onPodCastClicked(data)
+    }
+
+    override fun onSeeALlPodFavouriteClicked(data: PodListData) {
+        var playingChannelData = PlayingChannelData(
+            data.website ?: "",
+            data.image,
+            data.title,
+            data._id,
+            data._id,
+            data.publisher,
+            "Episodes"
+        )
+        addChannelToFavourites(playingChannelData)
     }
 
     override fun OnCountrlySelected(data: Data) {

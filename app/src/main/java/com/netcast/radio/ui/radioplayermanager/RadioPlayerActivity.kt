@@ -44,8 +44,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
-
-
 class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>(),
     OptionsClickListner {
     var podcastEpisodeList: List<Data>? = null
@@ -56,6 +54,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     var relativePath = ""
     private var downloadManager: DownloadManager? = null
     lateinit var podEpisodesAdapter: PodEpisodesAdapter
+    var isEpisode=false
 
     companion object {
         private const val CHANNEL_ID = "download_channel"
@@ -130,7 +129,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun showBottomSheetDialog() {
-        val bottomSheetFragment = BottomSheetOptionsFragment(this,true)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this,true,isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
     }
@@ -386,6 +385,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         viewModel._episodeSelected.observe(this@RadioPlayerActivity) {
             try {
+                isEpisode=true
                 createPlayingChannelData(it)
                 exoPlayerManager("Episode")
             } catch (ex: Exception) {
