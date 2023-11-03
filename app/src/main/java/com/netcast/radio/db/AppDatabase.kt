@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.netcast.radio.ui.radio.data.temp.RadioLists
+import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
-@Database(entities = [Data::class], version = 9, exportSchema = false)
+@Database(entities = [Data::class,com.netcast.radio.ui.radio.data.temp.Data::class], version = 11, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDap() : DAOAccess
 

@@ -5,22 +5,22 @@ import com.google.gson.annotations.SerializedName
 import org.json.JSONObject
 
 data class PodListData(
-    @SerializedName("audio_length_sec")
-    val audioLengthSec: Int,
-    @SerializedName("country")
-    val country: String,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("earliest_pub_date_ms")
+//    @SerializedName("audio_length_sec")
+//    val audioLengthSec: Int,
+//    @SerializedName("country")
+//    val country: String,
+//    @SerializedName("description")
+//    val description: String,
+/*    @SerializedName("earliest_pub_date_ms")
     val earliestPubDateMs: Long,
     @SerializedName("email")
-    val email: String,
-    @SerializedName("explicit_content")
-    val explicitContent: Boolean,
-    @SerializedName("extra")
-    val extra: JSONObject,
-    @SerializedName("genre_ids")
-    val genreIds: List<Int>,
+    val email: String,*/
+//    @SerializedName("explicit_content")
+//    val explicitContent: Boolean,
+//    @SerializedName("extra")
+//    val extra: JSONObject,
+//    @SerializedName("genre_ids")
+//    val genreIds: List<Int>,
     @SerializedName("_id")
     override  val id: String,
     @SerializedName("id")
@@ -43,8 +43,8 @@ data class PodListData(
     val listenScoreGlobalRank: String,
     @SerializedName("listennotes_url")
     val listennotesUrl: String,
-    @SerializedName("looking_for")
-    val lookingFor: JSONObject,
+//    @SerializedName("looking_for")
+//    val lookingFor: JSONObject,
     @SerializedName("publisher")
     val publisher: String,
     @SerializedName("rss")

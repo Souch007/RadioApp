@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.netcast.radio.ui.radio.data.temp.RadioLists
+import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 
 @Dao
@@ -20,4 +22,13 @@ interface DAOAccess {
 
     @Query("DELETE FROM OfflineEpisodes WHERE id=:id")
     fun deleteOfflineEpisodeById(id: String) : Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRadioStations(data :com.netcast.radio.ui.radio.data.temp.Data)
+
+    @Query("SELECT * FROM RadioStations")
+    fun getRadioData(): com.netcast.radio.ui.radio.data.temp.Data
+
+
+
 }

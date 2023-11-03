@@ -1,26 +1,35 @@
 package com.netcast.radio.ui.radio
 
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseFragment
 import com.netcast.radio.databinding.FragmentRadioBinding
+import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.favourites.adapters.FavouriteAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 
 class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
 
     val radioViewModel: RadioViewModel by activityViewModels()
     private lateinit var mainActivityViewModel: MainViewModel
-
+    var appDatabase: AppDatabase? = null
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
+        appDatabase=initializeDB(requireContext())
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
@@ -36,55 +45,105 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
-                /*when(it){
+                when(it){
                     is Resource.Failure -> {
-//                        Toast.makeText(requireContext(),it.errorCode,Toast.LENGTH_SHORT).show()
+                       CoroutineScope(Dispatchers.IO).launch {
+                             val data=appDatabase!!.appDap().getRadioData()
+                           withContext(Dispatchers.Main){
+                               radioViewModel.radioListArray.value = data.publicRadio
+                               radioViewModel.radioListArray.value = data.publicRadio
+                               AppSingelton.suggestedRadioList = data.publicRadio
+                               AppSingelton.publicList=data.publicRadio
+                               binding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                   listOf(),
+                                   mainActivityViewModel,
+                                   "public"
+                               )
+
+                               radioViewModel._radioPopListArray.value = data.pop
+                               AppSingelton.popList=data.pop
+                               binding.popadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                   listOf(),
+                                   mainActivityViewModel,
+                                   "pop"
+                               )
+
+                               radioViewModel._radioNewsListArray.value = data.news
+                               AppSingelton.newsList=data.news
+                               binding.newsadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                   listOf(),
+                                   mainActivityViewModel,
+                                   "news"
+                               )
+
+                               radioViewModel._radioClassicallistingArry.value = data.classical
+                               AppSingelton.classicalList=data.classical
+                               binding.classicalAdapter =
+                                   com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                       listOf(),
+                                       mainActivityViewModel,
+                                       "classical"
+                                   )
+                               mainActivityViewModel._suggesteStations.value = data.music
+                               binding.shimmerLayout.stopShimmer()
+                               binding.shimmerLayout.visibility = View.GONE
+                           }
+
+                        }
+
+
                     }
                     Resource.Loading -> {
                         Log.d("TAG", "Loading: ")
                     }
                     is Resource.Success -> {
-                        Toast.makeText(requireContext(),it.value.data.radio[0].name,Toast.LENGTH_SHORT).show()
+                        val data = it.value.data
+                        radioViewModel.radioListArray.value = data.publicRadio
+                        AppSingelton.suggestedRadioList = data.publicRadio
+                        AppSingelton.publicList=data.publicRadio
+                        binding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                            listOf(),
+                            mainActivityViewModel,
+                            "public"
+                        )
+
+                        radioViewModel._radioPopListArray.value = data.pop
+                        AppSingelton.popList=data.pop
+                        binding.popadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                            listOf(),
+                            mainActivityViewModel,
+                            "pop"
+                        )
+
+                        radioViewModel._radioNewsListArray.value = data.news
+                        AppSingelton.newsList=data.news
+                        binding.newsadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                            listOf(),
+                            mainActivityViewModel,
+                            "news"
+                        )
+
+                        radioViewModel._radioClassicallistingArry.value = data.classical
+                        AppSingelton.classicalList=data.classical
+                        binding.classicalAdapter =
+                            com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                listOf(),
+                                mainActivityViewModel,
+                                "classical"
+                            )
+                        mainActivityViewModel._suggesteStations.value = data.music
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        CoroutineScope(Dispatchers.IO).launch {
+                            var data=it.value.data
+                            data.id=0
+                            appDatabase!!.appDap().insertRadioStations(data)
+
+                        }
                     }
                 }
-*/
-                val data = (it as Resource.Success).value.data
-                radioViewModel.radioListArray.value = data.publicRadio
-                AppSingelton.suggestedRadioList = data.publicRadio
-                AppSingelton.publicList=data.publicRadio
-                binding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                    listOf(),
-                    mainActivityViewModel,
-                    "public"
-                )
 
-                radioViewModel._radioPopListArray.value = data.pop
-                AppSingelton.popList=data.pop
-                binding.popadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                    listOf(),
-                    mainActivityViewModel,
-                    "pop"
-                )
 
-                radioViewModel._radioNewsListArray.value = data.news
-                AppSingelton.newsList=data.news
-                binding.newsadapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                    listOf(),
-                    mainActivityViewModel,
-                    "news"
-                )
-
-                radioViewModel._radioClassicallistingArry.value = data.classical
-                AppSingelton.classicalList=data.classical
-                binding.classicalAdapter =
-                    com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                        listOf(),
-                        mainActivityViewModel,
-                        "classical"
-                    )
-                mainActivityViewModel._suggesteStations.value = data.music
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
 
 //                with(viewPager) {
 //                    adapter = DotIndicatorAdapter(data.podcasts,mainActivityViewModel)
@@ -92,7 +151,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 //                    dotsIndicator.attachTo(this)
 //                }
             } catch (ex: java.lang.Exception) {
-
+                Log.d("TAG", "initialize: ${ex.message}")
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
                 val failure = (it as Resource.Failure).errorCode

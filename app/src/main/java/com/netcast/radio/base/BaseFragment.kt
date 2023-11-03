@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import com.netcast.radio.db.AppDatabase
 
 
 open class BaseFragment < T: ViewDataBinding>(@LayoutRes private val layoutResourceId : Int) : Fragment() {
@@ -51,5 +52,8 @@ open class BaseFragment < T: ViewDataBinding>(@LayoutRes private val layoutResou
         }
     }
 
+    fun initializeDB(context: Context): AppDatabase {
+        return AppDatabase.getDatabaseClient(context)
+    }
 
 }
