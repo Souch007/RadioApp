@@ -42,7 +42,6 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             }
         }
 
-
         radioViewModel.radioListing.observe(this@RadioFragment) {
             try {
                 when(it){

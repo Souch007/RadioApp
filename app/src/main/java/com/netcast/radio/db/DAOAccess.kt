@@ -29,6 +29,11 @@ interface DAOAccess {
     @Query("SELECT * FROM RadioStations")
     fun getRadioData(): com.netcast.radio.ui.radio.data.temp.Data
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPodCast(data :com.netcast.radio.ui.podcast.poddata.Data)
+
+    @Query("SELECT * FROM PodStations")
+    fun getPodData(): com.netcast.radio.ui.podcast.poddata.Data
 
 
 }

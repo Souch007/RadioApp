@@ -94,7 +94,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_download"
-            style="@style/textHeading"
+
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:background="@color/black"
@@ -127,7 +127,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toBottomOf="@+id/btn_download"
             app:layout_constraintVertical_bias="0.019"
             app:reverseLayout="false"
