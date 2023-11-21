@@ -9,12 +9,14 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
@@ -42,6 +44,7 @@ import com.netcast.radio.ui.podcast.PodcastViewModel
 import com.netcast.radio.ui.radio.RadioViewModel
 import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
+import com.netcast.radio.ui.seeall.SeeAllFragment
 import com.netcast.radio.ui.seeall.SeeAllViewModel
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
@@ -55,7 +58,7 @@ import java.util.*
 
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner {
-
+    private lateinit var mainActivityViewModel: MainViewModel
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
     private lateinit var podcastViewModel: PodcastViewModel
@@ -158,14 +161,24 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onBackPressed() {
-        if (backPressedTime + 3000 > System.currentTimeMillis()) {
+        if (backPressedTime + 1500 > System.currentTimeMillis()) {
             super.onBackPressed()
             finish()
         } else {
-            Toast.makeText(this, "Press back again to leave the app.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Press back again to exit the app.", Toast.LENGTH_LONG).show()
         }
         backPressedTime = System.currentTimeMillis()
+
+        val navController = findNavController( R.id.nav_host_fragment_activity_main)
+        val id = navController.currentDestination!!.id
+        if (id ==R.id.navigation_see_all) {
+            if (mainViewModel._radioSeeAllSelected.value == "PODCAST")
+                mainViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
+            else
+                mainViewModel._radioSeeAllSelected.value = "CLOSE"
+        }
     }
+
 
     private fun Observers() {
         if (AppSingelton.favouritesRadioArray.size == 0) {
