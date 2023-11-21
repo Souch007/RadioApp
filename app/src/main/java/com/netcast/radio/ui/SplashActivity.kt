@@ -52,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
                 // Permissions are granted, create LocationHandler
                 getCurrentLocationAndCountry()
             } else {
-                navigateToMain()
+//                navigateToMain()
             }
 
         }
@@ -111,7 +111,7 @@ class SplashActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocationAndCountry()
             } else {
-                navigateToMain()
+//                navigateToMain()
             }
         }
     }

@@ -94,10 +94,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_download"
-
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:background="@color/black"
+            android:fontFamily="@font/poppins_medium"
             android:drawableLeft="@drawable/ic_downloadwhite"
             android:drawableRight="@drawable/ic_arrow_forward"
             android:drawablePadding="@dimen/_10sdp"
