@@ -30,6 +30,7 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
 */
+
         sharedPreferences = context.getSharedPreferences("appData", Context.MODE_PRIVATE)
         val renderersFactory = DefaultRenderersFactory(context)
         AppSingelton.exoPlayer?.let {
