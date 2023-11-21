@@ -13,7 +13,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_setsleeptime"
-            style="@style/textHeading"
+            style="@style/textsubheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
@@ -28,7 +28,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_setalarm"
-            style="@style/textHeading"
+            style="@style/textsubheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
@@ -44,7 +44,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_share"
-            style="@style/textHeading"
+            style="@style/textsubheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
@@ -59,7 +59,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_favourite"
-            style="@style/textHeading"
+            style="@style/textsubheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"

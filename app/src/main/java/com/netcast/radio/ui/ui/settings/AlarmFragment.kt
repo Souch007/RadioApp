@@ -86,7 +86,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         }
 
         binding.tvSelectchannel.setOnClickListener {
-            val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+          sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
             if (playingChannelData!=null)
                 startActivity(Intent(this, AlarmSelectedChannelActivity::class.java))
             else {
