@@ -67,6 +67,7 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parent_view"
                 android:layout_width="match_parent"
@@ -80,7 +81,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shimmer_repeat_mode="restart"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:shimmer_shape="linear">
 
                     <LinearLayout
@@ -145,6 +146,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_recently_played"
                     tools:listitem="@layout/podcast_search_row" />
 
+                <include
+                    layout="@layout/seperator"
+                    app:layout_constraintBottom_toBottomOf="@+id/recently_played"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="@dimen/_1sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent" />
+
                 <TextView
                     android:id="@+id/tv_local_stations"
                     style="@style/textHeading"
@@ -179,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
+
                     tools:itemCount="10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -188,6 +197,15 @@
                     app:setAdapter="@{adapter}"
                     app:submitList="@{radioDataBinding.radioListingArray}"
                     tools:listitem="@layout/radio_row" />
+
+
+                <include
+                    layout="@layout/seperator"
+                    app:layout_constraintBottom_toBottomOf="@+id/all_radio_stations"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="@dimen/_1sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent" />
 
 
                 <ImageView
@@ -234,6 +252,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:itemCount="10"
+                    android:paddingBottom="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -241,6 +260,14 @@
                     app:setAdapter="@{popadapter}"
                     app:submitList="@{radioDataBinding.radioPopListingArray}"
                     tools:listitem="@layout/radio_row" />
+
+                <include
+                    layout="@layout/seperator"
+                    app:layout_constraintBottom_toBottomOf="@+id/most_listened_pop_rock"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="@dimen/_1sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent" />
 
 
                 <TextView
@@ -280,9 +307,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
                     app:setAdapter="@{newsadapter}"
+                    android:paddingBottom="@dimen/_10sdp"
                     tools:itemCount="10"
                     app:submitList="@{radioDataBinding.radioNewsListingArray}"
                     tools:listitem="@layout/radio_row" />
+
+                <include
+                    layout="@layout/seperator"
+                    app:layout_constraintBottom_toBottomOf="@+id/featured_news_culture_stations"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="@dimen/_1sdp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent" />
+
 
 
                 <androidx.recyclerview.widget.RecyclerView

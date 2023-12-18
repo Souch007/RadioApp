@@ -103,17 +103,97 @@
             android:text="Repeat Alarm"
             android:textColor="@color/OrangeRed" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+<!--        <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_sunday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="S" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_monday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="M" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_tuesday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+
+<!--                android:text="T" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_wednesday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="W" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_thursday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_10sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="T" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_friday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_10sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="F" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/chk_saturday"-->
+<!--                style="@style/textHeading"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_10sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="S" />-->
+
+
+<!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:columnCount="7"
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/chk_sunday"
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="S" />
 
@@ -122,8 +202,6 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="M" />
 
@@ -132,10 +210,7 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
-
                 android:text="T" />
 
             <CheckBox
@@ -143,8 +218,6 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="W" />
 
@@ -153,8 +226,6 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="T" />
 
@@ -163,8 +234,6 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="F" />
 
@@ -173,13 +242,10 @@
                 style="@style/textHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:text="S" />
 
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </GridLayout>
 
         <View
             android:layout_width="match_parent"

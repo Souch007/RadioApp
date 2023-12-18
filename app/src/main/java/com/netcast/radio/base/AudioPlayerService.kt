@@ -146,6 +146,8 @@ class AudioPlayerService : LifecycleService() {
         playerNotificationManager!!.setUsePlayPauseActions(true)
         playerNotificationManager!!.setUseRewindActionInCompactView(true)
         playerNotificationManager!!.setUseFastForwardActionInCompactView(true)
+        playerNotificationManager!!.setUsePreviousAction(true)
+        playerNotificationManager!!.setUseNextAction(true)
         playerNotificationManager!!.setSmallIcon(R.drawable.logo)
         playerNotificationManager!!.setColorized(true)
         playerNotificationManager!!.setColor(0xFFBDBDBD.toInt())

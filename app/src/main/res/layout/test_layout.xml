@@ -138,7 +138,7 @@
                 android:id="@+id/playing_channel_name"
                 style="@style/textHeading"
                 android:layout_width="0dp"
-                android:layout_weight=".6"
+                android:layout_weight=".5"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_toStartOf="@+id/play_button_carousel_"
@@ -152,7 +152,7 @@
             <com.google.android.exoplayer2.ui.PlayerControlView
                 android:id="@+id/play_button_carousel_"
                 android:layout_width="0dp"
-                android:layout_weight=".15"
+                android:layout_weight=".18"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center"

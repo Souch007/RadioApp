@@ -4,7 +4,7 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
+    android:backgroundTint="@color/transparent"
     android:visibility="visible"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
@@ -21,23 +21,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+<!--            style="@style/ExoMediaButton.Play"-->
         <ImageButton
             android:id="@+id/exo_play"
-            style="@style/ExoMediaButton.Play"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_exo_icon_play"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:src="@drawable/ic_play"
+            android:backgroundTint="@color/transparent"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<!--            style="@style/ExoMediaButton.Pause"-->
         <ImageButton
             android:id="@+id/exo_pause"
-            style="@style/ExoMediaButton.Pause"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_exo_icon_pause"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:src="@drawable/ic_pause"
+            android:backgroundTint="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
