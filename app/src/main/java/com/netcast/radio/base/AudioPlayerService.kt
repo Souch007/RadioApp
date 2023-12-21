@@ -142,6 +142,14 @@ class AudioPlayerService : LifecycleService() {
             })
             .build()
 
+
+//        playerNotificationManager.setUseNavigationActions(true);
+        playerNotificationManager!!.setUsePlayPauseActions(true)
+        playerNotificationManager!!.setUseStopAction(false)
+        playerNotificationManager!!.setUseNextAction(true)
+        playerNotificationManager!!.setUseNextActionInCompactView(true)
+        playerNotificationManager!!.setUsePreviousActionInCompactView(true)
+        playerNotificationManager!!.setUsePreviousAction(true)
         playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
         playerNotificationManager!!.setUsePlayPauseActions(true)
         playerNotificationManager!!.setUseRewindActionInCompactView(true)
