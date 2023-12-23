@@ -72,7 +72,8 @@
                     android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-
+                    app:shimmer_base_alpha="0.9"
+                    app:shimmer_base_color="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -134,7 +135,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/all"
                         android:textColor="@color/OrangeRed"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintBaseline_toBaselineOf="@+id/tv_trending_podcasts"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -142,10 +143,8 @@
                         android:id="@+id/trending_podcast_stations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/_10sdp"
-
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -155,6 +154,14 @@
                         app:submitList="@{podcastDataBinding.newsArrayLM}"
                         tools:itemCount="10"
                         tools:listitem="@layout/radio_row" />
+
+                    <include
+                        layout="@layout/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/trending_podcast_stations"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
 
                     <TextView
@@ -182,7 +189,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/all"
                         android:textColor="@color/OrangeRed"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_fitness"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_fitness" />
@@ -191,7 +198,6 @@
                         android:id="@+id/fitness_podcast_stations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/_10sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -203,6 +209,15 @@
                         app:submitList="@{podcastDataBinding.fitnessLM}"
                         tools:itemCount="10"
                         tools:listitem="@layout/radio_row" />
+
+
+                    <include
+                        layout="@layout/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/fitness_podcast_stations"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_bussiness"
@@ -229,7 +244,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/all"
                         android:textColor="@color/OrangeRed"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_bussiness"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_bussiness" />
@@ -238,8 +253,7 @@
                         android:id="@+id/society_business_stations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
-                        android:orientation="horizontal"
+                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/_10sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -250,6 +264,15 @@
                         app:submitList="@{podcastDataBinding.businessLM}"
                         tools:itemCount="10"
                         tools:listitem="@layout/radio_row" />
+
+
+                    <include
+                        layout="@layout/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/society_business_stations"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_culture"
@@ -276,7 +299,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/all"
                         android:textColor="@color/OrangeRed"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_culture"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_culture" />
@@ -285,7 +308,6 @@
                         android:id="@+id/society_cultural_stations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/_10sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -296,6 +318,16 @@
                         app:setAdapter="@{culturaladpter}"
                         app:submitList="@{podcastDataBinding.cultureLM}"
                         tools:listitem="@layout/radio_row" />
+
+
+
+                    <include
+                        layout="@layout/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/society_cultural_stations"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_education"
@@ -322,7 +354,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/all"
                         android:textColor="@color/OrangeRed"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_education"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_education" />
@@ -331,10 +363,9 @@
                         android:id="@+id/society_educational_stations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
-                        android:paddingBottom="@dimen/_60sdp"
+                        android:paddingBottom="@dimen/_30sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -344,6 +375,8 @@
                         app:submitList="@{podcastDataBinding.educationM}"
                         tools:itemCount="10"
                         tools:listitem="@layout/radio_row" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

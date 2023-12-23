@@ -36,7 +36,7 @@
                 style="@style/textHeading"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_7sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal"
                 android:lines="1"
                 app:layout_constraintHorizontal_bias="0.5"

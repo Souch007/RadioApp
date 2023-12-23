@@ -137,7 +137,7 @@
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_12sdp"
                             tools:ignore="TouchTargetSizeCheck" />
                     </LinearLayout>
 

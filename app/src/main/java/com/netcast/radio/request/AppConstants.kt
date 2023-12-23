@@ -84,7 +84,7 @@ object AppConstants {
             getShareableLink.invoke(dynamicLink.shortLink.toString())
          }
          it.addOnFailureListener {ex->
-            Log.d("TAG", "generateSharingLink: ${ex.message}")
+            //Log("TAG", "generateSharingLink: ${ex.message}")
          }
       }
    }

@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
@@ -31,15 +31,28 @@ class LocationHelper(private val context: Context) {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
-                override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                        CancellationTokenSource().token
 
-                override fun isCancellationRequested() = false
-            })
+                    override fun isCancellationRequested() = false
+                })
                 .addOnSuccessListener { location: Location? ->
-                    if (location == null)
-                        Toast.makeText(context, "Unable to get your location please try again", Toast.LENGTH_SHORT).show()
-                    else {
+                    Log.d("getCurrentLocation1", "getCurrentLocation: ${location}")
+                    Log.d(
+                        "getCurrentLocation1",
+                        "getCurrentLocation: ${location?.latitude.toString()}"
+                    )
+                    if (location == null) {
+                        Toast.makeText(
+                            context,
+                            "Unable to get your location please try again",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        onSuccessListener.onSuccess(null)
+                    } else {
                         onSuccessListener.onSuccess(location)
                     }
 

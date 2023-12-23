@@ -44,7 +44,7 @@
             android:padding="@dimen/_5sdp"
             android:layout_below="@+id/img"
             android:text='@{genresList.name ?? ""}'
-            android:textSize="@dimen/_8sdp"
+            android:textSize="@dimen/_10sdp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

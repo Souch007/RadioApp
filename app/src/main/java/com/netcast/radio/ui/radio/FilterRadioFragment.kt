@@ -34,7 +34,7 @@ class FilterRadioFragment() :
             it?.let { searchData ->
                 try {
                     binding.searchResultsStations.visibility=View.VISIBLE
-                    Log.d(TAG, "SearchData: $searchData")
+                    //Log(TAG, "SearchData: $searchData")
                     val data = (searchData as Resource.Success).value.data
                     searchViewModel!!._searchListStations.value = data
                     binding.stationsearchadapter =

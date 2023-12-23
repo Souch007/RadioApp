@@ -335,7 +335,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
     private fun callApis() {
 //        mainViewModel.getRadioListing(radioViewModel, getUserCountry(this))
-        mainViewModel.getRadioListing(radioViewModel, "")
+        mainViewModel.getRadioListing(radioViewModel, AppSingelton.country)
         mainViewModel.getLanguages(radioViewModel)
         mainViewModel.getCountires(radioViewModel)
         mainViewModel.getAllGenres(radioViewModel)
@@ -450,7 +450,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         try {
             val telephonyManager =
                 context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-//            Log.d(TAG, "detectNetworkCountry: ${telephonyManager.networkCountryIso}")
+
             return telephonyManager.networkCountryIso
         } catch (e: Exception) {
             e.printStackTrace()
@@ -517,7 +517,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
           optionLayoutBinding.tvSetalarm.setOnClickListener {
               startActivity(Intent(this, AlarmFragment::class.java))
-              bottomSheetDialog.dismiss()
+              bottomSheetDia//Logismiss()
               closePlayerandPanel()
   //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
           }
@@ -525,12 +525,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
   //            navController.navigate(R.id.sleepTimerFragment)
               startActivity(Intent(this, SleepTimerFragment::class.java))
 
-              bottomSheetDialog.dismiss()
+              bottomSheetDia//Logismiss()
               closePlayerandPanel()
   //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
           }
           optionLayoutBinding.tvShare.setOnClickListener {
-              bottomSheetDialog.dismiss()
+              bottomSheetDia//Logismiss()
               share(
                   "Checkout this link its amazing. ",
                   AppSingelton._radioSelectedChannel.value
@@ -538,7 +538,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
           }
           optionLayoutBinding.tvFavourite.setOnClickListener {
-              bottomSheetDialog.dismiss()
+              bottomSheetDia//Logismiss()
               AppSingelton._radioSelectedChannel.value?.let { it1 ->
                   viewModel.addChannelToFavourites(
                       it1

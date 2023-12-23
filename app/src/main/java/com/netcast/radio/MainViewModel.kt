@@ -82,9 +82,9 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
         viewModelScope.launch {
             radioViewModel._radioListing.value =
-                appRepository.getRadioListing(AppSingelton.country ?: "")
+                appRepository.getRadioListing(country?:"")
 
-            Log.d("MainViewModel", "getRadioListing: $country")
+            //Log("MainViewModel", "getRadioListing: $country")
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }
@@ -141,7 +141,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
 
     override fun onRadioClicked(data: RadioLists, type: String) {
-
+        AppSingelton.selectedChannel = data
         var playingChannelData = PlayingChannelData(
             data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
         )
@@ -214,7 +214,9 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
 
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
-        Log.d("onFavChannelClicked", "onFavChannelClicked: $tabtype")
+        //Log("onFavChannelClicked", "onFavChannelClicked: $tabtype")
+//        AppSingelton.selectedChannel = data
+
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
         if (AppSingelton.exoPlayer != null) {
