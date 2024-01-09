@@ -1,5 +1,6 @@
 package com.netcast.radio.base
 
+import android.media.browse.MediaBrowser.MediaItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.netcast.radio.PlayingChannelData
@@ -13,6 +14,8 @@ object AppSingelton {
 
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
+    public var selectedChannel: RadioLists? = null
+    public var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null
     public var classicalList: List<RadioLists>? = null
     public var popList: List<RadioLists>? = null
     public var newsList: List<RadioLists>? = null

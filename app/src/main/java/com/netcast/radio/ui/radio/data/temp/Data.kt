@@ -28,8 +28,9 @@ data class Data(
     @SerializedName("Pop")
     val pop: List<RadioLists>,
     @ColumnInfo(name = "publicRadio", defaultValue = "")
-    @SerializedName("publicRadio")
+    @SerializedName("localStations")
     val publicRadio: List<RadioLists>,
+
 //    @SerializedName("estación")
 //    val estación: List<RadioLists>,
 //    @SerializedName("méxico")

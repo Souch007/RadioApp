@@ -39,11 +39,11 @@ class SearchViewModel(appRepository: AppRepository) : BaseViewModel() , OnSearch
     }
 
     override fun onPodCastSearchedListener(data: com.netcast.radio.ui.search.searchedpodresponce.Data) {
-        Log.d("TAG", "onPodCastSearchedListener: ")
+        //Log("TAG", "onPodCastSearchedListener: ")
     }
 
     override fun onStationSearchListener(data: com.netcast.radio.ui.search.searchedstationresponce.Data) {
-        Log.d("TAG", "onPodCastSearchedListener: ")
+        //Log("TAG", "onPodCastSearchedListener: ")
 
     }
 }

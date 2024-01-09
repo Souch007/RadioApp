@@ -21,26 +21,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-<!--            style="@style/ExoMediaButton.Play"-->
         <ImageButton
             android:id="@+id/exo_play"
-            android:layout_width="@dimen/_56sdp"
-            android:layout_height="@dimen/_56sdp"
-            android:src="@drawable/ic_play"
-            android:backgroundTint="@color/transparent"
-
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/ic_exo_icon_play"
+            style="@style/ExoMediaButton.Play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--            style="@style/ExoMediaButton.Pause"-->
         <ImageButton
             android:id="@+id/exo_pause"
-            android:layout_width="@dimen/_56sdp"
-            android:layout_height="@dimen/_56sdp"
-            android:src="@drawable/ic_pause"
-            android:backgroundTint="@color/transparent"
+            android:layout_width="@dimen/_50sdp"
+            style="@style/ExoMediaButton.Pause"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/ic_exo_icon_pause"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

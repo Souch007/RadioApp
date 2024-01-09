@@ -39,14 +39,14 @@ data class Data(
     override  val id: String,
     @SerializedName("iso_3166_2")
     val iso31662: Any,
-    @SerializedName("language")
+    /*@SerializedName("language")
     val language: List<String>,
-    @SerializedName("languagecodes")
+   @SerializedName("languagecodes")
     val languagecodes: String,
     @SerializedName("lastchangetime")
     val lastchangetime: String,
     @SerializedName("lastchangetime_iso8601")
-    val lastchangetimeIso8601: String,
+    val lastchangetimeIso8601: String,*/
     @SerializedName("lastcheckok")
     val lastcheckok: Int,
     @SerializedName("lastcheckoktime")

@@ -38,6 +38,8 @@
             name="genresAdapter"
             type="com.netcast.radio.ui.radio.adapter.GenresAdapter" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,17 +73,19 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parent_view"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                >
+                android:layout_height="0dp">
+
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:shimmer_base_alpha="0.95"
+                    app:shimmer_base_color="@color/black"
                     app:shimmer_repeat_mode="restart"
-                    android:visibility="gone"
                     app:shimmer_shape="linear">
 
                     <LinearLayout
@@ -109,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="Recently Played"
                     android:textSize="@dimen/_11sdp"
@@ -128,31 +132,32 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_recently_played"
                     app:layout_constraintEnd_toEndOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recently_played"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    tools:itemCount="10"
+                    android:paddingBottom="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_recently_played"
+                    tools:itemCount="10"
                     tools:listitem="@layout/podcast_search_row" />
+
 
                 <include
                     layout="@layout/seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/recently_played"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_height="@dimen/_1sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="match_parent" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_local_stations"
@@ -164,6 +169,7 @@
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="Local Stations"
                     android:textSize="@dimen/_10sdp"
+                    android:visibility='@{radioDataBinding.radioListArray.size() > 0 ? View.VISIBLE:View.GONE}'
                     app:layout_constraintEnd_toStartOf="@+id/tv_all_tag"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -177,8 +183,10 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
+                    android:visibility='@{radioDataBinding.radioListArray.size() > 0 ? View.VISIBLE:View.GONE}'
+
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_local_stations"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -188,24 +196,23 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/_10sdp"
-
-                    tools:itemCount="10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_local_stations"
                     app:setAdapter="@{adapter}"
-                    app:submitList="@{radioDataBinding.radioListingArray}"
+                    app:submitList="@{radioDataBinding.radioListArray}"
+                    tools:itemCount="10"
                     tools:listitem="@layout/radio_row" />
 
 
                 <include
                     layout="@layout/seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/all_radio_stations"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_height="@dimen/_1sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="match_parent" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
                 <ImageView
@@ -242,7 +249,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_pop_rock"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -251,7 +258,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    tools:itemCount="10"
                     android:paddingBottom="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -259,15 +265,16 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_pop_rock"
                     app:setAdapter="@{popadapter}"
                     app:submitList="@{radioDataBinding.radioPopListingArray}"
+                    tools:itemCount="10"
                     tools:listitem="@layout/radio_row" />
 
                 <include
                     layout="@layout/seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/most_listened_pop_rock"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_height="@dimen/_1sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="match_parent" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
                 <TextView
@@ -293,7 +300,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_news"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -302,25 +309,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_all_tag_news"
                     app:setAdapter="@{newsadapter}"
-                    android:paddingBottom="@dimen/_10sdp"
-                    tools:itemCount="10"
                     app:submitList="@{radioDataBinding.radioNewsListingArray}"
+                    tools:itemCount="10"
                     tools:listitem="@layout/radio_row" />
 
                 <include
                     layout="@layout/seperator"
-                    app:layout_constraintBottom_toBottomOf="@+id/featured_news_culture_stations"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/featured_news_culture_stations"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="match_parent" />
-
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -411,7 +417,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_classical"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -425,8 +431,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_classical"
                     app:setAdapter="@{classicalAdapter}"
-                    tools:itemCount="10"
                     app:submitList="@{radioDataBinding.radioClassicallistingArry}"
+                    tools:itemCount="10"
                     tools:listitem="@layout/radio_row" />
 
                 <View
@@ -460,7 +466,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     android:visibility="visible"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_genres"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -501,8 +507,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     android:visibility="visible"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_countries"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -543,7 +548,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/all"
                     android:textColor="@color/OrangeRed"
-                    android:textSize="@dimen/_9sdp"
+                    android:textSize="@dimen/_10sdp"
                     android:visibility="visible"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_languages"
                     app:layout_constraintEnd_toEndOf="parent" />

@@ -16,25 +16,26 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/_8sdp"
         android:layout_margin="@dimen/_4sdp"
-        app:cardCornerRadius="@dimen/_5sdp"
-        app:cardBackgroundColor="#151523"
-        app:cardElevation="@dimen/_3sdp"
+        android:elevation="@dimen/_8sdp"
         android:onClick="@{() -> listener.onPodCastSearchedListener(podlist)}"
-        >
+        app:cardBackgroundColor="#151523"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_3sdp">
+
         <LinearLayout
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_85sdp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/logo"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,21 +45,21 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="match_parent"
-                android:gravity="start|center"
-                android:ellipsize="end"
-                android:padding="@dimen/_2sdp"
-                android:maxLines="1"
-                android:text="@{podlist.title}"
                 style="@style/textTitle"
-                android:textAlignment="textStart"
-                android:textSize="@dimen/_7sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:padding="@dimen/_2sdp"
+                android:text="@{podlist.title}"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal"
-                android:lines="1"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

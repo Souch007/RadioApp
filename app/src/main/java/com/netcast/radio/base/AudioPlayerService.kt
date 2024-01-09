@@ -59,7 +59,11 @@ class AudioPlayerService : LifecycleService() {
             }
 
             override fun getCurrentContentTitle(player: Player): String {
-                return _currentPlayingChannel!!.name ?: "No Name"
+//                return _currentPlayingChannel!!.name ?: "No Name"
+                val currentMediaIndex = player.currentWindowIndex
+                val currentMediaItem = AppSingelton.mediaItemList?.get(currentMediaIndex)
+                return currentMediaItem?.mediaMetadata?.title.toString()
+
             }
 
             override fun createCurrentContentIntent(player: Player): PendingIntent? {
@@ -67,11 +71,14 @@ class AudioPlayerService : LifecycleService() {
             }
 
             override fun getCurrentContentText(player: Player): String {
+                val currentMediaIndex = player.currentWindowIndex
+                val currentMediaItem = AppSingelton.mediaItemList?.get(currentMediaIndex)
+
                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.fromHtml(_currentPlayingChannel!!.country, Html.FROM_HTML_MODE_COMPACT)
+                    Html.fromHtml(currentMediaItem?.mediaMetadata?.description.toString(), Html.FROM_HTML_MODE_COMPACT)
                         .toString()
                 } else {
-                    Html.fromHtml(_currentPlayingChannel!!.country).toString()
+                    Html.fromHtml(currentMediaItem?.mediaMetadata?.description.toString()).toString()
                 }
             }
 
@@ -79,10 +86,13 @@ class AudioPlayerService : LifecycleService() {
                 player: Player,
                 callback: PlayerNotificationManager.BitmapCallback
             ): Bitmap? {
+                val currentMediaIndex = player.currentWindowIndex
+                val currentMediaItem = AppSingelton.mediaItemList?.get(currentMediaIndex)
+
                 var trackImage: Bitmap? = null
                 val thread = Thread {
                     try {
-                        val uri = Uri.parse(_currentPlayingChannel!!.favicon)
+                        val uri = currentMediaItem?.mediaMetadata?.artworkUri
                         val bitmap = Glide.with(applicationContext)
                             .asBitmap()
                             .load(uri)
@@ -142,6 +152,14 @@ class AudioPlayerService : LifecycleService() {
             })
             .build()
 
+
+//        playerNotificationManager.setUseNavigationActions(true);
+        playerNotificationManager!!.setUsePlayPauseActions(true)
+        playerNotificationManager!!.setUseStopAction(false)
+        playerNotificationManager!!.setUseNextAction(true)
+        playerNotificationManager!!.setUseNextActionInCompactView(true)
+        playerNotificationManager!!.setUsePreviousActionInCompactView(true)
+        playerNotificationManager!!.setUsePreviousAction(true)
         playerNotificationManager!!.setPriority(NotificationCompat.PRIORITY_LOW)
         playerNotificationManager!!.setUsePlayPauseActions(true)
         playerNotificationManager!!.setUseRewindActionInCompactView(true)

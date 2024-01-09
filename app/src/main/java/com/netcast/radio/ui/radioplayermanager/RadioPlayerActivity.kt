@@ -34,6 +34,7 @@ import com.netcast.radio.databinding.ActivityRadioPlayerBinding
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.Resource
+import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.ui.settings.AlarmFragment
@@ -85,8 +86,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList =
-            AppSingelton.suggestedRadioList!!
+        if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         checkWifiPlaySettings()
 
@@ -253,10 +253,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         val isAutoPlayEnable = sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
         AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id ?: ""
         val currentPlayingUUid = AppSingelton._currenPlayingChannelId
-        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(
-                currentPlayingUUid.toRegex()
-            )
-        ) {
+        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())) {
             if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
                 AppSingelton.exoPlayer = ExoPlayer.Builder(this).setSeekForwardIncrementMs(
                     (sharedPreferences.getLong(
@@ -293,8 +290,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                         }
                     }
-                Log.d("Offline", "Request Recieved")
-            } else {
+                //Log("Offline", "Request Recieved")
+            }
+            else {
                 val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
                 val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
                     .setTargetBufferBytes(C.LENGTH_UNSET)
@@ -320,7 +318,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                 AppConstants.SKIP_SLIENCE, false
                             )
                         )*/.setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
-                            val url = AppSingelton.radioSelectedChannel.value?.url
+                            val currentChannel = AppSingelton.radioSelectedChannel.value
                             dataBinding.playerView.player = exoPlayer
                             if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches(
                                     "Episodes".toRegex()
@@ -328,16 +326,49 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             ) {
                                 val mediaitems = mutableListOf<MediaItem>()
                                 for (i in 0 until podcastEpisodeList!!.size) {
+                                    val mediaMetadata = MediaMetadata.Builder()
+                                        .setTitle(podcastEpisodeList!![i].title)
+                                        .setDescription(podcastEpisodeList!![i].description)
+                                        .setArtworkUri(Uri.parse(podcastEpisodeList!![i].thumbnail))
+
+                                        .build()
                                     val mediaItem: MediaItem = MediaItem.Builder()
                                         .setUri(podcastEpisodeList!![i].audio.toUri())
+                                        .setMediaMetadata(mediaMetadata)
                                         .setMediaId(i.toString()).setTag(i).build()
                                     mediaitems.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
                                 }
+
+                                AppSingelton.mediaItemList=mediaitems
                                 exoPlayer.setMediaItems(mediaitems)
                             } else {
-                                val mediaItem = MediaItem.fromUri(url ?: "")
-                                exoPlayer.setMediaItem(mediaItem)
+                                val mediaitemschannels = mutableListOf<MediaItem>()
+                                val list=AppSingelton.suggestedRadioList?.toMutableList()
+                                val selectedRadio=RadioLists(currentChannel?.country ?: "",currentChannel?.favicon ?: "",currentChannel?.id ?: "",currentChannel?.name ?: "",currentChannel?.url ?: "")
+//                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
+                                list?.add(0,selectedRadio)
+                                AppSingelton.suggestedRadioList=list
+                                for (i in 0 until AppSingelton.suggestedRadioList!!.size) {
+                                    val mediaMetadata = MediaMetadata.Builder()
+                                        .setTitle(AppSingelton.suggestedRadioList!![i].name)
+                                        .setDescription(AppSingelton.suggestedRadioList!![i].country)
+                                        .setArtworkUri(Uri.parse(AppSingelton.suggestedRadioList!![i].favicon))
+                                        .build()
+
+
+                                    val mediaItem: MediaItem = MediaItem.Builder()
+                                        .setUri(AppSingelton.suggestedRadioList!![i].url.toUri())
+                                        .setMediaMetadata(mediaMetadata)
+
+                                        .setMediaId(i.toString()).setTag(i).build()
+                                    mediaitemschannels.add(mediaItem)
+//                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
+                                }
+                                AppSingelton.mediaItemList=mediaitemschannels
+                                exoPlayer.setMediaItems(mediaitemschannels)
+//                                val mediaItem = MediaItem.fromUri(url ?: "")
+                                exoPlayer.setMediaItems(mediaitemschannels)
                             }
                             exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
                             exoPlayer.addListener(this)
@@ -459,14 +490,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
              }
          }*/
     }
-
-    private fun share(messageToShare: String, appUrl: String) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, messageToShare + "\n" + appUrl)
-        startActivity(Intent(intent))
-    }
-
     private fun downloadEpisode(data: Data) {
         AppSingelton.downloadingEpisodeData = data
 //                    DownloadFile(data).execute()
@@ -483,7 +506,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         }
     }
-
 
     private fun downloadEpisodeNow(data: Data, radioPlayerActivity: RadioPlayerActivity) {
         val fileName = data.id + "" + System.currentTimeMillis().toString() + ".mp3"
@@ -535,7 +557,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         } else ""
     }
 
-
     private fun downloadFile(
         fileName: String, desc: String, url: String, outputPath: String, title: String, data: Data
     ) {
@@ -580,12 +601,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     }
 
-
-    private fun showAlertDialog(title: String, message: String) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show()
-    }
-
     private fun isDownloadingInProgress(context: Context): Boolean {
 //         downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
@@ -607,7 +622,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
     }
-
 
     private fun checkPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -662,10 +676,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun _checkMediaType() {
         //Checking the Type of MEDIA
-        if (AppSingelton.exoPlayer != null) Log.d(
-            "tag", AppSingelton.exoPlayer!!.audioSessionId.toString()
-        )
-        podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
+        if (AppSingelton.exoPlayer != null) podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
@@ -701,6 +712,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         super.onMediaItemTransition(mediaItem, reason)
         val item = mediaItem?.mediaMetadata
         val currentPos = mediaItem?.mediaId
+        if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex()))
         dataBinding.episode.text = podcastEpisodeList!![currentPos?.toInt() ?: 0].title
 
     }

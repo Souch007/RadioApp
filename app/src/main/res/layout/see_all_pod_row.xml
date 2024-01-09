@@ -37,9 +37,9 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_weight=".1"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_margin="@dimen/_5sdp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:scaleType="centerCrop"
                 android:src="@drawable/logo"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,9 +49,9 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight=".65"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight=".65"
                 android:orientation="vertical">
 
                 <TextView
@@ -93,12 +93,13 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/image_share"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_weight=".15"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
+                android:layout_weight=".15"
                 android:onClick="@{() -> listener.onSeeALlPodFavouriteClicked(podlist)}"
                 app:srcCompat="@drawable/ic_fav_24" />
         </LinearLayout>

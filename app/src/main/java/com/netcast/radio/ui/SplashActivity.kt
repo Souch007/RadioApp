@@ -9,7 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -43,16 +43,15 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun locationandShareSettings() {
+
         if (!LocationUtils.isGpsEnabled(this)) {
             LocationUtils.showEnableLocationDialog(this, onNegativeButtonClicked = {
                 navigateToMain()
             })
         } else {
             if (checkLocationPermission()) {
-                // Permissions are granted, create LocationHandler
                 getCurrentLocationAndCountry()
             } else {
-//                navigateToMain()
             }
 
         }
@@ -83,7 +82,7 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }.addOnFailureListener {
-                Log.d(TAG, "handleIncomingDeepLinks: ${it.message}")
+                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
             }
     }
 
@@ -93,11 +92,7 @@ class SplashActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // Permission is not granted, request it
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
+            showCustomRationaleDialog()
             return false
         }
         return true
@@ -110,7 +105,7 @@ class SplashActivity : AppCompatActivity() {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocationAndCountry()
-            } else if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_DENIED) {
+            } else if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 navigateToMain()
             }
         }
@@ -123,7 +118,6 @@ class SplashActivity : AppCompatActivity() {
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 val country = locationHelper.getCountryFromLocation(currentLatLng)
                 if (country != null) {
-                    println("Current Country: $country")
                     AppSingelton.country = country
                     navigateToMain()
                 } else {
@@ -149,10 +143,25 @@ class SplashActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         locationandShareSettings()
-        /*if (requestCode == 10010 && resultCode == RESULT_OK) {
-
-        } else {
-            navigateToMain()
-        }*/
     }
+    private fun showCustomRationaleDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setTitle("Location Permission Required")
+            .setMessage("We need your location to provide you radio based on your Location")
+            .setPositiveButton("OK") { _, _ ->
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                navigateToMain()
+            }
+            .create()
+            .show()
+    }
+
 }

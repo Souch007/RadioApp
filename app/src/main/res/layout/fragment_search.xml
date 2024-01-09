@@ -67,8 +67,9 @@
                 style="@style/textHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_12sdp"
                 android:text="Podcast"
+                android:textSize="@dimen/_11sdp"
                 android:visibility='@{fragmentSearchViewModel.searchListPodcast.size() > 0 ? View.VISIBLE:View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
                 android:text="Channels"
+                android:textSize="@dimen/_11sdp"
                 android:visibility='@{fragmentSearchViewModel.searchListStations.size() > 0 ? View.VISIBLE:View.GONE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
