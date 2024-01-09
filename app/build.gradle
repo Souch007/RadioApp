@@ -9,18 +9,18 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.netcast.radio"
+        applicationId "com.netcast.baidutv"
         minSdk 21
         targetSdk 33
-        versionCode 33
-        versionName "1.32"
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         release {
-            storeFile file("D:\\RadioApp\\RadioApp\\keystore\\NetCast.jks")
+            storeFile file("E:\\AndroidProjects\\RadioApp\\keystore\\NetCastBaidu.jks")
             storePassword "123456"
             keyAlias "key0"
             keyPassword "123456"
@@ -46,7 +46,7 @@ android {
         dataBinding true
         viewBinding true
     }
-    namespace 'com.netcast.radio'
+    namespace 'com.netcast.baidutv'
 
 
 

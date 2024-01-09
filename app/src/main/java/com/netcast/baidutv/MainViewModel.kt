@@ -1,0 +1,339 @@
+package com.netcast.baidutv
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.netcast.baidutv.base.AppSingelton
+import com.netcast.baidutv.base.BaseViewModel
+import com.netcast.baidutv.request.AppApis
+import com.netcast.baidutv.request.RemoteDataSource
+import com.netcast.baidutv.request.repository.AppRepository
+import com.netcast.baidutv.ui.favourites.adapters.OnFavouriteClickListener
+import com.netcast.baidutv.ui.podcast.PodcastViewModel
+import com.netcast.baidutv.ui.podcast.adapter.OnClickListenerPodcast
+import com.netcast.baidutv.ui.podcast.poddata.PodListData
+import com.netcast.baidutv.ui.radio.FilterSearchListener
+import com.netcast.baidutv.ui.radio.RadioViewModel
+import com.netcast.baidutv.ui.radio.adapter.OnAllRecentPlayerClickListener
+import com.netcast.baidutv.ui.radio.adapter.OnClickGeneresListener
+import com.netcast.baidutv.ui.radio.adapter.OnClickListenerCountires
+import com.netcast.baidutv.ui.radio.adapter.OnClickListenerLanguages
+import com.netcast.baidutv.ui.radio.adapter.OnClickListnerRadio
+import com.netcast.baidutv.ui.radio.countries.Data
+import com.netcast.baidutv.ui.radio.data.temp.RadioLists
+import com.netcast.baidutv.ui.search.SearchViewModel
+
+import com.netcast.baidutv.ui.search.adapters.OnSearchTagListener
+import com.netcast.baidutv.ui.search.adapters.PodSearchOnClickListener
+import com.netcast.baidutv.ui.search.adapters.StationSearchListener
+import com.netcast.baidutv.ui.seeall.adapter.OnClickListenerSeeAll
+import com.netcast.baidutv.ui.seeall.adapter.OnClickListerPODSeeAll
+import kotlinx.coroutines.launch
+
+
+class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodcast,
+    OnFavouriteClickListener, OnClickListenerSeeAll, OnClickListerPODSeeAll,
+    OnClickListenerLanguages, OnClickListenerCountires, OnClickGeneresListener, OnSearchTagListener,
+    PodSearchOnClickListener, StationSearchListener, FilterSearchListener,
+    OnAllRecentPlayerClickListener {
+    val remoteDataSource = RemoteDataSource()
+    val appRepository = AppRepository(remoteDataSource.buildApi(AppApis::class.java))
+
+    val _state = MutableLiveData<Boolean>()
+    val state: LiveData<Boolean> get() = _state
+
+    val _timerradio = MutableLiveData<String>()
+    val radiotimer: LiveData<String> get() = _timerradio
+
+    val _isStationActive = MutableLiveData<Boolean>()
+    val isStationActive: LiveData<Boolean> = _isStationActive
+
+    var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
+    val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel
+
+    val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
+    val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel
+
+    val _suggesteStations = MutableLiveData<List<RadioLists>>()
+    val suggestedStations: LiveData<List<RadioLists>> = _suggesteStations
+
+    val _favouritesRadio = MutableLiveData<List<PlayingChannelData>>()
+    var favouritesRadioArray = mutableListOf<PlayingChannelData>()
+    val favouritesRadio: LiveData<List<PlayingChannelData>> = _favouritesRadio
+
+    //---------------------------------------------------------------------//
+    var _selectedSeeAllListRadio = MutableLiveData<List<RadioLists>>()
+    val selectedSeeAllListRadio: LiveData<List<RadioLists>> = _selectedSeeAllListRadio
+    val _selectedSeeAllPodcasts = MutableLiveData<List<PodListData>>()
+    val selectedSeeAllPodcasts: LiveData<List<PodListData>> = _selectedSeeAllPodcasts
+    val _radioSeeAllSelected = MutableLiveData<String>()
+    val _radioSelectedTitle = MutableLiveData<String>()
+
+    //------------------------------------------------------------------//
+    val _queriedSearched = MutableLiveData<String>()
+    var valueTypeFrag: String = ""
+    var currentFragmentId: String = "Radio"
+    val navigateToPodcast = MutableLiveData<Boolean>()
+
+    //----------------------------------//
+
+    fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
+        viewModelScope.launch {
+            radioViewModel._radioListing.value =
+                appRepository.getRadioListing(country?:"")
+
+            //Log("MainViewModel", "getRadioListing: $country")
+//            radioViewModel._radioListing.value = appRepository.getRadioListing("")
+        }
+    }
+
+    fun getPodCastListing(podcastViewModel: PodcastViewModel, country: String?) {
+        viewModelScope.launch {
+//            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
+            podcastViewModel._podcastListingMutable.value =
+                appRepository.getPodCastListing(country ?: "")
+
+        }
+    }
+
+    fun getLanguages(radioViewModel: RadioViewModel) {
+        viewModelScope.launch {
+            radioViewModel._languageListingMutable.value = appRepository.getLanguages()
+        }
+    }
+
+    fun getCountires(radioViewModel: RadioViewModel) {
+        viewModelScope.launch {
+            radioViewModel._countriesListingMutable.value = appRepository.getCountries()
+        }
+    }
+
+    fun getAllGenres(radioViewModel: RadioViewModel) {
+        viewModelScope.launch {
+            radioViewModel._genresListinMutable.value = appRepository.getAllGenres()
+        }
+    }
+
+    fun getFrequentSearchesTags(device_id: String, searchViewModel: SearchViewModel) {
+        viewModelScope.launch {
+            searchViewModel._frequentSearchesTags.value =
+                appRepository.getFrequentSearchTags(device_id)
+        }
+    }
+
+    fun getSearchQueryResult(
+        device_id: String, searchQuery: String, searchViewModel: SearchViewModel
+    ) {
+        viewModelScope.launch {
+            try {
+                searchViewModel._searchResultsPodcast.value =
+                    appRepository.searchPodcasts(searchQuery, device_id)
+                searchViewModel._searchResultsStations.value =
+                    appRepository.searchedStation(searchQuery, device_id)
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+
+        }
+    }
+
+
+    override fun onRadioClicked(data: RadioLists, type: String) {
+        AppSingelton.selectedChannel = data
+        var playingChannelData = PlayingChannelData(
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
+        )
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
+            false
+        else {
+            AppSingelton._isNewStationSelected.value = true
+            if (AppSingelton.exoPlayer != null) {
+                AppSingelton.exoPlayer!!.stop()
+                AppSingelton.exoPlayer!!.release()
+            }
+            AppSingelton.exoPlayer = null
+        }
+        getsuggestedList(type)
+
+    }
+
+    private fun getsuggestedList(type: String) {
+        when (type) {
+            "classical" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.classicalList
+            }
+
+            "pop" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.popList
+
+            }
+
+            "news" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.newsList
+
+            }
+
+            "public" -> {
+                AppSingelton.suggestedRadioList = AppSingelton.publicList
+
+            }
+
+            else -> {
+                AppSingelton.suggestedRadioList = AppSingelton.publicList
+
+            }
+
+        }
+    }
+
+    override fun onPodCastClicked(data: PodListData) {
+        var playingChannelData = PlayingChannelData(
+            data.website ?: "",
+            data.image,
+            data.title,
+            data._id,
+            data._id,
+            data.publisher,
+            "PODCAST"
+        )
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
+            false
+        else {
+            AppSingelton._isNewStationSelected.value = true
+            if (AppSingelton.exoPlayer != null) {
+                AppSingelton.exoPlayer!!.stop()
+                AppSingelton.exoPlayer!!.release()
+            }
+            AppSingelton.exoPlayer = null
+        }
+    }
+
+
+    override fun onFavChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
+        //Log("onFavChannelClicked", "onFavChannelClicked: $tabtype")
+//        AppSingelton.selectedChannel = data
+
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        if (AppSingelton.exoPlayer != null) {
+            AppSingelton.exoPlayer!!.stop()
+            AppSingelton.exoPlayer!!.release()
+        }
+        AppSingelton.exoPlayer = null
+        if (tabtype.equals("favourites", true)) {
+            val updatedList = AppSingelton.favouritesRadioArray
+            updatedList?.remove(playingChannelData)
+            updatedList?.add(0, playingChannelData)
+            AppSingelton.favouritesRadioArray = updatedList
+            AppSingelton._isFavUpdated.value = true
+        } else {
+            playRecentData(playingChannelData)
+
+        }
+    }
+
+    private fun playRecentData(playingChannelData: PlayingChannelData) {
+        val recentPlayedupdatedList = AppSingelton.recentlyPlayedArray
+        recentPlayedupdatedList?.remove(playingChannelData)
+        recentPlayedupdatedList?.add(AppSingelton.recentlyPlayedArray.size, playingChannelData)
+//            recentPlayedupdatedList?.add(0, playingChannelData)
+        AppSingelton.recentlyPlayedArray = recentPlayedupdatedList
+//        updatedList?.remove(playingChannelData)
+//        AppSingelton.favouritesRadioArray=updatedList
+        AppSingelton.isNewItemAdded.value = true
+    }
+
+    override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {
+        try {
+            for (i in AppSingelton.favouritesRadioArray.indices) {
+                var data = AppSingelton.favouritesRadioArray[i]
+                if (data.id == playingChannelData.id) {
+                    AppSingelton.favouritesRadioArray.removeAt(i)
+                }
+            }
+            AppSingelton._isFavUpdated.value = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    override fun onSeeAllClick(data: RadioLists) {
+        onRadioClicked(data, "")
+    }
+
+    override fun onSeeAllFavClick(data: RadioLists) {
+        var playingChannelData = PlayingChannelData(
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
+        )
+        addChannelToFavourites(playingChannelData)
+    }
+
+    override fun onPodClicked(data: PodListData) {
+        onPodCastClicked(data)
+    }
+
+    override fun onSeeALlPodFavouriteClicked(data: PodListData) {
+        var playingChannelData = PlayingChannelData(
+            data.website ?: "",
+            data.image,
+            data.title,
+            data._id,
+            data._id,
+            data.publisher,
+            "Episodes"
+        )
+        addChannelToFavourites(playingChannelData)
+    }
+
+    override fun OnCountrlySelected(data: Data) {
+        _queriedSearched.value = data.name
+    }
+
+    override fun OnClickGenres(data: com.netcast.baidutv.ui.radio.genres.Data) {
+        _queriedSearched.value = data.name
+
+    }
+
+    override fun onLanguageClicked(data: com.netcast.baidutv.ui.radio.lanuages.Data) {
+        _queriedSearched.value = data.name
+    }
+
+    override fun onSearchTagClicked(data: com.netcast.baidutv.ui.search.frequentsearch.Data) {
+        _queriedSearched.value = data.q
+    }
+
+    override fun onPodCastSearchedListener(data: com.netcast.baidutv.ui.search.searchedpodresponce.Data) {
+        val playingChannelData = PlayingChannelData(
+            data.url, data.image, data.title, data._id, data._id, data.author, "PODCAST"
+        )
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        AppSingelton.exoPlayer = null
+    }
+
+    override fun onStationSearchListener(data: com.netcast.baidutv.ui.search.searchedstationresponce.Data) {
+        val playingChannelData = PlayingChannelData(
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO"
+        )
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = false
+        AppSingelton.exoPlayer = null
+    }
+
+    override fun onFilterSearchListenerr(data: RadioLists) {
+        onRadioClicked(data, "")
+    }
+
+    override fun onChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
+        if (AppSingelton.exoPlayer != null) {
+            AppSingelton.exoPlayer!!.stop()
+            AppSingelton.exoPlayer!!.release()
+        }
+        playRecentData(playingChannelData)
+    }
+
+
+}

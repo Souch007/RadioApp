@@ -6,11 +6,11 @@
 
         <variable
             name="languageList"
-            type="com.netcast.radio.ui.radio.lanuages.Data" />
+            type="com.netcast.baidutv.ui.radio.lanuages.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.radio.adapter.OnClickListenerLanguages" />
+            type="com.netcast.baidutv.ui.radio.adapter.OnClickListenerLanguages" />
     </data>
 
     <RelativeLayout

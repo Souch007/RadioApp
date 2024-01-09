@@ -6,7 +6,7 @@
 
         <variable
             name="radioLists"
-            type="com.netcast.radio.ui.radio.data.temp.RadioLists" />
+            type="com.netcast.baidutv.ui.radio.data.temp.RadioLists" />
 
         <variable
             name="type"
@@ -14,7 +14,7 @@
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.radio.adapter.OnClickListnerRadio" />
+            type="com.netcast.baidutv.ui.radio.adapter.OnClickListnerRadio" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -8,31 +8,31 @@
 
         <variable
             name="podcastDataBinding"
-            type="com.netcast.radio.ui.podcast.PodcastViewModel" />
+            type="com.netcast.baidutv.ui.podcast.PodcastViewModel" />
 
         <variable
             name="newsadapter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="societyadapter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="businessadapter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="culturaladpter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="educationaladapter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
         <variable
             name="playlistadapter"
-            type="com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter" />
+            type="com.netcast.baidutv.ui.podcast.adapter.PodcastFragmentAdapter" />
 
     </data>
 

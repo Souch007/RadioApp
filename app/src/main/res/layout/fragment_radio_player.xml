@@ -8,15 +8,15 @@
 
         <variable
             name="radioplayerbinding"
-            type="com.netcast.radio.ui.radio.RadioViewModel" />
+            type="com.netcast.baidutv.ui.radio.RadioViewModel" />
 
         <variable
             name="mainviewmodel"
-            type="com.netcast.radio.MainViewModel" />
+            type="com.netcast.baidutv.MainViewModel" />
 
         <variable
             name="adapter"
-            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -4,11 +4,11 @@
     <data>
         <variable
             name="genresList"
-            type="com.netcast.radio.ui.radio.genres.Data" />
+            type="com.netcast.baidutv.ui.radio.genres.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.radio.adapter.OnClickGeneresListener" />
+            type="com.netcast.baidutv.ui.radio.adapter.OnClickGeneresListener" />
     </data>
 
     <RelativeLayout

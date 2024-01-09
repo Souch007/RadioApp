@@ -6,11 +6,11 @@
 
         <variable
             name="podlist"
-            type="com.netcast.radio.ui.podcast.poddata.PodListData" />
+            type="com.netcast.baidutv.ui.podcast.poddata.PodListData" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.seeall.adapter.OnClickListerPODSeeAll" />
+            type="com.netcast.baidutv.ui.seeall.adapter.OnClickListerPODSeeAll" />
 
         <variable
             name="title"

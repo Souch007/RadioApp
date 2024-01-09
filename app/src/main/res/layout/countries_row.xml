@@ -6,11 +6,11 @@
 
         <variable
             name="languageList"
-            type="com.netcast.radio.ui.radio.countries.Data" />
+            type="com.netcast.baidutv.ui.radio.countries.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.radio.adapter.OnClickListenerCountires" />
+            type="com.netcast.baidutv.ui.radio.adapter.OnClickListenerCountires" />
 
         <import type="android.text.TextUtils" />
     </data>

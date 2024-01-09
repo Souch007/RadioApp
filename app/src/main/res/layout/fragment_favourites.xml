@@ -8,15 +8,15 @@
 
         <variable
             name="favViewModel"
-            type="com.netcast.radio.ui.favourites.FavouritesViewModel" />
+            type="com.netcast.baidutv.ui.favourites.FavouritesViewModel" />
 
         <variable
             name="mainViewModel"
-            type="com.netcast.radio.MainViewModel" />
+            type="com.netcast.baidutv.MainViewModel" />
 
         <variable
             name="favouritesAdapter"
-            type="com.netcast.radio.ui.favourites.adapters.FavouriteAdapter" />
+            type="com.netcast.baidutv.ui.favourites.adapters.FavouriteAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

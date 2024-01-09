@@ -6,11 +6,11 @@
 
         <variable
             name="radioLists"
-            type="com.netcast.radio.ui.radio.data.temp.RadioLists" />
+            type="com.netcast.baidutv.ui.radio.data.temp.RadioLists" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.seeall.adapter.OnClickListenerSeeAll" />
+            type="com.netcast.baidutv.ui.seeall.adapter.OnClickListenerSeeAll" />
 
         <variable
             name="title"

@@ -9,15 +9,15 @@
 
         <variable
             name="mainActivity"
-            type="com.netcast.radio.MainActivity" />
+            type="com.netcast.baidutv.MainActivity" />
 
         <variable
             name="mainViewModel"
-            type="com.netcast.radio.MainViewModel" />
+            type="com.netcast.baidutv.MainViewModel" />
 
         <variable
             name="mainViewModelAdapter"
-            type="com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
 
         <import type="android.view.View" />
     </data>

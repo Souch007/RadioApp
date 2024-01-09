@@ -7,12 +7,12 @@
 
         <variable
             name="searchViewModel"
-            type="com.netcast.radio.ui.search.SearchViewModel" />
+            type="com.netcast.baidutv.ui.search.SearchViewModel" />
 
 
         <variable
             name="stationsearchadapter"
-            type="com.netcast.radio.ui.search.adapters.StationSearchedAdapter" />
+            type="com.netcast.baidutv.ui.search.adapters.StationSearchedAdapter" />
 
     </data>
 

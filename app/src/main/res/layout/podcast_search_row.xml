@@ -6,11 +6,11 @@
 
         <variable
             name="podlist"
-            type="com.netcast.radio.ui.search.searchedpodresponce.Data" />
+            type="com.netcast.baidutv.ui.search.searchedpodresponce.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.radio.ui.search.adapters.PodSearchOnClickListener" />
+            type="com.netcast.baidutv.ui.search.adapters.PodSearchOnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -10,19 +10,19 @@
 
         <variable
             name="fragmentSearchViewModel"
-            type="com.netcast.radio.ui.search.SearchViewModel" />
+            type="com.netcast.baidutv.ui.search.SearchViewModel" />
 
         <variable
             name="tagsadapter"
-            type="com.netcast.radio.ui.search.adapters.SearchTagsAdapter" />
+            type="com.netcast.baidutv.ui.search.adapters.SearchTagsAdapter" />
 
         <variable
             name="podsearchadapter"
-            type="com.netcast.radio.ui.search.adapters.PodcastSearchedAdapter" />
+            type="com.netcast.baidutv.ui.search.adapters.PodcastSearchedAdapter" />
 
         <variable
             name="stationsearchadapter"
-            type="com.netcast.radio.ui.search.adapters.StationSearchedAdapter" />
+            type="com.netcast.baidutv.ui.search.adapters.StationSearchedAdapter" />
     </data>
 
     <ScrollView

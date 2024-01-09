@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_radio"
-        android:name="com.netcast.radio.ui.radio.RadioFragment"
+        android:name="com.netcast.baidutv.ui.radio.RadioFragment"
         android:label="@string/title_radio"
         tools:layout="@layout/fragment_radio" >
         <action
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/navigation_podcast"
-        android:name="com.netcast.radio.ui.podcast.PodcastFragment"
+        android:name="com.netcast.baidutv.ui.podcast.PodcastFragment"
         android:label="@string/title_podcast"
         tools:layout="@layout/fragment_podcast" >
         <action
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/navigation_favourites"
-        android:name="com.netcast.radio.ui.favourites.FavouritesFragment"
+        android:name="com.netcast.baidutv.ui.favourites.FavouritesFragment"
         android:label="@string/title_favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -59,7 +59,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.netcast.radio.ui.search.SearchFragment"
+        android:name="com.netcast.baidutv.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -69,7 +69,7 @@
 
     <fragment
         android:id="@+id/navigation_see_all"
-        android:name="com.netcast.radio.ui.seeall.SeeAllFragment"
+        android:name="com.netcast.baidutv.ui.seeall.SeeAllFragment"
         android:label="@string/see_all"
         tools:layout="@layout/fragment_see_all" >
         <action
@@ -78,23 +78,23 @@
     </fragment>
     <fragment
         android:id="@+id/sleepTimerFragment"
-        android:name="com.netcast.radio.ui.ui.settings.SleepTimerFragment"
+        android:name="com.netcast.baidutv.ui.ui.settings.SleepTimerFragment"
         android:label="SleepTimerFragment" />
     <fragment
         android:id="@+id/alarmFragment"
-        android:name="com.netcast.radio.ui.ui.settings.AlarmFragment"
+        android:name="com.netcast.baidutv.ui.ui.settings.AlarmFragment"
         android:label="AlarmFragment" />
     <fragment
         android:id="@+id/navigation_filterstaions"
-        android:name="com.netcast.radio.ui.radio.FilterRadioFragment"
+        android:name="com.netcast.baidutv.ui.radio.FilterRadioFragment"
         android:label="FilterRadioActivity" />
     <fragment
         android:id="@+id/allGenreFragment"
-        android:name="com.netcast.radio.ui.radio.AllGenreFragment"
+        android:name="com.netcast.baidutv.ui.radio.AllGenreFragment"
         android:label="AllGenreFragment" />
     <fragment
         android:id="@+id/allcountriesFragment"
-        android:name="com.netcast.radio.ui.radio.AllCountriesFragment"
+        android:name="com.netcast.baidutv.ui.radio.AllCountriesFragment"
         android:label="AllLanguagesFragment" >
 
         <action
@@ -103,11 +103,11 @@
     </fragment>
     <fragment
         android:id="@+id/allLanguagesFragment"
-        android:name="com.netcast.radio.ui.radio.AllLanguagesFragment"
+        android:name="com.netcast.baidutv.ui.radio.AllLanguagesFragment"
         android:label="AllLanguagesFragment" />
     <fragment
         android:id="@+id/allRecentlyPlayedFragment"
-        android:name="com.netcast.radio.ui.radio.lanuages.AllRecentlyPlayedFragment"
+        android:name="com.netcast.baidutv.ui.radio.lanuages.AllRecentlyPlayedFragment"
         android:label="AllRecentlyPlayedFragment" />
 
 </navigation>
