@@ -55,13 +55,13 @@ class SplashActivity : AppCompatActivity() {
 
         // Set up the ObjectAnimator
         val animator = ObjectAnimator.ofFloat(layoutToFade, "alpha", 1f, 0f)
-        animator.duration = 3000 // Set the duration of the animation in milliseconds
+        animator.duration = 4500 // Set the duration of the animation in milliseconds
 
         // Optionally, add an AnimatorListener to perform actions when the animation is complete
         animator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-                navigateToMain()
+//                navigateToMain()
                 // Perform actions when the animation ends, if needed
             }
         })
