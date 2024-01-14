@@ -269,12 +269,14 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         pendingIntent = PendingIntent.getBroadcast(
             this, 0, intent, flag
         )
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY * 7,
-            pendingIntent
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY * 7,
+                pendingIntent
+            )
+        }
         sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
     }
 
