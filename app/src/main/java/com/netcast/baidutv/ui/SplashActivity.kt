@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
@@ -34,17 +35,22 @@ class SplashActivity : AppCompatActivity() {
 
     private val TAG = "SplashActivity"
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
-
+    private lateinit var sharedPredEditor: SharedPreferences.Editor
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
         locationandShareSettings()
-        val appmode = getSharedPreferences("appData", Context.MODE_PRIVATE).getInt("App_Mode", -1)
+        val appmode = sharedPreferences.getInt("App_Mode", -1)
+
 
         if (appmode == 0)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
        val tv_VersionInfo=findViewById<AppCompatTextView>(R.id.appCompatTextView2)
         var versionCode = BuildConfig.VERSION_NAME
@@ -79,9 +85,11 @@ class SplashActivity : AppCompatActivity() {
                 navigateToMain()
             })
         } else {
+
             if (checkLocationPermission()) {
                 getCurrentLocationAndCountry()
             } else {
+
             }
 
         }
@@ -117,14 +125,16 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkLocationPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && sharedPreferences.getInt("loc_permission",0)!=1) {
             // Permission is not granted, request it
             showCustomRationaleDialog()
             return false
         }
+        else{
+            navigateToMain()
+            return  false
+        }
+
         return true
     }
 
@@ -187,7 +197,9 @@ class SplashActivity : AppCompatActivity() {
                 )
             }
             .setNegativeButton("Cancel") { dialog, _ ->
+                sharedPreferences.edit().putInt("loc_permission",1).apply()
                 dialog.dismiss()
+
                 navigateToMain()
             }
             .create()
