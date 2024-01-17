@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.netcast.baidutv.base.AppSingelton
 import com.netcast.baidutv.base.BaseViewModel
+import com.netcast.baidutv.db.AppDatabase
 import com.netcast.baidutv.request.AppApis
 import com.netcast.baidutv.request.RemoteDataSource
 import com.netcast.baidutv.request.repository.AppRepository
@@ -122,8 +123,11 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
     fun getSearchQueryResult(
-        device_id: String, searchQuery: String, searchViewModel: SearchViewModel
+        device_id: String,
+        searchQuery: String,
+        searchViewModel: SearchViewModel
     ) {
+
         viewModelScope.launch {
             try {
                 searchViewModel._searchResultsPodcast.value =

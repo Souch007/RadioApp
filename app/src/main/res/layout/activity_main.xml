@@ -22,12 +22,46 @@
         <import type="android.view.View" />
     </data>
 
+
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/layout_bg"
         >
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_shimmerLayoutmain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_bg"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:elevation="20dp"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/sliding_layout"
+            app:layout_constraintEnd_toEndOf="@+id/sliding_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sliding_layout">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_shimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    layout="@layout/activity_splash"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/sliding_layout"
@@ -63,7 +97,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:contentDescription="@string/title_settings"
-                        android:src="@drawable/logo"
+                        android:src="@drawable/ic_newlogo2"
                         app:layout_constraintBottom_toBottomOf="@+id/search_view"
                         app:layout_constraintEnd_toStartOf="@+id/tv_Radio"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -77,6 +111,7 @@
                         android:layout_height="@dimen/_30sdp"
                         android:gravity="center"
                         android:text="@string/app_name"
+                        android:visibility="visible"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold"
@@ -415,6 +450,7 @@
                 android:backgroundTint="@color/black"
                 app:backgroundTint="@color/black"
                 app:elevation="0dp"
+
                 app:itemIconSize="@dimen/_15sdp"
                 app:itemIconTint="@drawable/bottom_navigation_selector"
                 app:itemTextAppearanceActive="@style/BottomNavigationViewActiveItemText"
@@ -426,52 +462,6 @@
 
         </androidx.cardview.widget.CardView>
 
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-          android:id="@+id/ll_shimmerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/layout_bg"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/_40sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/sliding_layout"
-            app:layout_constraintEnd_toEndOf="@+id/sliding_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/sliding_layout">
-
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="@+id/sliding_layout"
-                app:layout_constraintEnd_toEndOf="@+id/sliding_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/sliding_layout"
-                app:shimmer_repeat_mode="restart"
-                app:shimmer_shape="linear">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <include layout="@layout/shimmer_loadingview"></include>
-
-                    <include layout="@layout/shimmer_loadingview"></include>
-
-                    <include layout="@layout/shimmer_loadingview"></include>
-
-                    <include layout="@layout/shimmer_loadingview"></include>
-
-                    <include layout="@layout/shimmer_loadingview"></include>
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <!--<LinearLayout

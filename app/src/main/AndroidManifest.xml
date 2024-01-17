@@ -79,7 +79,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -91,7 +91,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- the host should contain your domain. The pattern should be same as it's mentioned without any special char -->
+                &lt;!&ndash; the host should contain your domain. The pattern should be same as it's mentioned without any special char &ndash;&gt;
                 <data
                     android:host="netcast.page.link"
                     android:scheme="https" />
@@ -99,7 +99,7 @@
 
             <meta-data
                 android:name="android.app.lib_name"
-                android:value="" />
+                android:value="" />-->
         </activity>
         <activity
             android:name=".base.BaseActivity"
@@ -126,7 +126,30 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:windowSoftInputMode="adjustPan|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- the host should contain your domain. The pattern should be same as it's mentioned without any special char -->
+                <data
+                    android:host="netcast.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ui.ui.settings.AlarmFragment"
             android:exported="false" />

@@ -6,20 +6,29 @@ import com.netcast.baidutv.MainViewModel
 import com.netcast.baidutv.R
 import com.netcast.baidutv.base.BaseFragment
 import com.netcast.baidutv.databinding.FragmentSearchBinding
+import com.netcast.baidutv.db.AppDatabase
 import com.netcast.baidutv.request.Resource
 import com.netcast.baidutv.ui.search.adapters.PodcastSearchedAdapter
+import com.netcast.baidutv.ui.search.adapters.SearchTagsAdapter
 import com.netcast.baidutv.ui.search.adapters.StationSearchedAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search){
     private val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
     private lateinit var mainActivityViewModel : MainViewModel
-
+    var appDatabase: AppDatabase? = null
     override fun FragmentSearchBinding.initialize() {
+        appDatabase = initializeDB(requireContext())
         binding.fragmentSearchViewModel = _fragmentSearchViewModel
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
-        _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
+
+
+            _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
             try {
                 val data = (it as Resource.Success).value.data
                val searchTags = data.filter {data->
@@ -28,7 +37,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                    distinctby.q
                }
                 _fragmentSearchViewModel._frequestSearchList.value=searchTags
-                binding.tagsadapter = com.netcast.baidutv.ui.search.adapters.SearchTagsAdapter(
+                binding.tagsadapter = SearchTagsAdapter(
                     listOf(),
                     mainActivityViewModel
                 )
