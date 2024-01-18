@@ -22,8 +22,8 @@ class RadioFragmentAdapter(
     }
 
     override fun getItemsCount(data: List<RadioLists>): Int {
-        return if(data.size > 5)
-            5
+        return if(data.size > 10)
+            8
         else
             data.size
     }

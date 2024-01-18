@@ -32,10 +32,10 @@ suspend  fun getAllGenres() : Genres
 @GET(AppConstants.GET_FREQUENT_SEARCH)
 suspend  fun getFrequentSearches(@Query("device_id") device_id:String) : FrequentSearchResponce
 
-@GET(AppConstants.SEARCH+"?type=podcasts&")
+@GET(AppConstants.SEARCH+"?type=podcasts&limit=10")
 suspend  fun searchPodcast(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedReponcePod
 
-@GET(AppConstants.SEARCH+"?type=channels&")
+@GET(AppConstants.SEARCH+"?type=channels&limit=10")
 suspend  fun searchStations(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedResponceStation
 
 @GET(AppConstants.PODCAST_EPISODES+"{idPodacast}")

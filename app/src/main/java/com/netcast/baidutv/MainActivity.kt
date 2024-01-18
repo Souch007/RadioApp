@@ -21,6 +21,8 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
@@ -171,7 +173,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 // Do something when the animation ends
                 dataBinding.llShimmerLayout.visibility = View.GONE
                 dataBinding.llShimmerLayoutmain.visibility = View.GONE
-                dataBinding.navView.visibility = View.VISIBLE
+//                dataBinding.navView.visibility = View.VISIBLE
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -211,22 +213,57 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onBackPressed() {
-        if (backPressedTime + 1500 > System.currentTimeMillis()) {
-            super.onBackPressed()
-            finish()
-        } else {
-            Toast.makeText(this, "Press back again to exit the app.", Toast.LENGTH_LONG).show()
-        }
-        backPressedTime = System.currentTimeMillis()
 
-        val navController = findNavController( R.id.nav_host_fragment_activity_main)
-        val id = navController.currentDestination!!.id
-        if (id ==R.id.navigation_see_all) {
-            if (mainViewModel._radioSeeAllSelected.value == "PODCAST")
-                mainViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
-            else
-                mainViewModel._radioSeeAllSelected.value = "CLOSE"
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val currentDestination = navController.currentDestination
+
+        // Check if it's the home destination
+
+        if (getCurrenDestination(navController, currentDestination)) {
+            if (backPressedTime + 1500 > System.currentTimeMillis()) {
+                super.onBackPressed()
+                finish()
+            } else {
+                Toast.makeText(this, "Press back again to exit the app.", Toast.LENGTH_LONG).show()
+            }
+            backPressedTime = System.currentTimeMillis()
+        } else {
+            val id = navController.currentDestination!!.id
+            if (id == R.id.navigation_see_all) {
+                if (mainViewModel._radioSeeAllSelected.value == "PODCAST")
+                    mainViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
+                else
+                    mainViewModel._radioSeeAllSelected.value = "CLOSE"
+            }
         }
+    }
+
+    private fun getCurrenDestination(
+        navController: NavController,
+        currentDestination: NavDestination?
+    ): Boolean {
+        when (currentDestination?.id) {
+            R.id.navigation_radio -> {
+                return true
+            }
+
+            R.id.navigation_podcast -> {
+                return true
+            }
+
+            R.id.navigation_search -> {
+                return true
+            }
+
+            R.id.navigation_favourites -> {
+                return true
+            }
+
+        }
+
+
+        return false
     }
 
 
@@ -302,7 +339,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
                 navController.navigate(R.id.navigation_radio)
+                dataBinding.navView.visibility = View.VISIBLE
             } else if (it == "CLOSE_PODCAST") {
+                dataBinding.navView.visibility = View.VISIBLE
                 navController.navigate(R.id.navigation_podcast)
             } else {
                 navController.navigate(R.id.navigation_see_all)
@@ -556,7 +595,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun showBottomSheetDialog() {
 
 
-        val isEpisode= AppSingelton._radioSelectedChannel.value?.type != "RADIO"
+        val isEpisode = AppSingelton._radioSelectedChannel.value?.type != "RADIO"
         val bottomSheetFragment = BottomSheetOptionsFragment(this, true, isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 

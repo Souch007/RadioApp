@@ -1,5 +1,6 @@
 package com.netcast.baidutv.ui.search
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.baidutv.MainViewModel
@@ -54,6 +55,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         _fragmentSearchViewModel.searchResultsPodcast.observe(this@SearchFragment){
             try {
+                binding.searchResultsPodcasts.visibility=View.VISIBLE
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListPodcast.value = data
                 // binding.countriesAdapter =
@@ -73,6 +75,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment){
             try {
 
+                binding.searchResultsStations.visibility=View.VISIBLE
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListStations.value = data
                 binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
