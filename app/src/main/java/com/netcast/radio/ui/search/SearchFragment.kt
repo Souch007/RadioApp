@@ -1,34 +1,40 @@
 package com.netcast.radio.ui.search
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseFragment
 import com.netcast.radio.databinding.FragmentSearchBinding
+import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.search.adapters.PodcastSearchedAdapter
+import com.netcast.radio.ui.search.adapters.SearchTagsAdapter
 import com.netcast.radio.ui.search.adapters.StationSearchedAdapter
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search){
     private val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
     private lateinit var mainActivityViewModel : MainViewModel
-
+    var appDatabase: AppDatabase? = null
     override fun FragmentSearchBinding.initialize() {
+        appDatabase = initializeDB(requireContext())
         binding.fragmentSearchViewModel = _fragmentSearchViewModel
         activity.let {
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
+
+
         _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
             try {
                 val data = (it as Resource.Success).value.data
-               val searchTags = data.filter {data->
-                   data.q.isNotEmpty()
+                val searchTags = data.filter {data->
+                    data.q.isNotEmpty()
                 }.distinctBy {distinctby->
-                   distinctby.q
-               }
+                    distinctby.q
+                }
                 _fragmentSearchViewModel._frequestSearchList.value=searchTags
-                binding.tagsadapter = com.netcast.radio.ui.search.adapters.SearchTagsAdapter(
+                binding.tagsadapter = SearchTagsAdapter(
                     listOf(),
                     mainActivityViewModel
                 )
@@ -45,6 +51,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         _fragmentSearchViewModel.searchResultsPodcast.observe(this@SearchFragment){
             try {
+                binding.searchResultsPodcasts.visibility= View.VISIBLE
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListPodcast.value = data
                 // binding.countriesAdapter =
@@ -64,6 +71,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment){
             try {
 
+                binding.searchResultsStations.visibility=View.VISIBLE
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListStations.value = data
                 binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
@@ -81,7 +89,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     override fun onStart() {
         super.onStart()
-     /*  val device_id = Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
-        mainActivityViewModel.getFrequentSearchesTags(device_id, _fragmentSearchViewModel)*/
+        /*  val device_id = Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
+           mainActivityViewModel.getFrequentSearchesTags(device_id, _fragmentSearchViewModel)*/
     }
 }

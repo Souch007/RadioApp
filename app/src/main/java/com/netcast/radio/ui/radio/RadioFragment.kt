@@ -47,8 +47,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                             val data = appDatabase!!.appDap().getRadioData()
                             withContext(Dispatchers.Main) {
                                 radioViewModel.radioListArray.value = data.publicRadio
-                                AppSingelton.suggestedRadioList = data.publicRadio
-                                AppSingelton.publicList = data.publicRadio
+                                AppSingelton.suggestedRadioList = data.pop
+                                AppSingelton.publicList = data.pop
                                 binding.adapter =
                                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                                         listOf(),
@@ -105,8 +105,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         val data = it.value.data
                         radioViewModel.radioListArray.value = data.publicRadio
                         radioViewModel.radioListArray.value = data.publicRadio
-                        AppSingelton.suggestedRadioList = data.publicRadio
-                        AppSingelton.publicList = data.publicRadio
+                        AppSingelton.suggestedRadioList = data.pop
+                        AppSingelton.publicList = data.pop
                         binding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                             listOf(),
                             mainActivityViewModel,

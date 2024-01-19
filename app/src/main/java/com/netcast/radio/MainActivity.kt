@@ -4,19 +4,25 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
@@ -27,6 +33,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
@@ -68,8 +75,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private var DEVICE_ID = ""
     private var selectedDestination = ""
     var backPressedTime: Long = 0
+    private lateinit var sharedPredEditor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
+        sharedPredEditor = sharedPreferences.edit()
+        val appmode = sharedPreferences.getInt("App_Mode", -1)
+        if (appmode == 0)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+
+
         super.onCreate(savedInstanceState)
         DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         initializeViewModel()
@@ -109,6 +127,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         if (sharedPreferences.getBoolean("delete_completed_episode", true))
             deleteCompletedEpisodes()
 
+        handleIncomingDeepLinks()
 
     }
 
@@ -129,9 +148,42 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun hideProgressBar() {
-        Handler(Looper.getMainLooper()).postDelayed({
+
+        // Assuming you have a layout with the ID 'myLayout' in your XML file
+
+        // Set up the fade-in animation
+        val fadeIn = AlphaAnimation(0.0f, 1.0f)
+        fadeIn.duration = 1000 // You can adjust the duration as needed
+
+        // Set up the fade-out animation
+        val fadeOut = AlphaAnimation(1.0f, 0.0f)
+        fadeOut.duration = 5000 // You can adjust the duration as needed
+
+        // Combine the animations into a sequence
+        val fadeSequence = AnimationSet(true)
+        fadeSequence.addAnimation(fadeIn)
+        fadeSequence.addAnimation(fadeOut)
+
+        // Start the animation when the activity is created or when you want to trigger it
+        dataBinding.llShimmerLayout.startAnimation(fadeSequence)
+
+        // Optional: You can set up a listener to perform actions when the animation ends
+        fadeSequence.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                // Do something when the animation ends
+                dataBinding.llShimmerLayout.visibility = View.GONE
+                dataBinding.llShimmerLayoutmain.visibility = View.GONE
+//                dataBinding.navView.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        /*Handler(Looper.getMainLooper()).postDelayed({
             dataBinding.llShimmerLayout.visibility = View.GONE
-        }, 5000)
+            dataBinding.navView.visibility = View.VISIBLE
+        }, 5000)*/
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -145,6 +197,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 hideProgressBar()
                 mainViewModel._state.value = true
+
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
                     mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
@@ -161,22 +214,57 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onBackPressed() {
-        if (backPressedTime + 1500 > System.currentTimeMillis()) {
-            super.onBackPressed()
-            finish()
-        } else {
-            Toast.makeText(this, "Press back again to exit the app.", Toast.LENGTH_LONG).show()
-        }
-        backPressedTime = System.currentTimeMillis()
 
-        val navController = findNavController( R.id.nav_host_fragment_activity_main)
-        val id = navController.currentDestination!!.id
-        if (id ==R.id.navigation_see_all) {
-            if (mainViewModel._radioSeeAllSelected.value == "PODCAST")
-                mainViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
-            else
-                mainViewModel._radioSeeAllSelected.value = "CLOSE"
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val currentDestination = navController.currentDestination
+
+        // Check if it's the home destination
+
+        if (getCurrenDestination(navController, currentDestination)) {
+            if (backPressedTime + 1500 > System.currentTimeMillis()) {
+                super.onBackPressed()
+                finish()
+            } else {
+                Toast.makeText(this, "Press back again to exit the app.", Toast.LENGTH_LONG).show()
+            }
+            backPressedTime = System.currentTimeMillis()
+        } else {
+            val id = navController.currentDestination!!.id
+            if (id == R.id.navigation_see_all) {
+                if (mainViewModel._radioSeeAllSelected.value == "PODCAST")
+                    mainViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
+                else
+                    mainViewModel._radioSeeAllSelected.value = "CLOSE"
+            }
         }
+    }
+
+    private fun getCurrenDestination(
+        navController: NavController,
+        currentDestination: NavDestination?
+    ): Boolean {
+        when (currentDestination?.id) {
+            R.id.navigation_radio -> {
+                return true
+            }
+
+            R.id.navigation_podcast -> {
+                return true
+            }
+
+            R.id.navigation_search -> {
+                return true
+            }
+
+            R.id.navigation_favourites -> {
+                return true
+            }
+
+        }
+
+
+        return false
     }
 
 
@@ -252,7 +340,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
                 navController.navigate(R.id.navigation_radio)
+                dataBinding.navView.visibility = View.VISIBLE
             } else if (it == "CLOSE_PODCAST") {
+                dataBinding.navView.visibility = View.VISIBLE
                 navController.navigate(R.id.navigation_podcast)
             } else {
                 navController.navigate(R.id.navigation_see_all)
@@ -373,7 +463,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             when (destination.id) {
                 R.id.navigation_radio -> {
                     dataBinding.settingsBarLayout.visibility = View.VISIBLE
-                    navView.visibility = View.VISIBLE
+//                    navView.visibility = View.VISIBLE
 //                    dataBinding.tvRadio.text = "Radio"
                 }
 
@@ -506,7 +596,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun showBottomSheetDialog() {
 
 
-        val isEpisode= AppSingelton._radioSelectedChannel.value?.type != "RADIO"
+        val isEpisode = AppSingelton._radioSelectedChannel.value?.type != "RADIO"
         val bottomSheetFragment = BottomSheetOptionsFragment(this, true, isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
@@ -595,5 +685,32 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 it1
             )
         }
+    }
+
+    private fun handleIncomingDeepLinks() {
+        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+
+                deepLink?.let { uri ->
+                    val channeldataJson = deepLink.getQueryParameter("channeldata")
+
+//                    val postId = uri.toString().substring(deepLink.toString().lastIndexOf("/") + 1)
+                    when {
+                        uri.toString().contains("channels") -> {
+//                            navigateToNewsFeed(Gs)
+                            AppSingelton._radioSelectedChannel.value =
+                                Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
+
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
+            }
     }
 }
