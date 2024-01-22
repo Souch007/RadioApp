@@ -239,6 +239,7 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content">
 
@@ -257,7 +258,7 @@
                             android:id="@+id/playing_channel_name"
                             style="@style/textHeading"
                             android:layout_width="0dp"
-                            android:layout_weight=".6"
+                            android:layout_weight=".55"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/_5sdp"
                             android:layout_toStartOf="@+id/play_button_carousel_"
@@ -271,7 +272,7 @@
                         <com.google.android.exoplayer2.ui.PlayerControlView
                             android:id="@+id/play_button_carousel_"
                             android:layout_width="0dp"
-                            android:layout_weight=".15"
+                            android:layout_weight=".2"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
@@ -286,9 +287,11 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             app:cardCornerRadius="@dimen/_50sdp"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
                             app:cardBackgroundColor="@color/Black"
                             app:cardElevation="@dimen/_35sdp"
-                            android:layout_height="@dimen/_43sdp">
+                            android:layout_height="@dimen/_42sdp">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="@dimen/_15sdp"

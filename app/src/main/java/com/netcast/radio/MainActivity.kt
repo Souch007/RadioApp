@@ -419,8 +419,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 dataBinding.playButtonCarousel.player!!.stop()
             }
         }
+
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-//
+        AppSingelton._radioSelectedChannel.value = null
     }
 
     private fun callApis() {
