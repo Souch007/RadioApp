@@ -52,10 +52,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val tv_VersionInfo=findViewById<AppCompatTextView>(R.id.appCompatTextView2)
+       /* val tv_VersionInfo=findViewById<AppCompatTextView>(R.id.appCompatTextView2)
         var versionCode = BuildConfig.VERSION_NAME
         tv_VersionInfo.text="Version Info ${versionCode}\n© 2016-2024"
-
+*/
 
         val layoutToFade = findViewById<View>(R.id.main)
 
