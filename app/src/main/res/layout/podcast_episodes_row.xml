@@ -7,11 +7,11 @@
 
         <variable
             name="episodeData"
-            type="com.netcast.baidutv.ui.radioplayermanager.episodedata.Data" />
+            type="com.baidu.netcast.ui.radioplayermanager.episodedata.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.radioplayermanager.adapter.OnEpisodeClickListener" />
+            type="com.baidu.netcast.ui.radioplayermanager.adapter.OnEpisodeClickListener" />
     </data>
 
     <RelativeLayout

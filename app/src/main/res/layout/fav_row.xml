@@ -6,7 +6,7 @@
 
         <variable
             name="playing"
-            type="com.netcast.baidutv.PlayingChannelData" />
+            type="com.baidu.netcast.PlayingChannelData" />
 
         <variable
             name="tabtype"
@@ -14,7 +14,7 @@
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.favourites.adapters.OnFavouriteClickListener" />
+            type="com.baidu.netcast.ui.favourites.adapters.OnFavouriteClickListener" />
     </data>
 
     <RelativeLayout

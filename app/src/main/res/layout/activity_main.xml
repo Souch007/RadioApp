@@ -9,15 +9,15 @@
 
         <variable
             name="mainActivity"
-            type="com.netcast.baidutv.MainActivity" />
+            type="com.baidu.netcast.MainActivity" />
 
         <variable
             name="mainViewModel"
-            type="com.netcast.baidutv.MainViewModel" />
+            type="com.baidu.netcast.MainViewModel" />
 
         <variable
             name="mainViewModelAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
 
         <import type="android.view.View" />
     </data>
@@ -54,6 +54,7 @@
                 android:layout_height="match_parent">
 
                 <include
+                    android:id="@+id/splashview"
                     layout="@layout/activity_splash"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -289,9 +290,11 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             app:cardCornerRadius="@dimen/_50sdp"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
                             app:cardBackgroundColor="@color/Black"
                             app:cardElevation="@dimen/_35sdp"
-                            android:layout_height="@dimen/_43sdp">
+                            android:layout_height="@dimen/_42sdp">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="@dimen/_15sdp"

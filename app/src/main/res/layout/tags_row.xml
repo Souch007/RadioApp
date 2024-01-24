@@ -6,11 +6,11 @@
 
         <variable
             name="tagsdata"
-            type="com.netcast.baidutv.ui.search.frequentsearch.Data" />
+            type="com.baidu.netcast.ui.search.frequentsearch.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.search.adapters.OnSearchTagListener" />
+            type="com.baidu.netcast.ui.search.adapters.OnSearchTagListener" />
     </data>
 
 

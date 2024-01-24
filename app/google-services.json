@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "858464433164",
-    "project_id": "netcast-f5c62",
-    "storage_bucket": "netcast-f5c62.appspot.com"
+    "project_number": "492953656613",
+    "project_id": "baidu-netcast",
+    "storage_bucket": "baidu-netcast.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:858464433164:android:571ac22be48d3c5e072a29",
+        "mobilesdk_app_id": "1:492953656613:android:4b1690e7f807d7390acecc",
         "android_client_info": {
-          "package_name": "com.netcast.baidutv"
+          "package_name": "com.baidu.netcast"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "858464433164-jtceioukuoaqohv7vatlj8krucfc425f.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAvSZx_iEBPp8Ovoh6oNfNdEycdcfcirV4"
+          "current_key": "AIzaSyAuZduihGz4I96EL6U40BaSqAQIR5XmY4M"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "858464433164-jtceioukuoaqohv7vatlj8krucfc425f.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

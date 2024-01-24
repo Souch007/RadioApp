@@ -6,11 +6,11 @@
 
         <variable
             name="searchstation"
-            type="com.netcast.baidutv.ui.radio.data.temp.RadioLists" />
+            type="com.baidu.netcast.ui.radio.data.temp.RadioLists" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.radio.FilterSearchListener" />
+            type="com.baidu.netcast.ui.radio.FilterSearchListener" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -6,11 +6,11 @@
 
         <variable
             name="feeds"
-            type="com.netcast.baidutv.ui.podcast.poddata.PodListData" />
+            type="com.baidu.netcast.ui.podcast.poddata.PodListData" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.podcast.adapter.OnClickListenerPodcast" />
+            type="com.baidu.netcast.ui.podcast.adapter.OnClickListenerPodcast" />
     </data>
 
     <androidx.cardview.widget.CardView

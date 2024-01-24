@@ -8,11 +8,11 @@
 
         <variable
             name="downloadBinding"
-            type="com.netcast.baidutv.download.DownloadActivity" />
+            type="com.baidu.netcast.download.DownloadActivity" />
 
         <variable
             name="downloadVM"
-            type="com.netcast.baidutv.download.DownloadViewModel" />
+            type="com.baidu.netcast.download.DownloadViewModel" />
 
         <!--        <variable-->
         <!--            name="podepisodeadapter"-->
@@ -20,7 +20,7 @@
 
         <variable
             name="adapter"
-            type="com.netcast.baidutv.download.adapter.DownloadEpisodeAdapter" />
+            type="com.baidu.netcast.download.adapter.DownloadEpisodeAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

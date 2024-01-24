@@ -7,12 +7,12 @@
 
         <variable
             name="languagesAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.LanguagesAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.LanguagesAdapter" />
 
 
         <variable
             name="viewmodel"
-            type="com.netcast.baidutv.ui.radio.RadioViewModel" />
+            type="com.baidu.netcast.ui.radio.RadioViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

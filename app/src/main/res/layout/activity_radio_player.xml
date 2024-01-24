@@ -8,19 +8,19 @@
 
         <variable
             name="radioplayerb"
-            type="com.netcast.baidutv.ui.radioplayermanager.RadioPlayerActivity" />
+            type="com.baidu.netcast.ui.radioplayermanager.RadioPlayerActivity" />
 
         <variable
             name="radioplayervm"
-            type="com.netcast.baidutv.ui.radioplayermanager.RadioPlayerAVM" />
+            type="com.baidu.netcast.ui.radioplayermanager.RadioPlayerAVM" />
 
         <variable
             name="podepisodeadapter"
-            type="com.netcast.baidutv.ui.radioplayermanager.adapter.PodEpisodesAdapter" />
+            type="com.baidu.netcast.ui.radioplayermanager.adapter.PodEpisodesAdapter" />
 
         <variable
             name="adapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

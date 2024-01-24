@@ -6,12 +6,12 @@
     <data>
         <variable
             name="genresAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.GenresAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.GenresAdapter" />
 
 
         <variable
             name="viewmodel"
-            type="com.netcast.baidutv.ui.radio.RadioViewModel" />
+            type="com.baidu.netcast.ui.radio.RadioViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

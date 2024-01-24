@@ -6,11 +6,11 @@
 
         <variable
             name="searchstation"
-            type="com.netcast.baidutv.ui.search.searchedstationresponce.Data" />
+            type="com.baidu.netcast.ui.search.searchedstationresponce.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.search.adapters.StationSearchListener" />
+            type="com.baidu.netcast.ui.search.adapters.StationSearchListener" />
     </data>
 
     <androidx.cardview.widget.CardView

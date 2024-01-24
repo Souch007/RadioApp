@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.netcast.baidutv.PlayingChannelData" />
+            type="com.baidu.netcast.PlayingChannelData" />
 
         <variable
             name="pos"
@@ -14,7 +14,7 @@
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.ui.radio.adapter.OnClickAlarmItem" />
+            type="com.baidu.netcast.ui.radio.adapter.OnClickAlarmItem" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -9,7 +9,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.netcast.baidutv"
+        applicationId "com.baidu.netcast"
         minSdk 21
         targetSdk 33
         versionCode 3
@@ -46,7 +46,7 @@ android {
         dataBinding true
         viewBinding true
     }
-    namespace 'com.netcast.baidutv'
+    namespace 'com.baidu.netcast'
 
 
 

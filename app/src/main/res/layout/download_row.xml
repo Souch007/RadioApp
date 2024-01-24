@@ -6,11 +6,11 @@
 
         <variable
             name="episode"
-            type="com.netcast.baidutv.ui.radioplayermanager.episodedata.Data" />
+            type="com.baidu.netcast.ui.radioplayermanager.episodedata.Data" />
 
         <variable
             name="listener"
-            type="com.netcast.baidutv.download.adapter.OnClickEpisodeDownload" />
+            type="com.baidu.netcast.download.adapter.OnClickEpisodeDownload" />
     </data>
 
     <androidx.cardview.widget.CardView

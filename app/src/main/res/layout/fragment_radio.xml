@@ -8,35 +8,35 @@
 
         <variable
             name="radioDataBinding"
-            type="com.netcast.baidutv.ui.radio.RadioViewModel" />
+            type="com.baidu.netcast.ui.radio.RadioViewModel" />
 
         <variable
             name="adapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="popadapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="newsadapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="classicalAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.RadioFragmentAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.RadioFragmentAdapter" />
 
         <variable
             name="languagesAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.LanguagesAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.LanguagesAdapter" />
 
         <variable
             name="countriesAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.CountriesAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.CountriesAdapter" />
 
         <variable
             name="genresAdapter"
-            type="com.netcast.baidutv.ui.radio.adapter.GenresAdapter" />
+            type="com.baidu.netcast.ui.radio.adapter.GenresAdapter" />
 
         <import type="android.view.View" />
 

@@ -34,7 +34,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo"
-        android:label="@string/app_name"
+        android:label="Baidu Netcast"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
@@ -125,7 +125,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize">
 
@@ -143,7 +142,8 @@
 
                 <!-- the host should contain your domain. The pattern should be same as it's mentioned without any special char -->
                 <data
-                    android:host="netcast.page.link"
+
+                    android:host="baidunetcast.page.link"
                     android:scheme="https" />
             </intent-filter>
 

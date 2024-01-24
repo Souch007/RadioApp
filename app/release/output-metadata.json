@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.netcast.radio",
+  "applicationId": "com.baidu.netcast",
   "variantName": "release",
   "elements": [
     {

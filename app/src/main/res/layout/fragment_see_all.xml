@@ -7,19 +7,19 @@
     <data>
         <variable
             name="seeallviewmodel"
-            type="com.netcast.baidutv.ui.seeall.SeeAllViewModel" />
+            type="com.baidu.netcast.ui.seeall.SeeAllViewModel" />
 
         <variable
             name="mainViewModel"
-            type="com.netcast.baidutv.MainViewModel" />
+            type="com.baidu.netcast.MainViewModel" />
 
         <variable
             name="seeallaadapter"
-            type="com.netcast.baidutv.ui.seeall.adapter.SeeAllAdapter" />
+            type="com.baidu.netcast.ui.seeall.adapter.SeeAllAdapter" />
 
         <variable
             name="seeallpodadapter"
-            type="com.netcast.baidutv.ui.seeall.adapter.SeeAllPodAdapter" />
+            type="com.baidu.netcast.ui.seeall.adapter.SeeAllPodAdapter" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
