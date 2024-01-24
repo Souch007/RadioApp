@@ -10,6 +10,7 @@ import android.content.SharedPreferences
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
@@ -17,6 +18,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -208,6 +210,17 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
     }
 
     private fun setAlaram() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
+            if (alarmManager?.canScheduleExactAlarms() == false) {
+                Intent().also { intent ->
+                    intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                    startActivity(intent)
+                }
+            }
+        }
+
         if ((binding.chkMonday.isChecked()) || (binding.chkTuesday.isChecked()) || (binding.chkWednesday.isChecked()) || (binding.chkThursday.isChecked()) || (binding.chkFriday.isChecked()) || (binding.chkSaturday.isChecked()) || (binding.chkSunday.isChecked())) {
             cancelAlarm()
             if (binding.chkMonday.isChecked) {
@@ -263,6 +276,8 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         } else {
             PendingIntent.FLAG_CANCEL_CURRENT
         }
+
+
 
 
         val intent = Intent(this, AlramReceiver::class.java)

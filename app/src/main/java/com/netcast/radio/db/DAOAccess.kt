@@ -33,7 +33,7 @@ interface DAOAccess {
     suspend fun insertPodCast(data :com.netcast.radio.ui.podcast.poddata.Data)
 
     @Query("SELECT * FROM PodStations")
-    fun getPodData(): com.netcast.radio.ui.podcast.poddata.Data
+    fun getPodData(): com.netcast.radio.ui.podcast.poddata.Data?
 
 
 }

@@ -72,7 +72,7 @@
                     android:id="@+id/shimmerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:shimmer_base_alpha="0.9"
+                    app:shimmer_base_alpha="1.0"
                     app:shimmer_base_color="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

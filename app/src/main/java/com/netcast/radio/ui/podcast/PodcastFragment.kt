@@ -72,34 +72,40 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
                     CoroutineScope(Dispatchers.IO).launch {
                         val _data = appDatabase!!.appDap().getPodData()
                         withContext(Dispatchers.Main) {
-                            binding.podcastLayout.visibility = View.VISIBLE
-                            binding.shimmerLayout.stopShimmer()
-                            binding.shimmerLayout.visibility = View.GONE
-                            podcastViewModel._newsArrayM.value = _data.news
-                            binding.newsadapter =
-                                PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                            try {
+                                binding.podcastLayout.visibility = View.VISIBLE
+                                binding.shimmerLayout.stopShimmer()
+                                binding.shimmerLayout.visibility = View.GONE
 
-                            podcastViewModel._fitnessM.value = _data.fitness
-                            binding.societyadapter =
-                                PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                                podcastViewModel._newsArrayM.value = _data?.news
+                                binding.newsadapter =
+                                    PodcastFragmentAdapter(listOf(), mainActivityViewModel)
 
-                            podcastViewModel._businessM.value = _data.business
-                            binding.businessadapter =
-                                PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                                podcastViewModel._fitnessM.value = _data?.fitness
+                                binding.societyadapter =
+                                    PodcastFragmentAdapter(listOf(), mainActivityViewModel)
 
-                            podcastViewModel._cultureM.value = _data.culture
-                            binding.culturaladpter =
-                                PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                                podcastViewModel._businessM.value = _data?.business
+                                binding.businessadapter =
+                                    PodcastFragmentAdapter(listOf(), mainActivityViewModel)
 
-                            podcastViewModel._educationM.value = _data.education
-                            binding.educationaladapter =
-                                PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+                                podcastViewModel._cultureM.value = _data?.culture
+                                binding.culturaladpter =
+                                    PodcastFragmentAdapter(listOf(), mainActivityViewModel)
 
-                            val failure = (it as Resource.Failure).errorCode
-                            val responseBody = it.errorResponseBody
-                            if (failure == 400 && responseBody == null && _data==null) {
-                                binding.parentView.visibility = View.GONE
-                                binding.emptyViewPod.visibility = View.VISIBLE
+                                podcastViewModel._educationM.value = _data?.education
+                                binding.educationaladapter =
+                                    PodcastFragmentAdapter(listOf(), mainActivityViewModel)
+
+                                val failure = (it as Resource.Failure).errorCode
+                                val responseBody = it.errorResponseBody
+                                if (failure == 400 && responseBody == null && _data==null) {
+                                    binding.parentView.visibility = View.GONE
+                                    binding.emptyViewPod.visibility = View.VISIBLE
+                                }
+                            }
+                            catch (e:Exception){
+                                e.printStackTrace()
                             }
                         }
 
