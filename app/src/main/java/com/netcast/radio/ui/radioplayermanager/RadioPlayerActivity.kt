@@ -1,8 +1,8 @@
 package com.netcast.radio.ui.radioplayermanager
 
+import ConnectivityChecker
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.ContentValues
 import android.content.Context
@@ -14,7 +14,6 @@ import android.os.*
 import android.provider.MediaStore
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -45,8 +44,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
+
 class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>(),
-    OptionsClickListner {
+    OptionsClickListner, ConnectivityChecker.NetworkStateListener {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
     lateinit var radioPlayerAVM: RadioPlayerAVM
@@ -55,14 +55,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     var relativePath = ""
     private var downloadManager: DownloadManager? = null
     lateinit var podEpisodesAdapter: PodEpisodesAdapter
-    var isEpisode=false
+    var isEpisode = false
+    var playwhenReady = false
 
-    companion object {
-        private const val CHANNEL_ID = "download_channel"
-        private const val FILE_URL = "https://www.example.com/file.pdf"
-        private const val FILE_NAME = "file.pdf"
-        private const val DOWNLOAD_NOTIFICATION_ID = 1
-    }
+    private val permissions = arrayOf(
+        WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
+    )
+    private lateinit var connectivityChecker: ConnectivityChecker
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,23 +70,18 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             createActivity()
             isActivityLoaded = true
         } else {
-            Toast.makeText(
-                this, "Please check your wifi as you enabled stream over wifi", Toast.LENGTH_LONG
-            ).show()
+            showToast("Please check your wifi as you enabled stream over wifi")
             finish()
         }
 
-
+        connectivityChecker = ConnectivityChecker(this)
+        connectivityChecker.setListener(this)
     }
-
-    private val permissions = arrayOf(
-        WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
-    )
-
 
     private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
+        if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList =
+            AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         checkWifiPlaySettings()
 
@@ -129,17 +124,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun showBottomSheetDialog() {
-        val bottomSheetFragment = BottomSheetOptionsFragment(this,true,isEpisode)
+        val bottomSheetFragment = BottomSheetOptionsFragment(this, true, isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
     }
 
     private fun checkWifiPlaySettings(): Boolean {
         val iswifiplay = sharedPreferences.getBoolean("stream_over_wifi", false)
-        if (iswifiplay && !isWifiConnected(this)) {
-            return true
-        }
-        return false
+        return iswifiplay && !isWifiConnected(this)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -221,19 +213,27 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         handleChannel()
         dataBinding.playerView.player?.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                playwhenReady = playWhenReady
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
                 } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
-
                 }
             }
 
-            fun onPlayWhenReadyCommitted() {}
-            fun onPlayerError(error: ExoPlaybackException?) {
+
+            override fun onPlayerError(error: PlaybackException) {
+                super.onPlayerError(error)
+                dataBinding.progressDownload.visibility = View.INVISIBLE
                 dataBinding.playerView.player?.stop()
             }
+
+            fun onPlayWhenReadyCommitted() {}
+//            fun onPlayerError(error: ExoPlaybackException?) {
+//                dataBinding.progressDownload.visibility = View.INVISIBLE
+//                dataBinding.playerView.player?.stop()
+//            }
         })
     }
 
@@ -253,7 +253,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         val isAutoPlayEnable = sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
         AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id ?: ""
         val currentPlayingUUid = AppSingelton._currenPlayingChannelId
-        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(currentPlayingUUid.toRegex())) {
+        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(
+                currentPlayingUUid.toRegex()
+            )
+        ) {
             if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
                 AppSingelton.exoPlayer = ExoPlayer.Builder(this).setSeekForwardIncrementMs(
                     (sharedPreferences.getLong(
@@ -291,8 +294,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         }
                     }
                 //Log("Offline", "Request Recieved")
-            }
-            else {
+            } else {
                 val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
                 val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
                     .setTargetBufferBytes(C.LENGTH_UNSET)
@@ -340,15 +342,21 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
                                 }
 
-                                AppSingelton.mediaItemList=mediaitems
+                                AppSingelton.mediaItemList = mediaitems
                                 exoPlayer.setMediaItems(mediaitems)
                             } else {
                                 val mediaitemschannels = mutableListOf<MediaItem>()
-                                val list=AppSingelton.suggestedRadioList?.toMutableList()
-                                val selectedRadio=RadioLists(currentChannel?.country ?: "",currentChannel?.favicon ?: "",currentChannel?.id ?: "",currentChannel?.name ?: "",currentChannel?.url ?: "")
+                                val list = AppSingelton.suggestedRadioList?.toMutableList()
+                                val selectedRadio = RadioLists(
+                                    currentChannel?.country ?: "",
+                                    currentChannel?.favicon ?: "",
+                                    currentChannel?.id ?: "",
+                                    currentChannel?.name ?: "",
+                                    currentChannel?.url ?: ""
+                                )
 //                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
-                                list?.add(0,selectedRadio)
-                                AppSingelton.suggestedRadioList=list
+                                list?.add(0, selectedRadio)
+                                AppSingelton.suggestedRadioList = list
                                 for (i in 0 until AppSingelton.suggestedRadioList!!.size) {
                                     val mediaMetadata = MediaMetadata.Builder()
                                         .setTitle(AppSingelton.suggestedRadioList!![i].name)
@@ -365,7 +373,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                     mediaitemschannels.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
                                 }
-                                AppSingelton.mediaItemList=mediaitemschannels
+                                AppSingelton.mediaItemList = mediaitemschannels
                                 exoPlayer.setMediaItems(mediaitemschannels)
 //                                val mediaItem = MediaItem.fromUri(url ?: "")
                                 exoPlayer.setMediaItems(mediaitemschannels)
@@ -416,7 +424,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         viewModel._episodeSelected.observe(this@RadioPlayerActivity) {
             try {
-                isEpisode=true
+                isEpisode = true
                 createPlayingChannelData(it)
                 exoPlayerManager("Episode")
             } catch (ex: Exception) {
@@ -432,11 +440,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         downloadEpisode(it)
 //                    podEpisodesAdapter.downloadEpisode(it)
                     } else {
-                        Toast.makeText(
-                            this,
-                            "Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showToast("Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings")
                     }
 
                 } else {
@@ -490,6 +494,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
              }
          }*/
     }
+
     private fun downloadEpisode(data: Data) {
         AppSingelton.downloadingEpisodeData = data
 //                    DownloadFile(data).execute()
@@ -563,14 +568,12 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         if (appDatabase == null) appDatabase = AppDatabase.getDatabaseClient(this)
         val file1 = File(relativePath)
         if (downloadManager != null && isDownloadingInProgress(this)) {
-            Toast.makeText(
-                this, "Downloading in progress please wait a while...", Toast.LENGTH_SHORT
-            ).show()
+            showToast("Downloading in progress please wait a while...")
 //            AppSingelton.currentDownloading = ""
             return
         } else {
             if (file1.exists()) {
-                Toast.makeText(this, "File Already Exist...", Toast.LENGTH_SHORT).show()
+                showToast("File Already Exist...")
 //                showAlertDialog("Alert", "File Already Exist")
 //                AppSingelton.currentDownloading = ""
                 return
@@ -591,7 +594,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             CoroutineScope(Dispatchers.IO).launch {
                 appDatabase!!.appDap().insertOfflineEpisode(data)
             }
-            data.videoID= downloadId.toInt()
+            data.videoID = downloadId.toInt()
             podEpisodesAdapter.notifyDataSetChanged()
 //            AppSingelton.currentDownloading = ""
 
@@ -599,6 +602,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
 
 
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun isDownloadingInProgress(context: Context): Boolean {
@@ -676,7 +683,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun _checkMediaType() {
         //Checking the Type of MEDIA
-        if (AppSingelton.exoPlayer != null) podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
+        if (AppSingelton.exoPlayer != null) podcastType =
+            AppSingelton.radioSelectedChannel.value?.type ?: ""
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
@@ -713,7 +721,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         val item = mediaItem?.mediaMetadata
         val currentPos = mediaItem?.mediaId
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex()))
-        dataBinding.episode.text = podcastEpisodeList!![currentPos?.toInt() ?: 0].title
+            dataBinding.episode.text = podcastEpisodeList!![currentPos?.toInt() ?: 0].title
 
     }
 
@@ -742,5 +750,32 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 it1
             )
         }
+    }
+
+    override fun onInternetAvailable() {
+        showToast("Internet connection available")
+        dataBinding.playerView.player?.playWhenReady = true
+    }
+
+    override fun onInternetUnavailable() {
+        showToast("No internet connection available")
+        if (playwhenReady)
+            dataBinding.playerView.player?.play()
+        else {
+            if (isEpisode)
+                exoPlayerManager("Normal")
+            else
+                exoPlayerManager("Episode")
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        connectivityChecker.register()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        connectivityChecker.unregister()
     }
 }
