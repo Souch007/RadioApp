@@ -4,16 +4,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.gson.Gson
 import com.baidu.netcast.PlayingChannelData
 import com.baidu.netcast.base.AppSingelton
 import com.baidu.netcast.base.AudioPlayerService
 import com.baidu.netcast.request.AppConstants
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
+import com.google.android.exoplayer2.Player
+import com.google.gson.Gson
 
 
 class AlramReceiver : BroadcastReceiver(), Player.Listener {
@@ -39,19 +41,43 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
         }
         val playingChannelData =
             retrieveStoredObject(AppConstants.SELECTED_ALARM_RADIO, PlayingChannelData::class.java)
-        val alarmCheckbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+//        val alarmCheckbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
+
+
         if (playingChannelData != null && alarmCheckbox) {
 //        AppSingelton._radioSelectedChannel.value=playingChannelData
             AppSingelton._currentPlayingChannel.value = playingChannelData
             AppSingelton.exoPlayer =
                 ExoPlayer.Builder(context, renderersFactory)
                     .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
-                        val mediaItem =
-                            MediaItem.fromUri(playingChannelData?.url ?: "")
+                        val mediaMetadata = MediaMetadata.Builder()
+                            .setTitle(playingChannelData?.name)
+                            .setDescription(playingChannelData?.country)
+                            .setArtworkUri(Uri.parse(playingChannelData?.favicon)).build()
+
+                        val mediaItem: MediaItem = MediaItem.Builder()
+                            .setUri(playingChannelData?.url ?: "")
+                            .setMediaMetadata(mediaMetadata)
+                            .build()
+
+
+//                        val mediaItem = MediaItem.fromUri(playingChannelData?.url ?: "")
+//
+//
                         exoPlayer.setMediaItem(mediaItem)
                         exoPlayer.addListener(this)
                         exoPlayer.prepare()
                         exoPlayer.play()
+
+                        if (AppSingelton.mediaItemList.isNullOrEmpty()) {
+                            val mediaitems = mutableListOf<MediaItem>()
+                            mediaitems.add(mediaItem)
+                            AppSingelton.mediaItemList = mediaitems
+                        }
+                        else{
+                            AppSingelton.mediaItemList!!.add(0,mediaItem)
+                        }
                     }
         }
     }

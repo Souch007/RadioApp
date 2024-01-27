@@ -210,8 +210,6 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
     }
 
     private fun setAlaram() {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
             if (alarmManager?.canScheduleExactAlarms() == false) {
@@ -221,6 +219,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
                 }
             }
         }
+
         if ((binding.chkMonday.isChecked) || (binding.chkTuesday.isChecked) || (binding.chkWednesday.isChecked) || (binding.chkThursday.isChecked) || (binding.chkFriday.isChecked) || (binding.chkSaturday.isChecked) || (binding.chkSunday.isChecked)) {
             cancelAlarm()
             if (binding.chkMonday.isChecked) {

@@ -14,7 +14,7 @@ object AppSingelton {
     @kotlin.jvm.JvmField
     public var suggestedRadioList: List<RadioLists>? = null
     public var selectedChannel: RadioLists? = null
-    public var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null
+    public var mediaItemList: MutableList<com.google.android.exoplayer2.MediaItem>? = null
     public var classicalList: List<RadioLists>? = null
     public var popList: List<RadioLists>? = null
     public var newsList: List<RadioLists>? = null
