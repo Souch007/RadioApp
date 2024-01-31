@@ -42,9 +42,7 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
         val playingChannelData =
             retrieveStoredObject(AppConstants.SELECTED_ALARM_RADIO, PlayingChannelData::class.java)
 //        val alarmCheckbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-        val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
-
-
+        val alarmCheckbox = sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
         if (playingChannelData != null && alarmCheckbox) {
 //        AppSingelton._radioSelectedChannel.value=playingChannelData
             AppSingelton._currentPlayingChannel.value = playingChannelData
