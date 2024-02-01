@@ -69,7 +69,8 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
             AppConstants.SELECTED_ALARM_RADIO,
             PlayingChannelData::class.java
         )
-        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+//        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+        val alarmCheckbox=sharedPreferences.getBoolean("isAlarmSet", false)
         if (playingChannelData != null && alarmCheckbox)
             binding.tvSelectchannel.text = playingChannelData.name
 

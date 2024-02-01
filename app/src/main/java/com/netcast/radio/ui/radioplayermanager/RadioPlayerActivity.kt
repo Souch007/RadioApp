@@ -754,7 +754,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     override fun onInternetAvailable() {
         showToast("Internet connection available")
-        dataBinding.progressDownload.visibility=View.GONE
+
         if (playwhenReady)
             dataBinding.playerView.player?.play()
         else {
@@ -766,6 +766,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     override fun onInternetUnavailable() {
+
         dataBinding.progressDownload.visibility=View.VISIBLE
         showToast("No internet connection available")
         dataBinding.playerView.player?.pause()
