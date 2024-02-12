@@ -57,6 +57,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     lateinit var podEpisodesAdapter: PodEpisodesAdapter
     var isEpisode = false
     var playwhenReady = false
+    var isInternetavailable = true
 
     private val permissions = arrayOf(
         WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
@@ -753,21 +754,24 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     override fun onInternetAvailable() {
-        showToast("Internet connection available")
+        if (!isInternetavailable) {
+            showToast("Internet connection available")
 
-        if (playwhenReady)
-            dataBinding.playerView.player?.play()
-        else {
-            if (isEpisode)
-                exoPlayerManager("Normal")
-            else
-                exoPlayerManager("Episode")
+            if (playwhenReady)
+                dataBinding.playerView.player?.play()
+            else {
+                if (isEpisode)
+                    exoPlayerManager("Normal")
+                else
+                    exoPlayerManager("Episode")
+            }
         }
+        isInternetavailable = true
     }
 
     override fun onInternetUnavailable() {
-
-        dataBinding.progressDownload.visibility=View.VISIBLE
+        isInternetavailable = false
+        dataBinding.progressDownload.visibility = View.VISIBLE
         showToast("No internet connection available")
         dataBinding.playerView.player?.pause()
     }
