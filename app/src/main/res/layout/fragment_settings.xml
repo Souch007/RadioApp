@@ -89,6 +89,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text=""
+
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:layout_height="match_parent"/>

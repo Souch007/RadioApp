@@ -192,14 +192,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun searchWatcherListener() {
+
+        dataBinding.imageviewClose.setOnClickListener {
+            dataBinding.searchEditText.text.clear();
+        }
+
         dataBinding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 hideProgressBar()
                 mainViewModel._state.value = true
-
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
+                   dataBinding.imageviewClose.visibility=View.VISIBLE
                     mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
                     dataBinding.navView.selectedItemId = R.id.navigation_search
 //                    dataBinding.searchEditText.setText("")

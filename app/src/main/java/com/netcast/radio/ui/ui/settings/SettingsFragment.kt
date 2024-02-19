@@ -32,7 +32,7 @@ import com.netcast.radio.databinding.FragmentSettingsBinding
 import com.netcast.radio.databinding.LayoutAppmodeBinding
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.ui.ui.settings.adapter.AdapterSettings
-import java.util.*
+import java.util.Locale
 
 
 class SettingsFragment : Fragment() {
@@ -85,24 +85,29 @@ class SettingsFragment : Fragment() {
                 0 -> {
                     showBottomSheetDialog()
                 }
+
                 1 -> {
                     sharedPredEditor.putBoolean("stream_over_wifi", ischecked)
                     sharedPredEditor.apply()
 //                    adapterSettings.notifyDataSetChanged()
                 }
+
                 2 -> {
                     sharedPredEditor.putBoolean("download_over_wifi", ischecked)
                     sharedPredEditor.apply()
 //                    adapterSettings.notifyDataSetChanged()
                 }
+
                 3 -> {
                     sharedPredEditor.putBoolean("delete_completed_episode", ischecked)
                     sharedPredEditor.apply()
 //                    adapterSettings.notifyDataSetChanged()
                 }
+
                 4 -> {
                     sharedPredEditor.putBoolean(AppConstants.SKIP_SLIENCE, ischecked).apply()
                 }
+
                 5 -> {
                     sharedPredEditor.putBoolean(AppConstants.AUTO_PLAY_EPISODES, ischecked).apply()
                 }
@@ -110,10 +115,13 @@ class SettingsFragment : Fragment() {
                 6 -> {
                     setForwardBackwardTimeDialog()
                 }
+
                 8 -> {
                     startActivity(
-                        Intent(requireContext(), FAQsActivity::class.java)
-                            .putExtra("type", "IMPRINT")
+                        Intent(requireContext(), FAQsActivity::class.java).putExtra(
+                                "type",
+                                "IMPRINT"
+                            )
                     )
 
                 }
@@ -121,18 +129,21 @@ class SettingsFragment : Fragment() {
                 9 -> {
                     openTermsandCons("https://baidu.eu/terms")
                 }
+
                 10 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
+
                 11 -> {
                     openTermsandCons("https://baidu.eu/privacy")
                 }
+
                 12 -> {
                     startActivity(
-                        Intent(requireContext(), FAQsActivity::class.java)
-                            .putExtra("type", "FAQS")
+                        Intent(requireContext(), FAQsActivity::class.java).putExtra("type", "FAQS")
                     )
                 }
+
                 else -> {
 //                    openTermsandCons("https://baidu.eu/privacy")
 
@@ -146,6 +157,9 @@ class SettingsFragment : Fragment() {
             it?.let {
                 binding.tvTimer.text = it
             }
+        }
+        if (!sharedPreferences.getBoolean("is_SleepTimeron", false)) {
+            binding.tvTimer.visibility = View.GONE
         }
         return root
     }
@@ -164,8 +178,7 @@ class SettingsFragment : Fragment() {
             var type = if (conntectionType == 2) "true" else "false"
             val connected = if (conntectionType == 0) "false" else "true"
             val text =
-                "netCast\nBuild: freerelease" + "\n" + "Version: " + versionRelease + "\n" + "Locale: ${lang}\n" + "Free app without prime subscription" + "\n" +
-                        manufacturer + " " + model + "\nConnected? ${connected}, Wifi? ${type} \n Provider (Network/Sim) ${operatorName}"
+                "netCast\nBuild: freerelease" + "\n" + "Version: " + versionRelease + "\n" + "Locale: ${lang}\n" + "Free app without prime subscription" + "\n" + manufacturer + " " + model + "\nConnected? ${connected}, Wifi? ${type} \n Provider (Network/Sim) ${operatorName}"
 
             val intent = Intent(Intent.ACTION_SEND)
             val recipients = arrayOf("legal@baidu.eu")
@@ -198,6 +211,7 @@ class SettingsFragment : Fragment() {
                     adapterSettings.changemodetext("Dark")
 
                 }
+
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     bottomSheetDialog.dismiss()
@@ -223,10 +237,12 @@ class SettingsFragment : Fragment() {
 
 
             }
+
             Configuration.UI_MODE_NIGHT_YES -> {
                 radioGroup?.check(radioGroup[1].id)
                 adapterSettings.changemodetext("Dark")
             }
+
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {}
         }
     }
@@ -273,8 +289,7 @@ class SettingsFragment : Fragment() {
         var result = 0 // Returns connection type. 0: none; 1: mobile data; 2: wifi
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val capabilities =
-                cm.getNetworkCapabilities(cm.activeNetwork)
+            val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
             if (capabilities != null) {
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                     result = 2
