@@ -17,6 +17,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TimePicker
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
@@ -33,7 +34,8 @@ import com.netcast.radio.ui.ui.settings.adapter.AlarmSelectedChannelActivity
 import java.util.*
 
 
-class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, OnCheckedChangeListener {
+class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
+    OnCheckedChangeListener {
     /*private var _binding: FragmentAlarmBinding? = null
     private val binding get() = _binding!!*/
     private lateinit var binding: FragmentAlarmBinding
@@ -52,15 +54,18 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         super.onCreate(savedInstanceState)
         binding = FragmentAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.header.tvTitle.text="Alarm Settings"
+        binding.header.tvTitle.text = "Alarm Settings"
+        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         binding.header.imgBack.setOnClickListener {
+            val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
+            if (!alarmCheckbox)
+                sharedPreferences.writeList(Gson(), "alarm_days", listOf<String>())
             finish()
         }
-/*
-        _binding = FragmentAlarmBinding.inflate(inflater, container, false)
-        val root: View = binding.root*/
+        /*
+                _binding = FragmentAlarmBinding.inflate(inflater, container, false)
+                val root: View = binding.root*/
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
         hour = sharedPreferences.getInt("hour", 0)
         min = sharedPreferences.getInt("min", 0)
@@ -70,7 +75,8 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
             PlayingChannelData::class.java
         )
 //        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-        val alarmCheckbox=sharedPreferences.getBoolean("isAlarmSet", false)
+        val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
+
         if (playingChannelData != null && alarmCheckbox)
             binding.tvSelectchannel.text = playingChannelData.name
 
@@ -89,8 +95,8 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         }
 
         binding.tvSelectchannel.setOnClickListener {
-          sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-            if (playingChannelData!=null)
+            sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+            if (playingChannelData != null)
                 startActivity(Intent(this, AlarmSelectedChannelActivity::class.java))
             else {
                 startActivity(Intent(this, MainActivity::class.java))
@@ -103,58 +109,70 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         setSeekBarVolume()
         setcheckBoxListner()
 
-    }
-/*    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAlarmBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
-        sharedPredEditor = sharedPreferences.edit()
-        hour = sharedPreferences.getInt("hour", 0)
-        min = sharedPreferences.getInt("min", 0)
-        setTime(hour, min)
-        val playingChannelData = retrieveStoredObject(
-            AppConstants.SELECTED_ALARM_RADIO,
-            PlayingChannelData::class.java
-        )
-        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-        if (playingChannelData != null && alarmCheckbox)
-            binding.tvSelectchannel.text = playingChannelData.name
 
-        binding.tvTimer.setOnClickListener {
-            val audio = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-            audio?.setStreamVolume(
-                AudioManager.STREAM_MUSIC, 70, 0
-            )
-            showTimerPickerFragment(it)
-        }
-        binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
-            sharedPredEditor.putBoolean("isAlarmSet", b).commit()
-            if (b) setAlaram()
-            else cancelAlarm()
-
-        }
-
-        binding.tvSelectchannel.setOnClickListener {
-           val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-            if (playingChannelData!=null)
-                startActivity(Intent(requireContext(), AlarmSelectedChannelActivity::class.java))
-            else {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                AppSingelton.isAlramSet = true
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
+                    if (!alarmCheckbox)
+                        sharedPreferences.writeList(Gson(), "alarm_days", listOf<String>())
+                    finish()
+                }
             }
-        }
-        if (sharedPreferences.getBoolean("isAlarmSet", false)) {
-            binding.swichAlarm.isChecked = true
-        }
-        setSeekBarVolume()
-        setcheckBoxListner()
+        )
+    }
+    /*    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        ): View? {
+            _binding = FragmentAlarmBinding.inflate(inflater, container, false)
+            val root: View = binding.root
+            alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
+            sharedPredEditor = sharedPreferences.edit()
+            hour = sharedPreferences.getInt("hour", 0)
+            min = sharedPreferences.getInt("min", 0)
+            setTime(hour, min)
+            val playingChannelData = retrieveStoredObject(
+                AppConstants.SELECTED_ALARM_RADIO,
+                PlayingChannelData::class.java
+            )
+            val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+            if (playingChannelData != null && alarmCheckbox)
+                binding.tvSelectchannel.text = playingChannelData.name
+
+            binding.tvTimer.setOnClickListener {
+                val audio = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+                audio?.setStreamVolume(
+                    AudioManager.STREAM_MUSIC, 70, 0
+                )
+                showTimerPickerFragment(it)
+            }
+            binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
+                sharedPredEditor.putBoolean("isAlarmSet", b).commit()
+                if (b) setAlaram()
+                else cancelAlarm()
+
+            }
+
+            binding.tvSelectchannel.setOnClickListener {
+               val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+                if (playingChannelData!=null)
+                    startActivity(Intent(requireContext(), AlarmSelectedChannelActivity::class.java))
+                else {
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    AppSingelton.isAlramSet = true
+                }
+            }
+            if (sharedPreferences.getBoolean("isAlarmSet", false)) {
+                binding.swichAlarm.isChecked = true
+            }
+            setSeekBarVolume()
+            setcheckBoxListner()
 
 
-        return root
-    }*/
+            return root
+        }*/
 
     private fun setTime(hour: Int, min: Int) {
         var finalhour = hour
@@ -196,10 +214,10 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         try {
             audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
             binding.seekbar.max = audioManager?.getStreamMaxVolume(AudioManager.STREAM_MUSIC)!!
-            binding.seekbar.progress = audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC);
+            binding.seekbar.progress = audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC)
             binding.seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                    audioManager!!.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0)
+                    audioManager!!.setStreamVolume(AudioManager.STREAM_ALARM, i, AudioManager.FLAG_SHOW_UI)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -279,8 +297,6 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         }
 
 
-
-
         val intent = Intent(this, AlramReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(
             this, 0, intent, flag
@@ -328,26 +344,32 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
                     list.add("Monday")
                 } else list.remove("Monday")
             }
+
             R.id.chk_tuesday -> {
                 if (p0.isChecked) list.add("Tuesday")
                 else list.remove("Tuesday")
             }
+
             R.id.chk_wednesday -> {
                 if (p0.isChecked) list.add("Wednesday")
                 else list.remove("Wednesday")
             }
+
             R.id.chk_thursday -> {
                 if (p0.isChecked) list.add("Thursday")
                 else list.remove("Thursday")
             }
+
             R.id.chk_friday -> {
                 if (p0.isChecked) list.add("Friday")
                 else list.remove("Friday")
             }
+
             R.id.chk_saturday -> {
                 if (p0.isChecked) list.add("Saturday")
                 else list.remove("Saturday")
             }
+
             R.id.chk_sunday -> {
                 if (p0.isChecked) list.add("Sunday")
                 else list.remove("Sunday")
@@ -411,4 +433,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener, O
         return Gson().fromJson(dataObject, baseClass)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }
