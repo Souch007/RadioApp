@@ -63,7 +63,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
     )
     private lateinit var connectivityChecker: ConnectivityChecker
-
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +77,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
+        AppSingelton.errorPlayingChannel.observe(this) {
+            if (it) {
+                if (count != 2)
+                    Toast.makeText(this@RadioPlayerActivity, "Channel Error", Toast.LENGTH_SHORT)
+                        .show()
+                else
+                    count += 1
+            }
+        }
     }
 
     private fun createActivity() {

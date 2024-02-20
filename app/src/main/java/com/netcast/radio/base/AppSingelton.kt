@@ -13,17 +13,17 @@ object AppSingelton {
     var currentPlayingPos: Int=0
 
     @kotlin.jvm.JvmField
-    public var suggestedRadioList: List<RadioLists>? = null
-    public var selectedChannel: RadioLists? = null
-    public var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null
-    public var classicalList: List<RadioLists>? = null
-    public var popList: List<RadioLists>? = null
-    public var newsList: List<RadioLists>? = null
-    public var publicList: List<RadioLists>? = null
-    public var _playingStarted = MutableLiveData<Boolean>()
+    var suggestedRadioList: List<RadioLists>? = null
+    var selectedChannel: RadioLists? = null
+    var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null
+    var classicalList: List<RadioLists>? = null
+    var popList: List<RadioLists>? = null
+    var newsList: List<RadioLists>? = null
+    var publicList: List<RadioLists>? = null
+    var _playingStarted = MutableLiveData<Boolean>()
     //-------------------Player Variables---------------------------------//
     public var exoPlayer: ExoPlayer? = null
-    public val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
+    val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
     public val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel
     var  _radioSelectedChannelId : String = ""
     var _currenPlayingChannelId : String = ""
@@ -31,6 +31,8 @@ object AppSingelton {
 
     var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
     val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel
+    var _erroPlayingChannel = MutableLiveData<Boolean>()
+    val errorPlayingChannel: LiveData<Boolean> = _erroPlayingChannel
 
     val _isPlayerFragVisible = MutableLiveData<Boolean>()
     val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible
