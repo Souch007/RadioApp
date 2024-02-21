@@ -1,6 +1,5 @@
 package com.netcast.radio
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,14 +22,12 @@ import com.netcast.radio.ui.radio.adapter.OnClickListnerRadio
 import com.netcast.radio.ui.radio.countries.Data
 import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.search.SearchViewModel
-
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
 import com.netcast.radio.ui.search.adapters.PodSearchOnClickListener
 import com.netcast.radio.ui.search.adapters.StationSearchListener
 import com.netcast.radio.ui.seeall.adapter.OnClickListenerSeeAll
 import com.netcast.radio.ui.seeall.adapter.OnClickListerPODSeeAll
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodcast,
@@ -88,6 +85,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
         }
     }
+
 
     fun getPodCastListing(podcastViewModel: PodcastViewModel, country: String?) {
         viewModelScope.launch {

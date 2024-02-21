@@ -19,6 +19,8 @@ suspend fun getRadioStations(@Query("country") country:String) : RadioResponse
 
 @GET(AppConstants.PODCAST_LISTING)
 suspend  fun getPodCastStations(@Query("country") country:String) : PodResponce
+@GET(AppConstants.BLOCK_STATION+"{Id}")
+suspend  fun blockStation(@Path("Id") id:String) : RadioResponse
 
 @GET(AppConstants.GET_LANGUAGES)
 suspend  fun getLanguages() : Lanuages

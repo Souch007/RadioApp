@@ -67,6 +67,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (!checkWifiPlaySettings()) {
             createActivity()
             isActivityLoaded = true
@@ -79,11 +80,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         connectivityChecker.setListener(this)
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it) {
-                if (count != 2)
-                    Toast.makeText(this@RadioPlayerActivity, "Channel Error", Toast.LENGTH_SHORT)
-                        .show()
-                else
+                if (count == 2) {
+                    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                        radioPlayerAVM.blockStation(
+                            it1
+                        )
+                    }
+                } else {
                     count += 1
+                }
             }
         }
     }
@@ -346,8 +351,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                         .build()
                                     val mediaItem: MediaItem = MediaItem.Builder()
                                         .setUri(podcastEpisodeList!![i].audio.toUri())
-                                        .setMediaMetadata(mediaMetadata)
-                                        .setMediaId(i.toString()).setTag(i).build()
+                                        .setMediaMetadata(mediaMetadata).setMediaId(i.toString())
+                                        .setTag(i).build()
                                     mediaitems.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
                                 }
@@ -730,8 +735,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         super.onMediaItemTransition(mediaItem, reason)
         val item = mediaItem?.mediaMetadata
         val currentPos = mediaItem?.mediaId
-        if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex()))
-            dataBinding.episode.text = podcastEpisodeList!![currentPos?.toInt() ?: 0].title
+        if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) dataBinding.episode.text =
+            podcastEpisodeList!![currentPos?.toInt() ?: 0].title
 
     }
 
@@ -742,9 +747,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     override fun onShare() {
         AppConstants.share(
-            "Checkout this link its amazing. ",
-            AppSingelton._radioSelectedChannel.value,
-            this
+            "Checkout this link its amazing. ", AppSingelton._radioSelectedChannel.value, this
         )
 
     }
@@ -766,13 +769,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         if (!isInternetavailable) {
             showToast("Internet connection available")
 
-            if (playwhenReady)
-                dataBinding.playerView.player?.play()
+            if (playwhenReady) dataBinding.playerView.player?.play()
             else {
-                if (isEpisode)
-                    exoPlayerManager("Normal")
-                else
-                    exoPlayerManager("Episode")
+                if (isEpisode) exoPlayerManager("Normal")
+                else exoPlayerManager("Episode")
             }
         }
         isInternetavailable = true
