@@ -31,32 +31,32 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     val _onepisodeDeleteSelected = MutableLiveData<Data>()
     val _onepisodeShareClicked = MutableLiveData<Data>()
 
-    override fun onRadioClicked(data: RadioLists,type: String) {
-        var playingChannelData = PlayingChannelData(
-            data.url,
-            data.favicon,
-            data.name,
-            data.id,
-            "",
-            data.country,
-            "RADIO"
-        )
-        AppSingelton._radioSelectedChannel.value = playingChannelData
-        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
-            AppSingelton._isNewStationSelected.value = false
-        else {
-            AppSingelton._isNewStationSelected.value = true
-            if (AppSingelton.exoPlayer != null) {
-                AppSingelton.exoPlayer!!.stop()
-                AppSingelton.exoPlayer!!.release()
+    override fun onRadioClicked(data: RadioLists, type: String) {
+        if (!data.isBlocked) {
+            var playingChannelData = PlayingChannelData(
+                data.url,
+                data.favicon,
+                data.name,
+                data.id,
+                "",
+                data.country,
+                "RADIO",
+                secondaryUrl = data.secondaryUrl
+            )
+            AppSingelton._radioSelectedChannel.value = playingChannelData
+            if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
+                AppSingelton._isNewStationSelected.value = false
+            else {
+                AppSingelton._isNewStationSelected.value = true
+                if (AppSingelton.exoPlayer != null) {
+                    AppSingelton.exoPlayer!!.stop()
+                    AppSingelton.exoPlayer!!.release()
+                }
+                AppSingelton.exoPlayer = null
             }
-            AppSingelton.exoPlayer = null
+
+            _radioClicked.value = data
         }
-
-
-
-        _radioClicked.value = data
-
     }
 
     fun getPodcastEpisodes(idPodcast: String) {
@@ -64,6 +64,7 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
             _podEpisodesList.value = appRepository.getPodcastEpisodes(idPodcast)
         }
     }
+
     fun blockStation(channelId: String) {
         viewModelScope.launch {
             appRepository.blockStation(channelId)
@@ -89,6 +90,6 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     }
 
     override fun onEpisodeShareClicked(data: Data) {
-        _onepisodeShareClicked.value=data
+        _onepisodeShareClicked.value = data
     }
 }

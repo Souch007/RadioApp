@@ -194,7 +194,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private fun searchWatcherListener() {
 
         dataBinding.imageviewClose.setOnClickListener {
-            dataBinding.searchEditText.text.clear();
+            it.visibility=View.GONE
+            dataBinding.searchEditText.text.clear()
         }
 
         dataBinding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->

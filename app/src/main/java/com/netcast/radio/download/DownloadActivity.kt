@@ -116,7 +116,8 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
                 it.id,
                 it.guidFromRss,
                 it.description,
-                "Offline"
+                "Offline",
+                secondaryUrl = ""
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             finish()

@@ -109,6 +109,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                     }
 
                     is Resource.Success -> {
+                        binding.parentView.visibility=View.VISIBLE
                         val data = it.value.data
                         radioViewModel.radioListArray.value = data.publicRadio
                         radioViewModel.radioListArray.value = data.publicRadio

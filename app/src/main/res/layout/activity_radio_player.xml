@@ -29,6 +29,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_channelblock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:src="@drawable/ic_channelblock"
+            />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_bar_layout"
             android:layout_width="match_parent"

@@ -15,6 +15,7 @@
         <variable
             name="title"
             type="String" />
+        <import type="android.view.View"/>
 
     </data>
 
@@ -44,11 +45,27 @@
                 android:layout_weight=".2"
                 android:scaleType="centerCrop"
                 android:src="@drawable/logo"
+                android:visibility='@{radioLists.isBlocked? View.GONE:View.VISIBLE}'
+
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:setImage="@{radioLists.favicon}" />
+
+            <ImageView
+                android:id="@+id/imageView_block"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:scaleType="centerCrop"
+                android:visibility='@{radioLists.isBlocked? View.VISIBLE:View.GONE}'
+                android:src="@drawable/ic_block"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
             <!--  <View
                   android:layout_width="@dimen/_1sdp"
                   android:background="@color/grey"

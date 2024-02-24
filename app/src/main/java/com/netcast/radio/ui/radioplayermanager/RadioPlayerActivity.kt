@@ -79,15 +79,22 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
         AppSingelton.errorPlayingChannel.observe(this) {
-            if (it) {
-                if (count == 2) {
+            if (it.isNotEmpty()) {
+                if (count == 1) {
+
+                    dataBinding.imageChannelblock.visibility=View.VISIBLE
+                    AppSingelton._erroPlayingChannel.postValue("")
                     AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                        Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
                         radioPlayerAVM.blockStation(
                             it1
                         )
                     }
                 } else {
-                    count += 1
+                     count += 1
+                    dataBinding.progressDownload.visibility = View.VISIBLE
+                    if (isEpisode) exoPlayerManager("Normal")
+                    else exoPlayerManager("Episode")
                 }
             }
         }
@@ -294,7 +301,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             dataBinding.playerView.player = exoPlayer
 
 
-                            val filePath = AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath = if (count==0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
 
                             // Prepare media item and start playback
@@ -367,7 +374,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                     currentChannel?.favicon ?: "",
                                     currentChannel?.id ?: "",
                                     currentChannel?.name ?: "",
-                                    currentChannel?.url ?: ""
+                                    currentChannel?.url ?: "",
+                                    currentChannel?.secondaryUrl ?: "",
+                                    false
+
                                 )
 //                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
                                 list?.add(0, selectedRadio)
@@ -381,7 +391,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
                                     val mediaItem: MediaItem = MediaItem.Builder()
-                                        .setUri(AppSingelton.suggestedRadioList!![i].url.toUri())
+                                        .setUri(getUrl((AppSingelton.suggestedRadioList as MutableList<RadioLists>)[i]))
                                         .setMediaMetadata(mediaMetadata)
 
                                         .setMediaId(i.toString()).setTag(i).build()
@@ -409,6 +419,13 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
             }
         }
+    }
+
+    private fun getUrl(suggestedRadioList: RadioLists): String {
+        return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count==0)
+            suggestedRadioList.secondaryUrl
+        else
+            suggestedRadioList.url
     }
 
     private fun Observers() {
@@ -691,7 +708,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             it.id,
             AppSingelton.radioSelectedChannel.value!!.idPodcast,
             it.description,
-            "Episodes"
+            "Episodes",
+            secondaryUrl = ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
     }

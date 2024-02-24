@@ -1,5 +1,6 @@
 package com.netcast.radio.ui.radio.adapter
 
+import android.util.Log
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.RadioRowBinding
@@ -19,6 +20,7 @@ class RadioFragmentAdapter(
             listener = OnClickListnerRadio
             executePendingBindings()
         }
+
     }
 
     override fun getItemsCount(data: List<RadioLists>): Int {

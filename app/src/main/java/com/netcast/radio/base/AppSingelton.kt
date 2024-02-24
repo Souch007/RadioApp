@@ -31,8 +31,8 @@ object AppSingelton {
 
     var _currentPlayingChannel = MutableLiveData<PlayingChannelData>()
     val currentPlayingChannel: LiveData<PlayingChannelData> = _currentPlayingChannel
-    var _erroPlayingChannel = MutableLiveData<Boolean>()
-    val errorPlayingChannel: LiveData<Boolean> = _erroPlayingChannel
+    var _erroPlayingChannel = MutableLiveData("")
+    val errorPlayingChannel: LiveData<String> = _erroPlayingChannel
 
     val _isPlayerFragVisible = MutableLiveData<Boolean>()
     val isPlayerFragVisible : LiveData<Boolean> = _isPlayerFragVisible

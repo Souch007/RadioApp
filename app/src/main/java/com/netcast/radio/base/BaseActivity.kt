@@ -247,7 +247,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        AppSingelton._erroPlayingChannel.postValue(true)
+        AppSingelton._erroPlayingChannel.postValue(error.errorCode.toString())
 //        Toast.makeText(this, "There is a problem playing this channel please try another channel we wll resolve this issue soon.", Toast.LENGTH_LONG).show()
     }
 

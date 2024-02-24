@@ -30,4 +30,11 @@ data class RadioLists(
     @ColumnInfo(name = "url", defaultValue = "")
     @SerializedName("url")
     val url: String,
+
+    @ColumnInfo(name = "secondaryUrl", defaultValue = "")
+    @SerializedName("secondaryUrl")
+    val secondaryUrl: String,
+
+    @SerializedName("isBlocked")
+    val isBlocked: Boolean,
 ) : ListAdapterItem, Serializable
