@@ -78,5 +78,7 @@ data class Data(
     @SerializedName("url_resolved")
     val urlResolved: String,
     @SerializedName("votes")
-    val votes: Int
+    val votes: Int  ,
+    @SerializedName("isBlocked")
+    val isBlocked: Boolean
 ) : ListAdapterItem , java.io.Serializable

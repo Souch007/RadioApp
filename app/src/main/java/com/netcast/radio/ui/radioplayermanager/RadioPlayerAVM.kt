@@ -14,6 +14,7 @@ import com.netcast.radio.ui.radioplayermanager.adapter.OnEpisodeClickListener
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 
 class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClickListnerRadio,
     OnEpisodeClickListener {
@@ -30,6 +31,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     val _episodeDownloadSelected = MutableLiveData<Data>()
     val _onepisodeDeleteSelected = MutableLiveData<Data>()
     val _onepisodeShareClicked = MutableLiveData<Data>()
+
+    val _onblockChannel = MutableLiveData<Resource<ResponseBody>>()
 
     override fun onRadioClicked(data: RadioLists, type: String) {
         if (!data.isBlocked) {
@@ -67,7 +70,7 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
 
     fun blockStation(channelId: String) {
         viewModelScope.launch {
-            appRepository.blockStation(channelId)
+            _onblockChannel.value= appRepository.blockStation(channelId)
 
         }
     }

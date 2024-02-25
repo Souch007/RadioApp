@@ -81,22 +81,34 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty()) {
                 if (count == 1) {
-
-                    dataBinding.imageChannelblock.visibility=View.VISIBLE
+                    dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
                     AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
-                        Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
                         radioPlayerAVM.blockStation(
                             it1
                         )
                     }
                 } else {
-                     count += 1
+                    count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
                     if (isEpisode) exoPlayerManager("Normal")
                     else exoPlayerManager("Episode")
                 }
             }
+        }
+     /*   radioPlayerAVM._onblockChannel.observe(this) {
+            when (it) {
+                is Resource.Failure -> Toast.makeText(this, "${it.errorCode}", Toast.LENGTH_SHORT)
+                    .show()
+
+                Resource.Loading -> {}
+                is Resource.Success -> Toast.makeText(this, "Suceess", Toast.LENGTH_SHORT).show()
+            }
+        }*/
+        dataBinding.header.tvTitle.text = "Channel Blocked"
+        dataBinding.header.imgBack.setOnClickListener {
+            AppSingelton._isPlayerFragVisible.value = false
+            finish()
         }
     }
 
@@ -301,7 +313,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             dataBinding.playerView.player = exoPlayer
 
 
-                            val filePath = if (count==0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath =
+                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
 
                             // Prepare media item and start playback
@@ -422,7 +435,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun getUrl(suggestedRadioList: RadioLists): String {
-        return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count==0)
+        return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
             suggestedRadioList.secondaryUrl
         else
             suggestedRadioList.url

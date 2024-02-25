@@ -188,7 +188,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
     }
 
     private fun searchWatcherListener() {

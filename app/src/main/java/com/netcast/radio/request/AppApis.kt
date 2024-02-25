@@ -9,6 +9,7 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import com.netcast.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.netcast.radio.ui.search.searchedpodresponce.SearchedReponcePod
 import com.netcast.radio.ui.search.searchedstationresponce.SearchedResponceStation
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -20,7 +21,7 @@ suspend fun getRadioStations(@Query("country") country:String) : RadioResponse
 @GET(AppConstants.PODCAST_LISTING)
 suspend  fun getPodCastStations(@Query("country") country:String) : PodResponce
 @GET(AppConstants.BLOCK_STATION+"{Id}")
-suspend  fun blockStation(@Path("Id") id:String) : RadioResponse
+suspend  fun blockStation(@Path("Id") id:String) : ResponseBody
 
 @GET(AppConstants.GET_LANGUAGES)
 suspend  fun getLanguages() : Lanuages
