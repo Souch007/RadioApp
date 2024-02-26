@@ -18,7 +18,7 @@ class StationSearchedAdapter(private val list:List<Data>, val  stationSearchList
     }
 
     override fun getItemsCount(data: List<Data>): Int {
-       return data.size;
+       return data.size
     }
 }
 

@@ -79,7 +79,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
         viewModelScope.launch {
             radioViewModel._radioListing.value =
-                appRepository.getRadioListing(country?:"")
+                appRepository.getRadioListing(country ?: "")
 
             //Log("MainViewModel", "getRadioListing: $country")
 //            radioViewModel._radioListing.value = appRepository.getRadioListing("")
@@ -144,7 +144,14 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
         AppSingelton.selectedChannel = data
         var playingChannelData = PlayingChannelData(
-            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO", secondaryUrl = data.secondaryUrl
+            data.url,
+            data.favicon,
+            data.name,
+            data.id,
+            "",
+            data.country,
+            "RADIO",
+            secondaryUrl = data.secondaryUrl
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
@@ -270,7 +277,14 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     override fun onSeeAllFavClick(data: RadioLists) {
         var playingChannelData = PlayingChannelData(
-            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO", secondaryUrl = data.secondaryUrl
+            data.url,
+            data.favicon,
+            data.name,
+            data.id,
+            "",
+            data.country,
+            "RADIO",
+            secondaryUrl = data.secondaryUrl
         )
         addChannelToFavourites(playingChannelData)
     }
@@ -312,7 +326,14 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
     override fun onPodCastSearchedListener(data: com.netcast.radio.ui.search.searchedpodresponce.Data) {
         val playingChannelData = PlayingChannelData(
-            data.url, data.image, data.title, data._id, data._id, data.author, "PODCAST", secondaryUrl = ""
+            data.url,
+            data.image,
+            data.title,
+            data._id,
+            data._id,
+            data.author,
+            "PODCAST",
+            secondaryUrl = ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -320,6 +341,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     }
 
     override fun onStationSearchListener(data: com.netcast.radio.ui.search.searchedstationresponce.Data) {
+        if (data.isBlocked)
+            return
         val playingChannelData = PlayingChannelData(
             data.url, data.favicon, data.name, data.id, "", data.country, "RADIO", secondaryUrl = ""
         )

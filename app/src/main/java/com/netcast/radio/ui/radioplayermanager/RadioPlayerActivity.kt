@@ -79,7 +79,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
         AppSingelton.errorPlayingChannel.observe(this) {
-            if (it.isNotEmpty()) {
+            if (it.isNotEmpty() && podcastType!="PODCAST" && podcastType!="Episode" ) {
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
@@ -91,20 +91,20 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 } else {
                     count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
-                    if (isEpisode) exoPlayerManager("Normal")
+                    if (!isEpisode) exoPlayerManager("Normal")
                     else exoPlayerManager("Episode")
                 }
             }
         }
-     /*   radioPlayerAVM._onblockChannel.observe(this) {
-            when (it) {
-                is Resource.Failure -> Toast.makeText(this, "${it.errorCode}", Toast.LENGTH_SHORT)
-                    .show()
+        /*   radioPlayerAVM._onblockChannel.observe(this) {
+               when (it) {
+                   is Resource.Failure -> Toast.makeText(this, "${it.errorCode}", Toast.LENGTH_SHORT)
+                       .show()
 
-                Resource.Loading -> {}
-                is Resource.Success -> Toast.makeText(this, "Suceess", Toast.LENGTH_SHORT).show()
-            }
-        }*/
+                   Resource.Loading -> {}
+                   is Resource.Success -> Toast.makeText(this, "Suceess", Toast.LENGTH_SHORT).show()
+               }
+           }*/
         dataBinding.header.tvTitle.text = "Channel Blocked"
         dataBinding.header.imgBack.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
@@ -313,10 +313,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             dataBinding.playerView.player = exoPlayer
 
 
-                            val filePath =
-                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath = if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
-
                             // Prepare media item and start playback
                             val mediaItem = MediaItem.fromUri(uri)
                             exoPlayer.setMediaItem(mediaItem)
@@ -401,8 +399,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                         .setDescription(AppSingelton.suggestedRadioList!![i].country)
                                         .setArtworkUri(Uri.parse(AppSingelton.suggestedRadioList!![i].favicon))
                                         .build()
-
-
                                     val mediaItem: MediaItem = MediaItem.Builder()
                                         .setUri(getUrl((AppSingelton.suggestedRadioList as MutableList<RadioLists>)[i]))
                                         .setMediaMetadata(mediaMetadata)
@@ -729,8 +725,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     private fun _checkMediaType() {
         //Checking the Type of MEDIA
-        if (AppSingelton.exoPlayer != null) podcastType =
-            AppSingelton.radioSelectedChannel.value?.type ?: ""
+//        if (AppSingelton.exoPlayer != null)
+        podcastType = AppSingelton.radioSelectedChannel.value?.type ?: ""
+//        Toast.makeText(this@RadioPlayerActivity, podcastType, Toast.LENGTH_SHORT).show()
         if (podcastType.matches("PODCAST".toRegex()) || podcastType.matches("Episodes".toRegex())) {
             dataBinding.podEpisodes.visibility = View.VISIBLE
             dataBinding.radioSuggestion.visibility = View.GONE
@@ -802,7 +799,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
             if (playwhenReady) dataBinding.playerView.player?.play()
             else {
-                if (isEpisode) exoPlayerManager("Normal")
+                if (!isEpisode) exoPlayerManager("Normal")
                 else exoPlayerManager("Episode")
             }
         }
