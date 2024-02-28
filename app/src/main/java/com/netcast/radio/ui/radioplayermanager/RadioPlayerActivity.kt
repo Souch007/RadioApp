@@ -58,6 +58,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     var isEpisode = false
     var playwhenReady = false
     var isInternetavailable = true
+    var currentindex = 0
 
     private val permissions = arrayOf(
         WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
@@ -79,7 +80,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
         AppSingelton.errorPlayingChannel.observe(this) {
-            if (it.isNotEmpty() && podcastType!="PODCAST" && podcastType!="Episode" ) {
+            if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episode") {
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
@@ -96,19 +97,35 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 }
             }
         }
-        /*   radioPlayerAVM._onblockChannel.observe(this) {
-               when (it) {
-                   is Resource.Failure -> Toast.makeText(this, "${it.errorCode}", Toast.LENGTH_SHORT)
-                       .show()
 
-                   Resource.Loading -> {}
-                   is Resource.Success -> Toast.makeText(this, "Suceess", Toast.LENGTH_SHORT).show()
-               }
-           }*/
         dataBinding.header.tvTitle.text = "Channel Blocked"
         dataBinding.header.imgBack.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
             finish()
+        }
+        dataBinding.btnPlaynext.setOnClickListener {
+
+            currentindex += 1
+            var nextChanneltoPlay = AppSingelton.suggestedRadioList?.get(
+                AppSingelton.suggestedRadioList?.size?.minus(currentindex) ?: 0
+            )
+
+            AppSingelton._radioSelectedChannel.value = nextChanneltoPlay?.id?.let { id ->
+                PlayingChannelData(
+                    nextChanneltoPlay?.url,
+                    nextChanneltoPlay?.favicon,
+                    nextChanneltoPlay?.name,
+                    id,
+                    "",
+                    nextChanneltoPlay?.country,
+                    "RADIO",
+                    secondaryUrl = nextChanneltoPlay.secondaryUrl
+                )
+            }
+            dataBinding.llBlock.visibility = View.GONE
+            dataBinding.progressDownload.visibility = View.VISIBLE
+            AppSingelton.exoPlayer = null
+            createActivity()
         }
     }
 
@@ -171,7 +188,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-//        if (checkWifiPlaySettings()) {
         if (AppSingelton._radioSelectedChannel?.value?.type == "Offline" && !isActivityLoaded) {
             createActivity()
         } else {
@@ -179,14 +195,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             if (dataBinding.podepisodeadapter != null) {
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
-        }/*} else {
-            Toast.makeText(
-                this,
-                "Please check your wifi as you enabled stream over wifi",
-                Toast.LENGTH_LONG
-            ).show()
-
-        }*/
+        }
     }
 
 
@@ -263,11 +272,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.playerView.player?.stop()
             }
 
-            fun onPlayWhenReadyCommitted() {}
-//            fun onPlayerError(error: ExoPlaybackException?) {
-//                dataBinding.progressDownload.visibility = View.INVISIBLE
-//                dataBinding.playerView.player?.stop()
-//            }
         })
     }
 
@@ -313,7 +317,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             dataBinding.playerView.player = exoPlayer
 
 
-                            val filePath = if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath =
+                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
                             // Prepare media item and start playback
                             val mediaItem = MediaItem.fromUri(uri)

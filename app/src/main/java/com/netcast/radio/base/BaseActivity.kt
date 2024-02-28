@@ -10,11 +10,8 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -35,7 +32,6 @@ import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.podcast.CompletedEpisodes
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.io.File
@@ -60,7 +56,6 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     val NOTIFICATION_PERMISSION_CODE = 100123
     var playerNotificationManager: PlayerNotificationManager? = null
 
-    //    private var playbackDisposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
@@ -99,8 +94,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 }
 
             }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -156,7 +150,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
                 initializeDB(applicationContext)
             }
 //        val listOfflineTemp = appDatabase!!.appDap().getOfflineEpisodes()
-            val time = TimeUnit.DAYS.toMillis(2)
+//            val time = TimeUnit.DAYS.toMillis(2)
             val list = getList<CompletedEpisodes>("completed_episodes")
 //            if (!list.isNullOrEmpty()) {
             if (list != null) {
@@ -236,8 +230,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-        /*    playbackDisposable= playbackProgressObservable
+        }/*    playbackDisposable= playbackProgressObservable
                  .observeOn(AndroidSchedulers.mainThread())
                  .subscribe {
                      Log.i("TAG", "onIsPlayingChanged: $it")
@@ -363,17 +356,6 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             activeNetwork?.typeName?.contains("wifi", ignoreCase = true) ?: false
         }
     }
-
-
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
 
     fun storeObjectInSharedPref(dataObject: Any, prefName: String): Boolean {
         val dataObjectInJson = Gson().toJson(dataObject)

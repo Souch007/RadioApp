@@ -27,28 +27,74 @@
         android:id="@+id/rp_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/header"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_block"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:layout_gravity="center"
             android:orientation="vertical"
-
-            >
+            android:visibility="gone">
 
             <include
                 android:id="@+id/header"
                 layout="@layout/activity_header" />
 
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_channelblock"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_channelblock" />
+                android:src="@drawable/block" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:padding="@dimen/_15sdp"
+                android:textColor="@color/white"
+                android:text="This channel is currently unavailable would you like to play another channel from suggested list? "
+                android:textSize="@dimen/_14sdp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_weight="0.5"
+                    android:text="Back"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp"
+                    android:background="@drawable/btnbg_red" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_playnext"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_weight="0.5"
+                    android:text="Yes ▶"
+                    android:textSize="@dimen/_13sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btnbg_green" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

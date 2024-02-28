@@ -24,8 +24,6 @@ import java.util.concurrent.ExecutionException
 
 class AudioPlayerService : LifecycleService() {
     var playerNotificationManager: PlayerNotificationManager? = null
-
-
     companion object {
         fun startService(context: Context) {
             val startIntent = Intent(context, AudioPlayerService::class.java)
@@ -152,8 +150,6 @@ class AudioPlayerService : LifecycleService() {
             })
             .build()
 
-
-//        playerNotificationManager.setUseNavigationActions(true);
         playerNotificationManager!!.setUsePlayPauseActions(true)
         playerNotificationManager!!.setUseStopAction(false)
         playerNotificationManager!!.setUseNextAction(true)
