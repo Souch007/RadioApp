@@ -1,5 +1,6 @@
 package com.netcast.radio
 
+import ConnectivityChecker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -51,7 +52,6 @@ import com.netcast.radio.ui.podcast.PodcastViewModel
 import com.netcast.radio.ui.radio.RadioViewModel
 import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
-import com.netcast.radio.ui.seeall.SeeAllFragment
 import com.netcast.radio.ui.seeall.SeeAllViewModel
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
@@ -64,7 +64,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,ConnectivityChecker.NetworkStateListener {
     private lateinit var mainActivityViewModel: MainViewModel
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
@@ -76,11 +76,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private var selectedDestination = ""
     var backPressedTime: Long = 0
     private lateinit var sharedPredEditor: SharedPreferences.Editor
+    private lateinit var connectivityChecker: ConnectivityChecker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
         val appmode = sharedPreferences.getInt("App_Mode", -1)
+        connectivityChecker = ConnectivityChecker(this)
+        connectivityChecker.setListener(this)
         if (appmode == 0)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
@@ -148,53 +151,32 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun hideProgressBar() {
-
-        // Assuming you have a layout with the ID 'myLayout' in your XML file
-
-        // Set up the fade-in animation
         val fadeIn = AlphaAnimation(0.0f, 1.0f)
-        fadeIn.duration = 1000 // You can adjust the duration as needed
-
-        // Set up the fade-out animation
+        fadeIn.duration = 1000
         val fadeOut = AlphaAnimation(1.0f, 0.0f)
-        fadeOut.duration = 5000 // You can adjust the duration as needed
-
-        // Combine the animations into a sequence
+        fadeOut.duration = 5000
         val fadeSequence = AnimationSet(true)
         fadeSequence.addAnimation(fadeIn)
         fadeSequence.addAnimation(fadeOut)
-
-        // Start the animation when the activity is created or when you want to trigger it
         dataBinding.llShimmerLayout.startAnimation(fadeSequence)
-
-        // Optional: You can set up a listener to perform actions when the animation ends
         fadeSequence.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
-                // Do something when the animation ends
                 dataBinding.llShimmerLayout.visibility = View.GONE
                 dataBinding.llShimmerLayoutmain.visibility = View.GONE
-//                dataBinding.navView.visibility = View.VISIBLE
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
-
-        /*Handler(Looper.getMainLooper()).postDelayed({
-            dataBinding.llShimmerLayout.visibility = View.GONE
-            dataBinding.navView.visibility = View.VISIBLE
-        }, 5000)*/
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-//        Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
     }
 
     private fun searchWatcherListener() {
-
         dataBinding.imageviewClose.setOnClickListener {
-            it.visibility=View.GONE
+            it.visibility = View.GONE
             dataBinding.searchEditText.text.clear()
         }
 
@@ -205,7 +187,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 mainViewModel._state.value = true
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
-                   dataBinding.imageviewClose.visibility=View.VISIBLE
+                    dataBinding.imageviewClose.visibility = View.VISIBLE
                     mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
                     dataBinding.navView.selectedItemId = R.id.navigation_search
 //                    dataBinding.searchEditText.setText("")
@@ -220,13 +202,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onBackPressed() {
-
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val currentDestination = navController.currentDestination
-
-        // Check if it's the home destination
-
         if (getCurrenDestination(navController, currentDestination)) {
             if (backPressedTime + 1500 > System.currentTimeMillis()) {
                 super.onBackPressed()
@@ -719,5 +696,17 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             }.addOnFailureListener {
                 //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
             }
+    }
+
+    override fun onInternetAvailable() {
+        if ( dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
+            if (!dataBinding.playButtonCarousel.player!!.isPlaying) {
+                dataBinding.playButtonCarousel.player!!.play()
+            }
+        }
+    }
+
+    override fun onInternetUnavailable() {
+
     }
 }

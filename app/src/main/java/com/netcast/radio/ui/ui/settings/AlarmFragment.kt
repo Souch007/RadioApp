@@ -122,57 +122,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             }
         )
     }
-    /*    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-        ): View? {
-            _binding = FragmentAlarmBinding.inflate(inflater, container, false)
-            val root: View = binding.root
-            alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            sharedPreferences = requireContext().getSharedPreferences("appData", Context.MODE_PRIVATE)
-            sharedPredEditor = sharedPreferences.edit()
-            hour = sharedPreferences.getInt("hour", 0)
-            min = sharedPreferences.getInt("min", 0)
-            setTime(hour, min)
-            val playingChannelData = retrieveStoredObject(
-                AppConstants.SELECTED_ALARM_RADIO,
-                PlayingChannelData::class.java
-            )
-            val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-            if (playingChannelData != null && alarmCheckbox)
-                binding.tvSelectchannel.text = playingChannelData.name
 
-            binding.tvTimer.setOnClickListener {
-                val audio = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-                audio?.setStreamVolume(
-                    AudioManager.STREAM_MUSIC, 70, 0
-                )
-                showTimerPickerFragment(it)
-            }
-            binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
-                sharedPredEditor.putBoolean("isAlarmSet", b).commit()
-                if (b) setAlaram()
-                else cancelAlarm()
-
-            }
-
-            binding.tvSelectchannel.setOnClickListener {
-               val alarmcheckbox= sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
-                if (playingChannelData!=null)
-                    startActivity(Intent(requireContext(), AlarmSelectedChannelActivity::class.java))
-                else {
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    AppSingelton.isAlramSet = true
-                }
-            }
-            if (sharedPreferences.getBoolean("isAlarmSet", false)) {
-                binding.swichAlarm.isChecked = true
-            }
-            setSeekBarVolume()
-            setcheckBoxListner()
-
-
-            return root
-        }*/
 
     private fun setTime(hour: Int, min: Int) {
         var finalhour = hour

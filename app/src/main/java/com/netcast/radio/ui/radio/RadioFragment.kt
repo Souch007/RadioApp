@@ -1,6 +1,8 @@
 package com.netcast.radio.ui.radio
 
+import ConnectivityChecker
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,13 +18,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 
-class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio) {
+class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio),
+    ConnectivityChecker.NetworkStateListener {
 
     val radioViewModel: RadioViewModel by activityViewModels()
     private lateinit var mainActivityViewModel: MainViewModel
     var appDatabase: AppDatabase? = null
+    var isInternetavailable = true
+    private lateinit var connectivityChecker: ConnectivityChecker
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
@@ -33,6 +39,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         binding.shimmerLayout.stopShimmer()
         mainActivityViewModel.currentFragmentId = "Radio"
         manageRecentlyViewd()
+        connectivityChecker = ConnectivityChecker(requireContext())
+        connectivityChecker.setListener(this@RadioFragment)
         AppSingelton.isNewItemAdded.observe(this@RadioFragment) {
             if (it) {
                 manageRecentlyViewd()
@@ -46,58 +54,58 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         CoroutineScope(Dispatchers.IO).launch {
                             val data = appDatabase!!.appDap().getRadioData()
                             withContext(Dispatchers.Main) {
-                             try {
-                                 radioViewModel.radioListArray.value = data.publicRadio
-                                 AppSingelton.suggestedRadioList = data.pop
-                                 AppSingelton.publicList = data.pop
-                                 binding.adapter =
-                                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                                         listOf(),
-                                         mainActivityViewModel,
-                                         "public"
-                                     )
+                                try {
+                                    radioViewModel.radioListArray.value = data.publicRadio
+                                    AppSingelton.suggestedRadioList = data.pop
+                                    AppSingelton.publicList = data.pop
+                                    binding.adapter =
+                                        com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                            listOf(),
+                                            mainActivityViewModel,
+                                            "public"
+                                        )
 
-                                 radioViewModel._radioPopListArray.value = data.pop
-                                 AppSingelton.popList = data?.pop
-                                 binding.popadapter =
-                                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                                         listOf(),
-                                         mainActivityViewModel,
-                                         "pop"
-                                     )
+                                    radioViewModel._radioPopListArray.value = data.pop
+                                    AppSingelton.popList = data?.pop
+                                    binding.popadapter =
+                                        com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                            listOf(),
+                                            mainActivityViewModel,
+                                            "pop"
+                                        )
 
-                                 radioViewModel._radioNewsListArray.value = data?.news
-                                 AppSingelton.newsList = data?.news
-                                 binding.newsadapter =
-                                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                                         listOf(),
-                                         mainActivityViewModel,
-                                         "news"
-                                     )
+                                    radioViewModel._radioNewsListArray.value = data?.news
+                                    AppSingelton.newsList = data?.news
+                                    binding.newsadapter =
+                                        com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                            listOf(),
+                                            mainActivityViewModel,
+                                            "news"
+                                        )
 
-                                 radioViewModel._radioClassicallistingArry.value = data?.classical
-                                 AppSingelton.classicalList = data?.classical
-                                 binding.classicalAdapter =
-                                     com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                                         listOf(),
-                                         mainActivityViewModel,
-                                         "classical"
-                                     )
-                                 mainActivityViewModel._suggesteStations.value = data?.music
-                                 binding.shimmerLayout.stopShimmer()
-                                 binding.shimmerLayout.visibility = View.GONE
-                             }
-                             catch (e:Exception){
-                                 e.printStackTrace()
-                                 binding.parentView.visibility = View.GONE
-                                 binding.emptyView.visibility = View.VISIBLE
-                             }
+                                    radioViewModel._radioClassicallistingArry.value =
+                                        data?.classical
+                                    AppSingelton.classicalList = data?.classical
+                                    binding.classicalAdapter =
+                                        com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                                            listOf(),
+                                            mainActivityViewModel,
+                                            "classical"
+                                        )
+                                    mainActivityViewModel._suggesteStations.value = data?.music
+                                    binding.shimmerLayout.stopShimmer()
+                                    binding.shimmerLayout.visibility = View.GONE
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                    binding.parentView.visibility = View.GONE
+                                    binding.emptyView.visibility = View.VISIBLE
+                                }
                             }
-                           /* if (data.publicRadio.isEmpty()) {
-                                binding.tvAllTag.visibility=View.GONE
-                                binding.
-                                binding.allRadioStations.visibility = View.GONE
-                            }*/
+                            /* if (data.publicRadio.isEmpty()) {
+                                 binding.tvAllTag.visibility=View.GONE
+                                 binding.
+                                 binding.allRadioStations.visibility = View.GONE
+                             }*/
 
                         }
 
@@ -109,7 +117,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                     }
 
                     is Resource.Success -> {
-                        binding.parentView.visibility=View.VISIBLE
+                        binding.parentView.visibility = View.VISIBLE
                         val data = it.value.data
                         radioViewModel.radioListArray.value = data.publicRadio
                         radioViewModel.radioListArray.value = data.publicRadio
@@ -295,11 +303,40 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     }
 
+    override fun onInternetAvailable() {
+        if (!isInternetavailable) {
+            if (AppSingelton.exoPlayer != null) {
+                AppSingelton.exoPlayer?.playerError.takeIf { it?.sourceException is IOException }
+                    ?.run {
+                        AppSingelton.exoPlayer?.prepare()
+                    }
+            } else {
+                mainActivityViewModel.getRadioListing(radioViewModel, "")
+                mainActivityViewModel.getLanguages(radioViewModel)
+                mainActivityViewModel.getCountires(radioViewModel)
+                mainActivityViewModel.getAllGenres(radioViewModel)
+            }
+        }
+        isInternetavailable = true
+    }
+
+    override fun onInternetUnavailable() {
+        isInternetavailable = false
+        showToast("No internet connection please check your internet connection")
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onStart() {
         super.onStart()
-        /* mainActivityViewModel.getRadioListing(radioViewModel)
-         mainActivityViewModel.getLanguages(radioViewModel)
-         mainActivityViewModel.getCountires(radioViewModel)
-         mainActivityViewModel.getAllGenres(radioViewModel)*/
+        connectivityChecker.register()
     }
+
+    override fun onStop() {
+        super.onStop()
+        connectivityChecker.unregister()
+    }
+
 }

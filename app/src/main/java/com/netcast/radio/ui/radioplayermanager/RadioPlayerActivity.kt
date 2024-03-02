@@ -84,11 +84,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
-                    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                 /*   AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
                         radioPlayerAVM.blockStation(
                             it1
                         )
-                    }
+                    }*/
                 } else {
                     count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
@@ -436,10 +436,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun getUrl(suggestedRadioList: RadioLists): String {
-        return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
-            suggestedRadioList.secondaryUrl
-        else
-            suggestedRadioList.url
+       /* return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
+           ""
+        else*/
+        return  suggestedRadioList.url
     }
 
     private fun Observers() {

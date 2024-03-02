@@ -16,13 +16,13 @@ data class Data(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
     @ColumnInfo(name = "classical", defaultValue = "")
-    @SerializedName("Dance")
+    @SerializedName("Rock")
     val classical: List<RadioLists>,
     @ColumnInfo(name = "music", defaultValue = "")
-    @SerializedName("Other")
+    @SerializedName("Hits")
     val music: List<RadioLists>,
     @ColumnInfo(name = "news", defaultValue = "")
-    @SerializedName("Talk")
+    @SerializedName("News-Talk")
     val news: List<RadioLists>,
     @ColumnInfo(name = "pop", defaultValue = "")
     @SerializedName("Pop")

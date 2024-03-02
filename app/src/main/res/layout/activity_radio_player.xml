@@ -50,13 +50,14 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:scaleType="centerCrop"
+                app:tint="@color/OrangeRed"
                 android:src="@drawable/block" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:padding="@dimen/_15sdp"
                 android:textColor="@color/white"
@@ -67,10 +68,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:gravity="center"
+                >
 
-                <androidx.appcompat.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_Playnext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:tint="@color/OrangeRed"
+                    android:padding="@dimen/_10sdp"
+
+                    android:background="@drawable/bg_oval"
+                    android:src="@drawable/ic_playnext"
+                    />
+
+               <!-- <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_back"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_40sdp"
@@ -93,7 +107,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:background="@drawable/btnbg_green" />
-
+-->
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -358,14 +372,16 @@
                 android:id="@+id/all_radio_more_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_30sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
+
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_player_radio_more"
                 app:setAdapter="@{adapter}"
-                app:spanCount="2"
+                app:spanCount="4"
+
                 app:submitList="@{radioplayervm.suggestedRadioList}"
                 tools:listitem="@layout/radio_row" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -390,6 +406,7 @@
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="Episodes"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_11sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

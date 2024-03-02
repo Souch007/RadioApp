@@ -234,13 +234,14 @@ class SettingsFragment : Fragment() {
             Configuration.UI_MODE_NIGHT_NO -> {
                 radioGroup?.check(radioGroup[0].id)
                 adapterSettings.changemodetext("Light")
-
-
+                AppSingelton._radioSelectedChannel.value=null
             }
-
             Configuration.UI_MODE_NIGHT_YES -> {
                 radioGroup?.check(radioGroup[1].id)
                 adapterSettings.changemodetext("Dark")
+                AppSingelton._radioSelectedChannel.value=null
+                AppSingelton.currentActivity=""
+
             }
 
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {}
