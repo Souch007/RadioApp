@@ -19,6 +19,7 @@ import okhttp3.ResponseBody
 class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClickListnerRadio,
     OnEpisodeClickListener {
     var suggestedRadioList: List<RadioLists>? = null
+    var alternateChannels: List<RadioLists>? = null
 
     val _podEpisodesList = MutableLiveData<Resource<PodEpisodesData>>()
     val podEpisodesList: LiveData<Resource<PodEpisodesData>> = _podEpisodesList
@@ -32,8 +33,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     val _onepisodeDeleteSelected = MutableLiveData<Data>()
     val _onepisodeShareClicked = MutableLiveData<Data>()
 
-    val _onblockChannel = MutableLiveData<Resource<ResponseBody>>()
-
+//    val _onblockChannel = MutableLiveData<Resource<ResponseBody>>()
+    val _alternateChannels = MutableLiveData<Resource<AlternateChannels>>()
     override fun onRadioClicked(data: RadioLists, type: String) {
         if (!data.isBlocked) {
             var playingChannelData = PlayingChannelData(
@@ -44,7 +45,7 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
                 "",
                 data.country,
                 "RADIO",
-                secondaryUrl = data.secondaryUrl
+                secondaryUrl =""
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
@@ -68,9 +69,9 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
         }
     }
 
-    fun blockStation(channelId: String) {
+    fun getalternateChannels() {
         viewModelScope.launch {
-            _onblockChannel.value= appRepository.blockStation(channelId)
+            _alternateChannels.value= appRepository.getalternateChannels()
 
         }
     }

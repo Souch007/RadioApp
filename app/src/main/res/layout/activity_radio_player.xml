@@ -45,13 +45,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_channelblock"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:scaleType="centerCrop"
-                app:tint="@color/OrangeRed"
-                android:src="@drawable/block" />
+                android:src="@drawable/block"
+                app:tint="@color/OrangeRed" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -60,54 +60,40 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:padding="@dimen/_15sdp"
-                android:textColor="@color/white"
                 android:text="This channel is currently unavailable would you like to play another channel from suggested list? "
+                android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:gravity="center"
-                >
+                android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/btn_Playnext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:tint="@color/OrangeRed"
-                    android:padding="@dimen/_10sdp"
-
                     android:background="@drawable/bg_oval"
+                    android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_playnext"
-                    />
+                    android:visibility="gone"
+                    app:tint="@color/OrangeRed" />
 
-               <!-- <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_weight="0.5"
-                    android:text="Back"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp"
-                    android:background="@drawable/btnbg_red" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_playnext"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_weight="0.5"
-                    android:text="Yes ▶"
-                    android:textSize="@dimen/_13sdp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btnbg_green" />
--->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_suggested"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_30sdp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:setAdapter="@{adapter}"
+                    app:spanCount="3"
+                    app:submitList="@{radioplayervm.alternateChannels}"
+                    tools:listitem="@layout/radio_row" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -372,15 +358,15 @@
                 android:id="@+id/all_radio_more_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/_30sdp"
                 android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_30sdp"
 
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_player_radio_more"
                 app:setAdapter="@{adapter}"
-                app:spanCount="4"
+                app:spanCount="3"
 
                 app:submitList="@{radioplayervm.suggestedRadioList}"
                 tools:listitem="@layout/radio_row" />

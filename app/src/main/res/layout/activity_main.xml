@@ -49,7 +49,9 @@
 
                 android:layout_height="match_parent">
 
-                <include layout="@layout/activity_splash" />
+                <include
+                    android:id="@+id/splashview"
+                    layout="@layout/activity_splash" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

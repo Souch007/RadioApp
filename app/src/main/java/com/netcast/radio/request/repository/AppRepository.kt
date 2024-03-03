@@ -7,8 +7,8 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
         appApis.getRadioStations(country)
     }
 
-    suspend fun blockStation(id:String) = safeApiCall {
-        appApis.blockStation(id)
+    suspend fun getalternateChannels() = safeApiCall {
+        appApis.alternateChannels()
     }
 
     suspend fun getPodCastListing(country:String) = safeApiCall {

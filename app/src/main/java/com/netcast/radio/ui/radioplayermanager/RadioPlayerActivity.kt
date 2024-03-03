@@ -79,24 +79,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
-        AppSingelton.errorPlayingChannel.observe(this) {
-            if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episode") {
-                if (count == 1) {
-                    dataBinding.llBlock.visibility = View.VISIBLE
-                    AppSingelton._erroPlayingChannel.postValue("")
-                 /*   AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
-                        radioPlayerAVM.blockStation(
-                            it1
-                        )
-                    }*/
-                } else {
-                    count += 1
-                    dataBinding.progressDownload.visibility = View.VISIBLE
-                    if (!isEpisode) exoPlayerManager("Normal")
-                    else exoPlayerManager("Episode")
-                }
-            }
-        }
+
+
 
         dataBinding.header.tvTitle.text = "Channel Blocked"
         dataBinding.header.imgBack.setOnClickListener {
@@ -119,7 +103,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     "",
                     nextChanneltoPlay?.country,
                     "RADIO",
-                    secondaryUrl = nextChanneltoPlay.secondaryUrl
+                    secondaryUrl = ""
                 )
             }
             dataBinding.llBlock.visibility = View.GONE
@@ -139,6 +123,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
                 dataBinding.tvChannelName.text = it.name
+                dataBinding.llBlock.visibility=View.GONE
             }
 
         }
@@ -196,6 +181,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
         }
+        viewModel.getalternateChannels()
     }
 
 
@@ -436,10 +422,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun getUrl(suggestedRadioList: RadioLists): String {
-       /* return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
-           ""
-        else*/
-        return  suggestedRadioList.url
+        /* return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
+            ""
+         else*/
+        return suggestedRadioList.url
     }
 
     private fun Observers() {
@@ -539,6 +525,31 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                  ex.printStackTrace()
              }
          }*/
+        AppSingelton.errorPlayingChannel.observe(this) {
+            if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episode" && isInternetavailable) {
+                if (count == 1) {
+                    dataBinding.llBlock.visibility = View.VISIBLE
+                    AppSingelton._erroPlayingChannel.postValue("")
+                } else {
+                    count += 1
+                    dataBinding.progressDownload.visibility = View.VISIBLE
+                    if (!isEpisode) exoPlayerManager("Normal")
+                    else exoPlayerManager("Episode")
+                }
+            } else {
+//                dataBinding.progressDownload.visibility = View.INVISIBLE
+//                showToast("Please check your internet connection")
+            }
+        }
+        radioPlayerAVM._alternateChannels.observe(this) {
+            when (it) {
+                is Resource.Failure -> {}
+                Resource.Loading -> {}
+                is Resource.Success -> {
+                    viewModel.suggestedRadioList=it.value.all
+                }
+            }
+        }
     }
 
     private fun downloadEpisode(data: Data) {
@@ -827,4 +838,5 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         super.onStop()
         connectivityChecker.unregister()
     }
+
 }

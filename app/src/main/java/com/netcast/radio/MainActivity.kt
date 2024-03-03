@@ -99,6 +99,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
 //        dataBinding.slidingLayout.setDragView(dataBinding.slidedown)
 //        dataBinding.slidingLayout.setDragView(dataBinding.playerOptions)
+
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         dataBinding.playerOptions.setOnClickListener {
             showBottomSheetDialog()
@@ -132,6 +133,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         handleIncomingDeepLinks()
 
+        var versionCode = BuildConfig.VERSION_NAME
+        dataBinding.splashview.appCompatTextView2.text="Version Info ${versionCode}\n© 2016-2024"
     }
 
     @SuppressLint("SuspiciousIndentation")

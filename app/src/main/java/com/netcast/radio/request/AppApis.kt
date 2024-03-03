@@ -5,6 +5,7 @@ import com.netcast.radio.ui.radio.genres.Genres
 import com.netcast.radio.ui.radio.countries.Countries
 import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radio.lanuages.Lanuages
+import com.netcast.radio.ui.radioplayermanager.AlternateChannels
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import com.netcast.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.netcast.radio.ui.search.searchedpodresponce.SearchedReponcePod
@@ -20,8 +21,8 @@ suspend fun getRadioStations(@Query("country") country:String) : RadioResponse
 
 @GET(AppConstants.PODCAST_LISTING)
 suspend  fun getPodCastStations(@Query("country") country:String) : PodResponce
-@GET(AppConstants.BLOCK_STATION+"{Id}")
-suspend  fun blockStation(@Path("Id") id:String) : ResponseBody
+@GET(AppConstants.ALTERNATECHANNELS)
+suspend  fun alternateChannels() : AlternateChannels
 
 @GET(AppConstants.GET_LANGUAGES)
 suspend  fun getLanguages() : Lanuages
