@@ -173,7 +173,14 @@
         <receiver
             android:name=".ui.podcast.DownloadCompletetionReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
+
+        </receiver>
 
 
         <service

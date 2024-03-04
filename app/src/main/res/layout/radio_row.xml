@@ -44,20 +44,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility='@{radioLists.isBlocked ? View.GONE : View.VISIBLE}'
+
                 app:setImage="@{radioLists.favicon}" />
 
-            <ImageView
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/ic_block"
-                android:scaleType="centerCrop"
-                android:visibility='@{radioLists.isBlocked ? View.VISIBLE : View.GONE}'
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-              />
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/_80sdp"-->
+<!--                android:layout_height="@dimen/_80sdp"-->
+<!--                android:src="@drawable/ic_block"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:visibility='@{radioLists.isBlocked ? View.VISIBLE : View.GONE}'-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/textView"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--              />-->
 
 
             <TextView

@@ -4,9 +4,11 @@ import ConnectivityChecker
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -19,6 +21,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -44,6 +47,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
+
 
 class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>(),
     OptionsClickListner, ConnectivityChecker.NetworkStateListener {
@@ -123,7 +127,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
                 dataBinding.tvChannelName.text = it.name
-                dataBinding.llBlock.visibility=View.GONE
+                dataBinding.llBlock.visibility = View.GONE
             }
 
         }
@@ -140,9 +144,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         if (!result) {
             requestPermission()
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            getOfflineData()
-        }
+        getofflinedata()
 
         dataBinding.icPlay.setOnClickListener {
             if (dataBinding.playerView.player?.isPlaying == true) {
@@ -156,6 +158,12 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         dataBinding.playerOptions.setOnClickListener {
             showBottomSheetDialog()
+        }
+    }
+
+    private fun getofflinedata() {
+        CoroutineScope(Dispatchers.IO).launch {
+            getOfflineData()
         }
     }
 
@@ -517,14 +525,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             }
         }
 
-        /* viewModel._radioClicked.observe(this@RadioPlayerActivity) {
-             try {
-                 exoPlayerManager("Normal")
-                 uiControls()
-             } catch (ex: Exception) {
-                 ex.printStackTrace()
-             }
-         }*/
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episode" && isInternetavailable) {
                 if (count == 1) {
@@ -546,7 +546,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 is Resource.Failure -> {}
                 Resource.Loading -> {}
                 is Resource.Success -> {
-                    viewModel.suggestedRadioList=it.value.all
+                    viewModel.suggestedRadioList = it.value.all
                 }
             }
         }
@@ -555,18 +555,13 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     private fun downloadEpisode(data: Data) {
         AppSingelton.downloadingEpisodeData = data
 //                    DownloadFile(data).execute()
-        if (AppSingelton.currentDownloading.matches("".toRegex())) {
-            val data = data
-            AppSingelton.downloadingEpisodeData = data
-            downloadEpisodeNow(data, this)
-//            DownloadUsingMediaStore(data, this).execute()
-            /*       startActivity(
-                       Intent(
-                           this@RadioPlayerActivity, DownloadActivity::class.java
-                       )
-                   )*/
+//        if (AppSingelton.currentDownloading.matches("".toRegex())) {
+        val data = data
+        AppSingelton.downloadingEpisodeData = data
+        downloadEpisodeNow(data, this)
 
-        }
+
+//        }
     }
 
     private fun downloadEpisodeNow(data: Data, radioPlayerActivity: RadioPlayerActivity) {
@@ -631,11 +626,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         } else {
             if (file1.exists()) {
                 showToast("File Already Exist...")
-//                showAlertDialog("Alert", "File Already Exist")
-//                AppSingelton.currentDownloading = ""
                 return
             }
-            // fileName -> fileName with extension
             val request = DownloadManager.Request(Uri.parse(url))
                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setTitle("Downloading $title").setDescription(desc)
@@ -653,8 +645,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             }
             data.videoID = downloadId.toInt()
             podEpisodesAdapter.notifyDataSetChanged()
-//            AppSingelton.currentDownloading = ""
-
 
         }
 
@@ -702,7 +692,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         ActivityCompat.requestPermissions(
             this, permissions, STORAGE_PERMISSION_REQUEST_CODE
         )
-//        }
     }
 
     override fun onRequestPermissionsResult(
@@ -832,11 +821,30 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     override fun onStart() {
         super.onStart()
         connectivityChecker.register()
+        val filter = IntentFilter("DOWNLOAD_COMPLETE")
+        LocalBroadcastManager.getInstance(this).registerReceiver(downloadReceiver, filter)
+
     }
 
     override fun onStop() {
         super.onStop()
         connectivityChecker.unregister()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadReceiver)
+
     }
 
+
+    private val downloadReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action
+            if (action != null && action == "DOWNLOAD_COMPLETE") {
+                val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                Toast.makeText(context, "Download Completed", Toast.LENGTH_SHORT).show()
+                AppSingelton.currentDownloading = ""
+                getofflinedata()
+                podEpisodesAdapter.notifyDataSetChanged()
+
+            }
+        }
+    }
 }

@@ -139,8 +139,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
 
     override fun onRadioClicked(data: RadioLists, type: String) {
-        if (data.isBlocked)
-            return
+//        if (data.isBlocked)
+//            return
 
         AppSingelton.selectedChannel = data
         var playingChannelData = PlayingChannelData(
