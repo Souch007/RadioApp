@@ -403,7 +403,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                     val mediaItem: MediaItem = MediaItem.Builder()
                                         .setUri(getUrl((AppSingelton.suggestedRadioList as MutableList<RadioLists>)[i]))
                                         .setMediaMetadata(mediaMetadata)
-
                                         .setMediaId(i.toString()).setTag(i).build()
                                     mediaitemschannels.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))

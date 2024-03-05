@@ -244,15 +244,6 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
 //        Toast.makeText(this, "There is a problem playing this channel please try another channel we wll resolve this issue soon.", Toast.LENGTH_LONG).show()
     }
 
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        super.onPlayerStateChanged(playWhenReady, playbackState)
-    }
-
-    override fun onEvents(player: Player, events: Player.Events) {
-        super.onEvents(player, events)
-
-    }
-
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
         try {
