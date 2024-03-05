@@ -327,10 +327,12 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     }
                 //Log("Offline", "Request Recieved")
             } else {
-                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
+//                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
+                val allocator = DefaultAllocator(true,64*1024)
                 val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
                     .setTargetBufferBytes(C.LENGTH_UNSET)
-                    .setBufferDurationsMs(10000, 120000, 1000, 1000)
+//                        .setBufferDurationsMs(60000, 36000000, 1000, 1000)
+                    .setBufferDurationsMs(60000, 3600000, 2500, 5000)
                     .setPrioritizeTimeOverSizeThresholds(true).build()
                 val renderersFactory = DefaultRenderersFactory(this)
                 AppSingelton.exoPlayer?.let {
