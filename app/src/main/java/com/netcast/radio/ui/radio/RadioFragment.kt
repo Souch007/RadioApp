@@ -190,7 +190,9 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         radioViewModel.languagesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
-                radioViewModel._langListArray.value = data
+                val sortedList = data.sortedBy { it.name }
+                radioViewModel._langListArray.value = sortedList
+
                 binding.languagesAdapter =
                     com.netcast.radio.ui.radio.adapter.LanguagesAdapter(
                         listOf(),
@@ -205,7 +207,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         radioViewModel.countriesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
-                radioViewModel._countriesListArray.value = data
+                val sortedList = data.sortedBy { it.name }
+                radioViewModel._countriesListArray.value = sortedList
                 binding.countriesAdapter =
                     com.netcast.radio.ui.radio.adapter.CountriesAdapter(
                         listOf(),
@@ -220,7 +223,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         radioViewModel._genresListinLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
-                radioViewModel._genresListArray.value = data
+                val sortedList = data.sortedBy { it.name }
+                radioViewModel._genresListArray.value = sortedList
                 binding.genresAdapter = com.netcast.radio.ui.radio.adapter.GenresAdapter(
                     listOf(),
                     mainActivityViewModel,

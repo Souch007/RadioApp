@@ -35,12 +35,13 @@ class AllGenreFragment() :
         radioViewModel._genresListinLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
+                val sortedList = data.sortedBy { it.name }
                 binding.genresAdapter = com.netcast.radio.ui.radio.adapter.GenresAdapter(
                     listOf(),
                     mainActivityViewModel,
                    "all"
                 )
-                radioViewModel._genresListArray.value = data
+                radioViewModel._genresListArray.value = sortedList
             } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
             }

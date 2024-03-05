@@ -28,7 +28,8 @@ class AllCountriesFragment() :
         radioViewModel.countriesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
-                radioViewModel._countriesListArray.value = data
+                val sortedList = data.sortedBy { it.name }
+                radioViewModel._countriesListArray.value = sortedList
                 binding.countriesAdapter = com.netcast.radio.ui.radio.adapter.CountriesAdapter(
                     listOf(), mainActivityViewModel, "all"
                 )

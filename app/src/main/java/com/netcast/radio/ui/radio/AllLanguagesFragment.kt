@@ -29,7 +29,8 @@ class AllLanguagesFragment() :
         radioViewModel.languagesListingLive.observe(viewLifecycleOwner) {
             try {
                 val data = (it as Resource.Success).value.data
-                radioViewModel._langListArray.value = data
+                val sortedList = data.sortedBy { it.name }
+                radioViewModel._langListArray.value = sortedList
                 binding.languagesAdapter =
                     com.netcast.radio.ui.radio.adapter.LanguagesAdapter(
                         listOf(),

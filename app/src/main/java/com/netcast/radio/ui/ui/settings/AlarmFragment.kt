@@ -132,9 +132,12 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             finalhour = hour - 12
             am_pm = "PM"
         }
+        val formattedHour = String.format("%02d", finalhour) // Ensures two digits, with leading zero if necessary
+        val formattedMin = String.format("%02d", min) // Ensures two digits, with leading zero if necessary
 
-        binding.tvTimer.text = "$finalhour:$min $am_pm"
-        binding.tvTimer2.text = "$finalhour:$min $am_pm"
+
+        binding.tvTimer.text = "$formattedHour:$formattedMin $am_pm"
+        binding.tvTimer2.text = "$formattedHour:$formattedMin $am_pm"
     }
 
     private fun setcheckBoxListner() {
@@ -190,7 +193,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             }
         }
 
-        if ((binding.chkMonday.isChecked()) || (binding.chkTuesday.isChecked()) || (binding.chkWednesday.isChecked()) || (binding.chkThursday.isChecked()) || (binding.chkFriday.isChecked()) || (binding.chkSaturday.isChecked()) || (binding.chkSunday.isChecked())) {
+        if ((binding.chkMonday.isChecked) || (binding.chkTuesday.isChecked) || (binding.chkWednesday.isChecked) || (binding.chkThursday.isChecked) || (binding.chkFriday.isChecked) || (binding.chkSaturday.isChecked) || (binding.chkSunday.isChecked)) {
             cancelAlarm()
             if (binding.chkMonday.isChecked) {
                 setAlarm(Calendar.MONDAY)
