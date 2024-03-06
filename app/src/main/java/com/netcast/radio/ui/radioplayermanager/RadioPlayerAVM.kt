@@ -76,6 +76,12 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
         }
     }
 
+    fun blockStation(channelId: String) {
+        viewModelScope.launch {
+            appRepository.blockStation(channelId)
+
+        }
+    }
     override fun onEpisodeClicked(data: Data) {
         _episodeSelected.value = data
     }

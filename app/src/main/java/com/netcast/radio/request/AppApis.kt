@@ -16,32 +16,41 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AppApis {
-@GET(AppConstants.FETCH_RADIO)
-suspend fun getRadioStations(@Query("country") country:String) : RadioResponse
+    @GET(AppConstants.FETCH_RADIO)
+    suspend fun getRadioStations(@Query("country") country: String): RadioResponse
 
-@GET(AppConstants.PODCAST_LISTING)
-suspend  fun getPodCastStations(@Query("country") country:String) : PodResponce
-@GET(AppConstants.ALTERNATECHANNELS)
-suspend  fun alternateChannels() : AlternateChannels
 
-@GET(AppConstants.GET_LANGUAGES)
-suspend  fun getLanguages() : Lanuages
+    @GET(AppConstants.PODCAST_LISTING)
+    suspend fun getPodCastStations(@Query("country") country: String): PodResponce
 
-@GET(AppConstants.GET_ALL_COUNTRIES)
-suspend  fun getCountries() : Countries
+    @GET(AppConstants.ALTERNATECHANNELS)
+    suspend fun alternateChannels(): AlternateChannels
 
-@GET(AppConstants.GET_ALL_GENRES)
-suspend  fun getAllGenres() : Genres
+    @GET(AppConstants.GET_LANGUAGES)
+    suspend fun getLanguages(): Lanuages
 
-@GET(AppConstants.GET_FREQUENT_SEARCH)
-suspend  fun getFrequentSearches(@Query("device_id") device_id:String) : FrequentSearchResponce
+    @GET(AppConstants.GET_ALL_COUNTRIES)
+    suspend fun getCountries(): Countries
 
-@GET(AppConstants.SEARCH+"?type=podcasts&limit=10")
-suspend  fun searchPodcast(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedReponcePod
+    @GET(AppConstants.GET_ALL_GENRES)
+    suspend fun getAllGenres(): Genres
 
-@GET(AppConstants.SEARCH+"?type=channels&limit=10")
-suspend  fun searchStations(@Query("q") productId: String,@Query("device_id") device_id:String) : SearchedResponceStation
+    @GET(AppConstants.GET_FREQUENT_SEARCH)
+    suspend fun getFrequentSearches(@Query("device_id") device_id: String): FrequentSearchResponce
 
-@GET(AppConstants.PODCAST_EPISODES+"{idPodacast}")
-suspend  fun getPodcastEpisodes(@Path("idPodacast")idPodcast: String): PodEpisodesData
+    @GET(AppConstants.SEARCH + "?type=podcasts&limit=10")
+    suspend fun searchPodcast(
+        @Query("q") productId: String, @Query("device_id") device_id: String
+    ): SearchedReponcePod
+
+    @GET(AppConstants.SEARCH + "?type=channels&limit=10")
+    suspend fun searchStations(
+        @Query("q") productId: String, @Query("device_id") device_id: String
+    ): SearchedResponceStation
+
+    @GET(AppConstants.PODCAST_EPISODES + "{idPodacast}")
+    suspend fun getPodcastEpisodes(@Path("idPodacast") idPodcast: String): PodEpisodesData
+
+    @GET(AppConstants.BLOCK_STATION + "{Id}")
+    suspend fun blockStation(@Path("Id") id: String): RadioResponse
 }

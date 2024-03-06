@@ -531,6 +531,12 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
+                    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                        Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
+                        radioPlayerAVM.blockStation(
+                            it1
+                        )
+                    }
                 } else {
                     count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
