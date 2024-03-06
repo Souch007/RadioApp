@@ -151,7 +151,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "",
             data.country,
             "RADIO",
-            secondaryUrl = ""
+            secondaryUrl = "",
+            isBlocked = data.isBlocked
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
@@ -206,7 +207,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             data._id,
             data.publisher,
             "PODCAST",
-            secondaryUrl = ""
+            secondaryUrl = "",
+           isBlocked =  false
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
@@ -284,7 +286,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "",
             data.country,
             "RADIO",
-            secondaryUrl = data.secondaryUrl
+            secondaryUrl ="",
+           isBlocked =  data.isBlocked
         )
         addChannelToFavourites(playingChannelData)
     }
@@ -302,7 +305,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             data._id,
             data.publisher,
             "Episodes",
-            secondaryUrl = ""
+            secondaryUrl = "",
+            isBlocked =false
         )
         addChannelToFavourites(playingChannelData)
     }
@@ -333,7 +337,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             data._id,
             data.author,
             "PODCAST",
-            secondaryUrl = ""
+            secondaryUrl = "",
+            isBlocked = false
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -344,7 +349,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         if (data.isBlocked)
             return
         val playingChannelData = PlayingChannelData(
-            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO", secondaryUrl = ""
+            data.url, data.favicon, data.name, data.id, "", data.country, "RADIO", secondaryUrl = "", isBlocked = data.isBlocked
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false

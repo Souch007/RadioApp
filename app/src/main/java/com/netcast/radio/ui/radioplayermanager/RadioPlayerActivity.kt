@@ -59,6 +59,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     var relativePath = ""
     private var downloadManager: DownloadManager? = null
     lateinit var podEpisodesAdapter: PodEpisodesAdapter
+    lateinit var moreradioAdapter: com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter
     var isEpisode = false
     var playwhenReady = false
     var isInternetavailable = true
@@ -86,7 +87,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
 
-        dataBinding.header.tvTitle.text = "Channel Blocked"
+        dataBinding.header.tvTitle.text = "Channel Unavailable"
         dataBinding.header.imgBack.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
             finish()
@@ -107,27 +108,36 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     "",
                     nextChanneltoPlay?.country,
                     "RADIO",
-                    secondaryUrl = ""
+                    secondaryUrl = "",
+                    isBlocked = nextChanneltoPlay.isBlocked
                 )
             }
-            dataBinding.llBlock.visibility = View.GONE
-            dataBinding.progressDownload.visibility = View.VISIBLE
-            AppSingelton.exoPlayer = null
-            createActivity()
+            if (nextChanneltoPlay?.isBlocked == true)
+                dataBinding.llBlock.visibility = View.VISIBLE
+            else {
+                dataBinding.llBlock.visibility = View.GONE
+                dataBinding.progressDownload.visibility = View.VISIBLE
+                AppSingelton.exoPlayer = null
+                createActivity()
+            }
         }
     }
 
     private fun createActivity() {
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
-        if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList =
-            AppSingelton.suggestedRadioList!!
+        if (AppSingelton.suggestedRadioList != null)
+            viewModel.suggestedRadioList = AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         checkWifiPlaySettings()
 
         AppSingelton.radioSelectedChannel.observe(this) {
+
             it?.let {
                 dataBinding.tvChannelName.text = it.name
-                dataBinding.llBlock.visibility = View.GONE
+                if (it.isBlocked)
+                    dataBinding.llBlock.visibility = View.VISIBLE
+                else
+                    dataBinding.llBlock.visibility = View.GONE
             }
 
         }
@@ -203,6 +213,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             .load(AppSingelton.radioSelectedChannel?.value?.favicon)
             .error(com.netcast.radio.R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH).into(dataBinding.ivChannelLogo)
+
+        Glide.with(dataBinding.imageView.context)
+            .load(AppSingelton.radioSelectedChannel?.value?.favicon)
+            .error(com.netcast.radio.R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH).into(dataBinding.imageView)
 
         Glide.with(dataBinding.backBlur.context)
             .load(AppSingelton.radioSelectedChannel?.value?.favicon)
@@ -328,7 +343,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 //Log("Offline", "Request Recieved")
             } else {
 //                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
-                val allocator = DefaultAllocator(true,64*1024)
+                val allocator = DefaultAllocator(true, 64 * 1024)
                 val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
                     .setTargetBufferBytes(C.LENGTH_UNSET)
 //                        .setBufferDurationsMs(60000, 36000000, 1000, 1000)
@@ -392,8 +407,17 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                                 )
 //                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
-                                list?.add(0, selectedRadio)
-                                AppSingelton.suggestedRadioList = list
+                                if (!list?.contains(selectedRadio)!!)
+                                    list?.add(0, selectedRadio)
+
+                                val distinctList= list.distinctBy {
+                                    Pair(
+                                        it.name,
+                                        it.name
+                                    )
+                                }
+                                AppSingelton.suggestedRadioList = distinctList
+
                                 for (i in 0 until AppSingelton.suggestedRadioList!!.size) {
                                     val mediaMetadata = MediaMetadata.Builder()
                                         .setTitle(AppSingelton.suggestedRadioList!![i].name)
@@ -532,7 +556,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
                     AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
-                        Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
                         radioPlayerAVM.blockStation(
                             it1
                         )
@@ -553,7 +576,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 is Resource.Failure -> {}
                 Resource.Loading -> {}
                 is Resource.Success -> {
-                    viewModel.suggestedRadioList = it.value.all
+                    viewModel.alternateChannels = it.value.all
+                    moreradioAdapter=com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                        viewModel.alternateChannels ?: listOf(), viewModel, "public"
+                    )
+                    dataBinding.adapter = moreradioAdapter
                 }
             }
         }
@@ -730,7 +757,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             AppSingelton.radioSelectedChannel.value!!.idPodcast,
             it.description,
             "Episodes",
-            secondaryUrl = ""
+            secondaryUrl = "", isBlocked = false
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
     }
@@ -752,9 +779,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             //changed to gone no need to display
 //            dataBinding.radioSuggestion.visibility = View.GONE
             dataBinding.radioSuggestion.visibility = View.VISIBLE
-            dataBinding.adapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                AppSingelton.suggestedRadioList ?: listOf(), viewModel, "public"
-            )
+
         }
     }
 

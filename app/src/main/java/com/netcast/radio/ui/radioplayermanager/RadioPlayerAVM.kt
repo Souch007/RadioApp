@@ -14,7 +14,6 @@ import com.netcast.radio.ui.radioplayermanager.adapter.OnEpisodeClickListener
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 
 class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClickListnerRadio,
     OnEpisodeClickListener {
@@ -45,7 +44,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
                 "",
                 data.country,
                 "RADIO",
-                secondaryUrl =""
+                secondaryUrl ="",
+                isBlocked = data.isBlocked
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
