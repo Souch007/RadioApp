@@ -286,7 +286,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "",
             data.country,
             "RADIO",
-            secondaryUrl ="",
+            secondaryUrl =data.secondaryUrl,
            isBlocked =  data.isBlocked
         )
         addChannelToFavourites(playingChannelData)

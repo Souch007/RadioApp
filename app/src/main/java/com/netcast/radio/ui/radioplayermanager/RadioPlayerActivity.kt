@@ -455,9 +455,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun getUrl(suggestedRadioList: RadioLists): String {
-        /* return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 0)
-            ""
-         else*/
+         return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 1)
+           suggestedRadioList.secondaryUrl
+         else
         return suggestedRadioList.url
     }
 

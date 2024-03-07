@@ -110,6 +110,7 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
 
         viewModel.onDownloadPlayListner.observe(this@DownloadActivity) {
             val playingChannelData = PlayingChannelData(
+
                 it.fileURI,
                 it.feedImage,
                 it.title,
