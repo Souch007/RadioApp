@@ -151,7 +151,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "",
             data.country,
             "RADIO",
-            secondaryUrl = "",
+            secondaryUrl = data.secondaryUrl ?: "",
             isBlocked = data.isBlocked
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData

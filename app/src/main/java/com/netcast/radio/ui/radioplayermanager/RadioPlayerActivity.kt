@@ -86,9 +86,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         connectivityChecker.setListener(this)
 
 
-
-        dataBinding.header.tvTitle.text = "Channel Unavailable"
-        dataBinding.header.imgBack.setOnClickListener {
+//        dataBinding.header.tvTitle.text = "Channel Unavailable"
+        dataBinding.imgClose.setOnClickListener {
             AppSingelton._isPlayerFragVisible.value = false
             finish()
         }
@@ -108,18 +107,18 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     "",
                     nextChanneltoPlay?.country,
                     "RADIO",
-                    secondaryUrl = "",
+                    secondaryUrl = nextChanneltoPlay.secondaryUrl,
                     isBlocked = nextChanneltoPlay.isBlocked
                 )
             }
-            if (nextChanneltoPlay?.isBlocked == true)
-                dataBinding.llBlock.visibility = View.VISIBLE
-            else {
-                dataBinding.llBlock.visibility = View.GONE
-                dataBinding.progressDownload.visibility = View.VISIBLE
-                AppSingelton.exoPlayer = null
-                createActivity()
-            }
+            /* if (nextChanneltoPlay?.isBlocked == true)
+                 dataBinding.llBlock.visibility = View.VISIBLE
+             else {*/
+            dataBinding.llBlock.visibility = View.GONE
+            dataBinding.progressDownload.visibility = View.VISIBLE
+            AppSingelton.exoPlayer = null
+            createActivity()
+//            }
         }
     }
 
@@ -134,10 +133,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
             it?.let {
                 dataBinding.tvChannelName.text = it.name
-                if (it.isBlocked)
+                /*if (it.isBlocked)
                     dataBinding.llBlock.visibility = View.VISIBLE
                 else
-                    dataBinding.llBlock.visibility = View.GONE
+                    dataBinding.llBlock.visibility = View.GONE*/
             }
 
         }
@@ -269,6 +268,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
+                    AppSingelton._erroPlayingChannel.postValue("")
                 } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
                 }
@@ -297,168 +297,179 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
 
     private fun handleChannel() {
-        val isAutoPlayEnable = sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
-        AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id ?: ""
-        val currentPlayingUUid = AppSingelton._currenPlayingChannelId
-        if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(
-                currentPlayingUUid.toRegex()
-            )
-        ) {
-            if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
-                AppSingelton.exoPlayer = ExoPlayer.Builder(this).setSeekForwardIncrementMs(
-                    (sharedPreferences.getLong(
-                        AppConstants.PLAYER_SECS, 15
-                    ) * 1000)
-                ).setSeekBackIncrementMs(
-                    (sharedPreferences.getLong(
-                        AppConstants.PLAYER_SECS, 15
-                    ) * 1000)
-                ).setPauseAtEndOfMediaItems(
-                    sharedPreferences.getBoolean(
-                        AppConstants.SKIP_SLIENCE, false
-                    )
+        try {
+            val isAutoPlayEnable =
+                sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
+            AppSingelton._radioSelectedChannelId = AppSingelton.radioSelectedChannel.value?.id ?: ""
+            val currentPlayingUUid = AppSingelton._currenPlayingChannelId
+            if (AppSingelton.exoPlayer == null || !AppSingelton._radioSelectedChannelId.matches(
+                    currentPlayingUUid.toRegex()
                 )
+            ) {
+                if (AppSingelton._radioSelectedChannel.value?.type?.matches("Offline".toRegex()) == true) {
+                    AppSingelton.exoPlayer = ExoPlayer.Builder(this).setSeekForwardIncrementMs(
+                        (sharedPreferences.getLong(
+                            AppConstants.PLAYER_SECS, 15
+                        ) * 1000)
+                    ).setSeekBackIncrementMs(
+                        (sharedPreferences.getLong(
+                            AppConstants.PLAYER_SECS, 15
+                        ) * 1000)
+                    ).setPauseAtEndOfMediaItems(
+                        sharedPreferences.getBoolean(
+                            AppConstants.SKIP_SLIENCE, false
+                        )
+                    )
 
 
-                    .build().also { exoPlayer ->
-                        var file = File(AppSingelton._radioSelectedChannel.value!!.url)
-                        if (file.exists()) {
-                            dataBinding.playerView.player = exoPlayer
+                        .build().also { exoPlayer ->
+                            var file = File(AppSingelton._radioSelectedChannel.value!!.url)
+                            if (file.exists()) {
+                                dataBinding.playerView.player = exoPlayer
 
 
-                            val filePath =
-                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
-                            val uri: Uri = Uri.parse(filePath)
-                            // Prepare media item and start playback
-                            val mediaItem = MediaItem.fromUri(uri)
-                            exoPlayer.setMediaItem(mediaItem)
-                            exoPlayer.prepare()
-                            exoPlayer.play()
-                            exoPlayer.addListener(this)
+                                val filePath =
+                                    if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                                val uri: Uri = Uri.parse(filePath)
+                                // Prepare media item and start playback
+                                val mediaItem = MediaItem.fromUri(uri)
+                                exoPlayer.setMediaItem(mediaItem)
+                                exoPlayer.prepare()
+                                exoPlayer.play()
+                                exoPlayer.addListener(this)
 //                            val mediaItem = MediaItem.fromUri(file.toUri())
 //                            exoPlayer.setMediaItem(mediaItem)
 
+                            }
                         }
-                    }
-                //Log("Offline", "Request Recieved")
-            } else {
+                    //Log("Offline", "Request Recieved")
+                } else {
 //                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
-                val allocator = DefaultAllocator(true, 64 * 1024)
-                val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
-                    .setTargetBufferBytes(C.LENGTH_UNSET)
+                    val allocator = DefaultAllocator(true, 64 * 1024)
+                    val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
+                        .setTargetBufferBytes(C.LENGTH_UNSET)
 //                        .setBufferDurationsMs(60000, 36000000, 1000, 1000)
-                    .setBufferDurationsMs(60000, 3600000, 2500, 5000)
-                    .setPrioritizeTimeOverSizeThresholds(true).build()
-                val renderersFactory = DefaultRenderersFactory(this)
-                AppSingelton.exoPlayer?.let {
-                    it.release()
-                    it.stop()
-                }
-                AppSingelton.exoPlayer =
-                    ExoPlayer.Builder(this, renderersFactory).setLoadControl(loadControl)
-                        .setSeekForwardIncrementMs(
-                            (sharedPreferences.getLong(
-                                AppConstants.PLAYER_SECS, 15
-                            ) * 1000)
-                        ).setSeekBackIncrementMs(
-                            (sharedPreferences.getLong(
-                                AppConstants.PLAYER_SECS, 15
-                            ) * 1000)
-                        )/*.setPauseAtEndOfMediaItems(
+                        .setBufferDurationsMs(60000, 3600000, 2500, 5000)
+                        .setPrioritizeTimeOverSizeThresholds(true).build()
+                    val renderersFactory = DefaultRenderersFactory(this)
+                    AppSingelton.exoPlayer?.let {
+                        it.release()
+                        it.stop()
+                    }
+                    AppSingelton.exoPlayer =
+                        ExoPlayer.Builder(this, renderersFactory).setLoadControl(loadControl)
+                            .setSeekForwardIncrementMs(
+                                (sharedPreferences.getLong(
+                                    AppConstants.PLAYER_SECS, 15
+                                ) * 1000)
+                            ).setSeekBackIncrementMs(
+                                (sharedPreferences.getLong(
+                                    AppConstants.PLAYER_SECS, 15
+                                ) * 1000)
+                            )/*.setPauseAtEndOfMediaItems(
                             sharedPreferences.getBoolean(
                                 AppConstants.SKIP_SLIENCE, false
                             )
                         )*/.setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
-                            val currentChannel = AppSingelton.radioSelectedChannel.value
-                            dataBinding.playerView.player = exoPlayer
-                            if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches(
-                                    "Episodes".toRegex()
-                                )) && !podcastEpisodeList.isNullOrEmpty()
-                            ) {
-                                val mediaitems = mutableListOf<MediaItem>()
-                                for (i in 0 until podcastEpisodeList!!.size) {
-                                    val mediaMetadata = MediaMetadata.Builder()
-                                        .setTitle(podcastEpisodeList!![i].title)
-                                        .setDescription(podcastEpisodeList!![i].description)
-                                        .setArtworkUri(Uri.parse(podcastEpisodeList!![i].thumbnail))
+                                val currentChannel = AppSingelton.radioSelectedChannel.value
+                                dataBinding.playerView.player = exoPlayer
 
-                                        .build()
-                                    val mediaItem: MediaItem = MediaItem.Builder()
-                                        .setUri(podcastEpisodeList!![i].audio.toUri())
-                                        .setMediaMetadata(mediaMetadata).setMediaId(i.toString())
-                                        .setTag(i).build()
-                                    mediaitems.add(mediaItem)
+                                if (isAutoPlayEnable && (podcastType.matches("PODCAST".toRegex()) || podcastType.matches(
+                                        "Episodes".toRegex()
+                                    )) && !podcastEpisodeList.isNullOrEmpty()
+                                ) {
+                                    val mediaitems = mutableListOf<MediaItem>()
+                                    for (i in 0 until podcastEpisodeList!!.size) {
+                                        val mediaMetadata = MediaMetadata.Builder()
+                                            .setTitle(podcastEpisodeList!![i].title)
+                                            .setDescription(podcastEpisodeList!![i].description)
+                                            .setArtworkUri(Uri.parse(podcastEpisodeList!![i].thumbnail))
+
+                                            .build()
+                                        val mediaItem: MediaItem = MediaItem.Builder()
+                                            .setUri(podcastEpisodeList!![i].audio.toUri())
+                                            .setMediaMetadata(mediaMetadata)
+                                            .setMediaId(i.toString())
+                                            .setTag(i).build()
+                                        mediaitems.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
-                                }
+                                    }
 
-                                AppSingelton.mediaItemList = mediaitems
-                                exoPlayer.setMediaItems(mediaitems)
-                            } else {
-                                val mediaitemschannels = mutableListOf<MediaItem>()
-                                val list = AppSingelton.suggestedRadioList?.toMutableList()
-                                val selectedRadio = RadioLists(
-                                    currentChannel?.country ?: "",
-                                    currentChannel?.favicon ?: "",
-                                    currentChannel?.id ?: "",
-                                    currentChannel?.name ?: "",
-                                    currentChannel?.url ?: "",
-                                    currentChannel?.secondaryUrl ?: "",
-                                    false
+                                    AppSingelton.mediaItemList = mediaitems
+                                    exoPlayer.setMediaItems(mediaitems)
+                                } else {
 
-                                )
-//                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
-                                if (!list?.contains(selectedRadio)!!)
-                                    list?.add(0, selectedRadio)
+                                    val mediaitemschannels = mutableListOf<MediaItem>()
+                                    val list = AppSingelton.suggestedRadioList?.toMutableList()
+                                    val selectedRadio = RadioLists(
+                                        currentChannel?.country ?: "",
+                                        currentChannel?.favicon ?: "",
+                                        currentChannel?.id ?: "",
+                                        currentChannel?.name ?: "",
+                                        currentChannel?.url ?: "",
+                                        currentChannel?.secondaryUrl ?: "",
+                                        false
 
-                                val distinctList= list.distinctBy {
-                                    Pair(
-                                        it.name,
-                                        it.name
                                     )
-                                }
-                                AppSingelton.suggestedRadioList = distinctList
 
-                                for (i in 0 until AppSingelton.suggestedRadioList!!.size) {
-                                    val mediaMetadata = MediaMetadata.Builder()
-                                        .setTitle(AppSingelton.suggestedRadioList!![i].name)
-                                        .setDescription(AppSingelton.suggestedRadioList!![i].country)
-                                        .setArtworkUri(Uri.parse(AppSingelton.suggestedRadioList!![i].favicon))
-                                        .build()
-                                    val mediaItem: MediaItem = MediaItem.Builder()
-                                        .setUri(getUrl((AppSingelton.suggestedRadioList as MutableList<RadioLists>)[i]))
-                                        .setMediaMetadata(mediaMetadata)
-                                        .setMediaId(i.toString()).setTag(i).build()
-                                    mediaitemschannels.add(mediaItem)
+                                    list?.add(0, selectedRadio)
+//                                AppSingelton.selectedChannel?.let { list?.add(0, it) }
+                                    if (!list?.contains(selectedRadio)!!)
+                                        list?.add(0, selectedRadio)
+
+                                    val distinctList = list.distinctBy {
+                                        Pair(
+                                            it.name,
+                                            it.name
+                                        )
+                                    }
+                                    AppSingelton.suggestedRadioList = distinctList
+
+                                    for (i in 0 until AppSingelton.suggestedRadioList!!.size) {
+
+                                        val mediaMetadata = MediaMetadata.Builder()
+                                            .setTitle(AppSingelton.suggestedRadioList!![i].name)
+                                            .setDescription(AppSingelton.suggestedRadioList!![i].country)
+                                            .setArtworkUri(Uri.parse(AppSingelton.suggestedRadioList!![i].favicon))
+                                            .build()
+                                        val mediaItem: MediaItem = MediaItem.Builder()
+                                            .setUri(getUrl((AppSingelton.suggestedRadioList as MutableList<RadioLists>)[i]))
+                                            .setMediaMetadata(mediaMetadata)
+                                            .setMediaId(i.toString()).setTag(i).build()
+                                        mediaitemschannels.add(mediaItem)
 //                                mediaitems.add(MediaItem.fromUri(podcastEpisodeList!![i].audio))
-                                }
-                                AppSingelton.mediaItemList = mediaitemschannels
-                                exoPlayer.setMediaItems(mediaitemschannels)
+                                    }
+                                    AppSingelton.mediaItemList = mediaitemschannels
+                                    exoPlayer.setMediaItems(mediaitemschannels)
 //                                val mediaItem = MediaItem.fromUri(url ?: "")
-                                exoPlayer.setMediaItems(mediaitemschannels)
+                                    exoPlayer.setMediaItems(mediaitemschannels)
+                                }
+                                exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
+                                exoPlayer.addListener(this)
+
+                                (dataBinding.playerView.player as ExoPlayer).prepare()
+                                (dataBinding.playerView.player as ExoPlayer).play()
                             }
-                            exoPlayer.addAnalyticsListener(object : AnalyticsListener {})
-                            exoPlayer.addListener(this)
+                }
 
-                            (dataBinding.playerView.player as ExoPlayer).prepare()
-                            (dataBinding.playerView.player as ExoPlayer).play()
-                        }
+            } else {
+                dataBinding.playerView.player = AppSingelton.exoPlayer
+                //dataBinding.playerView.performClick()
+                dataBinding.playerView.showController()
+                if (!dataBinding.playerView.isControllerVisible) {
+
+                }
             }
-
-        } else {
-            dataBinding.playerView.player = AppSingelton.exoPlayer
-            //dataBinding.playerView.performClick()
-            dataBinding.playerView.showController()
-            if (!dataBinding.playerView.isControllerVisible) {
-
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     private fun getUrl(suggestedRadioList: RadioLists): String {
-         return if (suggestedRadioList.secondaryUrl.isNotEmpty() && count == 1)
-           suggestedRadioList.secondaryUrl
-         else
-        return suggestedRadioList.url
+        return if (suggestedRadioList?.secondaryUrl?.isNotEmpty() == true && count == 1)
+            suggestedRadioList.secondaryUrl
+        else
+            suggestedRadioList.url
     }
 
     private fun Observers() {
@@ -555,14 +566,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
-                    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
-                        radioPlayerAVM.blockStation(
-                            it1
-                        )
-                    }
+                    /*    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                            radioPlayerAVM.blockStation(
+                                it1
+                            )
+                        }*/
                 } else {
                     count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
+                    AppSingelton.exoPlayer=null
                     if (!isEpisode) exoPlayerManager("Normal")
                     else exoPlayerManager("Episode")
                 }
@@ -577,7 +589,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 Resource.Loading -> {}
                 is Resource.Success -> {
                     viewModel.alternateChannels = it.value.all
-                    moreradioAdapter=com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+                    moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                         viewModel.alternateChannels ?: listOf(), viewModel, "public"
                     )
                     dataBinding.adapter = moreradioAdapter
