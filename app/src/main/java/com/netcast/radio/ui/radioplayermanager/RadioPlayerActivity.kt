@@ -566,11 +566,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (count == 1) {
                     dataBinding.llBlock.visibility = View.VISIBLE
                     AppSingelton._erroPlayingChannel.postValue("")
-                    /*    AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
+                        AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
                             radioPlayerAVM.blockStation(
                                 it1
                             )
-                        }*/
+                        }
                 } else {
                     count += 1
                     dataBinding.progressDownload.visibility = View.VISIBLE
@@ -589,8 +589,10 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 Resource.Loading -> {}
                 is Resource.Success -> {
                     viewModel.alternateChannels = it.value.all
+                    Toast.makeText(this, AppSingelton.radioSelectedChannel.value?.name, Toast.LENGTH_SHORT).show()
+                   val newalternatives= viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name }
                     moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                        viewModel.alternateChannels ?: listOf(), viewModel, "public"
+                        newalternatives ?: listOf(), viewModel, "public"
                     )
                     dataBinding.adapter = moreradioAdapter
                 }
