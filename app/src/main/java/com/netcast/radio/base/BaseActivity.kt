@@ -250,7 +250,6 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             if (playbackState == Player.STATE_ENDED) {
                 val isAutoPlayEnable =
                     sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
-
                 val mediaType = AppSingelton.radioSelectedChannel.value?.type
                 if (mediaType?.matches("PODCAST".toRegex()) == true || mediaType?.matches("Episodes".toRegex()) == true || mediaType?.matches(
                         "Offline".toRegex()

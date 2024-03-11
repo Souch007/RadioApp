@@ -1,6 +1,7 @@
 package com.netcast.radio.ui.search
 
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.netcast.radio.MainViewModel
@@ -13,9 +14,9 @@ import com.netcast.radio.ui.search.adapters.PodcastSearchedAdapter
 import com.netcast.radio.ui.search.adapters.SearchTagsAdapter
 import com.netcast.radio.ui.search.adapters.StationSearchedAdapter
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search){
-    private val _fragmentSearchViewModel : SearchViewModel by activityViewModels()
-    private lateinit var mainActivityViewModel : MainViewModel
+class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
+    private val _fragmentSearchViewModel: SearchViewModel by activityViewModels()
+    private lateinit var mainActivityViewModel: MainViewModel
     var appDatabase: AppDatabase? = null
     override fun FragmentSearchBinding.initialize() {
         appDatabase = initializeDB(requireContext())
@@ -24,22 +25,22 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             mainActivityViewModel = ViewModelProvider(it!!).get(MainViewModel::class.java)
         }
 
-
-        _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment){
+        _fragmentSearchViewModel.frequentSearchResponce.observe(this@SearchFragment) {
             try {
+
                 val data = (it as Resource.Success).value.data
-                val searchTags = data.filter {data->
+                val searchTags = data.filter { data ->
                     data.q.isNotEmpty()
-                }.distinctBy {distinctby->
+                }.distinctBy { distinctby ->
                     distinctby.q
                 }
-                _fragmentSearchViewModel._frequestSearchList.value=searchTags
+                _fragmentSearchViewModel._frequestSearchList.value = searchTags
                 binding.tagsadapter = SearchTagsAdapter(
                     listOf(),
                     mainActivityViewModel
                 )
 
-            } catch (ex : Exception){
+            } catch (ex: Exception) {
                 ex.printStackTrace()
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
@@ -49,33 +50,39 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             }
         }
 
-        _fragmentSearchViewModel.searchResultsPodcast.observe(this@SearchFragment){
+        _fragmentSearchViewModel.searchResultsPodcast.observe(this@SearchFragment) {
             try {
-                binding.searchResultsPodcasts.visibility= View.VISIBLE
+
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListPodcast.value = data
-                // binding.countriesAdapter =
-                //                    com.coderoids.radio.ui.radio.adapter.CountriesAdapter(listOf(), radioViewModel)
-                binding.podsearchadapter = PodcastSearchedAdapter(listOf(),mainActivityViewModel)
-            } catch (ex : Exception){
+                binding.podsearchadapter = PodcastSearchedAdapter(listOf(), mainActivityViewModel)
+            } catch (ex: Exception) {
                 ex.printStackTrace()
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
                 if (failure == 400 && responseBody == null) {
-
                 }
             }
-
         }
 
-        _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment){
+        _fragmentSearchViewModel.searchResultsStations.observe(this@SearchFragment) {
             try {
+                /*when(it)
+                {
+                    is Resource.Failure -> {
 
-                binding.searchResultsStations.visibility=View.VISIBLE
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {}
+                }*/
+                binding.searchResultsStations.visibility = View.VISIBLE
                 val data = (it as Resource.Success).value.data
                 _fragmentSearchViewModel._searchListStations.value = data
-                binding.stationsearchadapter = StationSearchedAdapter(listOf(),mainActivityViewModel)
-            } catch (ex : Exception){
+                binding.stationsearchadapter =
+                    StationSearchedAdapter(listOf(), mainActivityViewModel)
+            } catch (ex: Exception) {
                 ex.printStackTrace()
                 val failure = (it as Resource.Failure).errorCode
                 val responseBody = (it as Resource.Failure).errorResponseBody
@@ -87,9 +94,4 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        /*  val device_id = Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
-           mainActivityViewModel.getFrequentSearchesTags(device_id, _fragmentSearchViewModel)*/
-    }
 }

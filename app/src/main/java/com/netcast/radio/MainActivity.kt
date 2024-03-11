@@ -185,7 +185,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         dataBinding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                dataBinding.llShimmerLayout.visibility = View.VISIBLE
+//                dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 hideProgressBar()
                 mainViewModel._state.value = true
                 var searchedString = dataBinding.searchEditText.text.toString()

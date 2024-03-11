@@ -10,5 +10,5 @@ sealed class Resource<out T> {
         val errorResponseBody: ResponseBody?
     ) : Resource<Nothing>()
 
-    object Loading : Resource<Nothing>()
+    data class Loading<out T>(val isLoading: T) : Resource<T>()
 }
