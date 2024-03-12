@@ -232,6 +232,7 @@
                 android:layout_height="wrap_content"
                 android:background="#151523"
                 android:padding="@dimen/_10sdp"
+                android:maxLines="2"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -260,7 +261,7 @@
                 android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/channel_website">
+                app:layout_constraintTop_toBottomOf="@+id/channel_description">
 
                 <TextView
                     android:id="@+id/tv_player_radio_more"
@@ -294,7 +295,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/all_radio_more_"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:paddingBottom="@dimen/_30sdp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -367,7 +368,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardBackgroundColor="@color/DarkBlue"
-            android:layout_margin="@dimen/_20sdp"
+
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:layout_marginVertical="@dimen/_70sdp"
             app:cardElevation="@dimen/_5sdp"
             app:cardCornerRadius="@dimen/_15sdp"
             android:visibility="gone"
@@ -388,6 +391,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:src="@drawable/ic_cross_white"
                 />
+
             <!--<include
                 android:id="@+id/header"
                 layout="@layout/activity_header" />-->
@@ -402,8 +406,8 @@
                 app:cardElevation="@dimen/_3sdp">
 
                 <RelativeLayout
-                    android:layout_width="@dimen/_110sdp"
-                    android:layout_height="@dimen/_110sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
                     android:layout_gravity="center"
                     android:background="#6BF6F5F5"
                     android:elevation="@dimen/_10sdp"
@@ -417,8 +421,8 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="@dimen/_110sdp"
-                        android:layout_height="@dimen/_110sdp"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
                         android:src="@drawable/logo" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -441,9 +445,9 @@
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:text="This channel is currently unavailable would you like to play another channel from suggested list? "
+                android:text="Apologies this channel is currently unavailable. Please explore other options."
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_9sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -472,7 +476,7 @@
                     android:paddingBottom="@dimen/_30sdp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:setAdapter="@{adapter}"
-                    app:spanCount="3"
+                    app:spanCount="2"
                     app:submitList="@{radioplayervm.alternateChannels}"
                     tools:listitem="@layout/radio_row" />
             </androidx.appcompat.widget.LinearLayoutCompat>

@@ -37,26 +37,12 @@
                 android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/logo"
                 android:scaleType="centerCrop"
-                android:visibility='@{searchstation.isBlocked ? View.GONE : View.VISIBLE}'
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
 
                 app:setImage="@{searchstation.favicon}" />
-
-
-            <ImageView
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/ic_block"
-                android:scaleType="centerCrop"
-                android:visibility='@{searchstation.isBlocked ? View.VISIBLE : View.GONE}'
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
 
 
             <TextView
@@ -77,6 +63,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_110sdp"
+
+            android:background="#BE979797"
+            android:gravity="center"
+            android:visibility='@{searchstation.isBlocked ? View.VISIBLE : View.GONE}'>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/textsubheading"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_closecircle"
+                app:tint="@color/Red" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

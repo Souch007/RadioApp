@@ -64,7 +64,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,ConnectivityChecker.NetworkStateListener {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,
+    ConnectivityChecker.NetworkStateListener {
     private lateinit var mainActivityViewModel: MainViewModel
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
@@ -134,7 +135,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         handleIncomingDeepLinks()
 
         var versionCode = BuildConfig.VERSION_NAME
-        dataBinding.splashview.appCompatTextView2.text="Version Info ${versionCode}\n© 2016-2024"
+        dataBinding.splashview.appCompatTextView2.text = "Version Info ${versionCode}\n© 2016-2024"
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -185,7 +186,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         dataBinding.searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                dataBinding.llShimmerLayout.visibility = View.VISIBLE
+//                dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 hideProgressBar()
                 mainViewModel._state.value = true
                 var searchedString = dataBinding.searchEditText.text.toString()
@@ -294,7 +295,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 )
             } else {
                 dataBinding.searchEditText.setText(it)
-                dataBinding.llShimmerLayout.visibility = View.VISIBLE
+//                dataBinding.llShimmerLayout.visibility = View.VISIBLE
                 mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
                 dataBinding.navView.selectedItemId = R.id.navigation_search
                 hideProgressBar()
@@ -308,8 +309,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 if (AppSingelton.isAlramSet) storeObjectInSharedPref(
                     it, AppConstants.SELECTED_ALARM_RADIO
                 )
-
-                if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex())) {
+                if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex()) && !AppSingelton.isThemeModeChanged) {
                     if (AppSingelton.exoPlayer != null) {
                         AppSingelton.exoPlayer!!.stop()
                         AppSingelton.exoPlayer!!.release()
@@ -318,6 +318,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                     Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
                         startActivity(this)
                     }
+                } else {
+                    if (AppSingelton.isThemeModeChanged)
+                        AppSingelton.isThemeModeChanged = false
                 }
             }
         }
@@ -702,7 +705,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onInternetAvailable() {
-        if ( dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
+        if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
             if (!dataBinding.playButtonCarousel.player!!.isPlaying) {
                 dataBinding.playButtonCarousel.player!!.play()
             }

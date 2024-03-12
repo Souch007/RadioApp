@@ -14,6 +14,9 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     suspend fun blockStation(id:String) = safeApiCall {
         appApis.blockStation(id)
     }
+    suspend fun unblockStation(id:String) = safeApiCall {
+        appApis.unblockStation(id)
+    }
 
     suspend fun getPodCastListing(country:String) = safeApiCall {
         appApis.getPodCastStations(country)

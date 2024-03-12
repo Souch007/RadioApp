@@ -37,4 +37,8 @@ data class RadioLists(
 
     @SerializedName("isBlocked")
     val isBlocked: Boolean,
-) : ListAdapterItem, Serializable
+
+    @SerializedName("description")
+    val description: String,
+
+    ) : ListAdapterItem, Serializable

@@ -13,6 +13,7 @@ data class PlayingChannelData(
     val type: String?,
     var isSelected:Boolean=false,
     var secondaryUrl:String,
-    var isBlocked:Boolean
+    var isBlocked:Boolean,
+    var description:String
 
     ) : ListAdapterItem, Serializable

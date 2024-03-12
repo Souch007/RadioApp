@@ -53,4 +53,6 @@ interface AppApis {
 
     @GET(AppConstants.BLOCK_STATION + "{Id}")
     suspend fun blockStation(@Path("Id") id: String): RadioResponse
+    @GET(AppConstants.UN_BLOCK_STATION + "{Id}")
+    suspend fun unblockStation(@Path("Id") id: String): RadioResponse
 }

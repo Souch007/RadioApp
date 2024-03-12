@@ -103,6 +103,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/search_results_podcasts" />
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_results_stations"
                 android:layout_width="match_parent"

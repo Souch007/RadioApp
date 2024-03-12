@@ -15,6 +15,8 @@
         <variable
             name="listener"
             type="com.netcast.radio.ui.favourites.adapters.OnFavouriteClickListener" />
+
+        <import type="android.view.View" />
     </data>
 
     <RelativeLayout
@@ -84,6 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@id/imageView"
+                    android:layout_centerInParent="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:lines="2"
@@ -99,6 +102,26 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:background="#C9979797"
+                android:gravity="center"
+                android:visibility='@{playing.isBlocked ? View.VISIBLE : View.GONE}'>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    style="@style/textsubheading"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_closecircle"
+                    app:tint="@color/Red" />
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
+
+
     </RelativeLayout>
 </layout>

@@ -45,7 +45,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
                 data.country,
                 "RADIO",
                 secondaryUrl =data.secondaryUrl,
-                isBlocked = data.isBlocked
+                isBlocked = data.isBlocked,
+                description = data.description
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
@@ -79,6 +80,11 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     fun blockStation(channelId: String) {
         viewModelScope.launch {
             appRepository.blockStation(channelId)
+
+        }
+    }   fun unblockStation(channelId: String) {
+        viewModelScope.launch {
+            appRepository.unblockStation(channelId)
 
         }
     }
