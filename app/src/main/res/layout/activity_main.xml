@@ -46,7 +46,6 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/ll_shimmerLayout"
                 android:layout_width="match_parent"
-
                 android:layout_height="match_parent">
 
                 <include
@@ -254,6 +253,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/back_nav_grad"
                     android:orientation="horizontal"
+
 
                     tools:ignore="MissingConstraints">
 

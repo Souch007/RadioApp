@@ -389,4 +389,8 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
 }

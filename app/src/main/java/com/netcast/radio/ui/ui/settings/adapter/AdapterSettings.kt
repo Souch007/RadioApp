@@ -75,7 +75,7 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
     }
 
     fun changemodetext(mode: String) {
-        this.mSettingsList?.value?.get(0)?.description = mode
+        mSettingsList?.value?.get(0)?.description = mode
         notifyDataSetChanged()
 
     }

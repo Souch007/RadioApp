@@ -119,9 +119,9 @@ class SettingsFragment : Fragment() {
                 8 -> {
                     startActivity(
                         Intent(requireContext(), FAQsActivity::class.java).putExtra(
-                                "type",
-                                "IMPRINT"
-                            )
+                            "type",
+                            "IMPRINT"
+                        )
                     )
 
                 }
@@ -203,6 +203,8 @@ class SettingsFragment : Fragment() {
         bottomSheetDialog.setContentView(layoutAppmodeBinding!!.root)
         setcurrentappmode(layoutAppmodeBinding.radioGroup)
         layoutAppmodeBinding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+//            AppSingelton._radioSelectedChannel.value = null
+            AppSingelton.isThemeModeChanged=true
             when (checkedId) {
                 R.id.rb_dark -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -211,7 +213,6 @@ class SettingsFragment : Fragment() {
                     adapterSettings.changemodetext("Dark")
 
                 }
-
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     bottomSheetDialog.dismiss()
@@ -234,13 +235,11 @@ class SettingsFragment : Fragment() {
             Configuration.UI_MODE_NIGHT_NO -> {
                 radioGroup?.check(radioGroup[0].id)
                 adapterSettings.changemodetext("Light")
-                AppSingelton._radioSelectedChannel.value=null
             }
+
             Configuration.UI_MODE_NIGHT_YES -> {
                 radioGroup?.check(radioGroup[1].id)
                 adapterSettings.changemodetext("Dark")
-                AppSingelton._radioSelectedChannel.value=null
-                AppSingelton.currentActivity=""
 
             }
 
@@ -280,6 +279,9 @@ class SettingsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (!sharedPreferences.getBoolean("is_SleepTimeron", false)) {
+            binding.tvTimer.visibility = View.GONE
+        }
     }
 
     override fun onPause() {
@@ -315,5 +317,6 @@ class SettingsFragment : Fragment() {
         }
         return result
     }
+
 
 }
