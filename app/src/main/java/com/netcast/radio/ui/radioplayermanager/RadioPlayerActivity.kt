@@ -589,7 +589,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 Resource.Loading -> {}
                 is Resource.Success -> {
                     viewModel.alternateChannels = it.value.all
-                    Toast.makeText(this, AppSingelton.radioSelectedChannel.value?.name, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, AppSingelton.radioSelectedChannel.value?.name, Toast.LENGTH_SHORT).show()
                    val newalternatives= viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name }
                     moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                         newalternatives ?: listOf(), viewModel, "public"
