@@ -84,6 +84,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_timer"
+                    style="@style/textTitle"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"

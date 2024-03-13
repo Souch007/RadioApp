@@ -4,10 +4,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
+import android.widget.Toast
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.Player
 import com.google.gson.Gson
 import com.netcast.radio.PlayingChannelData
@@ -46,8 +49,15 @@ class AlramReceiver : BroadcastReceiver(), Player.Listener {
             AppSingelton.exoPlayer =
                 ExoPlayer.Builder(context, renderersFactory)
                     .setHandleAudioBecomingNoisy(true).build().also { exoPlayer ->
-                        val mediaItem =
-                            MediaItem.fromUri(playingChannelData?.url ?: "")
+                        val mediaMetadata = MediaMetadata.Builder()
+                            .setTitle(playingChannelData.name)
+                            .setDescription(playingChannelData.description)
+                            .setArtworkUri(Uri.parse(playingChannelData.favicon)).build()
+
+                        val mediaItem: MediaItem = MediaItem.Builder()
+                            .setUri(Uri.parse(playingChannelData?.url))
+                            .setMediaMetadata(mediaMetadata).build()
+
                         exoPlayer.setMediaItem(mediaItem)
                         exoPlayer.addListener(this)
                         exoPlayer.prepare()

@@ -392,7 +392,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                             .setTitle(podcastEpisodeList!![i].title)
                                             .setDescription(podcastEpisodeList!![i].description)
                                             .setArtworkUri(Uri.parse(podcastEpisodeList!![i].thumbnail))
-
                                             .build()
                                         val mediaItem: MediaItem = MediaItem.Builder()
                                             .setUri(podcastEpisodeList!![i].audio.toUri())

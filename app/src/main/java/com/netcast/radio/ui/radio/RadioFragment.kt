@@ -48,6 +48,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         AppSingelton.isNewItemAdded.observe(this@RadioFragment) {
             if (it) {
                 manageRecentlyViewd()
+
             }
         }
 

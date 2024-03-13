@@ -232,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:background="#151523"
                 android:padding="@dimen/_10sdp"
-                android:maxLines="2"
+
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -297,7 +297,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:paddingHorizontal="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_30sdp"
+                    android:paddingBottom="@dimen/_45sdp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

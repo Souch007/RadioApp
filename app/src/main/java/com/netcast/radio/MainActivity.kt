@@ -306,9 +306,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
-                if (AppSingelton.isAlramSet) storeObjectInSharedPref(
-                    it, AppConstants.SELECTED_ALARM_RADIO
-                )
+                if (AppSingelton.isAlramSet)
+                    storeObjectInSharedPref(
+                        it, AppConstants.SELECTED_ALARM_RADIO
+                    )
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex()) && !AppSingelton.isThemeModeChanged) {
                     if (AppSingelton.exoPlayer != null) {
                         AppSingelton.exoPlayer!!.stop()

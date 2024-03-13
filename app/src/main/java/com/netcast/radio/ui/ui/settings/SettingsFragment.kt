@@ -158,9 +158,9 @@ class SettingsFragment : Fragment() {
                 binding.tvTimer.text = it
             }
         }
-        if (!sharedPreferences.getBoolean("is_SleepTimeron", false)) {
+        /*if (!sharedPreferences.getBoolean("is_SleepTimeron", false)) {
             binding.tvTimer.visibility = View.GONE
-        }
+        }*/
         return root
     }
 
@@ -281,6 +281,9 @@ class SettingsFragment : Fragment() {
         super.onResume()
         if (!sharedPreferences.getBoolean("is_SleepTimeron", false)) {
             binding.tvTimer.visibility = View.GONE
+        }
+        else{
+            binding.tvTimer.visibility = View.VISIBLE
         }
     }
 

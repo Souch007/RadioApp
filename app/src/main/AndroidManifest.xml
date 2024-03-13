@@ -169,7 +169,7 @@
         <receiver
             android:name=".ui.ui.settings.AlramReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="false"/>
 
         <receiver
             android:name=".ui.podcast.DownloadCompletetionReceiver"

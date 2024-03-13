@@ -11,6 +11,7 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
@@ -19,7 +20,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TimePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -62,9 +62,6 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                 sharedPreferences.writeList(Gson(), "alarm_days", listOf<String>())
             finish()
         }
-        /*
-                _binding = FragmentAlarmBinding.inflate(inflater, container, false)
-                val root: View = binding.root*/
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         sharedPredEditor = sharedPreferences.edit()
         hour = sharedPreferences.getInt("hour", 0)
@@ -76,7 +73,6 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
         )
 //        val alarmCheckbox=sharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
         val alarmCheckbox = sharedPreferences.getBoolean("isAlarmSet", false)
-
         if (playingChannelData != null && alarmCheckbox)
             binding.tvSelectchannel.text = playingChannelData.name
 
@@ -126,14 +122,16 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
 
     private fun setTime(hour: Int, min: Int) {
         var finalhour = hour
-        if (hour < 12) {
-            am_pm = "AM"
-        } else {
-            finalhour = hour - 12
-            am_pm = "PM"
-        }
-        val formattedHour = String.format("%02d", finalhour) // Ensures two digits, with leading zero if necessary
-        val formattedMin = String.format("%02d", min) // Ensures two digits, with leading zero if necessary
+        /*  if (hour < 12) {
+              am_pm = "AM"
+          } else {
+              finalhour = hour - 12
+              am_pm = "PM"
+          }*/
+        val formattedHour =
+            String.format("%02d", finalhour) // Ensures two digits, with leading zero if necessary
+        val formattedMin =
+            String.format("%02d", min) // Ensures two digits, with leading zero if necessary
 
 
         binding.tvTimer.text = "$formattedHour:$formattedMin $am_pm"
@@ -170,7 +168,11 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             binding.seekbar.progress = audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC)
             binding.seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                    audioManager!!.setStreamVolume(AudioManager.STREAM_ALARM, i, AudioManager.FLAG_SHOW_UI)
+                    audioManager!!.setStreamVolume(
+                        AudioManager.STREAM_ALARM,
+                        i,
+                        AudioManager.FLAG_SHOW_UI
+                    )
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -184,12 +186,13 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     private fun setAlaram() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
-            if (alarmManager?.canScheduleExactAlarms() == false) {
-                Intent().also { intent ->
-                    intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                    startActivity(intent)
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent().also {
+                    it.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                    startActivity(it)
                 }
+            } else {
+                Log.d("MainActivity", "onCreate: can schedule it")
             }
         }
 
@@ -228,19 +231,18 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     }
 
     private fun setAlarm(dayOfWeek: Int) {
+        cancelAlarm()
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek)
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, min)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-
         val now = Calendar.getInstance()
         now[Calendar.SECOND] = 0
         now[Calendar.MILLISECOND] = 0
         if (calendar.before(now)) {    //this condition is used for future reminder that means your reminder not fire for past time
-            calendar.add(Calendar.DATE, 7);
-
+            calendar.add(Calendar.DATE, 7)
         }
 
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -249,11 +251,11 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             PendingIntent.FLAG_CANCEL_CURRENT
         }
 
-
         val intent = Intent(this, AlramReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(
             this, 0, intent, flag
         )
+
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -268,7 +270,6 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     private fun cancelAlarm() {
         pendingIntent?.let {
             alarmManager!!.cancel(it)
-
         }
     }
 
@@ -356,11 +357,17 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
         pendingIntent = PendingIntent.getBroadcast(
             this, 0, intent, flag
         )
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
             )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
+            )
         }
+
         sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
 
     }

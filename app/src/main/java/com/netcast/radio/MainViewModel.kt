@@ -258,6 +258,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 //        updatedList?.remove(playingChannelData)
 //        AppSingelton.favouritesRadioArray=updatedList
         AppSingelton.isNewItemAdded.value = true
+        AppSingelton._radioSelectedChannel.postValue(playingChannelData)
     }
 
     override fun onFavChannelDeleteClicked(playingChannelData: PlayingChannelData) {

@@ -55,7 +55,7 @@ class SleepTimerFragment : AppCompatActivity() {
             }
         })
         binding.switchTimer.setOnCheckedChangeListener { compoundButton, b ->
-            sharedPredEditor.putBoolean("is_SleepTimeron", b).commit()
+            sharedPredEditor.putBoolean("is_SleepTimeron", b).apply()
             if (b) {
                 startService()
             } else {
