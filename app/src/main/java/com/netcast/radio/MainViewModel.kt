@@ -230,7 +230,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         //Log("onFavChannelClicked", "onFavChannelClicked: $tabtype")
 //        AppSingelton.selectedChannel = data
 
-        AppSingelton._radioSelectedChannel.value = playingChannelData
+//
         AppSingelton._isNewStationSelected.value = false
         if (AppSingelton.exoPlayer != null) {
             AppSingelton.exoPlayer!!.stop()
@@ -243,7 +243,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             updatedList?.add(0, playingChannelData)
             AppSingelton.favouritesRadioArray = updatedList
             AppSingelton._isFavUpdated.value = true
-        } else {
+            AppSingelton._radioSelectedChannel.value = playingChannelData
+        } else  {
             playRecentData(playingChannelData)
 
         }

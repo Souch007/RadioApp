@@ -92,7 +92,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             finish()
         }
         dataBinding.btnPlaynext.setOnClickListener {
-
             currentindex += 1
             var nextChanneltoPlay = AppSingelton.suggestedRadioList?.get(
                 AppSingelton.suggestedRadioList?.size?.minus(currentindex) ?: 0
@@ -133,21 +132,20 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             it?.let {
                 dataBinding.tvChannelName.text = it.name
                 dataBinding.llBlock.visibility = View.GONE
-                dataBinding.progressDownload.visibility=View.VISIBLE
-                /*if (it.isBlocked)
+                dataBinding.progressDownload.visibility = View.VISIBLE
+                if (it.isBlocked) {
                     dataBinding.llBlock.visibility = View.VISIBLE
-                else
-                    dataBinding.llBlock.visibility = View.GONE*/
+                    dataBinding.rpLayout.visibility = View.GONE
+                } else {
+                    dataBinding.llBlock.visibility = View.GONE
+                    dataBinding.rpLayout.visibility = View.VISIBLE
+                }
             }
 
         }
-        //
         _checkMediaType()
-        //
         Observers()
-        //
         exoPlayerManager("Normal")
-        //
         uiControls()
 //        requestPermission()
         val result = checkPermission()
@@ -595,11 +593,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         radioPlayerAVM._alternateChannels.observe(this) {
             when (it) {
                 is Resource.Failure -> {}
-               is Resource.Loading -> {}
+                is Resource.Loading -> {}
                 is Resource.Success -> {
                     viewModel.alternateChannels = it.value.all
                     val newalternatives =
-                        viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked}
+                        viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
                     moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
                         newalternatives ?: listOf(), viewModel, "public"
                     )
