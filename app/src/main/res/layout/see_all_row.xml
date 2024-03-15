@@ -15,7 +15,8 @@
         <variable
             name="title"
             type="String" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
     </data>
 
@@ -37,44 +38,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <ImageView
-                android:id="@+id/imageView"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".2"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo"
-                android:visibility='@{radioLists.isBlocked? View.GONE:View.VISIBLE}'
-
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setImage="@{radioLists.favicon}" />
+                android:layout_weight=".2">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo"
+                    android:visibility='@{radioLists.isBlocked? View.GONE:View.VISIBLE}'
 
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".2"
-                android:background="#C9979797"
-                android:gravity="center"
-                android:visibility='@{radioLists.isBlocked? View.VISIBLE:View.GONE}'
-
-                >
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    style="@style/textsubheading"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_closecircle"
-                    app:tint="@color/Red" />
-
-            </LinearLayout>
+                    app:setImage="@{radioLists.favicon}" />
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".2"
+                    android:background="#C9979797"
+                    android:gravity="center"
+                    android:visibility='@{radioLists.isBlocked? View.VISIBLE:View.GONE}'
+
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        style="@style/textsubheading"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_closecircle"
+                        app:tint="@color/Red" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
             <!--  <View
                   android:layout_width="@dimen/_1sdp"
                   android:background="@color/grey"
