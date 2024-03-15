@@ -22,6 +22,7 @@ object AppSingelton {
     //-------------------Player Variables---------------------------------//
     public var exoPlayer: ExoPlayer? = null
     val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
+
     val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel
     var _radioSelectedChannelId: String = ""
     var _currenPlayingChannelId: String = ""
@@ -44,7 +45,8 @@ object AppSingelton {
     var _SleepTimer = MutableLiveData<String>()
     var _SleepTimerEnd = MutableLiveData<Boolean>()
     var currentActivity = ""
-    var isThemeModeChanged=false
+    var isThemeModeChanged = false
+
     //--------------- Download -------------------------------//
     public var downloadingEpisodeData: Data? = null
     var _progressPublish = MutableLiveData<Int>()

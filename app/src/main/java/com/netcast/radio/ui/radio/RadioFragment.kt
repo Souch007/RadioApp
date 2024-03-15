@@ -19,6 +19,8 @@ import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.favourites.adapters.FavouriteAdapter
 import com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter
 import com.netcast.radio.ui.radio.data.temp.Data
+import com.netcast.radio.ui.radioplayermanager.RadioPlayerAVM
+import com.netcast.radio.util.AlternateChannelsDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,8 +38,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
+
         appDatabase = initializeDB(requireContext())
         activity.let {
+
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
         binding.shimmerLayout.stopShimmer()
@@ -298,6 +302,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel.getCountires(radioViewModel)
             mainActivityViewModel.getAllGenres(radioViewModel)
         }
+
 
     }
 

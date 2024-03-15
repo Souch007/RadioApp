@@ -7,6 +7,7 @@ import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseViewModel
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.RemoteDataSource
+import com.netcast.radio.request.Resource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.favourites.adapters.OnFavouriteClickListener
 import com.netcast.radio.ui.podcast.PodcastViewModel
@@ -21,6 +22,7 @@ import com.netcast.radio.ui.radio.adapter.OnClickListenerLanguages
 import com.netcast.radio.ui.radio.adapter.OnClickListnerRadio
 import com.netcast.radio.ui.radio.countries.Data
 import com.netcast.radio.ui.radio.data.temp.RadioLists
+import com.netcast.radio.ui.radioplayermanager.AlternateChannels
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
 import com.netcast.radio.ui.search.adapters.PodSearchOnClickListener
@@ -73,7 +75,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     var valueTypeFrag: String = ""
     var currentFragmentId: String = "Radio"
     val navigateToPodcast = MutableLiveData<Boolean>()
-
+    val _alternateChannels = MutableLiveData<Resource<AlternateChannels>>()
     //----------------------------------//
 
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
@@ -144,16 +146,16 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
         AppSingelton.selectedChannel = data
         var playingChannelData = PlayingChannelData(
-            data.url,
-            data.favicon,
-            data.name,
-            data.id,
+            data.url ?: "",
+            data.favicon ?: "",
+            data.name ?: "",
+            data.id ?: "",
             "",
-            data.country,
+            data.country ?: "",
             "RADIO",
             secondaryUrl = data.secondaryUrl ?: "",
-            isBlocked = data.isBlocked,
-            description = data.description
+            isBlocked = data.isBlocked?: false,
+            description = data.description ?:""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
@@ -167,7 +169,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             AppSingelton.exoPlayer = null
         }
         getsuggestedList(type)
-
+//        _radioClicked.value = data
     }
 
     private fun getsuggestedList(type: String) {
@@ -373,5 +375,11 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         playRecentData(playingChannelData)
     }
 
+    fun getalternateChannels() {
+        viewModelScope.launch {
+            _alternateChannels.value= appRepository.getalternateChannels()
+
+        }
+    }
 
 }

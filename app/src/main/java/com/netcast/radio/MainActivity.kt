@@ -45,16 +45,19 @@ import com.netcast.radio.download.DownloadActivity
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.AppConstants
 import com.netcast.radio.request.RemoteDataSource
+import com.netcast.radio.request.Resource
 import com.netcast.radio.request.repository.AppRepository
 import com.netcast.radio.ui.SettingsActivity
 import com.netcast.radio.ui.favourites.FavouritesViewModel
 import com.netcast.radio.ui.podcast.PodcastViewModel
 import com.netcast.radio.ui.radio.RadioViewModel
+import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.seeall.SeeAllViewModel
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
+import com.netcast.radio.util.AlternateChannelsDialog
 import com.netcast.radio.util.BottomSheetOptionsFragment
 import com.netcast.radio.util.OptionsClickListner
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -66,7 +69,7 @@ import java.util.*
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,
     ConnectivityChecker.NetworkStateListener {
-    private lateinit var mainActivityViewModel: MainViewModel
+
     private lateinit var radioViewModel: RadioViewModel
     private lateinit var favouritesViewModel: FavouritesViewModel
     private lateinit var podcastViewModel: PodcastViewModel
@@ -78,6 +81,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     var backPressedTime: Long = 0
     private lateinit var sharedPredEditor: SharedPreferences.Editor
     private lateinit var connectivityChecker: ConnectivityChecker
+    private var alternateChannels: List<RadioLists>? = null
+    private var customDialog: AlternateChannelsDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -306,6 +311,18 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
+                customDialog?.dismiss()
+                if (it.isBlocked) {
+                    customDialog = alternateChannels?.let { it1 ->
+                        AlternateChannelsDialog(
+                            this,
+                            it1, mainViewModel
+                        )
+                    }
+                    customDialog?.show()
+                    return@observe
+                }
+
                 if (AppSingelton.isAlramSet)
                     storeObjectInSharedPref(
                         it, AppConstants.SELECTED_ALARM_RADIO
@@ -326,6 +343,17 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             }
         }
 
+        mainViewModel._alternateChannels.observe(this) {
+            when (it) {
+                is Resource.Failure -> {}
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    alternateChannels =
+                        it.value.all?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
+
+                }
+            }
+        }
         mainViewModel._radioSeeAllSelected.observe(this) {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
@@ -520,6 +548,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         showSlideUpPanel()
         checkOfflineChannels()
+        mainViewModel.getalternateChannels()
 
     }
 

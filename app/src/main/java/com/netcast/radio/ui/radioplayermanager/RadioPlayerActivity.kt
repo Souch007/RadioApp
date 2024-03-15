@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -29,6 +30,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
+import com.netcast.radio.MainViewModel
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
@@ -41,6 +43,7 @@ import com.netcast.radio.ui.radioplayermanager.adapter.PodEpisodesAdapter
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
+import com.netcast.radio.util.AlternateChannelsDialog
 import com.netcast.radio.util.BottomSheetOptionsFragment
 import com.netcast.radio.util.OptionsClickListner
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +56,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     OptionsClickListner, ConnectivityChecker.NetworkStateListener {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
-    lateinit var radioPlayerAVM: RadioPlayerAVM
+    private lateinit var radioPlayerAVM: RadioPlayerAVM
+    private lateinit var mainViewModel: MainViewModel
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
     private var isActivityLoaded = false
     var relativePath = ""
@@ -64,7 +68,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     var playwhenReady = false
     var isInternetavailable = true
     var currentindex = 0
-
+    private var customDialog: AlternateChannelsDialog? = null
     private val permissions = arrayOf(
         WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, READ_MEDIA_AUDIO
     )
@@ -110,10 +114,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     isBlocked = nextChanneltoPlay.isBlocked,
                     description = nextChanneltoPlay.description
                 )
-            }/* if (nextChanneltoPlay?.isBlocked == true)
+            }
+            /* if (nextChanneltoPlay?.isBlocked == true)
                  dataBinding.llBlock.visibility = View.VISIBLE
              else {*/
-            dataBinding.llBlock.visibility = View.GONE
+//            dataBinding.llBlock.visibility = View.GONE
             dataBinding.progressDownload.visibility = View.VISIBLE
             AppSingelton.exoPlayer = null
             createActivity()
@@ -122,6 +127,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun createActivity() {
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         AppSingelton.currentActivity = AppConstants.RADIO_PLAYER_ACTIVITY
         if (AppSingelton.suggestedRadioList != null) viewModel.suggestedRadioList =
             AppSingelton.suggestedRadioList!!
@@ -133,13 +139,20 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.tvChannelName.text = it.name
                 dataBinding.llBlock.visibility = View.GONE
                 dataBinding.progressDownload.visibility = View.VISIBLE
-                if (it.isBlocked) {
+                customDialog?.dismiss()
+                try {
+                    exoPlayerManager("Normal")
+                    uiControls()
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+                /*if (it.isBlocked) {
                     dataBinding.llBlock.visibility = View.VISIBLE
-                    dataBinding.rpLayout.visibility = View.GONE
+//                    dataBinding.rpLayout.visibility = View.GONE
                 } else {
                     dataBinding.llBlock.visibility = View.GONE
-                    dataBinding.rpLayout.visibility = View.VISIBLE
-                }
+//                    dataBinding.rpLayout.visibility = View.VISIBLE
+                }*/
             }
 
         }
@@ -197,7 +210,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
         }
-        viewModel.getalternateChannels()
+        mainViewModel.getalternateChannels()
     }
 
 
@@ -567,7 +580,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episode" && isInternetavailable) {
                 if (count == 1) {
-                    dataBinding.llBlock.visibility = View.VISIBLE
+//                    dataBinding.llBlock.visibility = View.VISIBLE
+                    customDialog = viewModel.alternateChannels?.let { it1 ->
+                        AlternateChannelsDialog(
+                            this,
+                            it1, mainViewModel
+                        )
+                    }
+                    customDialog?.show()
                     AppSingelton._erroPlayingChannel.postValue("")
                     AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
                         radioPlayerAVM.blockStation(
@@ -590,7 +610,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 //                showToast("Please check your internet connection")
             }
         }
-        radioPlayerAVM._alternateChannels.observe(this) {
+        mainViewModel._alternateChannels.observe(this) {
             when (it) {
                 is Resource.Failure -> {}
                 is Resource.Loading -> {}

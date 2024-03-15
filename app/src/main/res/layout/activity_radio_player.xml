@@ -259,7 +259,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/radio_suggestion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="#151523"
                 android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -370,12 +370,11 @@
             android:id="@+id/ll_block"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/_30sdp"
-
-            android:layout_marginVertical="@dimen/_70sdp"
-            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_60sdp"
             app:cardBackgroundColor="@color/DarkBlue"
             app:cardCornerRadius="@dimen/_15sdp"
+            android:visibility="gone"
             app:cardElevation="@dimen/_5sdp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -474,10 +473,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_30sdp"
+                        android:paddingBottom="@dimen/_15sdp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:setAdapter="@{adapter}"
-                        app:spanCount="2"
+                        app:spanCount="3"
                         app:submitList="@{radioplayervm.alternateChannels}"
                         tools:listitem="@layout/radio_row" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
