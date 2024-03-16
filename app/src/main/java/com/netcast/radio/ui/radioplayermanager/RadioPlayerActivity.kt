@@ -56,6 +56,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     OptionsClickListner, ConnectivityChecker.NetworkStateListener {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
+    var downlaodableData:Data?=null
     private lateinit var radioPlayerAVM: RadioPlayerAVM
     private lateinit var mainViewModel: MainViewModel
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
@@ -180,6 +181,27 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.playerOptions.setOnClickListener {
             showBottomSheetDialog()
         }
+        dataBinding.icDownlaod.setOnClickListener {
+            downlaodableData?.let {
+                try {
+                    val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
+                    if (isWifiDownloadEnable) {
+                        if (isWifiConnected(this)) {
+                            downloadEpisode(it)
+//                    podEpisodesAdapter.downloadEpisode(it)
+                        } else {
+                            showToast("Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings")
+                        }
+
+                    } else {
+                        downloadEpisode(it)
+//                podEpisodesAdapter.downloadEpisode(it)
+                    }
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun getofflinedata() {
@@ -288,6 +310,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             )
                         }
                     }
+                    if (type.matches("Episode".toRegex()))
+                        dataBinding.icDownlaod.visibility = View.VISIBLE
+
                 } else if (playbackState == PlaybackStateCompat.STATE_STOPPED) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.play_button)
                 }
@@ -519,29 +544,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 isEpisode = true
                 createPlayingChannelData(it)
                 exoPlayerManager("Episode")
+                downlaodableData=it
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
         }
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity) {
-            try {
-                val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
-                if (isWifiDownloadEnable) {
-                    if (isWifiConnected(this)) {
-                        downloadEpisode(it)
-//                    podEpisodesAdapter.downloadEpisode(it)
-                    } else {
-                        showToast("Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings")
-                    }
-
-                } else {
-                    downloadEpisode(it)
-//                podEpisodesAdapter.downloadEpisode(it)
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
+           downlaodableData=it
         }
 
         viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity) {

@@ -141,6 +141,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         var versionCode = BuildConfig.VERSION_NAME
         dataBinding.splashview.appCompatTextView2.text = "Version Info ${versionCode}\n© 2016-2024"
+        (application as MyApp).calculateTimeSpent()
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -549,8 +550,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         showSlideUpPanel()
         checkOfflineChannels()
         mainViewModel.getalternateChannels()
+//        (application as MyApp).appInForeground()
 
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -589,6 +592,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
     override fun onPause() {
         super.onPause()
+        (application as MyApp).appInBackground()
     }
 
     private fun getIntentData() {
