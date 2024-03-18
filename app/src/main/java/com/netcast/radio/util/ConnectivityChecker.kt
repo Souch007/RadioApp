@@ -3,6 +3,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.widget.Toast
 
 class ConnectivityChecker(private val context: Context) {
 

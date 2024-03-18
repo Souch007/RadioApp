@@ -14,6 +14,7 @@ import com.netcast.radio.ui.radioplayermanager.adapter.OnEpisodeClickListener
 import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 
 class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClickListnerRadio,
     OnEpisodeClickListener {
@@ -33,20 +34,20 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     val _onepisodeShareClicked = MutableLiveData<Data>()
 
 //    val _onblockChannel = MutableLiveData<Resource<ResponseBody>>()
-    val _alternateChannels = MutableLiveData<Resource<AlternateChannels>>()
+    val statics = MutableLiveData<Resource<ResponseBody>>()
     override fun onRadioClicked(data: RadioLists, type: String) {
         if (!data.isBlocked) {
             var playingChannelData = PlayingChannelData(
-                data.url,
-                data.favicon,
-                data.name,
-                data.id,
+                data.url ?: "",
+                data.favicon ?: "",
+                data.name ?: "",
+                data.id ?: "",
                 "",
-                data.country,
+                data.country?: "",
                 "RADIO",
-                secondaryUrl =data.secondaryUrl,
-                isBlocked = data.isBlocked,
-                description = data.description
+                secondaryUrl =data.secondaryUrl ?: "",
+                isBlocked = data.isBlocked ?: false,
+                description = data.description ?: ""
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))
@@ -70,9 +71,9 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
         }
     }
 
-    fun getalternateChannels() {
+    fun setStatitcs(name:String,id:String,type: String,country:String,device_id:String) {
         viewModelScope.launch {
-            _alternateChannels.value= appRepository.getalternateChannels()
+            statics.value= appRepository.setstatics(name,id,type,country,device_id)
 
         }
     }
@@ -108,4 +109,5 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
     override fun onEpisodeShareClicked(data: Data) {
         _onepisodeShareClicked.value = data
     }
+
 }

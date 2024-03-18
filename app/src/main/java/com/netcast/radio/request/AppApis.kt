@@ -26,6 +26,14 @@ interface AppApis {
     @GET(AppConstants.ALTERNATECHANNELS)
     suspend fun alternateChannels(): AlternateChannels
 
+    @GET(AppConstants.STATICS)
+    suspend fun setstatics(@Query("channel_name") name: String,
+                           @Query("channel_id") id: String,
+                           @Query("type") type:String,
+                           @Query("country") country: String,
+                           @Query("device_id") deviceId: String
+    ): ResponseBody
+
     @GET(AppConstants.GET_LANGUAGES)
     suspend fun getLanguages(): Lanuages
 

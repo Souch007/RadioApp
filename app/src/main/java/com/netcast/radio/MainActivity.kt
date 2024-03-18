@@ -83,6 +83,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private lateinit var connectivityChecker: ConnectivityChecker
     private var alternateChannels: List<RadioLists>? = null
     private var customDialog: AlternateChannelsDialog? = null
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -94,8 +96,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-
 
         super.onCreate(savedInstanceState)
         DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
@@ -316,7 +316,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                     customDialog = alternateChannels?.let { it1 ->
                         AlternateChannelsDialog(
                             this,
-                            it1, mainViewModel
+                            it1, mainViewModel,
+                            null
                         )
                     }
                     customDialog?.show()
@@ -435,6 +436,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
             if (dataBinding.playButtonCarousel.player!!.isPlaying) {
                 dataBinding.playButtonCarousel.player!!.stop()
+                /*  AppSingelton.exoPlayer?.stop()
+                  AppSingelton.exoPlayer?.release()*/
             }
         }
 
@@ -614,73 +617,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun showBottomSheetDialog() {
-
-
         val isEpisode = AppSingelton._radioSelectedChannel.value?.type != "RADIO"
         val bottomSheetFragment = BottomSheetOptionsFragment(this, true, isEpisode)
         bottomSheetFragment.show(supportFragmentManager, "BSDialogFragment")
 
-
-        /*  val bottomSheetDialog = BottomSheetDialog(this)
-          val optionLayoutBinding = OptionLayoutBinding.inflate(layoutInflater, null, false)
-          bottomSheetDialog.setContentView(optionLayoutBinding!!.root)
-
-          optionLayoutBinding.tvSetalarm.setOnClickListener {
-              startActivity(Intent(this, AlarmFragment::class.java))
-              bottomSheetDia//Logismiss()
-              closePlayerandPanel()
-  //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
-          }
-          optionLayoutBinding.tvSetsleeptime.setOnClickListener {
-  //            navController.navigate(R.id.sleepTimerFragment)
-              startActivity(Intent(this, SleepTimerFragment::class.java))
-
-              bottomSheetDia//Logismiss()
-              closePlayerandPanel()
-  //            dataBinding.slidingLayout.panelState=SlidingUpPanelLayout.PanelState.COLLAPSED
-          }
-          optionLayoutBinding.tvShare.setOnClickListener {
-              bottomSheetDia//Logismiss()
-              share(
-                  "Checkout this link its amazing. ",
-                  AppSingelton._radioSelectedChannel.value
-              )
-
-          }
-          optionLayoutBinding.tvFavourite.setOnClickListener {
-              bottomSheetDia//Logismiss()
-              AppSingelton._radioSelectedChannel.value?.let { it1 ->
-                  viewModel.addChannelToFavourites(
-                      it1
-                  )
-              }
-
-          }
-          bottomSheetDialog.show()*/
     }
 
-//    private fun share(messageToShare: String, appUrl: PlayingChannelData?) {
-//        AppConstants.generateSharingLink(
-////            deepLink = AppConstants.PREFIX.toUri(),
-//            deepLink = Uri.parse("https://netcast.com/"),
-//            Gson().toJson(appUrl)
-//        ) { generatedLink ->
-//            shareDeepLink(generatedLink)
-//        }
-//
-//    }
-//
-//    private fun shareDeepLink(deepLink: String) {
-//        val intent = Intent(Intent.ACTION_SEND)
-//        intent.type = "text/plain"
-//        intent.putExtra(
-//            Intent.EXTRA_SUBJECT, "You have been shared an amazing meme, check it out ->"
-//        )
-//        intent.putExtra(Intent.EXTRA_TEXT, deepLink)
-//        startActivity(intent)
-//        closePlayerandPanel()
-//
-//    }
 
     override fun onSetAlarm() {
         startActivity(Intent(this, AlarmFragment::class.java))
@@ -743,6 +685,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     override fun onInternetUnavailable() {
-
+        if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {
+            if (!dataBinding.playButtonCarousel.player!!.isPlaying) {
+                dataBinding.playButtonCarousel.player!!.pause()
+            }
+        }
     }
 }

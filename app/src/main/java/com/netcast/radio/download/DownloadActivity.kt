@@ -122,6 +122,7 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
                 isBlocked = false,
                 description = it.description
             )
+
             AppSingelton._radioSelectedChannel.value = playingChannelData
             finish()
         }

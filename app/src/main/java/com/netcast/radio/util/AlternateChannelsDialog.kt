@@ -14,12 +14,14 @@ import com.netcast.radio.MainViewModel
 import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.databinding.CustomDialogLayoutBinding
+import com.netcast.radio.interfaces.OnDialogClose
 import com.netcast.radio.ui.radio.data.temp.RadioLists
 
 class AlternateChannelsDialog(
     context: Context,
     data: List<RadioLists>,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    onDialogClose: OnDialogClose?
 ) : Dialog(context) {
     private var moreradioAdapter: com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter
 
@@ -36,6 +38,7 @@ class AlternateChannelsDialog(
         window?.attributes = windowAttributes
 
         binding.imgClose.setOnClickListener {
+            onDialogClose?.onDialogClose()
             dismiss()
         }
         Glide.with(context)
@@ -43,8 +46,11 @@ class AlternateChannelsDialog(
             .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
             .priority(Priority.HIGH).into(binding.imageView)
 
+        val newalternatives =
+           data.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
+
         moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-            data, mainViewModel, "public"
+            newalternatives, mainViewModel, "public"
         )
 
         binding.adapter = moreradioAdapter

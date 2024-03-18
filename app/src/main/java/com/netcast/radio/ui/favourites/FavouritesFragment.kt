@@ -95,6 +95,8 @@ class FavouritesFragment : BaseFragment<FragmentFavouritesBinding>(R.layout.frag
                  mainActivityViewModel.favouritesRadioArray,
                  mainActivityViewModel,
                  "favourites")
+
+//            favouriteAdapter.updateData(mainActivityViewModel.favouritesRadioArray)
 //            favouriteAdapter.notifyDataSetChanged()
 
         } else {

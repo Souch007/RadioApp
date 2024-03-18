@@ -3,7 +3,6 @@ package com.netcast.radio.ui.ui.settings.adapter
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -16,10 +15,8 @@ import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityAlarmSelectedChannelBinding
 import com.netcast.radio.databinding.ActivityMainBinding
 import com.netcast.radio.request.AppConstants
-import com.netcast.radio.ui.favourites.adapters.FavouriteAdapter
 import com.netcast.radio.ui.radio.adapter.AlaramItemsAdapter
 import com.netcast.radio.ui.radio.adapter.OnClickAlarmItem
-import com.netcast.radio.ui.radio.data.temp.RadioLists
 
 class AlarmSelectedChannelActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),
     OnClickAlarmItem {
@@ -43,10 +40,9 @@ class AlarmSelectedChannelActivity : BaseActivity<MainViewModel, ActivityMainBin
         sharedPredEditor = mysharedPreferences.edit()
         val playingChannelData = retrieveStoredObject(
             AppConstants.SELECTED_ALARM_RADIO, PlayingChannelData::class.java
-        )
-       /* val index = recentlyPlayed?.indexOfFirst { it.id == playingChannelData?.id }
-        if (index != -1)
-            recentlyPlayed!![index!!].isSelected = true*/
+        )/* val index = recentlyPlayed?.indexOfFirst { it.id == playingChannelData?.id }
+         if (index != -1)
+             recentlyPlayed!![index!!].isSelected = true*/
         recentlyPlayed?.forEachIndexed { index, item ->
             item.isSelected = item.id == playingChannelData?.id
         }
@@ -62,8 +58,7 @@ class AlarmSelectedChannelActivity : BaseActivity<MainViewModel, ActivityMainBin
 
         /*  playingChannelData?.let {
               binding.tvChannelName.text = it.name
-          }*/
-        /*    val alarmChecbox = mysharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
+          }*//*    val alarmChecbox = mysharedPreferences.getBoolean(AppConstants.ALARM_CHECKBOX, false)
             if (playingChannelData != null && alarmChecbox) {
                 binding.checkboxAlramchannel.isChecked = true
                 binding.checkboxAlramchannel.isEnabled = false

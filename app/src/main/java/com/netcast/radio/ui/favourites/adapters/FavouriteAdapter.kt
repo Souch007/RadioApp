@@ -8,11 +8,12 @@ import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.FavRowBinding
 
 class FavouriteAdapter(
-    private val list: List<PlayingChannelData>,
+    list: List<PlayingChannelData>,
     private val onFavouriteClickListener: OnFavouriteClickListener,
     private val type: String
 ) : BaseAdapter<FavRowBinding, PlayingChannelData>(list) {
     override val layoutId: Int = R.layout.fav_row
+
 
     @SuppressLint("SuspiciousIndentation")
     override fun bind(binding: FavRowBinding, item: PlayingChannelData, position: Int) {
@@ -25,8 +26,8 @@ class FavouriteAdapter(
         if (type == "favourites") binding.layoutDelete.visibility = View.VISIBLE
     }
 
-    override fun getItemsCount(data: List<PlayingChannelData>): Int {
 
+    override fun getItemsCount(data: List<PlayingChannelData>): Int {
         return if (type == "favourites") data.size
         else if (type == "recently_played") {
             if (data.size > 10) return 10
@@ -35,7 +36,10 @@ class FavouriteAdapter(
             data.size
         }
     }
+
+
 }
+
 
 interface OnFavouriteClickListener {
     fun onFavChannelClicked(playingChannelData: PlayingChannelData, tabtype: String)

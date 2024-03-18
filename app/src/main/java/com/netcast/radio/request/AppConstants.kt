@@ -24,6 +24,7 @@ object AppConstants {
     const val BLOCK_STATION = "blockChannel/"
     const val UN_BLOCK_STATION = "unblockChannel/"
     const val ALTERNATECHANNELS = "getAlternativeStations/msnbc"
+    const val STATICS = "statistics"
     const val PODCAST_EPISODES = "getPodcastEpisodes/"
     const val GET_LANGUAGES = "getAllLanguages/"
     const val GET_ALL_COUNTRIES = "getAllCountries"

@@ -14,6 +14,7 @@ import com.netcast.radio.databinding.FragmentPodcastBinding
 import com.netcast.radio.db.AppDatabase
 import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.podcast.adapter.PodcastFragmentAdapter
+import com.netcast.radio.util.ConnectivityHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,9 +28,11 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
     var appDatabase: AppDatabase? = null
     var isInternetavailable = true
     private lateinit var connectivityChecker: ConnectivityChecker
+    private lateinit var connectivityHandler: ConnectivityHandler
     override fun FragmentPodcastBinding.initialize() {
         binding.podcastDataBinding = podcastViewModel
         appDatabase = initializeDB(requireContext())
+        connectivityHandler = ConnectivityHandler(requireContext())
         connectivityChecker = ConnectivityChecker(requireContext())
         connectivityChecker.setListener(this@PodcastFragment)
 //        if(podcastViewModel.podcastListArray.value !=  null && podcastViewModel.podcastListArray.value!!.size >0){
@@ -181,7 +184,8 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
 
     override fun onInternetUnavailable() {
         isInternetavailable = false
-        showToast("No internet connection please check your internet connection")
+        showToast("Internet connection is not available please check your internet connection")
+
     }
 
     private fun showToast(message: String) {
@@ -198,8 +202,19 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
         connectivityChecker.unregister()
     }
 
+    override fun onPause() {
+        super.onPause()
+        connectivityHandler.stopCheckingConnectivity()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityHandler.stopCheckingConnectivity()
+    }
+
     override fun onResume() {
         super.onResume()
+        connectivityHandler.startCheckingConnectivity()
         if (binding.emptyViewPod.isVisible) {
             mainActivityViewModel.getPodCastListing(podcastViewModel, "")
         }

@@ -10,6 +10,9 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     suspend fun getalternateChannels() = safeApiCall {
         appApis.alternateChannels()
     }
+    suspend fun setstatics(name:String,id :String, type :String,country:String,deviceid:String) = safeApiCall {
+        appApis.setstatics(name,id,type,country,deviceid)
+    }
 
     suspend fun blockStation(id:String) = safeApiCall {
         appApis.blockStation(id)

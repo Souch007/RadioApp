@@ -19,8 +19,7 @@ import com.netcast.radio.request.Resource
 import com.netcast.radio.ui.favourites.adapters.FavouriteAdapter
 import com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter
 import com.netcast.radio.ui.radio.data.temp.Data
-import com.netcast.radio.ui.radioplayermanager.RadioPlayerAVM
-import com.netcast.radio.util.AlternateChannelsDialog
+import com.netcast.radio.util.ConnectivityHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,13 +34,16 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     var appDatabase: AppDatabase? = null
     var isInternetavailable = true
     private lateinit var connectivityChecker: ConnectivityChecker
+    private lateinit var connectivityHandler: ConnectivityHandler
+
+
     override fun FragmentRadioBinding.initialize() {
         binding.lifecycleOwner = this@RadioFragment
         binding.radioDataBinding = radioViewModel
-
+        connectivityHandler = ConnectivityHandler(requireContext())
+//        connectivityHandler.startCheckingConnectivity()
         appDatabase = initializeDB(requireContext())
         activity.let {
-
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
         binding.shimmerLayout.stopShimmer()
@@ -290,6 +292,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     override fun onResume() {
         super.onResume()
         try {
+            connectivityHandler.startCheckingConnectivity()
             val recentlyPlayedAdapter = AppSingelton?.recentlyPlayedArray?.asReversed()
                 ?.let { FavouriteAdapter(it, mainActivityViewModel, "recently_played") }
             binding.recentlyPlayed.adapter = recentlyPlayedAdapter
@@ -327,13 +330,18 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onInternetUnavailable() {
         isInternetavailable = false
-        showToast("No internet connection please check your internet connection")
+        showToast("Internet connection is not available please check your internet connection")
+
     }
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onPause() {
+        super.onPause()
+        connectivityHandler.stopCheckingConnectivity()
+    }
     override fun onStart() {
         super.onStart()
         connectivityChecker.register()
@@ -344,4 +352,8 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         connectivityChecker.unregister()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityHandler.stopCheckingConnectivity()
+    }
 }
