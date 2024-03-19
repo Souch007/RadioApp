@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +21,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -34,6 +37,12 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.common.IntentSenderForResultStarter
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -65,7 +74,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.InstallStatus
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,
     ConnectivityChecker.NetworkStateListener {
@@ -83,8 +94,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private lateinit var connectivityChecker: ConnectivityChecker
     private var alternateChannels: List<RadioLists>? = null
     private var customDialog: AlternateChannelsDialog? = null
-    private var handler: Handler? = null
-    private var runnable: Runnable? = null
+    private lateinit var appUpdateManager: AppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -92,6 +102,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         val appmode = sharedPreferences.getInt("App_Mode", -1)
         connectivityChecker = ConnectivityChecker(this)
         connectivityChecker.setListener(this)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        checkUpdate()
+        appUpdateManager.registerListener(appUpdateListener)
         if (appmode == 0)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
@@ -571,7 +584,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         return null
     }
 
-    private fun getUserCountry(context: Context): String? {
+/*    private fun getUserCountry(context: Context): String? {
         try {
             val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             val simCountry = tm.simCountryIso
@@ -588,11 +601,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         } catch (e: Exception) {
         }
         return null
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
+    }*/
 
     private fun getIntentData() {
         val url = intent.getStringExtra("alarm_radio_url")
@@ -675,6 +684,62 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
             }
     }
+
+    private fun checkUpdate() {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        updateResultStarter,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
+                        AppConstants.UPDATE_REQUEST_CODE
+                    )
+                } catch (exception: IntentSender.SendIntentException) {
+//                    toast { exception.message.toString() }
+                }
+            }
+        }
+    }
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        // handle callback
+        if (result.data == null) return@registerForActivityResult
+        if (result.resultCode == AppConstants.UPDATE_REQUEST_CODE) {
+            Toast.makeText(this, getString(R.string.downloading_start), Toast.LENGTH_SHORT).show()
+            if (result.resultCode != Activity.RESULT_OK) {
+                Toast.makeText(this, getString(R.string.update_failed) , Toast.LENGTH_SHORT).show()
+//                TaskApp.appContext.toast { getString(R.string.update_failed) }
+            }
+        }
+    }
+
+    private val updateResultStarter =
+        IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
+            val request = IntentSenderRequest.Builder(intent)
+                .setFillInIntent(fillInIntent)
+                .setFlags(flagsValues, flagsMask)
+                .build()
+
+            updateLauncher.launch(request)
+        }
+
+    private val appUpdateListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.new_app_ready),
+                Snackbar.LENGTH_INDEFINITE
+            ).setAction(getString(R.string.restart)) {
+                appUpdateManager.completeUpdate()
+            }.show()
+        }
+    }
+
 
     override fun onInternetAvailable() {
         if (dataBinding.playButtonCarousel != null && AppSingelton.exoPlayer != null) {

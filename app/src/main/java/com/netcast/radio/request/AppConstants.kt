@@ -35,7 +35,7 @@ object AppConstants {
     const val SKIP_SLIENCE = "player_skip_silence"
     const val AUTO_PLAY_EPISODES = "auto_play_episodes"
    const val PREFIX = "https://netcast.page.link"
-
+   const val UPDATE_REQUEST_CODE = 101
    fun share(messageToShare: String, appUrl: PlayingChannelData?,context: Context) {
       AppConstants.generateSharingLink(
 //            deepLink = AppConstants.PREFIX.toUri(),

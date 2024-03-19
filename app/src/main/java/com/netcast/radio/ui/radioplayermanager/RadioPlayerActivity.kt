@@ -55,6 +55,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
+import java.util.Locale
 
 
 class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBinding>(),
@@ -119,7 +120,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     isBlocked = nextChanneltoPlay.isBlocked,
                     description = nextChanneltoPlay.description
                 )
-            }/* if (nextChanneltoPlay?.isBlocked == true)
+            }
+            /* if (nextChanneltoPlay?.isBlocked == true)
                  dataBinding.llBlock.visibility = View.VISIBLE
              else {*/
 //            dataBinding.llBlock.visibility = View.GONE
@@ -528,7 +530,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     it.title!!,
                     it.id,
                     "PODCAST",
-                    getCountryCode(this@RadioPlayerActivity),
+                    getUserCountry(this@RadioPlayerActivity) ?: "",
                     getDeviceId()
                 )
             } catch (ex: Exception) {
@@ -669,7 +671,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                     exoPlayerManager("Normal")
                     uiControls()
-                    viewModel.setStatitcs(it.name!!, it.id, it.type!!, getCountryCode(this@RadioPlayerActivity),
+                    viewModel.setStatitcs(it.name!!, it.id, it.type!!, getUserCountry(this@RadioPlayerActivity) ?:"",
                         getDeviceId()
                     )
                 } catch (ex: Exception) {
@@ -954,17 +956,23 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.playerView.player?.pause()
     }
 
-    fun getCountryCode(context: Context): String {
-        val telephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return try {
-            val countryCode = telephonyManager.networkCountryIso
-            countryCode
-
-        } catch (e: SecurityException) {
-            e.printStackTrace()
-            "Unknown"
+    private fun getUserCountry(context: Context): String? {
+        try {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val simCountry = tm.simCountryIso
+            if (simCountry != null && simCountry.length == 2) { // SIM country code is available
+                val locale = Locale("", simCountry)
+                return locale.displayCountry
+            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // Device is not 3G (would be unreliable)
+                val networkCountry = tm.networkCountryIso
+                if (networkCountry != null && networkCountry.length == 2) { // network country code is available
+                    val locale = Locale("", networkCountry)
+                    return locale.displayCountry
+                }
+            }
+        } catch (e: Exception) {
         }
+        return null
     }
 
 
