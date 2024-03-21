@@ -140,8 +140,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             AppSingelton.suggestedRadioList!!
         radioPlayerAVM = viewModel
         checkWifiPlaySettings()
-        Observers()
-        _checkMediaType()/* exoPlayerManager("Normal")
+        observers()
+        _checkMediaType()
+        /* exoPlayerManager("Normal")
          uiControls()*/
 //        requestPermission()
         val result = checkPermission()
@@ -149,7 +150,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             requestPermission()
         }
         getofflinedata()
-
         dataBinding.icPlay.setOnClickListener {
             if (dataBinding.playerView.player?.isPlaying == true) {
                 dataBinding.playerView.player?.pause()
@@ -323,7 +323,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     override fun deletePodcast(id: String) {
         val data = getOfflineDataById(id)
         val fileUr = data.fileURI
-        val fdelete: File = File(fileUr)
+        val fdelete = File(fileUr)
         if (fdelete.exists()) {
             if (fdelete.delete()) {
                 deletePodcastById(id)
@@ -359,12 +359,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                         if (file.exists()) {
                             dataBinding.playerView.player = exoPlayer
-
-
-                            val filePath =
-                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath = if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
-                            // Prepare media item and start playback
                             val mediaItem = MediaItem.fromUri(uri)
                             exoPlayer.setMediaItem(mediaItem)
                             exoPlayer.prepare()
@@ -373,9 +369,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                         }
                     }
-                    //Log("Offline", "Request Recieved")
                 } else {
-//                val allocator = DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE)
                     val allocator = DefaultAllocator(true, 64 * 1024)
                     val loadControl = DefaultLoadControl.Builder().setAllocator(allocator)
                         .setTargetBufferBytes(C.LENGTH_UNSET)
@@ -494,7 +488,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         else suggestedRadioList.url
     }
 
-    private fun Observers() {
+    private fun observers() {
         viewModel._podEpisodesList.observe(this@RadioPlayerActivity) {
             try {
                 val res = (it as Resource.Success).value
@@ -503,7 +497,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.podcastLoader.visibility = View.GONE
                 if (!podcastEpisodeList!!.isNullOrEmpty()) {
 //                    dataBinding.playerView.visibility = View.VISIBLE
-
                     refreshAdapter()
                     viewModel._episodeSelected.value = podcastEpisodeList!![0]
 
@@ -539,25 +532,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity) {
-
             downlaodableData=it
-           /* try {
-                val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
-                if (isWifiDownloadEnable) {
-                    if (isWifiConnected(this)) {
-                        downloadEpisode(it)
-//                    podEpisodesAdapter.downloadEpisode(it)
-                    } else {
-                        showToast("Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings")
-                    }
-
-                } else {
-                    downloadEpisode(it)
-//                podEpisodesAdapter.downloadEpisode(it)
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }*/
         }
 
         viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity) {
@@ -572,8 +547,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         viewModel._onepisodeShareClicked.observe(this@RadioPlayerActivity) {
             try {
-//                share("Checkout this link its amazing. ", it.listennotesUrl)
-
                 AppConstants.share(
                     "Checkout this link its amazing. ",
                     AppSingelton._radioSelectedChannel.value,
@@ -583,28 +556,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 ex.printStackTrace()
             }
         }
-
-        /*   viewModel._radioClicked.observe(this@RadioPlayerActivity) {
-               count=0
-               dataBinding.tvChannelName.text = it.name
-               dataBinding.llBlock.visibility = View.GONE
-               dataBinding.progressDownload.visibility = View.VISIBLE
-               customDialog?.dismiss()
-               try {
-                   if (AppSingelton.exoPlayer != null) {
-                       AppSingelton.exoPlayer!!.stop()
-                       AppSingelton.exoPlayer!!.release()
-                   }
-                   AppSingelton.exoPlayer = null
-
-
-                   exoPlayerManager("Normal")
-                   uiControls()
-               } catch (ex: Exception) {
-                   ex.printStackTrace()
-               }
-           }
-   */
 
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episodes" && isInternetavailable) {

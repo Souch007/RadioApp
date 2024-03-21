@@ -68,7 +68,6 @@
         <LinearLayout
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_110sdp"
-
             android:background="#BE979797"
             android:gravity="center"
             android:visibility='@{searchstation.isBlocked ? View.VISIBLE : View.GONE}'>
