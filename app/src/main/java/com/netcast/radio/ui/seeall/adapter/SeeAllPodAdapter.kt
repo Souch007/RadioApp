@@ -41,6 +41,10 @@ class SeeAllPodAdapter(
         return data.size;
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 }
 interface OnClickListerPODSeeAll {
     fun onPodClicked(data: PodListData)

@@ -62,7 +62,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     OptionsClickListner, ConnectivityChecker.NetworkStateListener, OnDialogClose {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
-    var downlaodableData: Data? = null
+    var downlaodableData:Data?=null
     private lateinit var radioPlayerAVM: RadioPlayerAVM
     private lateinit var mainViewModel: MainViewModel
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
@@ -166,8 +166,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.icDownlaod.setOnClickListener {
             downlaodableData?.let {
                 try {
-                    val isWifiDownloadEnable =
-                        sharedPreferences.getBoolean("download_over_wifi", false)
+                    val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
                     if (isWifiDownloadEnable) {
                         if (isWifiConnected(this)) {
                             downloadEpisode(it)
@@ -294,7 +293,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
-                    count = 0
                     AppSingelton._erroPlayingChannel.postValue("")
                     if (AppSingelton.radioSelectedChannel.value?.isBlocked == true) {
                         AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
@@ -325,7 +323,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     override fun deletePodcast(id: String) {
         val data = getOfflineDataById(id)
         val fileUr = data.fileURI
-        val fdelete: File = File(fileUr)
+        val fdelete = File(fileUr)
         if (fdelete.exists()) {
             if (fdelete.delete()) {
                 deletePodcastById(id)
@@ -361,12 +359,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         var file = File(AppSingelton._radioSelectedChannel.value!!.url)
                         if (file.exists()) {
                             dataBinding.playerView.player = exoPlayer
-
-
-                            val filePath =
-                                if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
+                            val filePath = if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
-                            // Prepare media item and start playback
                             val mediaItem = MediaItem.fromUri(uri)
                             exoPlayer.setMediaItem(mediaItem)
                             exoPlayer.prepare()
@@ -527,7 +521,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 isEpisode = true
                 createPlayingChannelData(it)
                 exoPlayerManager("Episode")
-                downlaodableData = it
+                downlaodableData=it
                 viewModel.setStatitcs(
                     it.title!!,
                     it.id,
@@ -557,6 +551,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         viewModel._onepisodeShareClicked.observe(this@RadioPlayerActivity) {
             try {
+//                share("Checkout this link its amazing. ", it.listennotesUrl)
+
                 AppConstants.share(
                     "Checkout this link its amazing. ",
                     AppSingelton._radioSelectedChannel.value,
@@ -566,9 +562,11 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 ex.printStackTrace()
             }
         }
+
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episodes" && isInternetavailable) {
                 if (count == 1) {
+//                    dataBinding.llBlock.visibility = View.VISIBLE
                     customDialog = viewModel.alternateChannels?.let { it1 ->
                         AlternateChannelsDialog(
                             this, it1, mainViewModel, this

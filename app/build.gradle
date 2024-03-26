@@ -12,9 +12,9 @@ android {
         applicationId "com.netcast.radio"
         minSdk 21
         targetSdk 33
-        versionCode 52
-        versionName "1.51"
- 
+        versionCode 54
+        versionName "1.53"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

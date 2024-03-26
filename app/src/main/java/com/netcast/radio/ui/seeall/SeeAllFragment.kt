@@ -64,8 +64,6 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             }
         }
 
-
-
         binding.ivBack.setOnClickListener {
             if (mainActivityViewModel._radioSeeAllSelected.value == "PODCAST")
                 mainActivityViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"

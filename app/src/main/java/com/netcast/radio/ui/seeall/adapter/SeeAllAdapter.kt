@@ -38,6 +38,10 @@ class SeeAllAdapter(
     override fun getItemsCount(data: List<RadioLists>): Int {
             return data.size
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }
 interface OnClickListenerSeeAll {
     fun onSeeAllClick(data: RadioLists)
