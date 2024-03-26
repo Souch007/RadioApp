@@ -51,8 +51,9 @@ interface AppApis {
         @Query("q") productId: String, @Query("device_id") device_id: String
     ): SearchedReponcePod
 
-    @GET(AppConstants.SEARCH + "?type=channels&limit=10")
+    @GET(AppConstants.SEARCH + "?type=channels")
     suspend fun searchStations(
+        @Query("limit") limit :Int,
         @Query("q") productId: String, @Query("device_id") device_id: String
     ): SearchedResponceStation
 

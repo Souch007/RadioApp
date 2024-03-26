@@ -210,7 +210,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
                     dataBinding.imageviewClose.visibility = View.VISIBLE
-                    mainViewModel.getSearchQueryResult(DEVICE_ID, searchedString, searchViewModel)
+                    mainViewModel.getSearchQueryResult(10,DEVICE_ID, searchedString, searchViewModel)
                     dataBinding.navView.selectedItemId = R.id.navigation_search
 //                    dataBinding.searchEditText.setText("")
                     val inputMethodManager =
@@ -314,7 +314,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             } else {
                 dataBinding.searchEditText.setText(it)
 //                dataBinding.llShimmerLayout.visibility = View.VISIBLE
-                mainViewModel.getSearchQueryResult(DEVICE_ID, it, searchViewModel)
+                mainViewModel.getSearchQueryResult(10,DEVICE_ID, it, searchViewModel)
                 dataBinding.navView.selectedItemId = R.id.navigation_search
                 hideProgressBar()
 //            startActivity(Intent(this, FilterRadioActivity::class.java).putExtra("filter_tag", it))
@@ -466,7 +466,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         mainViewModel.getAllGenres(radioViewModel)
         mainViewModel.getPodCastListing(podcastViewModel, "")
 //        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
-        mainViewModel.getSearchQueryResult(DEVICE_ID, "", searchViewModel)
+        mainViewModel.getSearchQueryResult(10,DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
 

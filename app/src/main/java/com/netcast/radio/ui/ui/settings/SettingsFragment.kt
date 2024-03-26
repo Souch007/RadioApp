@@ -41,7 +41,7 @@ class SettingsFragment : Fragment() {
         fun newInstance() = SettingsFragment()
     }
 
-    private val timerReceiver = TimerReceiver()
+
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
     private var bindingSettings: FragmentSettingsBinding? = null

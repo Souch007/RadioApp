@@ -77,11 +77,11 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             binding.tvSelectchannel.text = playingChannelData.name
 
         binding.tvTimer.setOnClickListener {
-            val audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-            audio?.setStreamVolume(
-                AudioManager.STREAM_MUSIC, 70, 0
-            )
-            showTimerPickerFragment(it)
+//           setTimer(it)
+        }
+
+        binding.tvTimer2.setOnClickListener {
+           setTimer(it)
         }
         binding.swichAlarm.setOnCheckedChangeListener { compoundButton, b ->
             sharedPredEditor.putBoolean("isAlarmSet", b).commit()
@@ -117,6 +117,14 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                 }
             }
         )
+    }
+
+    private fun setTimer(view: View) {
+        val audio = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+        audio?.setStreamVolume(
+            AudioManager.STREAM_MUSIC, 70, 0
+        )
+        showTimerPickerFragment(view)
     }
 
 

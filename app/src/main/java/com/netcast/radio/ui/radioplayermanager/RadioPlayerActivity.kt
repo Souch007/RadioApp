@@ -62,7 +62,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     OptionsClickListner, ConnectivityChecker.NetworkStateListener, OnDialogClose {
     var podcastEpisodeList: List<Data>? = null
     var podcastType: String = ""
-    var downlaodableData:Data?=null
+    var downlaodableData: Data? = null
     private lateinit var radioPlayerAVM: RadioPlayerAVM
     private lateinit var mainViewModel: MainViewModel
     private var STORAGE_PERMISSION_REQUEST_CODE: Int = 5049
@@ -166,7 +166,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         dataBinding.icDownlaod.setOnClickListener {
             downlaodableData?.let {
                 try {
-                    val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
+                    val isWifiDownloadEnable =
+                        sharedPreferences.getBoolean("download_over_wifi", false)
                     if (isWifiDownloadEnable) {
                         if (isWifiConnected(this)) {
                             downloadEpisode(it)
@@ -293,6 +294,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
+                    count = 0
                     AppSingelton._erroPlayingChannel.postValue("")
                     if (AppSingelton.radioSelectedChannel.value?.isBlocked == true) {
                         AppSingelton.radioSelectedChannel.value?.id?.let { it1 ->
@@ -525,7 +527,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 isEpisode = true
                 createPlayingChannelData(it)
                 exoPlayerManager("Episode")
-                downlaodableData=it
+                downlaodableData = it
                 viewModel.setStatitcs(
                     it.title!!,
                     it.id,
@@ -539,25 +541,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
 
         viewModel._episodeDownloadSelected.observe(this@RadioPlayerActivity) {
+            downlaodableData = it
 
-            downlaodableData=it
-           /* try {
-                val isWifiDownloadEnable = sharedPreferences.getBoolean("download_over_wifi", false)
-                if (isWifiDownloadEnable) {
-                    if (isWifiConnected(this)) {
-                        downloadEpisode(it)
-//                    podEpisodesAdapter.downloadEpisode(it)
-                    } else {
-                        showToast("Your wifi is not enable if you want to download episode over data please disable download over wifi option from settings")
-                    }
-
-                } else {
-                    downloadEpisode(it)
-//                podEpisodesAdapter.downloadEpisode(it)
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }*/
         }
 
         viewModel._onepisodeDeleteSelected.observe(this@RadioPlayerActivity) {
@@ -572,8 +557,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         viewModel._onepisodeShareClicked.observe(this@RadioPlayerActivity) {
             try {
-//                share("Checkout this link its amazing. ", it.listennotesUrl)
-
                 AppConstants.share(
                     "Checkout this link its amazing. ",
                     AppSingelton._radioSelectedChannel.value,
@@ -583,33 +566,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 ex.printStackTrace()
             }
         }
-
-        /*   viewModel._radioClicked.observe(this@RadioPlayerActivity) {
-               count=0
-               dataBinding.tvChannelName.text = it.name
-               dataBinding.llBlock.visibility = View.GONE
-               dataBinding.progressDownload.visibility = View.VISIBLE
-               customDialog?.dismiss()
-               try {
-                   if (AppSingelton.exoPlayer != null) {
-                       AppSingelton.exoPlayer!!.stop()
-                       AppSingelton.exoPlayer!!.release()
-                   }
-                   AppSingelton.exoPlayer = null
-
-
-                   exoPlayerManager("Normal")
-                   uiControls()
-               } catch (ex: Exception) {
-                   ex.printStackTrace()
-               }
-           }
-   */
-
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episodes" && isInternetavailable) {
                 if (count == 1) {
-//                    dataBinding.llBlock.visibility = View.VISIBLE
                     customDialog = viewModel.alternateChannels?.let { it1 ->
                         AlternateChannelsDialog(
                             this, it1, mainViewModel, this
@@ -634,6 +593,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     else exoPlayerManager("Episode")
                 }
             } else {
+
 //                dataBinding.progressDownload.visibility = View.INVISIBLE
 //                showToast("Please check your internet connection")
             }
@@ -671,9 +631,14 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                     exoPlayerManager("Normal")
                     uiControls()
-                    viewModel.setStatitcs(it.name!!, it.id, it.type!!, getUserCountry(this@RadioPlayerActivity) ?:"",
+                    viewModel.setStatitcs(
+                        it.name!!, it.id, it.type!!, getUserCountry(this@RadioPlayerActivity) ?: "",
                         getDeviceId()
                     )
+                    val newalternatives =
+                        viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
+                    newalternatives?.let { it1 -> moreradioAdapter.updateData(it1) }
+
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

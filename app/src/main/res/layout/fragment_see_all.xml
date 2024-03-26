@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="seeallviewmodel"
             type="com.netcast.radio.ui.seeall.SeeAllViewModel" />
@@ -21,6 +22,7 @@
             name="seeallpodadapter"
             type="com.netcast.radio.ui.seeall.adapter.SeeAllPodAdapter" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,9 +54,9 @@
                 style="@style/textHeading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:gravity="center|start"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/title_radio"
-                android:gravity="center|start"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,16 +70,17 @@
             android:id="@+id/radio_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:layout_margin="@dimen/_5sdp"
-
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_45sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
-            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
             app:setAdapter="@{seeallaadapter}"
+            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
             tools:listitem="@layout/see_all_row" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -85,15 +88,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_45sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
-            tools:listitem="@layout/see_all_row"
-            android:visibility="gone"
             app:setAdapter="@{seeallpodadapter}"
             app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
-            />
+            tools:listitem="@layout/see_all_row" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
