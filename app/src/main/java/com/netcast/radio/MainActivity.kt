@@ -342,11 +342,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                         it, AppConstants.SELECTED_ALARM_RADIO
                     )
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex()) && !AppSingelton.isThemeModeChanged) {
-                    if (AppSingelton.exoPlayer != null) {
+                   /* if (AppSingelton.exoPlayer != null) {
                         AppSingelton.exoPlayer!!.stop()
                         AppSingelton.exoPlayer!!.release()
                         AppSingelton.exoPlayer = null
-                    }
+                    }*/
                     Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
                         startActivity(this)
                     }

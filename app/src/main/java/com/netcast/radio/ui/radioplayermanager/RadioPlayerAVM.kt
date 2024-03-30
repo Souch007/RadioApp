@@ -54,11 +54,11 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
                 AppSingelton._isNewStationSelected.value = false
             else {
                 AppSingelton._isNewStationSelected.value = true
-                if (AppSingelton.exoPlayer != null) {
-                    AppSingelton.exoPlayer!!.stop()
-                    AppSingelton.exoPlayer!!.release()
-                }
-                AppSingelton.exoPlayer = null
+//                if (AppSingelton.exoPlayer != null) {
+//                    AppSingelton.exoPlayer!!.stop()
+//                    AppSingelton.exoPlayer!!.release()
+//                }
+//                AppSingelton.exoPlayer = null
             }
 
             _radioClicked.value = data

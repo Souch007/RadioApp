@@ -158,7 +158,10 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             description = data.description ?: ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
-        if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
+        AppSingelton._isNewStationSelected.value = !AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())
+        getsuggestedList(type)
+
+        /*  if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
             false
         else {
             AppSingelton._isNewStationSelected.value = true
@@ -167,9 +170,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
                 AppSingelton.exoPlayer!!.release()
             }
             AppSingelton.exoPlayer = null
-        }
-        getsuggestedList(type)
-//        _ra.value = data
+        }*/
     }
 
     private fun getsuggestedList(type: String) {
@@ -214,7 +215,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             isBlocked = false,
             description = ""
         )
-        AppSingelton._radioSelectedChannel.value = playingChannelData
+
+    /*    AppSingelton._radioSelectedChannel.value = playingChannelData
         if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())) AppSingelton._isNewStationSelected.value =
             false
         else {
@@ -225,14 +227,13 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             }
             AppSingelton.exoPlayer = null
         }
+        */
+        AppSingelton._radioSelectedChannel.value = playingChannelData
+        AppSingelton._isNewStationSelected.value = !AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())
     }
 
 
     override fun onFavChannelClicked(playingChannelData: PlayingChannelData, tabtype: String) {
-        //Log("onFavChannelClicked", "onFavChannelClicked: $tabtype")
-//        AppSingelton.selectedChannel = data
-
-//
         AppSingelton._isNewStationSelected.value = false
         if (AppSingelton.exoPlayer != null) {
             AppSingelton.exoPlayer!!.stop()
@@ -256,10 +257,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         val recentPlayedupdatedList = AppSingelton.recentlyPlayedArray
         recentPlayedupdatedList?.remove(playingChannelData)
         recentPlayedupdatedList?.add(AppSingelton.recentlyPlayedArray.size, playingChannelData)
-//            recentPlayedupdatedList?.add(0, playingChannelData)
         AppSingelton.recentlyPlayedArray = recentPlayedupdatedList
-//        updatedList?.remove(playingChannelData)
-//        AppSingelton.favouritesRadioArray=updatedList
         AppSingelton.isNewItemAdded.value = true
         AppSingelton._radioSelectedChannel.postValue(playingChannelData)
     }
