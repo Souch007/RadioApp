@@ -368,7 +368,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
-        AppSingelton.exoPlayer = null
+//        AppSingelton.exoPlayer = null
     }
 
     override fun onFilterSearchListenerr(data: RadioLists) {

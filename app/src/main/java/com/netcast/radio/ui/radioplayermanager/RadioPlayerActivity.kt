@@ -31,10 +31,7 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultAllocator
-import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.netcast.radio.BR
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.PlayingChannelData
@@ -581,7 +578,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.errorPlayingChannel.observe(this) {
             if (it.isNotEmpty() && podcastType != "PODCAST" && podcastType != "Episodes" && isInternetavailable) {
                 if (count == 1) {
-                    val newalternatives = viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
+                    val newalternatives =
+                        viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
                     viewModel.alternateChannels = newalternatives
                     customDialog = newalternatives?.let { it1 ->
                         AlternateChannelsDialog(
@@ -636,7 +634,6 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         AppSingelton.radioSelectedChannel.observe(this) {
             it?.let {
                 count = 0
-
                 dataBinding.llBlock.visibility = View.GONE
                 dataBinding.progressDownload.visibility = View.VISIBLE
                 customDialog?.dismiss()
@@ -668,8 +665,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     private fun getDeviceId(): String {
-        val deviceID =
-            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         return deviceID
     }
 

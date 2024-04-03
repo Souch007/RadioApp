@@ -130,12 +130,12 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
 
     private fun setTime(hour: Int, min: Int) {
         var finalhour = hour
-        /*  if (hour < 12) {
+          if (hour < 12) {
               am_pm = "AM"
           } else {
               finalhour = hour - 12
               am_pm = "PM"
-          }*/
+          }
         val formattedHour =
             String.format("%02d", finalhour) // Ensures two digits, with leading zero if necessary
         val formattedMin =

@@ -4,11 +4,9 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 import android.graphics.Bitmap
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.net.NetworkInfo
-import android.net.Uri
 import android.os.Build
 import android.text.Html
 import androidx.core.app.NotificationCompat
@@ -24,6 +22,7 @@ import java.util.concurrent.ExecutionException
 
 class AudioPlayerService : LifecycleService() {
     var playerNotificationManager: PlayerNotificationManager? = null
+
     companion object {
         fun startService(context: Context) {
             val startIntent = Intent(context, AudioPlayerService::class.java)
@@ -73,10 +72,14 @@ class AudioPlayerService : LifecycleService() {
                 val currentMediaItem = AppSingelton.mediaItemList?.get(currentMediaIndex)
 
                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.fromHtml(currentMediaItem?.mediaMetadata?.description.toString(), Html.FROM_HTML_MODE_COMPACT)
+                    Html.fromHtml(
+                        currentMediaItem?.mediaMetadata?.description.toString(),
+                        Html.FROM_HTML_MODE_COMPACT
+                    )
                         .toString()
                 } else {
-                    Html.fromHtml(currentMediaItem?.mediaMetadata?.description.toString()).toString()
+                    Html.fromHtml(currentMediaItem?.mediaMetadata?.description.toString())
+                        .toString()
                 }
             }
 
@@ -121,9 +124,16 @@ class AudioPlayerService : LifecycleService() {
                     notification: Notification,
                     ongoing: Boolean
                 ) {
-                    if (ongoing)
-                        startForeground(notificationId, notification)
-                    else {
+                    if (ongoing) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                            startForeground(notificationId, notification)
+                        } else {
+                            startForeground(
+                                notificationId, notification,
+                               FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                            )
+                        }
+                    } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             stopForeground(notificationId)
                         } else {
@@ -137,12 +147,12 @@ class AudioPlayerService : LifecycleService() {
                     notificationId: Int,
                     dismissedByUser: Boolean
                 ) {
-        /*            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        stopForeground(notificationId)
-                    } else {
-                        stopForeground(true)
-                    }
-                    stopSelf()*/
+                    /*            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    stopForeground(notificationId)
+                                } else {
+                                    stopForeground(true)
+                                }
+                                stopSelf()*/
 //                    releasePlayer()
 
                 }
@@ -175,6 +185,7 @@ class AudioPlayerService : LifecycleService() {
     }
 
     private fun releasePlayer() {
+        AppSingelton.exoPlayer?.stop()
         AppSingelton.exoPlayer?.release()
         AppSingelton.exoPlayer = null
         AppSingelton._radioSelectedChannel.value = null
