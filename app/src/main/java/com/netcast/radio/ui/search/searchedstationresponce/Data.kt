@@ -81,6 +81,8 @@ data class Data(
     val votes: Int  ,
     @SerializedName("isBlocked")
     val isBlocked: Boolean,
+    @SerializedName("secondaryUrl")
+    val secondaryUrl: String,
     @SerializedName("description")
     val description: String,
     @SerializedName("id")

@@ -368,7 +368,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "",
             data.country ?: "",
             "RADIO",
-            secondaryUrl = "", isBlocked = data.isBlocked ?: false,
+            secondaryUrl = data.secondaryUrl,
+            isBlocked = data.isBlocked ?: false,
             description = data.description ?: "",
             nameSlug = data.nameSlug ?: ""
         )
