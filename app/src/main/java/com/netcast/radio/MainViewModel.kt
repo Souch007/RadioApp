@@ -155,7 +155,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "RADIO",
             secondaryUrl = data.secondaryUrl ?: "",
             isBlocked = data.isBlocked ?: false,
-            description = data.description ?: ""
+            description = data.description ?: "",
+            nameSlug = data.nameSlug ?: ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = !AppSingelton._currenPlayingChannelId.matches(data.id.toRegex())
@@ -213,7 +214,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "PODCAST",
             secondaryUrl = "",
             isBlocked = false,
-            description = ""
+            description = "",
+            nameSlug = ""
         )
 
     /*    AppSingelton._radioSelectedChannel.value = playingChannelData
@@ -294,7 +296,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "RADIO",
             secondaryUrl = data.secondaryUrl ?: "",
             isBlocked = data.isBlocked ?: false,
-            description = data.description ?: ""
+            description = data.description ?: "",
+            nameSlug = data.nameSlug ?: ""
         )
         addChannelToFavourites(playingChannelData)
     }
@@ -314,7 +317,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "Episodes",
             secondaryUrl = "",
             isBlocked = false,
-            description = ""
+            description = "",
+            nameSlug = ""
         )
         addChannelToFavourites(playingChannelData)
     }
@@ -347,7 +351,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             "PODCAST",
             secondaryUrl = "",
             isBlocked = false,
-            description = ""
+            description = "",
+            nameSlug = ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -364,7 +369,8 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
             data.country ?: "",
             "RADIO",
             secondaryUrl = "", isBlocked = data.isBlocked ?: false,
-            description = data.description ?: ""
+            description = data.description ?: "",
+            nameSlug = data.nameSlug ?: ""
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
@@ -383,9 +389,9 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         playRecentData(playingChannelData)
     }
 
-    fun getalternateChannels() {
+    fun getalternateChannels(name: String?) {
         viewModelScope.launch {
-            _alternateChannels.value = appRepository.getalternateChannels()
+            _alternateChannels.value = appRepository.getalternateChannels(name ?: "msnbc")
 
         }
     }

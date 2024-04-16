@@ -41,4 +41,7 @@ data class RadioLists(
     @SerializedName("description")
     val description: String,
 
+    @SerializedName("id")
+    val nameSlug: String,
+
     ) : ListAdapterItem, Serializable

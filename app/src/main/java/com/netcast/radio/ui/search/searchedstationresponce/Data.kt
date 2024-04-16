@@ -82,5 +82,7 @@ data class Data(
     @SerializedName("isBlocked")
     val isBlocked: Boolean,
     @SerializedName("description")
-    val description: String
+    val description: String,
+    @SerializedName("id")
+    val nameSlug: String
 ) : ListAdapterItem , java.io.Serializable

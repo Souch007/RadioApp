@@ -47,7 +47,8 @@ class RadioPlayerAVM(var appRepository: AppRepository) : BaseViewModel(), OnClic
                 "RADIO",
                 secondaryUrl =data.secondaryUrl ?: "",
                 isBlocked = data.isBlocked ?: false,
-                description = data.description ?: ""
+                description = data.description ?: "",
+                nameSlug = data.nameSlug ?: ""
             )
             AppSingelton._radioSelectedChannel.value = playingChannelData
             if (AppSingelton._currenPlayingChannelId.matches(data.id.toRegex()))

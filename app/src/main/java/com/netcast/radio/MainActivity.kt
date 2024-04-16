@@ -564,7 +564,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         AppSingelton.currentActivity = AppConstants.MAIN_ACTIVITY
         showSlideUpPanel()
         checkOfflineChannels()
-        mainViewModel.getalternateChannels()
+        mainViewModel.getalternateChannels(AppSingelton._radioSelectedChannel.value?.nameSlug)
 
     }
 

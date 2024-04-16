@@ -118,7 +118,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     "RADIO",
                     secondaryUrl = nextChanneltoPlay.secondaryUrl,
                     isBlocked = nextChanneltoPlay.isBlocked,
-                    description = nextChanneltoPlay.description
+                    description = nextChanneltoPlay.description,
+                    nameSlug = nextChanneltoPlay.nameSlug
                 )
             }
             /* if (nextChanneltoPlay?.isBlocked == true)
@@ -217,7 +218,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                 dataBinding.podepisodeadapter!!.notifyDataSetChanged()
             }
         }
-        mainViewModel.getalternateChannels()
+        mainViewModel.getalternateChannels(AppSingelton._radioSelectedChannel.value?.nameSlug)
     }
 
 
@@ -445,7 +446,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                             currentChannel?.url ?: "",
                             currentChannel?.secondaryUrl ?: "",
                             false,
-                            description = currentChannel?.description ?: ""
+                            description = currentChannel?.description ?: "",
+                            nameSlug = currentChannel?.nameSlug ?: ""
 
                         )
 
@@ -842,7 +844,8 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             "Episodes",
             secondaryUrl = "",
             isBlocked = false,
-            description = it.description
+            description = it.description,
+            nameSlug = it.id
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
     }

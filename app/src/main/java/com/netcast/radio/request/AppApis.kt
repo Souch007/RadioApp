@@ -23,8 +23,9 @@ interface AppApis {
     @GET(AppConstants.PODCAST_LISTING)
     suspend fun getPodCastStations(@Query("country") country: String): PodResponce
 
-    @GET(AppConstants.ALTERNATECHANNELS)
-    suspend fun alternateChannels(): AlternateChannels
+    @GET(AppConstants.ALTERNATECHANNELS + "{name}")
+    suspend fun alternateChannels(@Path("name") name: String): AlternateChannels
+
 
     @GET(AppConstants.STATICS)
     suspend fun setstatics(@Query("channel_name") name: String,
