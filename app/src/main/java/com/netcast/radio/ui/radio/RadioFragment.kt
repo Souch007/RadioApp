@@ -92,7 +92,6 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         binding.emptyView.visibility = View.GONE
                         val data = it.value.data
                         radioViewModel.radioListArray.value = data.publicRadio
-                        radioViewModel.radioListArray.value = data.publicRadio
                         AppSingelton.suggestedRadioList = data.pop
                         AppSingelton.publicList = data.pop
                         radioViewModel._radioPopListArray.value = data.pop

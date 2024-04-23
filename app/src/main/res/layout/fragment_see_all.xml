@@ -80,8 +80,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
             app:setAdapter="@{seeallaadapter}"
-            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
             tools:listitem="@layout/see_all_row" />
+<!--            app:submitList="@{mainViewModel.selectedSeeAllListRadio}"-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/podcast_rv"
