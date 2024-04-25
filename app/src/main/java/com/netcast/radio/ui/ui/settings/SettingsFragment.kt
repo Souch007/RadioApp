@@ -208,9 +208,10 @@ class SettingsFragment : Fragment() {
             when (checkedId) {
                 R.id.rb_dark -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    bottomSheetDialog.dismiss();
+                    bottomSheetDialog.dismiss()
                     sharedPredEditor.putInt("App_Mode", 0).apply()
                     adapterSettings.changemodetext("Dark")
+
 
                 }
                 else -> {

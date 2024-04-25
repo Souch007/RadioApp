@@ -621,16 +621,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         }
         mainViewModel._alternateChannels.observe(this) {
             when (it) {
-                is Resource.Failure -> {}
+                is Resource.Failure -> {
+                    val data = AppSingelton.suggestedRadioList
+                    setData(data)
+                }
+
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    viewModel.alternateChannels = it.value.all
-                    val newalternatives =
-                        viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
-                    moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
-                        newalternatives ?: listOf(), viewModel, "public"
-                    )
-                    dataBinding.adapter = moreradioAdapter
+                    val data = it.value.all.ifEmpty { AppSingelton.suggestedRadioList }
+                    setData(data)
                 }
             }
         }
@@ -667,6 +666,17 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             }
 
         }
+
+    }
+
+    private fun setData(data: List<RadioLists>?) {
+        viewModel.alternateChannels = data
+        val newalternatives =
+            viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
+        moreradioAdapter = com.netcast.radio.ui.radio.adapter.RadioFragmentAdapter(
+            newalternatives ?: listOf(), viewModel, "public"
+        )
+        dataBinding.adapter = moreradioAdapter
 
     }
 

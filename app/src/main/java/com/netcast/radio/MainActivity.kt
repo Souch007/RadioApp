@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -95,6 +96,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private var alternateChannels: List<RadioLists>? = null
     private var customDialog: AlternateChannelsDialog? = null
     private lateinit var appUpdateManager: AppUpdateManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -755,5 +757,16 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 dataBinding.playButtonCarousel.player!!.pause()
             }
         }
+    }
+    private fun isNightMode(): Boolean {
+        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            else -> false
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
     }
 }

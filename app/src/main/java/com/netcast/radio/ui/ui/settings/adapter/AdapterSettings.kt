@@ -3,6 +3,7 @@ package com.netcast.radio.ui.ui.settings.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,7 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
         var subHeading = view.findViewById<TextView>(R.id.tv_sub_heading)
         var description = view.findViewById<TextView>(R.id.tv_description_wifi)
         var switch = view.findViewById<SwitchCompat>(R.id.swich_state_wifi)
+        var mainlayout = view.findViewById<LinearLayout>(R.id.main_layout)
     }
 
     fun itemClickListener(l: (Int, View, Boolean) -> Unit) {
@@ -63,7 +65,7 @@ class AdapterSettings(private val mSettingsList: MutableLiveData<ArrayList<Setti
             holder.switch.visibility = View.GONE
         }
 
-        holder.subHeading.setOnClickListener { view ->
+        holder.mainlayout.setOnClickListener { view ->
             listener?.let {
                 it(position, view, false)
             }
