@@ -14,12 +14,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_setsleeptime"
             style="@style/textsubheading"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
-            android:padding="@dimen/_5sdp"
             android:text="Set sleep timer"
-            android:textSize="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp" />
 
         <View
             android:layout_width="match_parent"
@@ -29,12 +29,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_setalarm"
             style="@style/textsubheading"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
-            android:padding="@dimen/_5sdp"
             android:text="Set Alarm"
-            android:textSize="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"/>
 
 
         <View
@@ -45,12 +45,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_share"
             style="@style/textsubheading"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
-            android:padding="@dimen/_5sdp"
             android:text="Share Station"
-            android:textSize="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp" />
 
         <View
             android:layout_width="match_parent"
@@ -60,12 +60,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_favourite"
             style="@style/textsubheading"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/OrangeRed"
-            android:padding="@dimen/_5sdp"
             android:text="Add to Favourite"
-            android:textSize="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

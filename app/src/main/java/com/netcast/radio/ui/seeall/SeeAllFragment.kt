@@ -40,7 +40,6 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
         mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment) {
             it?.let { radioList ->
                 myradioList.addAll(radioList)
-                Toast.makeText(requireContext(), myradioList.size.toString(), Toast.LENGTH_SHORT).show()
                 binding.radioRv.visibility = View.VISIBLE
                 binding.podcastRv.visibility = View.GONE
                 seeAllAdapter = SeeAllAdapter(

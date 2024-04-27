@@ -622,12 +622,15 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         mainViewModel._alternateChannels.observe(this) {
             when (it) {
                 is Resource.Failure -> {
+                    dataBinding.pb.visibility=View.GONE
+                    dataBinding.tvNoStation.visibility=View.VISIBLE
                     val data = AppSingelton.suggestedRadioList
                     setData(data)
                 }
 
                 is Resource.Loading -> {}
                 is Resource.Success -> {
+                    dataBinding.pb.visibility=View.GONE
                     val data = it.value.all.ifEmpty { AppSingelton.suggestedRadioList }
                     setData(data)
                 }
