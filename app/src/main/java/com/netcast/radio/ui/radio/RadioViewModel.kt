@@ -25,6 +25,10 @@ class RadioViewModel() : ViewModel() , OnClickListnerRadio , OnClickListenerLang
     //_________________________________Radio______________________//
     val _radioListing = MutableLiveData<Resource<RadioResponse>>()
     val radioListing: LiveData<Resource<RadioResponse>> = _radioListing
+    //-------------------------------MoreData---------------------//
+
+    val _moreradioListing = MutableLiveData<Resource<List<RadioLists>>>()
+    val moreradioListing: LiveData<Resource<List<RadioLists>>> = _moreradioListing
 
     //_________________________________Radio Public______________________//
     val radioListArray = MutableLiveData<List<RadioLists>>()

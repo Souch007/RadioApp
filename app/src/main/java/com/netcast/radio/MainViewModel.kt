@@ -1,5 +1,6 @@
 package com.netcast.radio
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -69,6 +70,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     val selectedSeeAllPodcasts: LiveData<List<PodListData>> = _selectedSeeAllPodcasts
     val _radioSeeAllSelected = MutableLiveData<String>()
     val _radioSelectedTitle = MutableLiveData<String>()
+    val seeAllTitle = MutableLiveData<String>()
 
     //------------------------------------------------------------------//
     val _queriedSearched = MutableLiveData<String>()
@@ -82,9 +84,11 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         viewModelScope.launch {
             radioViewModel._radioListing.value =
                 appRepository.getRadioListing(country ?: "")
-
-            //Log("MainViewModel", "getRadioListing: $country")
-//            radioViewModel._radioListing.value = appRepository.getRadioListing("")
+        }
+    }
+   fun getMoreRadioListing(radioViewModel: RadioViewModel, name: String,limit: Int,skip:Int) {
+        viewModelScope.launch {
+            radioViewModel._moreradioListing.value = appRepository.getMoreRadioListing(name,limit,skip)
         }
     }
 

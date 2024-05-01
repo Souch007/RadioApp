@@ -17,7 +17,6 @@ import com.netcast.radio.ui.seeall.adapter.SeeAllAdapter
 import com.netcast.radio.ui.seeall.adapter.SeeAllPodAdapter
 import com.netcast.radio.util.EndLessLoading
 
-
 class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see_all) {
     val seeAllViewModel: SeeAllViewModel by activityViewModels()
     private lateinit var mainActivityViewModel: MainViewModel
@@ -36,7 +35,7 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             mainActivityViewModel = ViewModelProvider(it!!)[MainViewModel::class.java]
         }
         binding.mainViewModel = mainActivityViewModel
-//        setRVscrolllistener()
+        setRVscrolllistener()
         mainActivityViewModel._selectedSeeAllListRadio.observe(this@SeeAllFragment) {
             it?.let { radioList ->
                 myradioList.addAll(radioList)
@@ -51,30 +50,39 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             }
 
         }
- /*       radioViewModel.radioListing.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Failure -> {}
-                is Resource.Loading -> {
+        radioViewModel.moreradioListing.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it) {
+                    is Resource.Failure -> {
+                        Toast.makeText(
+                            requireContext(), it.errorCode.toString(), Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
-                }
+                    is Resource.Loading -> {
+                    }
 
-                is Resource.Success -> {
-                    myradioList.addAll(it.value.data.classical)
-                    Toast.makeText(requireContext(), myradioList.size.toString(), Toast.LENGTH_SHORT).show()
-                    seeAllAdapter?.notifyDataSetChanged()
+                    is Resource.Success -> {
+                        myradioList.addAll(it.value)
+//                        Toast.makeText(requireContext(), myradioList.size.toString(), Toast.LENGTH_SHORT).show()
+                        seeAllAdapter?.notifyDataSetChanged()
+                    }
                 }
             }
-        }*/
+
+        }
 
         mainActivityViewModel._selectedSeeAllPodcasts.observe(this@SeeAllFragment) {
-            binding.podcastRv.visibility = View.VISIBLE
-            binding.radioRv.visibility = View.GONE
-            seeAllPodAdapter = SeeAllPodAdapter(
-                it,
-                mainActivityViewModel,
-                mainActivityViewModel._radioSelectedTitle.value,
-            )
-            binding.seeallpodadapter = seeAllPodAdapter
+            it?.let {
+                binding.podcastRv.visibility = View.VISIBLE
+                binding.radioRv.visibility = View.GONE
+                seeAllPodAdapter = SeeAllPodAdapter(
+                    it,
+                    mainActivityViewModel,
+                    mainActivityViewModel._radioSelectedTitle.value,
+                )
+                binding.seeallpodadapter = seeAllPodAdapter
+            }
         }
 
         AppSingelton._isFavUpdated.observe(viewLifecycleOwner) {
@@ -88,26 +96,27 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
         }
 
         binding.ivBack.setOnClickListener {
-            if (mainActivityViewModel._radioSeeAllSelected.value == "PODCAST")
-                mainActivityViewModel._radioSeeAllSelected.value = "CLOSE_PODCAST"
-            else
-                mainActivityViewModel._radioSeeAllSelected.value = "CLOSE"
+            if (mainActivityViewModel._radioSeeAllSelected.value == "PODCAST") mainActivityViewModel._radioSeeAllSelected.value =
+                "CLOSE_PODCAST"
+            else mainActivityViewModel._radioSeeAllSelected.value = "CLOSE"
         }
         binding.tvChannelName.text = mainActivityViewModel._radioSelectedTitle.value
 //        setRVscrolllistener()
 
     }
 
- /*   private fun setRVscrolllistener() {
+    private fun setRVscrolllistener() {
         binding.radioRv.apply {
             addOnScrollListener(object : EndLessLoading() {
                 override fun onLoadMore() {
                     page += 1
-                    mainActivityViewModel.getRadioListing(radioViewModel = radioViewModel, "")
+                    mainActivityViewModel.getMoreRadioListing(
+                        radioViewModel, mainActivityViewModel.seeAllTitle.value ?: "", 30, myradioList.size
+                    )
 
                 }
             })
         }
 
-    }*/
+    }
 }

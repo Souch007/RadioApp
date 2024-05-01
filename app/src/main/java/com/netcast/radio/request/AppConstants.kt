@@ -20,6 +20,7 @@ object AppConstants {
     const val DownloadActivity: String = "DownloadActivity"
     const val BASE_URL = "https://apitest.netcast.com/"
     const val FETCH_RADIO = "getRadioListing"
+    const val FETCH_MORERADIO ="categoryList"
     const val PODCAST_LISTING = "getPodcastListing"
     const val BLOCK_STATION = "blockChannel/"
     const val UN_BLOCK_STATION = "unblockChannel/"

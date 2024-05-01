@@ -31,16 +31,4 @@ data class Data(
     @SerializedName("localStations")
     val publicRadio: List<RadioLists>,
 
-//    @SerializedName("estación")
-//    val estación: List<RadioLists>,
-//    @SerializedName("méxico")
-//    val méxico: List<RadioLists>,
-//    @SerializedName("radio")
-//    val radio: List<RadioLists>,
-//    @SerializedName("Rock")
-//    val rock: List<RadioLists>,
-//    @SerializedName("podcasts")
-//    val podcasts: List<podcastsItem>,
-//    @SerializedName("Decades")
-//    val talk: List<RadioLists>
 )

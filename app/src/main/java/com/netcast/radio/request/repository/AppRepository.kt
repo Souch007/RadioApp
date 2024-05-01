@@ -7,6 +7,10 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
         appApis.getRadioStations(country)
     }
 
+    suspend fun getMoreRadioListing(name:String,limit:Int,skip:Int) = safeApiCall {
+        appApis.getRadioMoreStations(name,limit,skip)
+    }
+
     suspend fun getalternateChannels(name: String) = safeApiCall {
         appApis.alternateChannels(name)
     }

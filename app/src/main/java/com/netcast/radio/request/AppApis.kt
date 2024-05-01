@@ -3,6 +3,8 @@ package com.netcast.radio.request
 import com.netcast.radio.ui.podcast.poddata.PodResponce
 import com.netcast.radio.ui.radio.genres.Genres
 import com.netcast.radio.ui.radio.countries.Countries
+import com.netcast.radio.ui.radio.data.temp.Data
+import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radio.lanuages.Lanuages
 import com.netcast.radio.ui.radioplayermanager.AlternateChannels
@@ -18,6 +20,11 @@ import retrofit2.http.Query
 interface AppApis {
     @GET(AppConstants.FETCH_RADIO)
     suspend fun getRadioStations(@Query("country") country: String): RadioResponse
+
+   @GET(AppConstants.FETCH_MORERADIO)
+    suspend fun getRadioMoreStations(@Query("name") country: String,
+                                     @Query("limit") limit:Int,
+                                     @Query("skip") skip:Int): List<RadioLists>
 
 
     @GET(AppConstants.PODCAST_LISTING)
