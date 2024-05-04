@@ -41,8 +41,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.common.IntentSenderForResultStarter
+import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.gson.Gson
@@ -75,9 +78,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.InstallStatus
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,
     ConnectivityChecker.NetworkStateListener {
@@ -146,7 +146,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
 
         searchWatcherListener()
-        hideProgressBar()
+        if (AppSingelton.animationShow == 0)
+            hideProgressBar()
+        else
+            dataBinding.llShimmerLayoutmain.visibility=View.GONE
+
         checkOfflineChannels()
         getIntentData()
         if (sharedPreferences.getBoolean("delete_completed_episode", true))
@@ -188,6 +192,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             override fun onAnimationEnd(animation: Animation?) {
                 dataBinding.llShimmerLayout.visibility = View.GONE
                 dataBinding.llShimmerLayoutmain.visibility = View.GONE
+                AppSingelton.animationShow=1
+
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -212,7 +218,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 var searchedString = dataBinding.searchEditText.text.toString()
                 if (!searchedString.matches("".toRegex()) && !searchedString.matches("\\.".toRegex())) {
                     dataBinding.imageviewClose.visibility = View.VISIBLE
-                    mainViewModel.getSearchQueryResult(10,DEVICE_ID, searchedString, searchViewModel)
+                    mainViewModel.getSearchQueryResult(
+                        10,
+                        DEVICE_ID,
+                        searchedString,
+                        searchViewModel
+                    )
                     dataBinding.navView.selectedItemId = R.id.navigation_search
 //                    dataBinding.searchEditText.setText("")
                     val inputMethodManager =
@@ -316,7 +327,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             } else {
                 dataBinding.searchEditText.setText(it)
 //                dataBinding.llShimmerLayout.visibility = View.VISIBLE
-                mainViewModel.getSearchQueryResult(10,DEVICE_ID, it, searchViewModel)
+                mainViewModel.getSearchQueryResult(10, DEVICE_ID, it, searchViewModel)
                 dataBinding.navView.selectedItemId = R.id.navigation_search
                 hideProgressBar()
 //            startActivity(Intent(this, FilterRadioActivity::class.java).putExtra("filter_tag", it))
@@ -344,11 +355,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                         it, AppConstants.SELECTED_ALARM_RADIO
                     )
                 if (!AppSingelton.currentActivity.matches(AppConstants.RADIO_PLAYER_ACTIVITY.toRegex()) && !AppSingelton.isThemeModeChanged) {
-                   /* if (AppSingelton.exoPlayer != null) {
-                        AppSingelton.exoPlayer!!.stop()
-                        AppSingelton.exoPlayer!!.release()
-                        AppSingelton.exoPlayer = null
-                    }*/
+                    /* if (AppSingelton.exoPlayer != null) {
+                         AppSingelton.exoPlayer!!.stop()
+                         AppSingelton.exoPlayer!!.release()
+                         AppSingelton.exoPlayer = null
+                     }*/
                     Intent(this@MainActivity, RadioPlayerActivity::class.java).apply {
                         startActivity(this)
                     }
@@ -468,7 +479,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         mainViewModel.getAllGenres(radioViewModel)
         mainViewModel.getPodCastListing(podcastViewModel, "")
 //        mainViewModel.getPodCastListing(podcastViewModel, getUserCountry(this))
-        mainViewModel.getSearchQueryResult(10,DEVICE_ID, "", searchViewModel)
+        mainViewModel.getSearchQueryResult(10, DEVICE_ID, "", searchViewModel)
         mainViewModel.getFrequentSearchesTags(DEVICE_ID, searchViewModel)
     }
 
@@ -586,24 +597,24 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         return null
     }
 
-/*    private fun getUserCountry(context: Context): String? {
-        try {
-            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            val simCountry = tm.simCountryIso
-            if (simCountry != null && simCountry.length == 2) { // SIM country code is available
-                val locale = Locale("", simCountry)
-                return locale.displayCountry
-            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // Device is not 3G (would be unreliable)
-                val networkCountry = tm.networkCountryIso
-                if (networkCountry != null && networkCountry.length == 2) { // network country code is available
-                    val locale = Locale("", networkCountry)
+    /*    private fun getUserCountry(context: Context): String? {
+            try {
+                val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val simCountry = tm.simCountryIso
+                if (simCountry != null && simCountry.length == 2) { // SIM country code is available
+                    val locale = Locale("", simCountry)
                     return locale.displayCountry
+                } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) { // Device is not 3G (would be unreliable)
+                    val networkCountry = tm.networkCountryIso
+                    if (networkCountry != null && networkCountry.length == 2) { // network country code is available
+                        val locale = Locale("", networkCountry)
+                        return locale.displayCountry
+                    }
                 }
+            } catch (e: Exception) {
             }
-        } catch (e: Exception) {
-        }
-        return null
-    }*/
+            return null
+        }*/
 
     private fun getIntentData() {
         val url = intent.getStringExtra("alarm_radio_url")
@@ -706,6 +717,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             }
         }
     }
+
     private val updateLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
@@ -714,7 +726,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         if (result.resultCode == AppConstants.UPDATE_REQUEST_CODE) {
             Toast.makeText(this, getString(R.string.downloading_start), Toast.LENGTH_SHORT).show()
             if (result.resultCode != Activity.RESULT_OK) {
-                Toast.makeText(this, getString(R.string.update_failed) , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show()
 //                TaskApp.appContext.toast { getString(R.string.update_failed) }
             }
         }
@@ -758,6 +770,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             }
         }
     }
+
     private fun isNightMode(): Boolean {
         return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> true

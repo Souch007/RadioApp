@@ -10,6 +10,7 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 object AppSingelton {
 
     var currentPlayingPos: Int = 0
+    var animationShow: Int = 0
     var suggestedRadioList: List<RadioLists>? = null
     var selectedChannel: RadioLists? = null
     var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null

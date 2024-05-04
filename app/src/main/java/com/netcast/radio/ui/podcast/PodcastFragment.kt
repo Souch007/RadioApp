@@ -156,6 +156,7 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
             }
 
             binding.tvAllEducationalTag.setOnClickListener {
+                mainActivityViewModel._selectedSeeAllListRadio.value=null
                 mainActivityViewModel._selectedSeeAllPodcasts.value =
                     podcastViewModel._educationM.value
                 mainActivityViewModel._radioSeeAllSelected.value = "PODCAST"

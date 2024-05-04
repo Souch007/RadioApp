@@ -73,7 +73,7 @@
             android:layout_margin="@dimen/_5sdp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/_45sdp"
+            android:paddingBottom="@dimen/_25sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/_45sdp"
+            android:paddingBottom="@dimen/_25sdp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,5 +99,24 @@
             app:setAdapter="@{seeallpodadapter}"
             app:submitList="@{mainViewModel.selectedSeeAllListRadio}"
             tools:listitem="@layout/see_all_row" />
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+           android:visibility="gone"
+            android:indeterminateDuration="10"
+            android:indeterminateBehavior="repeat"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:progressBackgroundTint="@color/OrangeRed"
+            android:progressBackgroundTintMode="multiply"
+            android:indeterminateOnly="true"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_25sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_rv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

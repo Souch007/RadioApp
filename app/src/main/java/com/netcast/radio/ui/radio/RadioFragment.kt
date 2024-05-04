@@ -215,6 +215,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
         }
         binding.tvAllTagTvClassical.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value=null
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"

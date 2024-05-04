@@ -54,15 +54,20 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             it?.let {
                 when (it) {
                     is Resource.Failure -> {
+                        binding.simpleProgressBar.visibility=View.GONE
+
                         Toast.makeText(
                             requireContext(), it.errorCode.toString(), Toast.LENGTH_SHORT
                         ).show()
                     }
 
                     is Resource.Loading -> {
+
                     }
 
                     is Resource.Success -> {
+                        binding.simpleProgressBar.visibility=View.GONE
+
                         myradioList.addAll(it.value)
 //                        Toast.makeText(requireContext(), myradioList.size.toString(), Toast.LENGTH_SHORT).show()
                         seeAllAdapter?.notifyDataSetChanged()
@@ -110,12 +115,14 @@ class SeeAllFragment : BaseFragment<FragmentSeeAllBinding>(R.layout.fragment_see
             addOnScrollListener(object : EndLessLoading() {
                 override fun onLoadMore() {
                     page += 1
+                    binding.simpleProgressBar.visibility=View.VISIBLE
                     mainActivityViewModel.getMoreRadioListing(
                         radioViewModel, mainActivityViewModel.seeAllTitle.value ?: "", 30, myradioList.size
                     )
 
                 }
             })
+
         }
 
     }
