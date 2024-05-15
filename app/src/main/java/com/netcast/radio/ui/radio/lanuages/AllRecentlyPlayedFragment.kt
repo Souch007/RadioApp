@@ -39,6 +39,10 @@ class AllRecentlyPlayedFragment() :
                 }
                 binding.titleDelete.text = "Edit"
             }
+
+            if (AppSingelton.recentlyPlayedArray.isNullOrEmpty()) {
+                binding.titleDelete.visibility = View.GONE
+            }
         }
 
 

@@ -623,7 +623,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             when (it) {
                 is Resource.Failure -> {
                     dataBinding.pb.visibility=View.GONE
-                    dataBinding.tvNoStation.visibility=View.VISIBLE
+//                    dataBinding.tvNoStation.visibility=View.VISIBLE
                     val data = AppSingelton.suggestedRadioList
                     setData(data)
                 }

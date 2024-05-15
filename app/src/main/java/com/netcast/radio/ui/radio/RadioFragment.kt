@@ -220,6 +220,7 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "Classical"
+            mainActivityViewModel.seeAllTitle.value = "Classical"
         }
         binding.tvAllTagTvGenres.setOnClickListener {
             findNavController().navigate(

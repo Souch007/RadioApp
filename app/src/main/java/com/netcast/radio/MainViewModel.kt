@@ -360,7 +360,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
         )
         AppSingelton._radioSelectedChannel.value = playingChannelData
         AppSingelton._isNewStationSelected.value = false
-        AppSingelton.exoPlayer = null
+//        AppSingelton.exoPlayer = null
     }
 
     override fun onStationSearchListener(data: com.netcast.radio.ui.search.searchedstationresponce.Data) {

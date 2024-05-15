@@ -76,6 +76,8 @@ class AllRecentPlayedAdapter(
 
         }
 
+
+
     }
 }
 
