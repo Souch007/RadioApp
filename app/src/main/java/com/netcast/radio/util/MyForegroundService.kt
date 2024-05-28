@@ -47,22 +47,7 @@ class MyForegroundService : Service() {
         super.onTaskRemoved(rootIntent)
         // Call API here
         callApiOnAppKill("", getCurrentDateTimeFormatted())
-
-        // Restart the service if necessary
-        val restartServiceIntent = Intent(applicationContext, this::class.java)
-        restartServiceIntent.`package` = packageName
-        val restartServicePendingIntent = PendingIntent.getService(
-            applicationContext,
-            1,
-            restartServiceIntent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-        val alarmService = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmService.set(
-            AlarmManager.ELAPSED_REALTIME,
-            SystemClock.elapsedRealtime() + 1000,
-            restartServicePendingIntent
-        )
+        stopSelf()
     }
 
     private fun callApiOnAppKill(inTime:String,outTime:String) {
