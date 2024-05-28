@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -72,12 +73,14 @@ import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 import com.netcast.radio.util.AlternateChannelsDialog
 import com.netcast.radio.util.BottomSheetOptionsFragment
+import com.netcast.radio.util.MyForegroundService
 import com.netcast.radio.util.OptionsClickListner
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), OptionsClickListner,
     ConnectivityChecker.NetworkStateListener {
@@ -160,6 +163,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
         var versionCode = BuildConfig.VERSION_NAME
         dataBinding.splashview.appCompatTextView2.text = "Version Info ${versionCode}\n© 2016-2024"
+
+        val serviceIntent = Intent(this, MyForegroundService::class.java)
+        ContextCompat.startForegroundService(this, serviceIntent)
     }
 
     @SuppressLint("SuspiciousIndentation")
