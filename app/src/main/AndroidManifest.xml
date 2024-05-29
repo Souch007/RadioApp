@@ -192,9 +192,7 @@
             android:name=".ui.ui.settings.TimerService"
             android:exported="false" />
 
-        <service
-            android:name=".util.MyForegroundService"
-            android:foregroundServiceType="location" />
+
 
 
     </application>

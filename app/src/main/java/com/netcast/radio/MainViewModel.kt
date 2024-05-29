@@ -22,7 +22,9 @@ import com.netcast.radio.ui.radio.adapter.OnClickListenerCountires
 import com.netcast.radio.ui.radio.adapter.OnClickListenerLanguages
 import com.netcast.radio.ui.radio.adapter.OnClickListnerRadio
 import com.netcast.radio.ui.radio.countries.Data
+import com.netcast.radio.ui.radio.data.temp.NotifyUserResponse
 import com.netcast.radio.ui.radio.data.temp.RadioLists
+import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radioplayermanager.AlternateChannels
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
@@ -78,6 +80,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     var currentFragmentId: String = "Radio"
     val navigateToPodcast = MutableLiveData<Boolean>()
     val _alternateChannels = MutableLiveData<Resource<AlternateChannels>>()
+    val notify = MutableLiveData<Resource<NotifyUserResponse>>()
     //----------------------------------//
 
     fun getRadioListing(radioViewModel: RadioViewModel, country: String?) {
@@ -397,6 +400,12 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getalternateChannels(name: String?) {
         viewModelScope.launch {
             _alternateChannels.value = appRepository.getalternateChannels(name ?: "msnbc")
+
+        }
+    }
+    fun notifyAppKilled(id: String,country: String,appinTime:String,appOutTime:String) {
+        viewModelScope.launch {
+            notify.value= appRepository.notifyAppKilled(id,country,appinTime,appOutTime)
 
         }
     }

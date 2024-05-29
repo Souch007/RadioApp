@@ -2,6 +2,7 @@ package com.netcast.radio.request
 
 import com.netcast.radio.ui.podcast.poddata.PodResponce
 import com.netcast.radio.ui.radio.countries.Countries
+import com.netcast.radio.ui.radio.data.temp.NotifyUserResponse
 import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radio.genres.Genres
@@ -11,6 +12,7 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import com.netcast.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.netcast.radio.ui.search.searchedpodresponce.SearchedReponcePod
 import com.netcast.radio.ui.search.searchedstationresponce.SearchedResponceStation
+import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -78,10 +80,10 @@ interface AppApis {
     suspend fun unblockStation(@Path("Id") id: String): RadioResponse
 
     @GET(AppConstants.USER_STATS)
-     fun notifyAppKilled( @Query("device_id") device_id: String,
+    suspend fun notifyAppKilled( @Query("device_id") device_id: String,
                                  @Query("country_name") country_name: String,
                                  @Query("app_in_time") app_in_time: String,
-                                 @Query("app_out_time") app_out_time: String): Call<Void>
+                                 @Query("app_out_time") app_out_time: String): NotifyUserResponse
 
 
 

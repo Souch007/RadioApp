@@ -14,6 +14,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -73,12 +74,14 @@ import com.netcast.radio.ui.ui.settings.AlarmFragment
 import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 import com.netcast.radio.util.AlternateChannelsDialog
 import com.netcast.radio.util.BottomSheetOptionsFragment
-import com.netcast.radio.util.MyForegroundService
 import com.netcast.radio.util.OptionsClickListner
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -102,6 +105,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
         val appmode = sharedPreferences.getInt("App_Mode", -1)
@@ -164,8 +170,15 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         var versionCode = BuildConfig.VERSION_NAME
         dataBinding.splashview.appCompatTextView2.text = "Version Info ${versionCode}\n© 2016-2024"
 
-        val serviceIntent = Intent(this, MyForegroundService::class.java)
-        ContextCompat.startForegroundService(this, serviceIntent)
+        mainViewModel.notifyAppKilled(DEVICE_ID,detectNetworkCountry(this)?: "",getCurrentDateTime(),"")
+
+
+    }
+
+    fun getCurrentDateTime(): String {
+        val dateFormat = SimpleDateFormat("yy-MM-dd HH:mm", Locale.getDefault())
+        val date = Date()
+        return dateFormat.format(date)
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -387,6 +400,22 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 }
             }
         }
+        mainViewModel.notify.observe(this) {
+            when (it) {
+                is Resource.Failure -> {
+                    Log.d("TAG", "Observers: ")
+                }
+                is Resource.Loading -> {
+                    Log.d("TAG", "Observers: ")
+                }
+                is Resource.Success -> {
+                    Log.d("TAG", "Observers: ")
+
+                }
+            }
+        }
+
+
         mainViewModel._radioSeeAllSelected.observe(this) {
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             if (it == "CLOSE") {
@@ -787,5 +816,18 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainViewModel.notifyAppKilled(DEVICE_ID,detectNetworkCountry(this)?: "","",getCurrentDateTime())
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainViewModel.notifyAppKilled(DEVICE_ID,detectNetworkCountry(this)?: "","",getCurrentDateTime())
+
+        Log.i("MainActivity", "onPause: ")
     }
 }
