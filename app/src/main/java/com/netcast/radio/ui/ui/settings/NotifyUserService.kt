@@ -28,7 +28,7 @@ class NotifyUserService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForegroundService()
+//        startForegroundService()
         makeApiCallStart(true)
     }
 
@@ -45,13 +45,16 @@ class NotifyUserService : Service() {
         val notifyUserWorkRequest = OneTimeWorkRequest.Builder(NotifyUserWorker::class.java).build()
         WorkManager.getInstance(applicationContext).enqueue(notifyUserWorkRequest)
 
+        stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Ensure startForeground() is called here if it wasn't already in onCreate
         startForegroundService()
+        makeApiCallStart(true)
         return START_STICKY
     }
+
     private fun startForegroundService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "APIServiceChannel"
@@ -78,8 +81,8 @@ class NotifyUserService : Service() {
 
     private fun makeApiCallStart(istoStart: Boolean) {
         val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        val inTime= if (istoStart) getCurrentDateTime() else ""
-        val outTime= if (!istoStart) getCurrentDateTime() else ""
+        val inTime = if (istoStart) getCurrentDateTime() else ""
+        val outTime = if (!istoStart) getCurrentDateTime() else ""
         ViewModelProvider.apiViewModel?.notifyAppKilled(
             deviceID,
             detectNetworkCountry(applicationContext) ?: Locale.getDefault().country,
