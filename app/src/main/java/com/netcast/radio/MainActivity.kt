@@ -756,4 +756,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             }
         }
     }
+
+
 }
