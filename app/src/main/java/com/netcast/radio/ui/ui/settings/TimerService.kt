@@ -38,7 +38,7 @@ class TimerService : Service() {
         object :    CountDownTimer(COUNTDOWN_LENGTH * 1000 * 60, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val time=String.format(
-                    "%d:%d ",
+                    "%dmin:%dsec",
                     TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                     TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                             TimeUnit.MINUTES.toSeconds(
@@ -67,8 +67,5 @@ class TimerService : Service() {
 
         const val TIME_LEFT_KEY: String = "timeLeft"
 
-        private val COUNTDOWN_INTERVAL = TimeUnit.SECONDS.toMillis(1)
-
-//        private val COUNTDOWN_LENGTH = TimeUnit.MINUTES.toMillis(5)
     }
 }

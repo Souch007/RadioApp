@@ -19,7 +19,7 @@ class RemoteDataSource {
             .baseUrl(AppConstants.BASE_URL)
             .client(OkHttpClient.Builder().also { client ->
                 if (BuildConfig.DEBUG) {
-                    val logginInt = HttpLoggingInterceptor();
+                    val logginInt = HttpLoggingInterceptor()
                     logginInt.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logginInt)
                     client.connectTimeout(60,TimeUnit.SECONDS)

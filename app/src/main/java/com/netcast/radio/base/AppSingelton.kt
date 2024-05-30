@@ -10,6 +10,7 @@ import com.netcast.radio.ui.radioplayermanager.episodedata.Data
 object AppSingelton {
 
     var currentPlayingPos: Int = 0
+    var animationShow: Int = 0
     var suggestedRadioList: List<RadioLists>? = null
     var selectedChannel: RadioLists? = null
     var mediaItemList: List<com.google.android.exoplayer2.MediaItem>? = null
@@ -20,7 +21,7 @@ object AppSingelton {
     var _playingStarted = MutableLiveData<Boolean>()
 
     //-------------------Player Variables---------------------------------//
-    public var exoPlayer: ExoPlayer? = null
+     var exoPlayer: ExoPlayer? = null
     val _radioSelectedChannel = MutableLiveData<PlayingChannelData>()
 
     val radioSelectedChannel: LiveData<PlayingChannelData> = _radioSelectedChannel

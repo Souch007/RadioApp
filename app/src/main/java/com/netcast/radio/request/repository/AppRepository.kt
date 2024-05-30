@@ -7,8 +7,12 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
         appApis.getRadioStations(country)
     }
 
-    suspend fun getalternateChannels() = safeApiCall {
-        appApis.alternateChannels()
+    suspend fun getMoreRadioListing(name:String,limit:Int,skip:Int) = safeApiCall {
+        appApis.getRadioMoreStations(name,limit,skip)
+    }
+
+    suspend fun getalternateChannels(name: String) = safeApiCall {
+        appApis.alternateChannels(name)
     }
     suspend fun setstatics(name:String,id :String, type :String,country:String,deviceid:String) = safeApiCall {
         appApis.setstatics(name,id,type,country,deviceid)
@@ -19,6 +23,9 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
     }
     suspend fun unblockStation(id:String) = safeApiCall {
         appApis.unblockStation(id)
+    }
+    suspend fun notifyAppKilled(id:String,country: String,appIntime:String,appouttime: String) = safeApiCall {
+        appApis.notifyAppKilled(id,country,appIntime,appouttime)
     }
 
     suspend fun getPodCastListing(country:String) = safeApiCall {
@@ -46,8 +53,8 @@ class AppRepository (private val appApis: AppApis) : BaseRepository() {
         appApis.searchPodcast(searchedQuery,device_id)
     }
 
-    suspend fun searchedStation(searchedQuery: String,device_id:String) = safeApiCall{
-        appApis.searchStations(searchedQuery,device_id)
+    suspend fun searchedStation(limit : Int ,searchedQuery: String,device_id:String) = safeApiCall{
+        appApis.searchStations(limit,searchedQuery,device_id)
     }
 
     suspend fun getPodcastEpisodes(idPodcast: String) = safeApiCall {

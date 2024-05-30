@@ -14,6 +14,7 @@ data class PlayingChannelData(
     var isSelected:Boolean=false,
     var secondaryUrl:String,
     var isBlocked:Boolean,
-    var description:String
+    var description:String,
+    var nameSlug:String
 
     ) : ListAdapterItem, Serializable

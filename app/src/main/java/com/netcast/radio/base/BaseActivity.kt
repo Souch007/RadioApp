@@ -248,15 +248,12 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
         super.onPlaybackStateChanged(playbackState)
         try {
             if (playbackState == Player.STATE_ENDED) {
-                val isAutoPlayEnable =
-                    sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
+                val isAutoPlayEnable = sharedPreferences.getBoolean(AppConstants.AUTO_PLAY_EPISODES, false)
                 val mediaType = AppSingelton.radioSelectedChannel.value?.type
                 if (mediaType?.matches("PODCAST".toRegex()) == true || mediaType?.matches("Episodes".toRegex()) == true || mediaType?.matches(
                         "Offline".toRegex()
                     ) == true
                 ) {
-
-
                     val list = getList<CompletedEpisodes>("completed_episodes")?.toMutableList()
                     val completedEpisodes = CompletedEpisodes(
                         System.currentTimeMillis(),
@@ -374,6 +371,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
             return arrayItems
         }
         return mutableListOf()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
 }

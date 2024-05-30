@@ -41,7 +41,7 @@ class SettingsFragment : Fragment() {
         fun newInstance() = SettingsFragment()
     }
 
-    private val timerReceiver = TimerReceiver()
+
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var layoutAppmodeBinding: LayoutAppmodeBinding
     private var bindingSettings: FragmentSettingsBinding? = null
@@ -208,9 +208,10 @@ class SettingsFragment : Fragment() {
             when (checkedId) {
                 R.id.rb_dark -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    bottomSheetDialog.dismiss();
+                    bottomSheetDialog.dismiss()
                     sharedPredEditor.putInt("App_Mode", 0).apply()
                     adapterSettings.changemodetext("Dark")
+
 
                 }
                 else -> {

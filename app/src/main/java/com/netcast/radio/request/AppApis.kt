@@ -1,16 +1,20 @@
 package com.netcast.radio.request
 
 import com.netcast.radio.ui.podcast.poddata.PodResponce
-import com.netcast.radio.ui.radio.genres.Genres
 import com.netcast.radio.ui.radio.countries.Countries
+import com.netcast.radio.ui.radio.data.temp.NotifyUserResponse
+import com.netcast.radio.ui.radio.data.temp.RadioLists
 import com.netcast.radio.ui.radio.data.temp.RadioResponse
+import com.netcast.radio.ui.radio.genres.Genres
 import com.netcast.radio.ui.radio.lanuages.Lanuages
 import com.netcast.radio.ui.radioplayermanager.AlternateChannels
 import com.netcast.radio.ui.radioplayermanager.episodedata.PodEpisodesData
 import com.netcast.radio.ui.search.frequentsearch.FrequentSearchResponce
 import com.netcast.radio.ui.search.searchedpodresponce.SearchedReponcePod
 import com.netcast.radio.ui.search.searchedstationresponce.SearchedResponceStation
+import okhttp3.Response
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,19 +23,28 @@ interface AppApis {
     @GET(AppConstants.FETCH_RADIO)
     suspend fun getRadioStations(@Query("country") country: String): RadioResponse
 
+    @GET(AppConstants.FETCH_MORERADIO)
+    suspend fun getRadioMoreStations(
+        @Query("name") country: String,
+        @Query("limit") limit: Int,
+        @Query("skip") skip: Int
+    ): List<RadioLists>
+
 
     @GET(AppConstants.PODCAST_LISTING)
     suspend fun getPodCastStations(@Query("country") country: String): PodResponce
 
-    @GET(AppConstants.ALTERNATECHANNELS)
-    suspend fun alternateChannels(): AlternateChannels
+    @GET(AppConstants.ALTERNATECHANNELS + "{name}")
+    suspend fun alternateChannels(@Path("name") name: String): AlternateChannels
+
 
     @GET(AppConstants.STATICS)
-    suspend fun setstatics(@Query("channel_name") name: String,
-                           @Query("channel_id") id: String,
-                           @Query("type") type:String,
-                           @Query("country") country: String,
-                           @Query("device_id") deviceId: String
+    suspend fun setstatics(
+        @Query("channel_name") name: String,
+        @Query("channel_id") id: String,
+        @Query("type") type: String,
+        @Query("country") country: String,
+        @Query("device_id") deviceId: String
     ): ResponseBody
 
     @GET(AppConstants.GET_LANGUAGES)
@@ -51,8 +64,9 @@ interface AppApis {
         @Query("q") productId: String, @Query("device_id") device_id: String
     ): SearchedReponcePod
 
-    @GET(AppConstants.SEARCH + "?type=channels&limit=10")
+    @GET(AppConstants.SEARCH + "?type=channels")
     suspend fun searchStations(
+        @Query("limit") limit: Int,
         @Query("q") productId: String, @Query("device_id") device_id: String
     ): SearchedResponceStation
 
@@ -61,6 +75,16 @@ interface AppApis {
 
     @GET(AppConstants.BLOCK_STATION + "{Id}")
     suspend fun blockStation(@Path("Id") id: String): RadioResponse
+
     @GET(AppConstants.UN_BLOCK_STATION + "{Id}")
     suspend fun unblockStation(@Path("Id") id: String): RadioResponse
+
+    @GET(AppConstants.USER_STATS)
+    suspend fun notifyAppKilled( @Query("device_id") device_id: String,
+                                 @Query("country_name") country_name: String,
+                                 @Query("app_in_time") app_in_time: String,
+                                 @Query("app_out_time") app_out_time: String): NotifyUserResponse
+
+
+
 }

@@ -61,7 +61,7 @@ class FilterRadioFragment() :
         binding.searchResultsStations.visibility=View.GONE
         val deviceID =
             Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
-        mainActivityViewModel.getSearchQueryResult(
+        mainActivityViewModel.getSearchQueryResult(50,
             deviceID, arguments?.getString("filter_tag") ?: "", searchviewModel
         )
         binding.tvFilter.text = arguments?.getString("filter_tag")

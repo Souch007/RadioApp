@@ -92,7 +92,6 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
                         binding.emptyView.visibility = View.GONE
                         val data = it.value.data
                         radioViewModel.radioListArray.value = data.publicRadio
-                        radioViewModel.radioListArray.value = data.publicRadio
                         AppSingelton.suggestedRadioList = data.pop
                         AppSingelton.publicList = data.pop
                         radioViewModel._radioPopListArray.value = data.pop
@@ -191,28 +190,37 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
         }
 
         binding.tvAllTag.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value=null
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel.radioListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "Local Stations"
+            mainActivityViewModel.seeAllTitle.value = "localStations"
         }
         binding.tvAllTagPopRock.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value=null
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioPopListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "Most Listened Pop and Rock"
+            mainActivityViewModel.seeAllTitle.value = "Pop"
         }
         binding.tvAllTagNews.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value=null
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioNewsListArray.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "News and Culture"
+            mainActivityViewModel.seeAllTitle.value = "News-Talk"
+
         }
         binding.tvAllTagTvClassical.setOnClickListener {
+            mainActivityViewModel._selectedSeeAllPodcasts.value=null
             mainActivityViewModel._selectedSeeAllListRadio.value =
                 radioViewModel._radioClassicallistingArry.value
             mainActivityViewModel._radioSeeAllSelected.value = "RADIO"
             mainActivityViewModel._radioSelectedTitle.value = "Classical"
+            mainActivityViewModel.seeAllTitle.value = "Classical"
         }
         binding.tvAllTagTvGenres.setOnClickListener {
             findNavController().navigate(
