@@ -43,12 +43,6 @@ class NotifyUserWorker(context: Context, params: WorkerParameters) : Worker(cont
             }
         }
 
-//        ViewModelProvider.apiViewModel?.notifyAppKilled(
-//            deviceID,
-//            detectNetworkCountry(applicationContext) ?: "",
-//            "",
-//            outTime
-//        )
         return Result.success()
     }
 
