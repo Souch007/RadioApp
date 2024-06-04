@@ -4,8 +4,10 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
@@ -22,6 +24,7 @@ import java.util.Date
 import java.util.Locale
 
 class NotifyUserService : Service() {
+    private lateinit var workDoneReceiver: BroadcastReceiver
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -29,22 +32,31 @@ class NotifyUserService : Service() {
     override fun onCreate() {
         super.onCreate()
         startForegroundService()
-        makeApiCallStart(true)
+//        makeApiCallStart(true)
+
+        workDoneReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == "com.netcast.radio.ACTION_WORK_DONE") {
+                    stopSelf()
+                }
+            }
+        }
+        val filter = IntentFilter("com.netcast.radio.ACTION_WORK_DONE")
+        registerReceiver(workDoneReceiver, filter)
     }
 
     override fun onDestroy() {
         Log.d("onDestroy", "onDestroy: ")
         super.onDestroy()
-//        makeApiCallStart(false)
+        unregisterReceiver(workDoneReceiver)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
         Log.d("onTaskRemoved123", "onTaskRemoved:12344 ")
-//        makeApiCallStart(false)
         val notifyUserWorkRequest = OneTimeWorkRequest.Builder(NotifyUserWorker::class.java).build()
         WorkManager.getInstance(applicationContext).enqueue(notifyUserWorkRequest)
-
+//        stopSelf()
+        super.onTaskRemoved(rootIntent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -76,34 +88,34 @@ class NotifyUserService : Service() {
         }
     }
 
-    private fun makeApiCallStart(istoStart: Boolean) {
-        val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        val inTime= if (istoStart) getCurrentDateTime() else ""
-        val outTime= if (!istoStart) getCurrentDateTime() else ""
-        ViewModelProvider.apiViewModel?.notifyAppKilled(
-            deviceID,
-            detectNetworkCountry(applicationContext) ?: Locale.getDefault().country,
-            inTime,
-            outTime
-        )
-    }
+//    private fun makeApiCallStart(istoStart: Boolean) {
+//        val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+//        val inTime= if (istoStart) getCurrentDateTime() else ""
+//        val outTime= if (!istoStart) getCurrentDateTime() else ""
+//        ViewModelProvider.apiViewModel?.notifyAppKilled(
+//            deviceID,
+//            detectNetworkCountry(applicationContext) ?: Locale.getDefault().country,
+//            inTime,
+//            outTime
+//        )
+//    }
 
-    private fun getCurrentDateTime(): String {
-        val dateFormat = SimpleDateFormat("yy-MM-dd HH:mm", Locale.getDefault())
-        val date = Date()
-        return dateFormat.format(date)
-    }
-
-
-    private fun detectNetworkCountry(context: Context): String? {
-        try {
-            val telephonyManager =
-                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-
-            return telephonyManager.networkCountryIso
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
+//    private fun getCurrentDateTime(): String {
+//        val dateFormat = SimpleDateFormat("yy-MM-dd HH:mm", Locale.getDefault())
+//        val date = Date()
+//        return dateFormat.format(date)
+//    }
+//
+//
+//    private fun detectNetworkCountry(context: Context): String? {
+//        try {
+//            val telephonyManager =
+//                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+//
+//            return telephonyManager.networkCountryIso
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return null
+//    }
 }

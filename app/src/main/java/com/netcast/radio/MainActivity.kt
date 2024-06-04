@@ -173,6 +173,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         } else {
             startService(serviceIntent)
         }
+        mainViewModel.notifyAppKilled(DEVICE_ID, detectNetworkCountry(this)?:"",getCurrentDateTime(),"")
 
     }
 
