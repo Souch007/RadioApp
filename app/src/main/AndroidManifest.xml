@@ -177,6 +177,7 @@
         <receiver
             android:name=".ui.ui.settings.AlramReceiver"
             android:enabled="true"
+            android:process=":remote"
             android:exported="false" />
 
         <receiver

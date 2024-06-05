@@ -302,8 +302,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         handleChannel()
         dataBinding.playerView.player?.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                playwhenReady = playWhenReady
+
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
+                    playwhenReady = playWhenReady
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
                     count = 0
