@@ -304,7 +304,9 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
                 if (playbackState == PlaybackStateCompat.STATE_PLAYING) {
-                    playwhenReady = playWhenReady
+                    if (playWhenReady)
+                        playwhenReady = playWhenReady
+
                     dataBinding.icPlay.setImageResource(com.netcast.radio.R.drawable.pause_button)
                     dataBinding.progressDownload.visibility = View.INVISIBLE
                     count = 0
@@ -623,7 +625,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
         mainViewModel._alternateChannels.observe(this) {
             when (it) {
                 is Resource.Failure -> {
-                    dataBinding.pb.visibility=View.GONE
+                    dataBinding.pb.visibility = View.GONE
 //                    dataBinding.tvNoStation.visibility=View.VISIBLE
                     val data = AppSingelton.suggestedRadioList
                     setData(data)
@@ -631,7 +633,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    dataBinding.pb.visibility=View.GONE
+                    dataBinding.pb.visibility = View.GONE
                     val data = it.value.all.ifEmpty { AppSingelton.suggestedRadioList }
                     setData(data)
                 }

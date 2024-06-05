@@ -1,6 +1,7 @@
 package com.netcast.radio.ui.ui.settings
 
 import android.content.Context
+import android.content.Intent
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -21,34 +22,29 @@ import java.util.Locale
 class NotifyUserWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
     private lateinit var apiService: AppApis
     override fun doWork(): Result {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(AppConstants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit = Retrofit.Builder().baseUrl(AppConstants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
 
         apiService = retrofit.create(AppApis::class.java)
-        val deviceID = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
+        val deviceID = Settings.Secure.getString(
+            applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+        )
         val outTime = getCurrentDateTime()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                apiService.notifyAppKilled(
-                    deviceID,
-                    detectNetworkCountry(applicationContext) ?: "",
-                    "",
-                    outTime
+                var data = apiService.notifyAppKilled(
+                    deviceID, detectNetworkCountry(applicationContext) ?: "", "", outTime
                 )
+                val intent = Intent("com.netcast.radio.ACTION_WORK_DONE")
+                applicationContext.sendBroadcast(intent)
+                Log.d("NotifyUser", "doWork: ${data}")
             } catch (e: Exception) {
                 Log.d("Ecxeption", "doWork: ${e.printStackTrace()}")
             }
         }
 
-//        ViewModelProvider.apiViewModel?.notifyAppKilled(
-//            deviceID,
-//            detectNetworkCountry(applicationContext) ?: "",
-//            "",
-//            outTime
-//        )
+
         return Result.success()
     }
 
@@ -60,7 +56,8 @@ class NotifyUserWorker(context: Context, params: WorkerParameters) : Worker(cont
 
     private fun detectNetworkCountry(context: Context): String? {
         return try {
-            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val telephonyManager =
+                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             telephonyManager.networkCountryIso
         } catch (e: Exception) {
             e.printStackTrace()
