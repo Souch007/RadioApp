@@ -7,6 +7,7 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.netcast.radio.BuildConfig
 import com.netcast.radio.base.ViewModelProvider
 import com.netcast.radio.request.AppApis
 import com.netcast.radio.request.AppConstants
@@ -34,7 +35,8 @@ class NotifyUserWorker(context: Context, params: WorkerParameters) : Worker(cont
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 var data = apiService.notifyAppKilled(
-                    deviceID, detectNetworkCountry(applicationContext) ?: "", "", outTime
+                    deviceID, detectNetworkCountry(applicationContext) ?: "", "", outTime,
+                    BuildConfig.VERSION_NAME
                 )
                 val intent = Intent("com.netcast.radio.ACTION_WORK_DONE")
                 applicationContext.sendBroadcast(intent)

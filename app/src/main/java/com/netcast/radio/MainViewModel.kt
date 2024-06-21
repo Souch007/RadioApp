@@ -24,7 +24,6 @@ import com.netcast.radio.ui.radio.adapter.OnClickListnerRadio
 import com.netcast.radio.ui.radio.countries.Data
 import com.netcast.radio.ui.radio.data.temp.NotifyUserResponse
 import com.netcast.radio.ui.radio.data.temp.RadioLists
-import com.netcast.radio.ui.radio.data.temp.RadioResponse
 import com.netcast.radio.ui.radioplayermanager.AlternateChannels
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.search.adapters.OnSearchTagListener
@@ -99,8 +98,7 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
     fun getPodCastListing(podcastViewModel: PodcastViewModel, country: String?) {
         viewModelScope.launch {
 //            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing("")
-            podcastViewModel._podcastListingMutable.value =
-                appRepository.getPodCastListing(country ?: "")
+            podcastViewModel._podcastListingMutable.value = appRepository.getPodCastListing(country ?: "")
 
         }
     }
@@ -403,10 +401,10 @@ class MainViewModel : BaseViewModel(), OnClickListnerRadio, OnClickListenerPodca
 
         }
     }
-    fun notifyAppKilled(id: String,country: String,appinTime:String,appOutTime:String) {
+    fun notifyAppKilled(id: String,country: String,appinTime:String,appOutTime:String,versionCode:String) {
         Log.d("notify.value", "notifyAppKilled: ")
         viewModelScope.launch {
-            notify.value= appRepository.notifyAppKilled(id,country,appinTime,appOutTime)
+            notify.value= appRepository.notifyAppKilled(id,country,appinTime,appOutTime,versionCode)
             Log.d("notify.value", ""+notify.value)
 
         }

@@ -71,8 +71,8 @@ import com.netcast.radio.ui.radioplayermanager.RadioPlayerActivity
 import com.netcast.radio.ui.search.SearchViewModel
 import com.netcast.radio.ui.seeall.SeeAllViewModel
 import com.netcast.radio.ui.ui.settings.AlarmFragment
-import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 import com.netcast.radio.ui.ui.settings.NotifyUserService
+import com.netcast.radio.ui.ui.settings.SleepTimerFragment
 import com.netcast.radio.util.AlternateChannelsDialog
 import com.netcast.radio.util.BottomSheetOptionsFragment
 import com.netcast.radio.util.OptionsClickListner
@@ -122,6 +122,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+        val isFirstTime=sharedPreferences.getInt("isFirstTime",0)
+        sharedPreferences.edit().putInt("isFirstTime",(isFirstTime+1)).apply()
+
 
 //        dataBinding.slidingLayout.setDragView(dataBinding.slidedown)
 //        dataBinding.slidingLayout.setDragView(dataBinding.playerOptions)
@@ -154,7 +157,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         if (AppSingelton.animationShow == 0)
             hideProgressBar()
         else
-            dataBinding.llShimmerLayoutmain.visibility=View.GONE
+            dataBinding.llShimmerLayoutmain.visibility = View.GONE
 
         checkOfflineChannels()
         getIntentData()
@@ -173,7 +176,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         } else {
             startService(serviceIntent)
         }
-        mainViewModel.notifyAppKilled(DEVICE_ID, detectNetworkCountry(this)?:"",getCurrentDateTime(),"")
+        mainViewModel.notifyAppKilled(
+            DEVICE_ID,
+            detectNetworkCountry(this) ?: "",
+            getCurrentDateTime(),
+            "",
+            BuildConfig.VERSION_NAME
+        )
 
     }
 
@@ -200,10 +209,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun hideProgressBar() {
+        val isFirstTime = sharedPreferences.getInt("isFirstTime", 0)
+        val duration = if (isFirstTime > 1) 1500 else 5000
         val fadeIn = AlphaAnimation(0.0f, 1.0f)
         fadeIn.duration = 1000
         val fadeOut = AlphaAnimation(1.0f, 0.0f)
-        fadeOut.duration = 5000
+        fadeOut.duration = duration.toLong()
         val fadeSequence = AnimationSet(true)
         fadeSequence.addAnimation(fadeIn)
         fadeSequence.addAnimation(fadeOut)
@@ -213,7 +224,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             override fun onAnimationEnd(animation: Animation?) {
                 dataBinding.llShimmerLayout.visibility = View.GONE
                 dataBinding.llShimmerLayoutmain.visibility = View.GONE
-                AppSingelton.animationShow=1
+                AppSingelton.animationShow = 1
 
             }
 
@@ -407,9 +418,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                 is Resource.Failure -> {
                     Log.d("TAG", "Observers: ")
                 }
+
                 is Resource.Loading -> {
                     Log.d("TAG", "Observers: ")
                 }
+
                 is Resource.Success -> {
                     Log.d("TAG", "Observers: ")
 
@@ -533,7 +546,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         seeAllViewModel =
             ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
         mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
-        com.netcast.radio.base.ViewModelProvider.apiViewModel=mainViewModel
+        com.netcast.radio.base.ViewModelProvider.apiViewModel = mainViewModel
         Handler(Looper.getMainLooper()).postDelayed({
             callApis()
             setUpUI()
@@ -823,7 +836,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
     override fun onDestroy() {
         super.onDestroy()
-        mainViewModel.notifyAppKilled(DEVICE_ID,detectNetworkCountry(this)?: "","",getCurrentDateTime())
+        mainViewModel.notifyAppKilled(
+            DEVICE_ID,
+            detectNetworkCountry(this) ?: "",
+            "",
+            getCurrentDateTime(),
+            BuildConfig.VERSION_NAME
+        )
 
     }
 

@@ -140,7 +140,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -148,8 +148,9 @@
 
                 <!-- the host should contain your domain. The pattern should be same as it's mentioned without any special char -->
                 <data
-                    android:host="netcast.page.link"
-                    android:scheme="https" />
+                    android:host="netcast.page.link"/>
+                <data
+                    android:scheme="https"/>
             </intent-filter>
 
             <meta-data

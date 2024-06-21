@@ -83,7 +83,9 @@ interface AppApis {
     suspend fun notifyAppKilled( @Query("device_id") device_id: String,
                                  @Query("country_name") country_name: String,
                                  @Query("app_in_time") app_in_time: String,
-                                 @Query("app_out_time") app_out_time: String): NotifyUserResponse
+                                 @Query("app_out_time") app_out_time: String,
+                                 @Query("version_name") version_name: String
+    ): NotifyUserResponse
 
 
 
