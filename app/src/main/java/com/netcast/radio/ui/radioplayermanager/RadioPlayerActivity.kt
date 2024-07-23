@@ -380,6 +380,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                                 if (count == 0 && AppSingelton._radioSelectedChannel.value!!.secondaryUrl.isNotEmpty()) AppSingelton._radioSelectedChannel.value!!.secondaryUrl else AppSingelton._radioSelectedChannel.value!!.url
                             val uri: Uri = Uri.parse(filePath)
                             val mediaItem = MediaItem.fromUri(uri)
+
                             exoPlayer.setMediaItem(mediaItem)
                             exoPlayer.prepare()
                             exoPlayer.play()

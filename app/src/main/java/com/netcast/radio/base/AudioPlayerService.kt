@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 import android.graphics.Bitmap
+import android.media.AudioManager
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -23,6 +24,8 @@ import java.util.concurrent.ExecutionException
 
 class AudioPlayerService : LifecycleService() {
     var playerNotificationManager: PlayerNotificationManager? = null
+    private var audioManager: AudioManager? = null
+    private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
 
     companion object {
         fun startService(context: Context) {
@@ -39,13 +42,46 @@ class AudioPlayerService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        initAudioFocusChangeListener()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        initListener(AppSingelton._currentPlayingChannel.value)
+//        initListener(AppSingelton._currentPlayingChannel.value)
+        if (requestAudioFocus()) {
+            initListener(AppSingelton._currentPlayingChannel.value)
+        } else {
+            // Handle the case where audio focus is not granted
+            stopSelf()
+        }
         return START_NOT_STICKY
+    }
+    private fun requestAudioFocus(): Boolean {
+        val result = audioManager?.requestAudioFocus(
+            audioFocusChangeListener,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN
+        )
+        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+    }
+
+    private fun releaseAudioFocus() {
+        audioManager?.abandonAudioFocus(audioFocusChangeListener)
+    }
+
+    private fun initAudioFocusChangeListener() {
+        audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+            when (focusChange) {
+                AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                    AppSingelton.exoPlayer?.playWhenReady = false
+                }
+
+                AudioManager.AUDIOFOCUS_GAIN -> {
+                    AppSingelton.exoPlayer?.playWhenReady = true
+                }
+            }
+        }
     }
 
     private fun initListener(_currentPlayingChannel: PlayingChannelData?) {
@@ -183,6 +219,7 @@ class AudioPlayerService : LifecycleService() {
     override fun onDestroy() {
         Log.d("onDestroyAudio","onDestroy: ")
         releasePlayer()
+        releaseAudioFocus()
         super.onDestroy()
     }
 
