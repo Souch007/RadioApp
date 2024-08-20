@@ -49,7 +49,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.netcast.radio.base.AppSingelton
@@ -122,8 +121,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         initializeViewModel()
         Observers()
         dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-        val isFirstTime=sharedPreferences.getInt("isFirstTime",0)
-        sharedPreferences.edit().putInt("isFirstTime",(isFirstTime+1)).apply()
+        val isFirstTime = sharedPreferences.getInt("isFirstTime", 0)
+        sharedPreferences.edit().putInt("isFirstTime", (isFirstTime + 1)).apply()
 
 
 //        dataBinding.slidingLayout.setDragView(dataBinding.slidedown)
@@ -164,7 +163,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         if (sharedPreferences.getBoolean("delete_completed_episode", true))
             deleteCompletedEpisodes()
 
-        handleIncomingDeepLinks()
+//        handleIncomingDeepLinks()
 
         var versionCode = BuildConfig.VERSION_NAME
         dataBinding.splashview.appCompatTextView2.text = "Version Info ${versionCode}\n© 2016-2024"
@@ -184,12 +183,43 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             BuildConfig.VERSION_NAME
         )
 
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkIntent: Intent = intent
+        val appLinkAction: String? = appLinkIntent.action
+        val appLinkData: Uri? = appLinkIntent.data
     }
 
     private fun getCurrentDateTime(): String {
         val dateFormat = SimpleDateFormat("yy-MM-dd HH:mm", Locale.getDefault())
         val date = Date()
         return dateFormat.format(date)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val appLinkAction = intent.action
+        val appLinkData: Uri? = intent.data
+//        val uri = Uri.parse("myscheme://myhost?data=yourJsonDataHere")
+//        val dataJson = uri.getQueryParameter("data")
+
+        if (Intent.ACTION_VIEW == appLinkAction) {
+            appLinkData?.lastPathSegment?.also { channelsdata ->
+                Uri.parse("content://channelsdata/")
+                    .buildUpon()
+                    .appendPath(channelsdata)
+                    .build().also { appData ->
+                        val channeldataJson = appData.getQueryParameter("channeldata")
+
+                        AppSingelton._radioSelectedChannel.value =
+                            Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
+
+                    }
+            }
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -230,10 +260,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
     }
 
     private fun searchWatcherListener() {
@@ -722,32 +748,32 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         }
     }
 
-    private fun handleIncomingDeepLinks() {
-        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
-
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                }
-
-                deepLink?.let { uri ->
-                    val channeldataJson = deepLink.getQueryParameter("channeldata")
-
-//                    val postId = uri.toString().substring(deepLink.toString().lastIndexOf("/") + 1)
-                    when {
-                        uri.toString().contains("channels") -> {
-//                            navigateToNewsFeed(Gs)
-                            AppSingelton._radioSelectedChannel.value =
-                                Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
-
-                        }
-                    }
-                }
-            }.addOnFailureListener {
-                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
-            }
-    }
+//    private fun handleIncomingDeepLinks() {
+//        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
+//            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+//                var deepLink: Uri? = null
+//
+//                if (pendingDynamicLinkData != null) {
+//                    deepLink = pendingDynamicLinkData.link
+//                }
+//
+//                deepLink?.let { uri ->
+//                    val channeldataJson = deepLink.getQueryParameter("channeldata")
+//
+////                    val postId = uri.toString().substring(deepLink.toString().lastIndexOf("/") + 1)
+//                    when {
+//                        uri.toString().contains("channels") -> {
+////                            navigateToNewsFeed(Gs)
+//                            AppSingelton._radioSelectedChannel.value =
+//                                Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
+//
+//                        }
+//                    }
+//                }
+//            }.addOnFailureListener {
+//                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
+//            }
+//    }
 
     private fun checkUpdate() {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo

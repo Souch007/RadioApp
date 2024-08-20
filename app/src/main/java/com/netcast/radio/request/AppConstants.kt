@@ -3,16 +3,11 @@ package com.netcast.radio.request
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.dynamiclinks.ktx.androidParameters
-import com.google.gson.Gson
 import com.netcast.radio.PlayingChannelData
 
 object AppConstants {
- val ALARM_CHECKBOX: String="alarm_checkbox"
- const val SELECTED_ALARM_RADIO: String="alarm_radiodata"
+    val ALARM_CHECKBOX: String = "alarm_checkbox"
+    const val SELECTED_ALARM_RADIO: String = "alarm_radiodata"
     const val STOPFOREGROUND_ACTION: String = "STOP_SERVICE"
     const val NOTIFICATION_ID: Int = 5709
     const val RADIO_PLAYER_ACTIVITY: String = "RadioPlayerActivity"
@@ -20,7 +15,7 @@ object AppConstants {
     const val DownloadActivity: String = "DownloadActivity"
     const val BASE_URL = "https://apitest.netcast.com/"
     const val FETCH_RADIO = "getRadioListing"
-    const val FETCH_MORERADIO ="categoryList"
+    const val FETCH_MORERADIO = "categoryList"
     const val PODCAST_LISTING = "getPodcastListing"
     const val BLOCK_STATION = "blockChannel/"
     const val UN_BLOCK_STATION = "unblockChannel/"
@@ -36,62 +31,39 @@ object AppConstants {
     const val PLAYER_SECS = "player_ffbbsec"
     const val SKIP_SLIENCE = "player_skip_silence"
     const val AUTO_PLAY_EPISODES = "auto_play_episodes"
-   const val PREFIX = "https://netcast.page.link"
-   const val UPDATE_REQUEST_CODE = 101
-   fun share(messageToShare: String, appUrl: PlayingChannelData?,context: Context) {
-      AppConstants.generateSharingLink(
-//            deepLink = AppConstants.PREFIX.toUri(),
-         deepLink = Uri.parse("https://netcast.com/"),
-         Gson().toJson(appUrl)
-      ) { generatedLink ->
-         shareDeepLink(messageToShare,generatedLink,context)
-      }
+    const val PREFIX = "https://netcast.page.link"
+    const val UPDATE_REQUEST_CODE = 101
+    fun share(messageToShare: String, appUrl: PlayingChannelData?, context: Context) {
+        val appLinkUri = Uri.Builder()
+            .scheme("https")
+            .authority("netcast.com")
+            .appendPath("channelsdata")
+            .appendQueryParameter("channelName", appUrl?.name)
+            .build()
 
-   }
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, messageToShare)
+            putExtra(Intent.EXTRA_TEXT, appLinkUri.toString())
+        }
 
-   private fun shareDeepLink(message :String, deepLink: String,context:Context) {
-      val intent = Intent(Intent.ACTION_SEND)
-      intent.type = "text/plain"
+        context.startActivity(Intent.createChooser(shareIntent, messageToShare))
+    }
 
-      intent.putExtra(Intent.EXTRA_TEXT, message + "\n" + deepLink)
+    fun shareAppLinkWithFallback(context: Context, message: String) {
+        // Base App Link
+        val appLinkUri = "intent://channelsdata/#Intent;scheme=https;" +
+                "package=com.netcast.radio;" +
+                "S.browser_fallback_url=https://play.google.com/store/apps/details?id=com.netcast.radio;end"
 
-      intent.putExtra(Intent.EXTRA_TEXT, deepLink)
-      context.startActivity(intent)
+        // Combine the message with the App Link
+        val shareContent = "$message\n$appLinkUri"
 
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareContent)
+        }
 
-   }
-
-
-   fun generateSharingLink(
-      deepLink: Uri,
-      channeldata:String,
-      getShareableLink: (String) -> Unit = {},
-   ) {
-      FirebaseDynamicLinks.getInstance().createDynamicLink().run {
-         // What is this link parameter? You will get to know when we will actually use this function.
-         link = deepLink
-         domainUriPrefix = PREFIX
-         link = link!!.buildUpon().appendQueryParameter("channeldata", channeldata).build()
-
-         // Pass your preview Image Link here;
-       /*  setSocialMetaTagParameters(
-            DynamicLink.SocialMetaTagParameters.Builder()
-               .setImageUrl(previewImageLink)
-               .build()
-         )*/
-         // Required
-         androidParameters {
-            build()
-         }
-         // Finally
-         buildShortDynamicLink()
-      }.also {
-         it.addOnSuccessListener { dynamicLink ->
-            getShareableLink.invoke(dynamicLink.shortLink.toString())
-         }
-         it.addOnFailureListener {ex->
-            //Log("TAG", "generateSharingLink: ${ex.message}")
-         }
-      }
-   }
+        context.startActivity(Intent.createChooser(shareIntent, "Share link via"))
+    }
 }

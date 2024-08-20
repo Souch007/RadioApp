@@ -140,22 +140,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+          <!--  <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                &lt;!&ndash; the host should contain your domain. The pattern should be same as it's mentioned without any special char &ndash;&gt;
+                <data android:host="netcast.com/" />
+                <data android:scheme="https" />
+            </intent-filter>-->
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- the host should contain your domain. The pattern should be same as it's mentioned without any special char -->
-                <data
-                    android:host="netcast.page.link"/>
-                <data
-                    android:scheme="https"/>
+                <data android:scheme="https" />
+                <data android:host="netcast.com" />
+                <data android:pathPrefix="/channelsdata" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".ui.ui.settings.AlarmFragment"

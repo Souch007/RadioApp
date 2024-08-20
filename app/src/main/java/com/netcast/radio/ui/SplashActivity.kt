@@ -9,25 +9,18 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.gson.Gson
 import com.netcast.radio.MainActivity
-import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
-import com.netcast.radio.BuildConfig
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.util.LocationHelper
 import com.netcast.radio.util.LocationUtils
@@ -45,18 +38,16 @@ class SplashActivity : AppCompatActivity() {
         val appmode = sharedPreferences.getInt("App_Mode", -1)
 
 
-        if (appmode == 0)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        else
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        if (appmode == 0) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-       /* val tv_VersionInfo=findViewById<AppCompatTextView>(R.id.appCompatTextView2)
-        var versionCode = BuildConfig.VERSION_NAME
-        tv_VersionInfo.text="Version Info ${versionCode}\n© 2016-2024"
-*/
+        /* val tv_VersionInfo=findViewById<AppCompatTextView>(R.id.appCompatTextView2)
+         var versionCode = BuildConfig.VERSION_NAME
+         tv_VersionInfo.text="Version Info ${versionCode}\n© 2016-2024"
+ */
 
         val layoutToFade = findViewById<View>(R.id.main)
 
@@ -78,7 +69,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
 
-
     private fun locationandShareSettings() {
 
         if (!LocationUtils.isGpsEnabled(this)) {
@@ -95,45 +85,49 @@ class SplashActivity : AppCompatActivity() {
 
         }
 
-        handleIncomingDeepLinks()
+//        handleIncomingDeepLinks()
     }
 
-    private fun handleIncomingDeepLinks() {
-        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
-
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                }
-
-                deepLink?.let { uri ->
-                    val channeldataJson = deepLink.getQueryParameter("channeldata")
-
-//                    val postId = uri.toString().substring(deepLink.toString().lastIndexOf("/") + 1)
-                    when {
-                        uri.toString().contains("channels") -> {
-//                            navigateToNewsFeed(Gs)
-                            AppSingelton._radioSelectedChannel.value =
-                                Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
-
-                        }
-                    }
-                }
-            }.addOnFailureListener {
-                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
-            }
-    }
+//    private fun handleIncomingDeepLinks() {
+//        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
+//            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+//                var deepLink: Uri? = null
+//
+//                if (pendingDynamicLinkData != null) {
+//                    deepLink = pendingDynamicLinkData.link
+//                }
+//
+//                deepLink?.let { uri ->
+//                    val channeldataJson = deepLink.getQueryParameter("channeldata")
+//
+////                    val postId = uri.toString().substring(deepLink.toString().lastIndexOf("/") + 1)
+//                    when {
+//                        uri.toString().contains("channels") -> {
+////                            navigateToNewsFeed(Gs)
+//                            AppSingelton._radioSelectedChannel.value =
+//                                Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
+//
+//                        }
+//                    }
+//                }
+//            }.addOnFailureListener {
+//                //Log(TAG, "handleIncomingDeepLinks: ${it.message}")
+//            }
+//    }
 
     private fun checkLocationPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && sharedPreferences.getInt("loc_permission",0)!=1) {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && sharedPreferences.getInt(
+                "loc_permission", 0
+            ) != 1
+        ) {
             // Permission is not granted, request it
             showCustomRationaleDialog()
             return false
-        }
-        else{
+        } else {
             navigateToMain()
-            return  false
+            return false
         }
 
         return true
@@ -185,6 +179,7 @@ class SplashActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         locationandShareSettings()
     }
+
     private fun showCustomRationaleDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
@@ -196,15 +191,12 @@ class SplashActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     LOCATION_PERMISSION_REQUEST_CODE
                 )
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                sharedPreferences.edit().putInt("loc_permission",1).apply()
+            }.setNegativeButton("Cancel") { dialog, _ ->
+                sharedPreferences.edit().putInt("loc_permission", 1).apply()
                 dialog.dismiss()
 
                 navigateToMain()
-            }
-            .create()
-            .show()
+            }.create().show()
     }
 
 }
