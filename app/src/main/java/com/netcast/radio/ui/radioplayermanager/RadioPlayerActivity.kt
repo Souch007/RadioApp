@@ -284,6 +284,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         AppSingelton._isPlayerFragVisible.value = false
         finish()
     }
@@ -549,7 +550,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                     it.id,
                     "PODCAST",
                     getUserCountry(this@RadioPlayerActivity) ?: "",
-                    getDeviceId()
+                    getDeviceIdNew()
                 )
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -659,7 +660,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
                         it.id,
                         it.type!!,
                         getUserCountry(this@RadioPlayerActivity) ?: "",
-                        getDeviceId()
+                        getDeviceIdNew()
                     )
                     val newalternatives =
                         viewModel.alternateChannels?.filter { it.name != AppSingelton.radioSelectedChannel.value?.name && !it.isBlocked }
@@ -687,7 +688,7 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
 
     }
 
-    private fun getDeviceId(): String {
+    fun getDeviceIdNew(): String {
         val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         return deviceID
     }

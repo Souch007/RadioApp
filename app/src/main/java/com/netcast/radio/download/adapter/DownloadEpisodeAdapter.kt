@@ -1,7 +1,6 @@
 package com.netcast.radio.download.adapter
 
 import android.view.View
-import com.downloader.Progress
 import com.netcast.radio.R
 import com.netcast.radio.base.BaseAdapter
 import com.netcast.radio.databinding.DownloadRowBinding
@@ -113,10 +112,6 @@ class DownloadEpisodeAdapter(
 
 }
 
-
-
-fun toPercent(progress: Progress) =
-    (100 * (progress.currentBytes / progress.totalBytes.toDouble())).toInt().toByte()
 
 interface OnClickEpisodeDownload {
     fun onDownloadedEpisodeClicked(data: Data)

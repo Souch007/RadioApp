@@ -268,7 +268,7 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY * 7,
-            pendingIntent
+            pendingIntent!!
         )
         sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
     }
@@ -367,13 +367,17 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-            )
+            pendingIntent?.let {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
+                )
+            }
         } else {
-            alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-            )
+            pendingIntent?.let {
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
+                )
+            }
         }
 
         sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()

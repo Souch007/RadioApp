@@ -103,6 +103,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
         val appmode = sharedPreferences.getInt("App_Mode", -1)
@@ -116,7 +117,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        super.onCreate(savedInstanceState)
+
         DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         initializeViewModel()
         Observers()
@@ -213,7 +214,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
                     .appendPath(channelsdata)
                     .build().also { appData ->
                         val channeldataJson = appData.getQueryParameter("channeldata")
-
                         AppSingelton._radioSelectedChannel.value =
                             Gson().fromJson(channeldataJson, PlayingChannelData::class.java)
 
@@ -496,42 +496,56 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     }
 
     private fun showSlideUpPanel() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (AppSingelton._currentPlayingChannel.value != null && AppSingelton.currentActivity.matches(
-                    AppConstants.MAIN_ACTIVITY.toRegex()
-                )
-            ) {
-                dataBinding.playingChannelName.text =
-                    AppSingelton._currentPlayingChannel.value!!.name
-                Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                    .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH).into(dataBinding.slideUp)
 
-                Glide.with(this).load(AppSingelton._currentPlayingChannel.value!!.favicon)
-                    .error(R.drawable.logo).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH).into(dataBinding.slideUpIv)
-                dataBinding.currentRadioInfo.text = AppSingelton._currentPlayingChannel.value!!.name
+        try {
+            Handler(Looper.getMainLooper()).postDelayed({
+                val activity = this@MainActivity
+                if (activity.isFinishing || activity.isDestroyed) return@postDelayed
 
-                dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
-                dataBinding.playButtonCarousel.showTimeoutMs = -1
-                dataBinding.playBtn.player = AppSingelton.exoPlayer
-                dataBinding.playBtn.showController()
-                dataBinding.playBtn.setShowPreviousButton(false)
-                dataBinding.playBtn.setShowNextButton(false)
-                AppSingelton.isNewItemAdded.value = true
+                val currentChannel = AppSingelton._currentPlayingChannel.value
+                if (currentChannel != null && AppSingelton.currentActivity.matches(AppConstants.MAIN_ACTIVITY.toRegex())) {
 
+                    dataBinding.playingChannelName.text = currentChannel.name
 
-                // Added Close Sliding Panel Button
-                dataBinding.closeButton.setOnClickListener {
-                    closePlayerandPanel()
+                    val context = dataBinding.slideUp.context // safer than using 'this'
 
+                    Glide.with(context)
+                        .load(currentChannel.favicon)
+                        .error(R.drawable.logo)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .into(dataBinding.slideUp)
+
+                    Glide.with(context)
+                        .load(currentChannel.favicon)
+                        .error(R.drawable.logo)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .into(dataBinding.slideUpIv)
+
+                    dataBinding.currentRadioInfo.text = currentChannel.name
+
+                    dataBinding.slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+                    dataBinding.playButtonCarousel.player = AppSingelton.exoPlayer
+                    dataBinding.playButtonCarousel.showTimeoutMs = -1
+                    dataBinding.playBtn.player = AppSingelton.exoPlayer
+                    dataBinding.playBtn.showController()
+                    dataBinding.playBtn.setShowPreviousButton(false)
+                    dataBinding.playBtn.setShowNextButton(false)
+
+                    AppSingelton.isNewItemAdded.value = true
+
+                    dataBinding.closeButton.setOnClickListener {
+                        closePlayerandPanel()
+                    }
                 }
+            }, 1000)
 
-            }
+        }
+        catch (e:Exception){
+            Log.d("SliderException", "showSlideUpPanel: "+e.printStackTrace())
+        }
 
-
-        }, 1000)
     }
 
     private fun closePlayerandPanel() {

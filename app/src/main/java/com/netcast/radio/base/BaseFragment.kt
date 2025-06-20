@@ -15,6 +15,7 @@ import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
@@ -23,17 +24,26 @@ import com.netcast.radio.db.AppDatabase
 
 open class BaseFragment < T: ViewDataBinding>(@LayoutRes private val layoutResourceId : Int) : Fragment() {
     private var _binding: T? = null
-    val binding: T get() = _binding!!
+    val binding: T
+        get() = _binding
+            ?: throw IllegalStateException("Accessing binding outside of view lifecycle")
+
+    val bindingOrNull: T?
+        get() = if (view != null && viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+            _binding
+        } else null
+
     open fun T.initialize() {}
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = DataBindingUtil.inflate(inflater, layoutResourceId, container!!, false)
+    ): View {
+        _binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         _binding?.lifecycleOwner = viewLifecycleOwner
-        binding.initialize()
-        return _binding!!.root
+        _binding?.initialize()
+        return binding.root
     }
 
     override fun onDestroyView() {
