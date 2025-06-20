@@ -15,23 +15,36 @@ class RemoteDataSource {
     }
 
     fun <Api> buildApi(api: Class<Api>): Api {
+        val okHttpClient = OkHttpClient.Builder().also { client ->
+            // Add custom header interceptor
+            client.addInterceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                    .header("originator-version", "Android-"+BuildConfig.VERSION_NAME)
+                    .method(original.method, original.body)
+                chain.proceed(requestBuilder.build())
+            }
+
+            if (BuildConfig.DEBUG) {
+                val logging = HttpLoggingInterceptor()
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+                client.addInterceptor(logging)
+            }
+
+            client.connectTimeout(60, TimeUnit.SECONDS)
+            client.readTimeout(60, TimeUnit.SECONDS)
+            client.connectionPool(ConnectionPool(0, 5, TimeUnit.MINUTES))
+            client.protocols(listOf(Protocol.HTTP_1_1))
+        }.build()
+
         return Retrofit.Builder()
             .baseUrl(AppConstants.BASE_URL)
-            .client(OkHttpClient.Builder().also { client ->
-                if (BuildConfig.DEBUG) {
-                    val logginInt = HttpLoggingInterceptor()
-                    logginInt.setLevel(HttpLoggingInterceptor.Level.BODY)
-                    client.addInterceptor(logginInt)
-                    client.connectTimeout(60,TimeUnit.SECONDS)
-                    client.readTimeout(60,TimeUnit.SECONDS)
-                    client.connectionPool(ConnectionPool(0, 5, TimeUnit.MINUTES))
-                        .protocols(listOf(Protocol.HTTP_1_1))
-                }
-            }.build())
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(api)
     }
+
 
     fun <Api> buildAuthenticatedApi(api: Class<Api>, authToken: String? = null): Api {
         return Retrofit.Builder()

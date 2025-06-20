@@ -102,6 +102,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
     private lateinit var appUpdateManager: AppUpdateManager
 
 
+    override val layoutRes: Int
+        get() = R.layout.activity_main
+    override val bindingVariable: Int
+        get() = BR.mainViewModel
+    override val viewModelClass: Class<MainViewModel>
+        get() = MainViewModel::class.java
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
@@ -587,9 +595,10 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             ViewModelProvider(this@MainActivity, factory).get(SeeAllViewModel::class.java)
         mainViewModel = ViewModelProvider(this@MainActivity, factory).get(MainViewModel::class.java)
         com.netcast.radio.base.ViewModelProvider.apiViewModel = mainViewModel
+        setUpUI()
         Handler(Looper.getMainLooper()).postDelayed({
             callApis()
-            setUpUI()
+
         }, 200)
     }
 
@@ -653,12 +662,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         return ViewModelFactory(AppRepository(remoteDataSource.buildApi(AppApis::class.java)))
     }
 
-    override val layoutRes: Int
-        get() = R.layout.activity_main
-    override val bindingVariable: Int
-        get() = BR.mainViewModel
-    override val viewModelClass: Class<MainViewModel>
-        get() = MainViewModel::class.java
 
     override fun onResume() {
         super.onResume()

@@ -60,6 +60,7 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
+
             dataBinding = DataBindingUtil.setContentView(this, layoutRes)
             dataBinding.lifecycleOwner = this
             appDatabase = initializeDB(this)
