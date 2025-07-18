@@ -54,6 +54,9 @@ fun manageState(progressBar: ProgressBar, state: Boolean) {
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter("setImage")
 fun setImage(imageView: ImageView, image: String) {
+    if (imageView == null || image.isNullOrBlank()) {
+        return
+    }
     Glide.with(imageView.context)
         .load(image)
         .error(R.drawable.logo)
@@ -65,6 +68,9 @@ fun setImage(imageView: ImageView, image: String) {
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter("setImage")
 fun setImage(imageView: ShapeableImageView, image: String) {
+    if (imageView == null || image.isNullOrBlank()) {
+        return
+    }
     Glide.with(imageView.context)
         .load(image)
         .error(R.drawable.logo)

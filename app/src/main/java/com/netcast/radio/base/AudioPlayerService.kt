@@ -53,6 +53,7 @@ class AudioPlayerService : LifecycleService() {
             initListener(AppSingelton._currentPlayingChannel.value)
         } else {
             // Handle the case where audio focus is not granted
+            stopForeground(true);
             stopSelf()
         }
         return START_NOT_STICKY
@@ -220,6 +221,8 @@ class AudioPlayerService : LifecycleService() {
         Log.d("onDestroyAudio","onDestroy: ")
         releasePlayer()
         releaseAudioFocus()
+        stopForeground(true);
+        stopSelf();
         super.onDestroy()
     }
 

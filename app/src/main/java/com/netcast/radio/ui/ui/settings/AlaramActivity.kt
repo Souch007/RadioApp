@@ -52,7 +52,7 @@ class AlaramActivity : AppCompatActivity() {
     private fun setAlarm(timeInMillis: Long) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, MyAlarm::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.setRepeating(
             AlarmManager.RTC,
             timeInMillis,

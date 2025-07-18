@@ -35,6 +35,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     var isInternetavailable = true
     private lateinit var connectivityChecker: ConnectivityChecker
     private lateinit var connectivityHandler: ConnectivityHandler
+    private val handler = Handler(Looper.getMainLooper())
+    private val refreshRunnable = Runnable {
+        bindingOrNull?.container?.isRefreshing = false
+    }
 
 
     override fun FragmentRadioBinding.initialize() {
@@ -242,10 +246,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
             mainActivityViewModel.getCountires(radioViewModel)
             mainActivityViewModel.getAllGenres(radioViewModel)
 
-            Handler(Looper.myLooper()!!).postDelayed({
-                binding.container.isRefreshing = false
-            }, 2000)
+//            Handler(Looper.getMainLooper()!!).postDelayed({
+//                binding?.container?.isRefreshing = false
+//            }, 2000)
 
+            handler.postDelayed(refreshRunnable, 2000)
         }
     }
 
@@ -363,5 +368,11 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
     override fun onDestroy() {
         super.onDestroy()
         connectivityHandler.stopCheckingConnectivity()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(refreshRunnable)
+
     }
 }
