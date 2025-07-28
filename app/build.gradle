@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "com.netcast.radio"
         minSdk 21
-        targetSdk 34
-        versionCode 73
-        versionName "1.71"
+        targetSdk 35
+        versionCode 74
+        versionName "1.72"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
