@@ -31,12 +31,15 @@ class NotifyUserService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForegroundService()
+//        startForegroundService()
 //        makeApiCallStart(true)
 
         workDoneReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == "com.netcast.radio.ACTION_WORK_DONE") {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        stopForeground(STOP_FOREGROUND_REMOVE)
+                    }
                     stopSelf()
                 }
             }

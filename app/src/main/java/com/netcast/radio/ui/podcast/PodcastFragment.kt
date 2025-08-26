@@ -214,7 +214,10 @@ class PodcastFragment : BaseFragment<FragmentPodcastBinding>(R.layout.fragment_p
 
     override fun onDestroy() {
         super.onDestroy()
-        connectivityHandler.stopCheckingConnectivity()
+//        connectivityHandler.stopCheckingConnectivity()
+        if (::connectivityHandler.isInitialized) {
+            connectivityHandler.stopCheckingConnectivity()
+        }
     }
 
     override fun onResume() {

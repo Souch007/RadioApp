@@ -342,47 +342,101 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     }
 
     private fun setDayAlarm() {
-
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, min)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
 
         val now = Calendar.getInstance()
-        now[Calendar.SECOND] = 0
-        now[Calendar.MILLISECOND] = 0
-        if (calendar.before(now)) {    //this condition is used for future reminder that means your reminder not fire for past time
-            calendar.add(Calendar.DATE, 7);
+        now.set(Calendar.SECOND, 0)
+        now.set(Calendar.MILLISECOND, 0)
 
+        if (calendar.before(now)) {
+            calendar.add(Calendar.DATE, 7) // Schedule for next week if time has passed
         }
 
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE //this is needed in Android 12
+            PendingIntent.FLAG_MUTABLE
         } else {
             PendingIntent.FLAG_CANCEL_CURRENT
         }
 
         val intent = Intent(this, AlramReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(
-            this, 0, intent, flag
-        )
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, flag)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingIntent?.let {
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
-                )
-            }
-        } else {
-            pendingIntent?.let {
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
-                )
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        // 🔐 PERMISSION CHECK for Android 12+ and 14+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                // 🔁 Ask user to grant permission
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+                return // Exit early until user grants permission
             }
         }
 
-        sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
+        // ✅ Set the alarm
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        }
 
+        sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
     }
+
+//    private fun setDayAlarm() {
+//
+//        val calendar = Calendar.getInstance()
+//        calendar.set(Calendar.HOUR_OF_DAY, hour)
+//        calendar.set(Calendar.MINUTE, min)
+//
+//        val now = Calendar.getInstance()
+//        now[Calendar.SECOND] = 0
+//        now[Calendar.MILLISECOND] = 0
+//        if (calendar.before(now)) {    //this condition is used for future reminder that means your reminder not fire for past time
+//            calendar.add(Calendar.DATE, 7);
+//
+//        }
+//
+//        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//            PendingIntent.FLAG_MUTABLE //this is needed in Android 12
+//        } else {
+//            PendingIntent.FLAG_CANCEL_CURRENT
+//        }
+//
+//        val intent = Intent(this, AlramReceiver::class.java)
+//        pendingIntent = PendingIntent.getBroadcast(
+//            this, 0, intent, flag
+//        )
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            pendingIntent?.let {
+//                alarmManager.setExactAndAllowWhileIdle(
+//                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
+//                )
+//            }
+//        } else {
+//            pendingIntent?.let {
+//                alarmManager.setExact(
+//                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, it
+//                )
+//            }
+//        }
+//
+//        sharedPredEditor.putInt("hour", hour).putInt("min", min).apply()
+//
+//    }
 
     fun <T> SharedPreferences.writeList(gson: Gson, key: String, data: List<T>) {
         val json = gson.toJson(data)

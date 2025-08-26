@@ -29,6 +29,7 @@ fun setAdapter(
         recyclerView.adapter = it
     }
 }
+
 @BindingAdapter("setAdapter")
 fun setAdapter(
     recyclerView: ShimmerRecyclerView,
@@ -54,30 +55,39 @@ fun manageState(progressBar: ProgressBar, state: Boolean) {
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter("setImage")
 fun setImage(imageView: ImageView, image: String) {
-    if (imageView == null || image.isNullOrBlank()) {
-        return
+    try {
+        if (image.isNullOrBlank()) {
+            return
+        }
+        Glide.with(imageView.context)
+            .load(image)
+            .error(R.drawable.logo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH)
+            .into(imageView)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
-    Glide.with(imageView.context)
-        .load(image)
-        .error(R.drawable.logo)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .priority(Priority.HIGH)
-        .into(imageView)
 }
 
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter("setImage")
 fun setImage(imageView: ShapeableImageView, image: String) {
-    if (imageView == null || image.isNullOrBlank()) {
-        return
+    try {
+        if (image.isNullOrBlank()) {
+            return
+        }
+        Glide.with(imageView.context)
+            .load(image)
+            .error(R.drawable.logo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .priority(Priority.HIGH)
+            .into(imageView)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
-    Glide.with(imageView.context)
-        .load(image)
-        .error(R.drawable.logo)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .priority(Priority.HIGH)
-        .into(imageView)
 }
+
 
 @BindingAdapter("setFavouriteCondition")
 fun setFavouriteCondition(imageView: ShapeableImageView, isFavourite: Boolean) {
@@ -90,9 +100,9 @@ fun setFavouriteCondition(imageView: ShapeableImageView, isFavourite: Boolean) {
 }
 
 @BindingAdapter("setPlayerVisibility")
-fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean){
-    if(isVisibile)
-    linearLayout.visibility = View.VISIBLE
+fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean) {
+    if (isVisibile)
+        linearLayout.visibility = View.VISIBLE
     else
         linearLayout.visibility = View.GONE
 
@@ -100,27 +110,27 @@ fun setPlayerVisibility(linearLayout: LinearLayout, isVisibile: Boolean){
 }
 
 @BindingAdapter("setPlayer")
-fun setPlayer(playerControlView: PlayerControlView, exoPlayer: ExoPlayer?){
-        playerControlView.player = exoPlayer;
+fun setPlayer(playerControlView: PlayerControlView, exoPlayer: ExoPlayer?) {
+    playerControlView.player = exoPlayer;
 }
 
 @BindingAdapter("setVisibilityLinear")
-fun setVisibilityLinear(linearLayout: LinearLayout, string: String){
-    if(string.matches("".toRegex())){
+fun setVisibilityLinear(linearLayout: LinearLayout, string: String) {
+    if (string.matches("".toRegex())) {
         linearLayout.visibility = View.GONE
     } else
         linearLayout.visibility = View.VISIBLE
 }
 
 @BindingAdapter("setVisibilityLinear")
-fun setVisibilityLinear(linearLayout: LinearLayout, visibility: Boolean){
-    if(!visibility){
+fun setVisibilityLinear(linearLayout: LinearLayout, visibility: Boolean) {
+    if (!visibility) {
         linearLayout.visibility = View.GONE
     } else
         linearLayout.visibility = View.VISIBLE
 }
 
 @BindingAdapter("setTextHtml")
-fun setTextHTML(textView : TextView, text : String){
-        textView.setText(HtmlCompat.fromHtml(text?:"", HtmlCompat.FROM_HTML_MODE_COMPACT))
+fun setTextHTML(textView: TextView, text: String) {
+    textView.setText(HtmlCompat.fromHtml(text ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT))
 }

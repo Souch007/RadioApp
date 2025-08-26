@@ -367,7 +367,10 @@ class RadioFragment : BaseFragment<FragmentRadioBinding>(R.layout.fragment_radio
 
     override fun onDestroy() {
         super.onDestroy()
-        connectivityHandler.stopCheckingConnectivity()
+        if (::connectivityHandler.isInitialized) {
+            connectivityHandler.stopCheckingConnectivity()
+        }
+//        connectivityHandler.stopCheckingConnectivity()
     }
 
     override fun onDestroyView() {

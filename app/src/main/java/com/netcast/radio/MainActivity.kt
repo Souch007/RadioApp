@@ -27,6 +27,7 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -125,7 +126,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-
+        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         initializeViewModel()
         Observers()
