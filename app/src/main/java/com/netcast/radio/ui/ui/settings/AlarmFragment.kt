@@ -21,6 +21,9 @@ import android.widget.TimePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
@@ -52,8 +55,20 @@ class AlarmFragment : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = FragmentAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { view, insets ->
+            val systemBarSpacing = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                systemBarSpacing.left,
+                systemBarSpacing.top,
+                systemBarSpacing.right,
+                systemBarSpacing.bottom
+            )
+            insets
+        }
         binding.header.tvTitle.text = "Alarm Settings"
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         binding.header.imgBack.setOnClickListener {

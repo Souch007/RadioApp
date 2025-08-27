@@ -27,6 +27,11 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -113,6 +118,17 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { view, insets ->
+            val systemBarSpacing = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                systemBarSpacing.left,
+                systemBarSpacing.top,
+                systemBarSpacing.right,
+                systemBarSpacing.bottom
+            )
+            insets
+        }
         sharedPreferences = getSharedPreferences("appData", Context.MODE_PRIVATE)
         sharedPredEditor = sharedPreferences.edit()
         val appmode = sharedPreferences.getInt("App_Mode", -1)
@@ -126,7 +142,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+//        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         DEVICE_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         initializeViewModel()
         Observers()
@@ -193,6 +209,11 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
             BuildConfig.VERSION_NAME
         )
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.DarkBlue)
+
+        // If DarkBlue is light -> dark icons
+        WindowCompat.getInsetsController(window, window.decorView)
+            ?.isAppearanceLightStatusBars = true
         // ATTENTION: This was auto-generated to handle app links.
         val appLinkIntent: Intent = intent
         val appLinkAction: String? = appLinkIntent.action
@@ -352,7 +373,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), Options
         return false
     }
 
-
+    private fun setupStatusBar() {
+        val controller = WindowCompat.getInsetsController(
+            window,
+            window.decorView
+        )
+        controller.isAppearanceLightStatusBars = true
+    }
     private fun Observers() {
         if (AppSingelton.favouritesRadioArray.size == 0) {
             val gson = Gson()

@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.netcast.radio.BR
 import com.netcast.radio.PlayingChannelData
 import com.netcast.radio.R
@@ -21,6 +24,17 @@ class DownloadActivity : BaseActivity<DownloadViewModel, ActivityDownloadBinding
     private lateinit var downlaodEpisodeAdapter: DownloadEpisodeAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { view, insets ->
+            val systemBarSpacing = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.updatePadding(
+                systemBarSpacing.left,
+                systemBarSpacing.top,
+                systemBarSpacing.right,
+                systemBarSpacing.bottom
+            )
+            insets
+        }
 
         AppSingelton.currentActivity = AppConstants.DownloadActivity
         observers()

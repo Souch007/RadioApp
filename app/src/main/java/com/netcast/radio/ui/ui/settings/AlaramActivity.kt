@@ -13,6 +13,9 @@ import android.widget.Button
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.netcast.radio.R
 import java.util.*
 
@@ -23,6 +26,8 @@ class AlaramActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alaram)
+
+
         title = "KotlinApp"
         timePicker = findViewById(R.id.timePicker)
         btnSetAlarm = findViewById(R.id.buttonAlarm)

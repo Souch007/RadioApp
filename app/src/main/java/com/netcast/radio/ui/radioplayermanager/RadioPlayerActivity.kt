@@ -24,6 +24,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -35,6 +38,7 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator
 import com.netcast.radio.BR
 import com.netcast.radio.MainViewModel
 import com.netcast.radio.PlayingChannelData
+import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.base.BaseActivity
 import com.netcast.radio.databinding.ActivityRadioPlayerBinding
@@ -86,7 +90,17 @@ class RadioPlayerActivity() : BaseActivity<RadioPlayerAVM, ActivityRadioPlayerBi
     private var simpleExoPlayer: ExoPlayer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { view, insets ->
+            val systemBarSpacing = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
+            view.updatePadding(
+                systemBarSpacing.left,
+                systemBarSpacing.top,
+                systemBarSpacing.right,
+                systemBarSpacing.bottom
+            )
+            insets
+        }
         if (!checkWifiPlaySettings()) {
             createActivity()
             isActivityLoaded = true

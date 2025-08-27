@@ -6,295 +6,305 @@
 
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <FrameLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/layout_bg"
-        android:orientation="vertical"
-        tools:context=".ui.ui.settings.AlarmFragment">
-
-        <include
-            android:id="@+id/header"
-            layout="@layout/activity_header" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_timer"
-            style="@style/textHeading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="00:00"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_25sdp" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/textHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="Alarm Clock"
-            android:textColor="@color/OrangeRed"
-            android:textSize="@dimen/_20sdp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/Gray" />
+        android:background="@color/header"
+        android:fitsSystemWindows="true">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_bg"
+            android:orientation="vertical"
+            tools:context=".ui.ui.settings.AlarmFragment">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/activity_header" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_timer"
+                style="@style/textHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
+                android:text="00:00"
+                android:textSize="@dimen/_25sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/textHeading"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_weight=".7"
-                android:text="Set Alarm"
-                android:textColor="@color/OrangeRed" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/swich_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="Alarm Clock"
+                android:textColor="@color/OrangeRed"
+                android:textSize="@dimen/_20sdp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/Gray" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/textHeading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_weight=".7"
+                    android:text="Set Alarm"
+                    android:textColor="@color/OrangeRed" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swich_alarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/Gray" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="Alarm Time"
+                android:textColor="@color/OrangeRed" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_timer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="00:00"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/Gray" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Repeat Alarm"
+                android:textColor="@color/OrangeRed" />
+
+            <!--        <androidx.appcompat.widget.LinearLayoutCompat-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:orientation="horizontal"-->
+            <!--            >-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_sunday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_5sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="S" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_monday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_5sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="M" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_tuesday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_5sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+
+            <!--                android:text="T" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_wednesday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_5sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="W" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_thursday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="T" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_friday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="F" />-->
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/chk_saturday"-->
+            <!--                style="@style/textHeading"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="S" />-->
+
+
+            <!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="7"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chk_sunday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="S" />
+
+                <CheckBox
+                    android:id="@+id/chk_monday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="M" />
+
+                <CheckBox
+                    android:id="@+id/chk_tuesday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="T" />
+
+                <CheckBox
+                    android:id="@+id/chk_wednesday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="W" />
+
+                <CheckBox
+                    android:id="@+id/chk_thursday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="T" />
+
+                <CheckBox
+                    android:id="@+id/chk_friday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="F" />
+
+                <CheckBox
+                    android:id="@+id/chk_saturday"
+                    style="@style/textHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="S" />
+
+            </GridLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/Gray" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="Radio"
+                android:textColor="@color/OrangeRed" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_selectchannel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Select channel"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background="@color/Gray" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/textHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="Alarm ringtoner volume"
+                android:textColor="@color/OrangeRed" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:secondaryProgressTint="@color/black"
+                android:soundEffectsEnabled="true" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/Gray" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/textHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="Alarm Time"
-            android:textColor="@color/OrangeRed" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_timer2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="00:00"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/Gray" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/textHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Repeat Alarm"
-            android:textColor="@color/OrangeRed" />
-
-<!--        <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            >-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_sunday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="S" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_monday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="M" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_tuesday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-
-<!--                android:text="T" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_wednesday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="W" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_thursday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_10sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="T" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_friday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_10sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="F" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/chk_saturday"-->
-<!--                style="@style/textHeading"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_10sdp"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:gravity="center"-->
-<!--                android:text="S" />-->
-
-
-<!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="7"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/chk_sunday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="S" />
-
-            <CheckBox
-                android:id="@+id/chk_monday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="M" />
-
-            <CheckBox
-                android:id="@+id/chk_tuesday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="T" />
-
-            <CheckBox
-                android:id="@+id/chk_wednesday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="W" />
-
-            <CheckBox
-                android:id="@+id/chk_thursday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="T" />
-
-            <CheckBox
-                android:id="@+id/chk_friday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="F" />
-
-            <CheckBox
-                android:id="@+id/chk_saturday"
-                style="@style/textHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="S" />
-
-        </GridLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/Gray" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/textHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:gravity="center"
-            android:text="Radio"
-            android:textColor="@color/OrangeRed" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_selectchannel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Select channel"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/Gray" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/textHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:gravity="center"
-            android:text="Alarm ringtoner volume"
-            android:textColor="@color/OrangeRed" />
-
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:secondaryProgressTint="@color/black"
-            android:soundEffectsEnabled="true" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
 </layout>

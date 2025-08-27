@@ -11,9 +11,18 @@
             type="com.netcast.radio.ui.SettingsActivity" />
     </data>
 
+    <FrameLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/black">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/container"
+        android:background="@drawable/layout_bg"
         tools:context=".ui.SettingsActivity">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_bar_layout"
@@ -63,4 +72,7 @@
             app:layout_constraintTop_toBottomOf="@+id/settings_bar_layout"
             tools:layout="@layout/fragment_settings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
 </layout>

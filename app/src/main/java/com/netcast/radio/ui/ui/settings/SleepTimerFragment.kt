@@ -6,7 +6,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.material.slider.Slider
+import com.netcast.radio.R
 import com.netcast.radio.base.AppSingelton
 import com.netcast.radio.databinding.FragmentSleepTimerBinding
 
@@ -19,7 +23,20 @@ class SleepTimerFragment : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentSleepTimerBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { view, insets ->
+            val systemBarSpacing = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.updatePadding(
+                systemBarSpacing.left,
+                systemBarSpacing.top,
+                systemBarSpacing.right,
+                systemBarSpacing.bottom
+            )
+            insets
+        }
         binding.header.tvTitle.text = "Sleep Timer"
         binding.header.imgBack.setOnClickListener {
             finish()
